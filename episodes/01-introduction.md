@@ -10,19 +10,19 @@ keypoints:
 - "First key point. Brief Answer to questions. (FIXME)"
 math: yes
 ---
-FIXME
 
-R code:
 
-```{r}
+R code in markdown (without output):
+
+```r
 rnorm(5)
 ```
 
-Testing $\LaTeX$ inline, and in blocks:
+$\LaTeX$ inline, and in blocks:
 
 
 $$
-  \exp(i\pi) = -1
+    \exp(i\pi) = -1
 $$
 
 {% include links.md %}

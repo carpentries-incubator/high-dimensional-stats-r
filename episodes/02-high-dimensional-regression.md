@@ -12,9 +12,8 @@ keypoints:
 - "First key point. Brief Answer to questions. (FIXME)"
 math: yes
 ---
-FIXME
 
-R code:
+R code in RMarkdown (with output):
 
 
 ```r
@@ -22,10 +21,10 @@ rnorm(5)
 ```
 
 ```
-## [1] -0.3562910 -1.0314990  0.2743409 -0.2335460  0.6398854
+## [1] -0.3569556 -0.2062334 -0.6428079  0.2195875 -0.1859035
 ```
 
-Testing $\LaTeX$ inline, and in blocks:
+$\LaTeX$ inline, and in blocks:
 
 
 $$
