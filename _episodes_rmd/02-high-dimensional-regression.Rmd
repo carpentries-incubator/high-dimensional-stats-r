@@ -22,7 +22,7 @@ Testing $\LaTeX$ inline, and in blocks:
 
 
 $$
-  \exp(i\pi) = -1
+    \exp(i\pi) = -1
 $$
 
 {% include links.md %}
