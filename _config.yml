@@ -101,6 +101,6 @@ highlighter: rouge
 
 
 # Remote theme
-remote_theme: carpentries/carpentries-theme
+remote_theme: Alanocallaghan/carpentries-theme
 
 math: yes
