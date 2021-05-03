@@ -10,7 +10,7 @@
 carpentry: "incubator"
 
 # Overall title for pages.
-title: "Lesson Title" # FIXME
+title: "High dimensional statistics with R"
 
 # Life cycle stage of the lesson
 # See this page for more details: https://cdh.carpentries.org/the-lesson-life-cycle.html
@@ -27,10 +27,10 @@ kind: "lesson"
 # Magic to make URLs resolve both locally and on GitHub.
 # See https://help.github.com/articles/repository-metadata-on-github-pages/.
 # Please don't change it: <USERNAME>/<PROJECT> is correct.
-repository: <USERNAME>/<PROJECT>
+repository: carpentries-incubator/high-dimensional-stats-r
 
 # Email address, no mailto:
-email: "team@carpentries.org" # FIXME
+email: "alan.ocallaghan@outlook.com"
 
 # Sites.
 amy_site: "https://amy.carpentries.org/"
@@ -102,3 +102,5 @@ highlighter: rouge
 
 # Remote theme
 remote_theme: carpentries/carpentries-theme
+
+math: yes
