@@ -25,20 +25,21 @@ math: yes
 
 
 
-```r
-knitr::opts_chunk$set(message=FALSE, warning=FALSE, error=FALSE)
-```
 
 R code in RMarkdown (with output):
 
 
-```r
+~~~
 rnorm(5)
-```
+~~~
+{: .language-r}
 
-```
-## [1] -0.9327520 -1.3632604 -1.0276520  0.1243708 -2.1170474
-```
+
+
+~~~
+[1]  0.36021799  0.07866662  0.96949443 -0.02108460  0.68135375
+~~~
+{: .output}
 
 $\LaTeX$ inline, and in blocks:
 
@@ -49,13 +50,485 @@ $$
 
 
 
-```r
+~~~
 library("glmnet")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: Matrix
+~~~
+{: .output}
+
+
+
+~~~
+Loaded glmnet 4.1-1
+~~~
+{: .output}
+
+
+
+~~~
 library("limma")
 library("qvalue")
 library("minfi")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: BiocGenerics
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: parallel
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'BiocGenerics'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:limma':
+
+    plotMA
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:base':
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which.max, which.min
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: GenomicRanges
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: stats4
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: S4Vectors
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'S4Vectors'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:Matrix':
+
+    expand
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:base':
+
+    expand.grid
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: IRanges
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: GenomeInfoDb
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: SummarizedExperiment
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: MatrixGenerics
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: matrixStats
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'MatrixGenerics'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: Biobase
+~~~
+{: .output}
+
+
+
+~~~
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'Biobase'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:MatrixGenerics':
+
+    rowMedians
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    anyMissing, rowMedians
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: Biostrings
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: XVector
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'Biostrings'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:base':
+
+    strsplit
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: bumphunter
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: foreach
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: iterators
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: locfit
+~~~
+{: .output}
+
+
+
+~~~
+locfit 1.5-9.4 	 2020-03-24
+~~~
+{: .output}
+
+
+
+~~~
+Setting options('download.file.method.GEOquery'='auto')
+~~~
+{: .output}
+
+
+
+~~~
+Setting options('GEOquery.inmemory.gpl'=FALSE)
+~~~
+{: .output}
+
+
+
+~~~
 library("here")
+~~~
+{: .language-r}
+
+
+
+~~~
+here() starts at /home/runner/work/high-dimensional-stats-r/high-dimensional-stats-r
+~~~
+{: .output}
+
+
+
+~~~
 library("FlowSorted.Blood.EPIC")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: genefilter
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'genefilter'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:MatrixGenerics':
+
+    rowSds, rowVars
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    rowSds, rowVars
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: quadprog
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: nlme
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'nlme'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:Biostrings':
+
+    collapse
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:IRanges':
+
+    collapse
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: IlluminaHumanMethylationEPICanno.ilm10b4.hg19
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: ExperimentHub
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: AnnotationHub
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: BiocFileCache
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: dbplyr
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'AnnotationHub'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:Biobase':
+
+    cache
+~~~
+{: .output}
+
+
+
+~~~
 library("IlluminaHumanMethylationEPICmanifest")
 library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
 library("ExperimentHub")
@@ -64,6 +537,75 @@ library("here")
 if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
     source(here("data/methylation.R"))
 }
+~~~
+{: .language-r}
+
+
+
+~~~
+using temporary cache /tmp/Rtmp3IW9hA/BiocFileCache
+~~~
+{: .output}
+
+
+
+~~~
+snapshotDate(): 2020-10-27
+~~~
+{: .output}
+
+
+
+~~~
+see ?FlowSorted.Blood.EPIC and browseVignettes('FlowSorted.Blood.EPIC') for documentation
+~~~
+{: .output}
+
+
+
+~~~
+downloading 1 resources
+~~~
+{: .output}
+
+
+
+~~~
+retrieving 1 resource
+~~~
+{: .output}
+
+
+
+~~~
+loading from cache
+~~~
+{: .output}
+
+
+
+~~~
+[preprocessQuantile] Mapping to genome.
+~~~
+{: .output}
+
+
+
+~~~
+[preprocessQuantile] Fixing outliers.
+~~~
+{: .output}
+
+
+
+~~~
+[preprocessQuantile] Quantile normalizing.
+~~~
+{: .output}
+
+
+
+~~~
 norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
 
 
@@ -93,18 +635,20 @@ fit <- eBayes(fit)
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
 
 plot(tt1$logFC, -log10(tt1$P.Value))
-```
+~~~
+{: .language-r}
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
-```r
+~~~
 q <- qvalue(tt1$P.Value)
 hist(q)
-```
+~~~
+{: .language-r}
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-2.png)
+<img src="../fig/rmd-02-unnamed-chunk-3-2.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
-```r
+~~~
 # plot(df_all$p.value, tt1[df_all$term, "P.Value"], log = "xy")
 # plot(df_all$estimate, tt1[df_all$term, "logFC"])
 
@@ -147,31 +691,72 @@ tt1 <- topTable(fit, coef = 1, number = nrow(fit))
 
 q <- qvalue(tt1$P.Value)
 hist(q)
-```
+~~~
+{: .language-r}
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-3.png)
+<img src="../fig/rmd-02-unnamed-chunk-3-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
-```r
+~~~
 plot(tt1$logFC, -log10(tt1$P.Value))
-```
+~~~
+{: .language-r}
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-4.png)
+<img src="../fig/rmd-02-unnamed-chunk-3-4.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
-```r
+~~~
 x <- t(getM(norm))
 y <- as.numeric(factor(norm$smoker)) - 1
 
 fit <- cv.glmnet(x = x, y = y, family="binomial")
+~~~
+{: .language-r}
 
+
+
+~~~
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+~~~
+{: .warning}
+
+
+
+~~~
 c <- coef(fit, s = fit$lambda.1se)
 c[c[, 1] != 0, 1]
-```
+~~~
+{: .language-r}
 
-```
-## [1] -1.455287
-```
 
-```r
+
+~~~
+[1] -1.455287
+~~~
+{: .output}
+
+
+
+~~~
 y <- norm$Age
 fit <- cv.glmnet(x = x, y = y)
 
@@ -179,9 +764,10 @@ c <- coef(fit, s = fit$lambda.1se)
 coef <- c[c[, 1] != 0, 1]
 
 plot(y, x[, names(which.max(coef[-1]))])
-```
+~~~
+{: .language-r}
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-5.png)
+<img src="../fig/rmd-02-unnamed-chunk-3-5.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
 
 {% include links.md %}
