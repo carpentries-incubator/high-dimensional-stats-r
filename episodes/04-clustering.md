@@ -27,7 +27,7 @@ rnorm(5)
 
 
 ~~~
-[1] -0.9186464 -0.6189741 -1.2750949 -0.1019880  0.3398477
+[1]  1.7179361  0.9321669 -1.1776757 -1.0470257 -1.2338888
 ~~~
 {: .output}
 
@@ -62,7 +62,7 @@ zd <- ZeiselBrainData()
 
 
 ~~~
-using temporary cache /tmp/RtmpVY0T5r/BiocFileCache
+using temporary cache /tmp/RtmpFOqwe4/BiocFileCache
 ~~~
 {: .output}
 
@@ -219,8 +219,15 @@ plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 ## model-based
 clust <- mclustBIC(reducedDim(zd), modelNames = "VVV")
 opt_clust <- which.max(clust)
+zd$mixture <- as.character(opt_clust)
 
+plotReducedDim(zd, "TSNE", colour_by = "mixture")
+~~~
+{: .language-r}
 
+<img src="../fig/rmd-04-unnamed-chunk-3-2.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
+
+~~~
 ## graph-based
 g <- buildSNNGraph(zd, k=10, use.dimred = 'PCA')
 clust <- igraph::cluster_walktrap(g)$membership
@@ -230,7 +237,7 @@ plotReducedDim(zd, colour_by="label", dimred="force")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-3-2.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-3-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
 ~~~
 # bluster::clusterRows - maybe?
