@@ -1,0 +1,85 @@
+---
+title: "High dimensional regression"
+teaching: 0
+exercises: 0
+questions:
+- "How can we apply regression methods in a high-dimensional setting?"
+objectives:
+- "Perform and critically analyse high dimensional regression."
+keypoints:
+- "Multiple testing correction can enable us to account for many null hypothesis
+    significance tests while retaining power."
+math: yes
+---
+
+
+```{r}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, error=FALSE)
+```
+
+R code in RMarkdown (with output):
+
+```{r}
+rnorm(5)
+```
+
+$\LaTeX$ inline, and in blocks:
+
+
+$$
+    \exp(i\pi) = -1
+$$
+
+
+```{r}
+## preamble
+library("scRNAseq")
+library("mixtools")
+library("irlba")
+library("scater")
+library("scuttle")
+library("scran")
+library("Rtsne")
+library("mclust")
+library("igraph")
+library("bluster")
+
+zd <- ZeiselBrainData()
+zd <- computeSumFactors(zd, cluster=quickCluster(zd))
+zd <- logNormCounts(zd)
+
+zd <- runPCA(zd, ncomponents = 15)
+zd <- runTSNE(zd)
+
+
+
+## k-means
+
+## ideas: vary centers, low iter.max, low nstart
+cluster <- kmeans(reducedDim(zd), centers = 7, iter.max = 1000, nstart = 100)
+zd$kmeans <- as.character(cluster$cluster)
+
+plotReducedDim(zd, "TSNE", colour_by = "kmeans")
+
+## model-based
+clust <- mclustBIC(reducedDim(zd), modelNames = "VVV")
+opt_clust <- which.max(clust)
+
+
+## graph-based
+g <- buildSNNGraph(zd, k=10, use.dimred = 'PCA')
+clust <- igraph::cluster_walktrap(g)$membership
+reducedDim(zd, "force") <- igraph::layout_with_fr(g)
+colLabels(zd) <- factor(clust)
+plotReducedDim(zd, colour_by="label", dimred="force")
+
+
+# bluster::clusterRows - maybe?
+
+## measures: silhouette, bootstrap
+## approx silhouette? purity?
+```
+
+
+{% include links.md %}
+
