@@ -1,0 +1,33 @@
+---
+title: "Dimensionality reduction"
+teaching: 0
+exercises: 0
+questions:
+- "How can we cluster data?"
+keypoints:
+- "Clustering is hard"
+math: yes
+---
+
+
+```{r, include=FALSE}
+source("../bin/chunk-options.R")
+knitr_fig_path("03-")
+```
+
+Free text between blocks, in markdown format with math, `code` etc.
+
+$\LaTeX$ inline, and in blocks:
+
+$$
+    \exp(i\pi) = -1
+$$
+
+
+```{r}
+## R code in blocks here and below
+```
+
+
+{% include links.md %}
+

@@ -1,6 +1,8 @@
-library("FlowSorted.Blood.EPIC")
-library("ExperimentHub")
-library("here")
+suppressPackageStartupMessages({
+    library("FlowSorted.Blood.EPIC")
+    library("ExperimentHub")
+    library("here")
+})
 
 hub <- ExperimentHub()
 query(hub, "FlowSorted.Blood.EPIC")  
