@@ -3,9 +3,11 @@ title: "Introduction"
 teaching: 0
 exercises: 0
 questions:
-- "Key question (FIXME)"
+- "How can we describe statistical models?"
+- "How can we describe model assumptions?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Describe using notation some statistical models."
+- "Describe the assumption of some statistical models."
 keypoints:
 - "First key point. Brief Answer to questions. (FIXME)"
 math: yes
