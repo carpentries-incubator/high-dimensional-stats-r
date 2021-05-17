@@ -37,7 +37,7 @@ rnorm(5)
 
 
 ~~~
-[1] -0.5505652 -0.6339083 -0.9916050  0.0655402  0.9413610
+[1] -0.2305551  0.5140551  0.8499771  0.1147902  1.7888945
 ~~~
 {: .output}
 
@@ -73,7 +73,7 @@ if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
 
 
 ~~~
-using temporary cache /tmp/RtmpcBFjkC/BiocFileCache
+using temporary cache /tmp/Rtmphr8xWN/BiocFileCache
 ~~~
 {: .output}
 

@@ -66,6 +66,9 @@ plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 ## model-based
 clust <- mclustBIC(reducedDim(zd), modelNames = "VVV")
 opt_clust <- which.max(clust)
+zd$mixture <- as.character(opt_clust)
+
+plotReducedDim(zd, "TSNE", colour_by = "mixture")
 
 
 ## graph-based
