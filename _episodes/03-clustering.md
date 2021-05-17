@@ -28,7 +28,7 @@ rnorm(5)
 
 
 ~~~
-[1] -1.5480721  0.6356495 -1.7619466 -0.2077207 -1.1985864
+[1]  2.0591337  1.2097459  0.7924871  1.6978435 -1.4155745
 ~~~
 {: .output}
 
@@ -43,19 +43,421 @@ $$
 
 ~~~
 ## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("mixtools")
-    library("irlba")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("Rtsne")
-    library("mclust")
-    library("igraph")
-    library("bluster")
-})
+library("scRNAseq")
+~~~
+{: .language-r}
 
+
+
+~~~
+Loading required package: SingleCellExperiment
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: SummarizedExperiment
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: MatrixGenerics
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: matrixStats
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'MatrixGenerics'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: GenomicRanges
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: stats4
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: BiocGenerics
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: parallel
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'BiocGenerics'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:base':
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which.max, which.min
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: S4Vectors
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'S4Vectors'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:base':
+
+    expand.grid
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: IRanges
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: GenomeInfoDb
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: Biobase
+~~~
+{: .output}
+
+
+
+~~~
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'Biobase'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:MatrixGenerics':
+
+    rowMedians
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    anyMissing, rowMedians
+~~~
+{: .output}
+
+
+
+~~~
+library("mixtools")
+~~~
+{: .language-r}
+
+
+
+~~~
+mixtools package, version 1.2.0, Released 2020-02-05
+This package is based upon work supported by the National Science Foundation under Grant No. SES-0518772.
+~~~
+{: .output}
+
+
+
+~~~
+library("irlba")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: Matrix
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'Matrix'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:S4Vectors':
+
+    expand
+~~~
+{: .output}
+
+
+
+~~~
+library("scater")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: ggplot2
+~~~
+{: .output}
+
+
+
+~~~
+library("scuttle")
+library("scran")
+library("Rtsne")
+library("mclust")
+~~~
+{: .language-r}
+
+
+
+~~~
+Package 'mclust' version 5.4.7
+Type 'citation("mclust")' for citing this R package in publications.
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'mclust'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:mixtools':
+
+    dmvnorm
+~~~
+{: .output}
+
+
+
+~~~
+library("igraph")
+~~~
+{: .language-r}
+
+
+
+~~~
+
+Attaching package: 'igraph'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:scater':
+
+    normalize
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:GenomicRanges':
+
+    union
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:IRanges':
+
+    union
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:S4Vectors':
+
+    union
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:BiocGenerics':
+
+    normalize, path, union
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:base':
+
+    union
+~~~
+{: .output}
+
+
+
+~~~
+library("bluster")
+~~~
+{: .language-r}
+
+
+
+~~~
+
+Attaching package: 'bluster'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:scran':
+
+    neighborsToKNNGraph, neighborsToSNNGraph
+~~~
+{: .output}
+
+
+
+~~~
 zd <- ZeiselBrainData()
 ~~~
 {: .language-r}
@@ -63,7 +465,7 @@ zd <- ZeiselBrainData()
 
 
 ~~~
-using temporary cache /tmp/RtmpH3m1Np/BiocFileCache
+using temporary cache /tmp/Rtmps7z22p/BiocFileCache
 ~~~
 {: .output}
 

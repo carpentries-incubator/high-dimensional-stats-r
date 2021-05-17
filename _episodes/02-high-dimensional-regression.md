@@ -37,7 +37,7 @@ rnorm(5)
 
 
 ~~~
-[1] -0.02252472  0.89359403 -1.04703593  0.48705658 -1.00103839
+[1]  0.2765820  1.5734688 -0.2727832 -0.2769256  1.5465038
 ~~~
 {: .output}
 
@@ -51,18 +51,488 @@ $$
 
 
 ~~~
-suppressPackageStartupMessages({
-    library("glmnet")
-    library("limma")
-    library("qvalue")
-    library("minfi")
-    library("here")
-    library("FlowSorted.Blood.EPIC")
-    library("IlluminaHumanMethylationEPICmanifest")
-    library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
-    library("ExperimentHub")
-    library("here")
-})
+library("glmnet")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: Matrix
+~~~
+{: .output}
+
+
+
+~~~
+Loaded glmnet 4.1-1
+~~~
+{: .output}
+
+
+
+~~~
+library("limma")
+library("qvalue")
+library("minfi")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: BiocGenerics
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: parallel
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'BiocGenerics'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:limma':
+
+    plotMA
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:base':
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which.max, which.min
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: GenomicRanges
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: stats4
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: S4Vectors
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'S4Vectors'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:Matrix':
+
+    expand
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:base':
+
+    expand.grid
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: IRanges
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: GenomeInfoDb
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: SummarizedExperiment
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: MatrixGenerics
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: matrixStats
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'MatrixGenerics'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: Biobase
+~~~
+{: .output}
+
+
+
+~~~
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'Biobase'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:MatrixGenerics':
+
+    rowMedians
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    anyMissing, rowMedians
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: Biostrings
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: XVector
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'Biostrings'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:base':
+
+    strsplit
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: bumphunter
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: foreach
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: iterators
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: locfit
+~~~
+{: .output}
+
+
+
+~~~
+locfit 1.5-9.4 	 2020-03-24
+~~~
+{: .output}
+
+
+
+~~~
+Setting options('download.file.method.GEOquery'='auto')
+~~~
+{: .output}
+
+
+
+~~~
+Setting options('GEOquery.inmemory.gpl'=FALSE)
+~~~
+{: .output}
+
+
+
+~~~
+library("here")
+~~~
+{: .language-r}
+
+
+
+~~~
+here() starts at /home/runner/work/high-dimensional-stats-r/high-dimensional-stats-r
+~~~
+{: .output}
+
+
+
+~~~
+library("FlowSorted.Blood.EPIC")
+~~~
+{: .language-r}
+
+
+
+~~~
+Loading required package: genefilter
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'genefilter'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:MatrixGenerics':
+
+    rowSds, rowVars
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:matrixStats':
+
+    rowSds, rowVars
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: quadprog
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: nlme
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'nlme'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:Biostrings':
+
+    collapse
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:IRanges':
+
+    collapse
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: IlluminaHumanMethylationEPICanno.ilm10b4.hg19
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: ExperimentHub
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: AnnotationHub
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: BiocFileCache
+~~~
+{: .output}
+
+
+
+~~~
+Loading required package: dbplyr
+~~~
+{: .output}
+
+
+
+~~~
+
+Attaching package: 'AnnotationHub'
+~~~
+{: .output}
+
+
+
+~~~
+The following object is masked from 'package:Biobase':
+
+    cache
+~~~
+{: .output}
+
+
+
+~~~
+library("IlluminaHumanMethylationEPICmanifest")
+library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
+library("ExperimentHub")
+library("here")
 
 if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
     source(here("data/methylation.R"))
@@ -73,7 +543,7 @@ if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
 
 
 ~~~
-using temporary cache /tmp/Rtmp9usdXE/BiocFileCache
+using temporary cache /tmp/RtmpzvMDIV/BiocFileCache
 ~~~
 {: .output}
 

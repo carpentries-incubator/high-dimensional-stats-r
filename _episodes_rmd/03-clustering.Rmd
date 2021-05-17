@@ -34,18 +34,16 @@ $$
 
 ```{r}
 ## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("mixtools")
-    library("irlba")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("Rtsne")
-    library("mclust")
-    library("igraph")
-    library("bluster")
-})
+library("scRNAseq")
+library("mixtools")
+library("irlba")
+library("scater")
+library("scuttle")
+library("scran")
+library("Rtsne")
+library("mclust")
+library("igraph")
+library("bluster")
 
 zd <- ZeiselBrainData()
 zd <- computeSumFactors(zd, cluster=quickCluster(zd))
