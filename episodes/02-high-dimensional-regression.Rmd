@@ -42,16 +42,18 @@ $$
 
 
 ```{r}
-library("glmnet")
-library("limma")
-library("qvalue")
-library("minfi")
-library("here")
-library("FlowSorted.Blood.EPIC")
-library("IlluminaHumanMethylationEPICmanifest")
-library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
-library("ExperimentHub")
-library("here")
+suppressPackageStartupMessages({
+    library("glmnet")
+    library("limma")
+    library("qvalue")
+    library("minfi")
+    library("here")
+    library("FlowSorted.Blood.EPIC")
+    library("IlluminaHumanMethylationEPICmanifest")
+    library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
+    library("ExperimentHub")
+    library("here")
+})
 
 if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
     source(here("data/methylation.R"))

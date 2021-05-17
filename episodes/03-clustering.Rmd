@@ -15,8 +15,8 @@ math: yes
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("02-")
-``````
+knitr_fig_path("03-")
+```
 
 R code in RMarkdown (with output):
 
@@ -34,16 +34,18 @@ $$
 
 ```{r}
 ## preamble
-library("scRNAseq")
-library("mixtools")
-library("irlba")
-library("scater")
-library("scuttle")
-library("scran")
-library("Rtsne")
-library("mclust")
-library("igraph")
-library("bluster")
+suppressPackageStartupMessages({
+    library("scRNAseq")
+    library("mixtools")
+    library("irlba")
+    library("scater")
+    library("scuttle")
+    library("scran")
+    library("Rtsne")
+    library("mclust")
+    library("igraph")
+    library("bluster")
+})
 
 zd <- ZeiselBrainData()
 zd <- computeSumFactors(zd, cluster=quickCluster(zd))
