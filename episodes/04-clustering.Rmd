@@ -1,14 +1,13 @@
 ---
-title: "High dimensional regression"
+title: "Clustering"
 teaching: 0
 exercises: 0
 questions:
-- "How can we apply regression methods in a high-dimensional setting?"
+- "Q1"
 objectives:
-- "Perform and critically analyse high dimensional regression."
+- "O1"
 keypoints:
-- "Multiple testing correction can enable us to account for many null hypothesis
-    significance tests while retaining power."
+- "KP1"
 math: yes
 ---
 

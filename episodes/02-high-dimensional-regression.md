@@ -37,7 +37,7 @@ rnorm(5)
 
 
 ~~~
-[1]  0.6447702  0.8196423 -0.6492470 -0.1720951 -0.5576518
+[1] -0.5505652 -0.6339083 -0.9916050  0.0655402  0.9413610
 ~~~
 {: .output}
 
@@ -73,7 +73,7 @@ if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
 
 
 ~~~
-using temporary cache /tmp/RtmptAAIzo/BiocFileCache
+using temporary cache /tmp/RtmpcBFjkC/BiocFileCache
 ~~~
 {: .output}
 
@@ -108,87 +108,44 @@ retrieving 1 resource
 
 
 ~~~
-Warning: download failed
-  web resource path: 'https://experimenthub.bioconductor.org/fetch/1136'
-  local file path: '/tmp/RtmptAAIzo/BiocFileCache/305038c19c45_1136'
-  reason: Internal Server Error (HTTP 500).
+loading from cache
 ~~~
-{: .warning}
+{: .output}
 
 
 
 ~~~
-Warning: bfcadd() failed; resource removed
-  rid: BFC3
-  fpath: 'https://experimenthub.bioconductor.org/fetch/1136'
-  reason: download failed
+[preprocessQuantile] Mapping to genome.
 ~~~
-{: .warning}
+{: .output}
 
 
 
 ~~~
-Warning: download failed
-  hub path: 'https://experimenthub.bioconductor.org/fetch/1136'
-  cache resource: 'EH1136 : 1136'
-  reason: bfcadd() failed; see warnings()
+[preprocessQuantile] Fixing outliers.
 ~~~
-{: .warning}
+{: .output}
 
 
 
 ~~~
-Error: failed to load resource
-  name: EH1136
-  title: FlowSorted.Blood.EPIC: Illumina Human Methylation data from EPIC on immunomagnetic sorted adult blood cell populations
-  reason: 1 resources failed to download
+[preprocessQuantile] Quantile normalizing.
 ~~~
-{: .error}
+{: .output}
 
 
 
 ~~~
 norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
-~~~
-{: .language-r}
 
 
 
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file '/home/
-runner/work/high-dimensional-stats-r/high-dimensional-stats-r/data/
-FlowSorted_Blood_EPIC.rds', probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 lim <- norm
 # lim <- lim[sample(nrow(lim), nrow(norm) / 10), ]
 
 
 y <- lim$Age
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in lim$Age: object of type 'closure' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 # dfs <- mclapply(1:10000,
 #     function(i) {
 #         cat(i, "/", ncol(x), "\n")
@@ -202,115 +159,24 @@ Error in lim$Age: object of type 'closure' is not subsettable
 
 ## age - strong comparison
 design <- model.matrix(~lim$Age)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in lim$Age: object of type 'closure' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 colnames(design) <- c("intercept", "age")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in `colnames<-`(`*tmp*`, value = c("intercept", "age")): attempt to set 'colnames' on an object with less than two dimensions
-~~~
-{: .error}
-
-
-
-~~~
 fit <- lmFit(getM(lim)[1:10000, ], design = design)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'getM' for signature '"standardGeneric"'
-~~~
-{: .error}
-
-
-
-~~~
 fit <- eBayes(fit)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in is(fit, "MArrayLM"): object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(tt1$logFC, -log10(tt1$P.Value))
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'tt1' not found
-~~~
-{: .error}
-
-
+<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
 ~~~
 q <- qvalue(tt1$P.Value)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in qvalue(tt1$P.Value): object 'tt1' not found
-~~~
-{: .error}
-
-
-
-~~~
 hist(q)
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in hist.default(q): 'x' must be numeric
-~~~
-{: .error}
-
-
+<img src="../fig/rmd-02-unnamed-chunk-3-2.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
 ~~~
 # plot(df_all$p.value, tt1[df_all$term, "P.Value"], log = "xy")
@@ -321,320 +187,56 @@ Error in hist.default(q): 'x' must be numeric
 
 
 design <- model.matrix(~0 + lim$bmi_clas)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in lim$bmi_clas: object of type 'closure' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 colnames(design) <- gsub("lim$bmi_clas", "", colnames(design), fixed=TRUE)
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in `colnames<-`(`*tmp*`, value = character(0)): attempt to set 'colnames' on an object with less than two dimensions
-~~~
-{: .error}
-
-
-
-~~~
 fit <- lmFit(getM(lim), design = design)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'getM' for signature '"standardGeneric"'
-~~~
-{: .error}
-
-
-
-~~~
 contrasts <- makeContrasts(
     Overweight - Normal,
     Obese - Normal,
     levels = design
 )
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in if (levels[1] == "(Intercept)") {: argument is of length zero
-~~~
-{: .error}
-
-
-
-~~~
 fit <- contrasts.fit(fit, contrasts)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in contrasts.fit(fit, contrasts): object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 fit <- eBayes(fit)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 tt1 <- topTable(fit, coef = 1, number = nrow(fit))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in is(fit, "MArrayLM"): object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 tt2 <- topTable(fit, coef = 2, number = nrow(fit))
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in is(fit, "MArrayLM"): object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 q <- qvalue(tt2$P.Value)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in qvalue(tt2$P.Value): object 'tt2' not found
-~~~
-{: .error}
-
-
-
-~~~
 tt2$qvalue <- q$qvalue
-~~~
-{: .language-r}
 
 
-
-~~~
-Error in q$qvalue: object of type 'closure' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 design <- model.matrix(~0 + lim$smoker)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in lim$smoker: object of type 'closure' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 colnames(design) <- gsub("lim$smoker", "", colnames(design), fixed=TRUE)
-~~~
-{: .language-r}
 
 
 
-~~~
-Error in `colnames<-`(`*tmp*`, value = character(0)): attempt to set 'colnames' on an object with less than two dimensions
-~~~
-{: .error}
-
-
-
-~~~
 fit <- lmFit(getM(lim), design = design)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'getM' for signature '"standardGeneric"'
-~~~
-{: .error}
-
-
-
-~~~
 contrasts <- makeContrasts(
     Yes - No,
     levels = design
 )
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in if (levels[1] == "(Intercept)") {: argument is of length zero
-~~~
-{: .error}
-
-
-
-~~~
 fit <- contrasts.fit(fit, contrasts)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in contrasts.fit(fit, contrasts): object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 fit <- eBayes(fit)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 tt1 <- topTable(fit, coef = 1, number = nrow(fit))
-~~~
-{: .language-r}
 
 
-
-~~~
-Error in is(fit, "MArrayLM"): object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 q <- qvalue(tt1$P.Value)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in qvalue(tt1$P.Value): object 'tt1' not found
-~~~
-{: .error}
-
-
-
-~~~
 hist(q)
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in hist.default(q): 'x' must be numeric
-~~~
-{: .error}
-
-
+<img src="../fig/rmd-02-unnamed-chunk-3-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
 ~~~
 plot(tt1$logFC, -log10(tt1$P.Value))
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'tt1' not found
-~~~
-{: .error}
-
-
+<img src="../fig/rmd-02-unnamed-chunk-3-4.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
 ~~~
 x <- t(getM(norm))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': unable to find an inherited method for function 'getM' for signature '"standardGeneric"'
-~~~
-{: .error}
-
-
-
-~~~
 y <- as.numeric(factor(norm$smoker)) - 1
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in norm$smoker: object of type 'closure' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 fit <- cv.glmnet(x = x, y = y, family="binomial")
 ~~~
 {: .language-r}
@@ -642,27 +244,35 @@ fit <- cv.glmnet(x = x, y = y, family="binomial")
 
 
 ~~~
-Error in nrow(x): object 'x' not found
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
 ~~~
-{: .error}
+{: .warning}
 
 
 
 ~~~
 c <- coef(fit, s = fit$lambda.1se)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 c[c[, 1] != 0, 1]
 ~~~
 {: .language-r}
@@ -670,79 +280,24 @@ c[c[, 1] != 0, 1]
 
 
 ~~~
-Error in c[, 1]: object of type 'builtin' is not subsettable
+[1] -1.455287
 ~~~
-{: .error}
+{: .output}
 
 
 
 ~~~
 y <- norm$Age
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in norm$Age: object of type 'closure' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 fit <- cv.glmnet(x = x, y = y)
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in nrow(x): object 'x' not found
-~~~
-{: .error}
-
-
-
-~~~
 c <- coef(fit, s = fit$lambda.1se)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 coef <- c[c[, 1] != 0, 1]
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in c[, 1]: object of type 'builtin' is not subsettable
-~~~
-{: .error}
-
-
-
-~~~
 plot(y, x[, names(which.max(coef[-1]))])
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'y' not found
-~~~
-{: .error}
+<img src="../fig/rmd-02-unnamed-chunk-3-5.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 
 
 {% include links.md %}
