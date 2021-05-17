@@ -13,9 +13,10 @@ math: yes
 ---
 
 
-```{r}
-knitr::opts_chunk$set(message=FALSE, warning=FALSE, error=FALSE)
-```
+```{r, include=FALSE}
+source("../bin/chunk-options.R")
+knitr_fig_path("02-")
+``````
 
 R code in RMarkdown (with output):
 
