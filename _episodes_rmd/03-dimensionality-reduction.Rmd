@@ -3,9 +3,11 @@ title: "Dimensionality reduction"
 teaching: 0
 exercises: 0
 questions:
-- "How can we cluster data?"
+- "Q1"
+objectives:
+- "O1"
 keypoints:
-- "Clustering is hard"
+- "KP1"
 math: yes
 ---
 
