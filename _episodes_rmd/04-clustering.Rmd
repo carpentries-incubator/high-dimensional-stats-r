@@ -3,9 +3,13 @@ title: "Clustering"
 teaching: 0
 exercises: 0
 questions:
-- "Q1"
+- "What does clustering mean?"
+- "How can we cluster data with a model?"
+- "How can we cluster data without a model?"
+- "How can we check if clusters are robust?"
 objectives:
-- "O1"
+- "Perform clustering with K-means and mixture models."
+- "Assess clustering performance with silhouette score and bootstrapping."
 keypoints:
 - "KP1"
 math: yes
@@ -16,20 +20,6 @@ math: yes
 source("../bin/chunk-options.R")
 knitr_fig_path("04-")
 ```
-
-R code in RMarkdown (with output):
-
-```{r}
-rnorm(5)
-```
-
-$\LaTeX$ inline, and in blocks:
-
-
-$$
-    \exp(i\pi) = -1
-$$
-
 
 ```{r}
 ## preamble
@@ -45,6 +35,7 @@ suppressPackageStartupMessages({
     library("igraph")
     library("bluster")
 })
+set.seed(42)
 
 zd <- ZeiselBrainData()
 zd <- computeSumFactors(zd, cluster=quickCluster(zd))

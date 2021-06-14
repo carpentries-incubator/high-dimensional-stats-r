@@ -27,11 +27,18 @@ knitr_fig_path <- function(prefix) {
 ## the episodes will be one level down. We fix the path using the
 ## `fig.process` option.
 
-opts_chunk$set(tidy = FALSE, results = "markup", comment = NA,
-               fig.align = "center", fig.path = "fig/rmd-",
-               fig.process = fix_fig_path,
-               fig.width = 8.5, fig.height = 8.5,
-               fig.retina = 2)
+opts_chunk$set(
+  tidy = FALSE,
+  results = "markup",
+  comment = NA,
+  fig.align = "center",
+  fig.path = "fig/rmd-",
+  fig.process = fix_fig_path,
+  fig.width = 8.5,
+  fig.height = 8.5,
+  fig.retina = 2,
+  message = FALSE
+)
 
 # The hooks below add html tags to the code chunks and their output so that they
 # are properly formatted when the site is built.
