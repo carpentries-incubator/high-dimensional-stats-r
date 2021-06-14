@@ -23,22 +23,175 @@ math: yes
 
 
 ```{r, include=FALSE}
-source("../bin/chunk-options.R")
+library("here")
+source(here("bin/chunk-options.R"))
 knitr_fig_path("02-")
 ```
 
-R code in RMarkdown (with output):
 
+Linear regression with one predictor variable $x$ comprises the following 
+equation
+
+$$
+    y_i = \beta_0 + \beta_1 x_i + \epsilon_i
+$$
+
+
+where $\epsilon_i$ is the *noise*, or the variation in $y$ that isn't explained
+by the relationship we're modelling. We assume this noise follows a normal
+distribution, that is:
+
+$$
+    \epsilon_i \sim N(0, \sigma^2)
+$$
+
+We can also write this using linear algebra (matrices and vectors) as follows: 
+
+$$
+    y = X\beta + \epsilon
+$$
+
+Another way of saying this is that y follows a normal distribution with
+
+$$
+    y \sim N(X\beta, \sigma^2)
+$$
 ```{r}
-rnorm(5)
+## challenge 1:
+## Create a normally distributed predictor, x
+## then create a normally distributed outcome, y
+## that does not depend on x
+## then, create the same with dependence
+set.seed(42)
+noise_sd <- 2
+nobs <- 15
+x <- rnorm(nobs, mean = 0, sd = 1)
+noise <- rnorm(nobs, mean = 0, sd = noise_sd)
+slope <- 4
+intercept <- 2
+y <- (slope * x) + (intercept) + noise
+
+lik <- function(slope, intercept) {
+    sum(dnorm(y, mean = (slope * x) + intercept, sd = noise_sd, log=TRUE))
+}
+n <- 1000
+s <- seq(-5, 5, length.out = n)
+ll <- matrix(ncol = n, nrow = n)
+for (i in seq_along(s)) {
+    for (j in seq_along(s)) {
+        ll[i, j] <- lik(s[i], s[j])
+    }
+}
+image(s, s, ll, xlab = "slope", ylab = "intercept")
+abline(v = 0, lty = "dashed")
+abline(h = 0, lty = "dashed")
+# points(slope, intercept, pch=19)
+fit <- lm(y ~ x)
+points(coef(fit)[[2]], coef(fit)[[1]], pch=19)
+l1 <- 1
+lines(c(0, l1), c(l1, 0))
+lines(c(0, -l1), c(-l1, 0))
+lines(c(-l1, 0), c(0, l1))
+lines(c(0, l1), c(-l1, 0))
+
+
+
+plot(x, y)
+abline(fit)
 ```
 
-$\LaTeX$ inline, and in blocks:
+```{r}
+## challenge 2:
+## Create a set of normal predictors, X
+## then create a normally distributed outcome, y
+## that depends on a subset of X
+noise_sd <- 2
+npred <- 99
+frac <- 0.2
+X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
+colnames(X) <- paste0("predictor_", 1:(npred-1))
+noise <- rnorm(nobs, mean = 0, sd = noise_sd)
+X <- cbind(intercept = rep(1, nobs), X)
+beta <- rep(0, npred)
+names(beta) <- colnames(X)
+ind <- as.logical(rbinom(npred, 1, frac))
+beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
+y <- ((X %*% beta) + noise)[, 1]
+```
+
+```{r}
+## challenge 3: fit y on x univariate
+## compare with true betas
+cc <- sapply(1:ncol(X), function(i) {
+    coef(lm(y ~ X[, i]))[[2]]
+})
+plot(cc, beta, pch = 19, cex = 0.5)
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+```
 
 
-$$
-    \exp(i\pi) = -1
-$$
+```{r}
+## challenge 4: forward selection
+## compare with true betas
+xy <- as.data.frame(cbind(X, y = y))
+int <- lm(y ~ 1, data=xy)
+all <- lm(y ~ . + 0, data=xy)
+forward <- step(
+    int,
+    scope = list(upper = formula(all), lower = formula(int)),
+    direction = "forward",
+    trace = 0
+)
+forward$anova
+plot(coef(forward), beta[names(coef(forward))])
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+```
+
+```{r}
+## note about backward/both, not a challenge
+all <- lm(y ~ . + 0, data=xy)
+backward <- step(
+    all,
+    scope = formula(all),
+    direction = "backward",
+    trace = 0
+)
+backward$anova
+plot(coef(backward), beta[names(coef(backward))])
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+```
+
+```{r}
+## Challenge 5:
+## one of these...? probably lasso
+library("glmnet")
+ridge <- cv.glmnet(X[, -1], y, alpha = 0)
+lasso <- cv.glmnet(X[, -1], y, alpha = 1)
+elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
+plot(coef(lasso, s = lasso$lambda.1se)[, 1], beta)
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+
+plot(coef(elastic, s = elastic$lambda.1se)[, 1], beta)
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+
+plot(coef(ridge, s = ridge$lambda.1se)[, 1], beta)
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+                                      
+```
+
+
 
 
 ```{r}
@@ -59,6 +212,7 @@ if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
     source(here("data/methylation.R"))
 }
 norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
+
 
 
 
@@ -90,14 +244,36 @@ plot(tt1$logFC, -log10(tt1$P.Value))
 q <- qvalue(tt1$P.Value)
 hist(q)
 
-
 # plot(df_all$p.value, tt1[df_all$term, "P.Value"], log = "xy")
 # plot(df_all$estimate, tt1[df_all$term, "logFC"])
+```
 
 
 
 
 
+```{r}
+x <- t(getM(norm))
+y <- as.numeric(factor(norm$smoker)) - 1
+
+fit <- cv.glmnet(x = x, y = y, family="binomial")
+
+c <- coef(fit, s = fit$lambda.1se)
+c[c[, 1] != 0, 1]
+
+
+y <- norm$Age
+fit <- cv.glmnet(x = x, y = y)
+
+c <- coef(fit, s = fit$lambda.1se)
+coef <- c[c[, 1] != 0, 1]
+
+plot(y, x[, names(which.max(coef[-1]))])
+```
+
+
+
+```{r, eval=FALSE, echo=FALSE}
 design <- model.matrix(~0 + lim$bmi_clas)
 colnames(design) <- gsub("lim$bmi_clas", "", colnames(design), fixed=TRUE)
 
@@ -135,29 +311,8 @@ q <- qvalue(tt1$P.Value)
 hist(q)
 
 plot(tt1$logFC, -log10(tt1$P.Value))
-
-
-
-
-
-
-x <- t(getM(norm))
-y <- as.numeric(factor(norm$smoker)) - 1
-
-fit <- cv.glmnet(x = x, y = y, family="binomial")
-
-c <- coef(fit, s = fit$lambda.1se)
-c[c[, 1] != 0, 1]
-
-
-y <- norm$Age
-fit <- cv.glmnet(x = x, y = y)
-
-c <- coef(fit, s = fit$lambda.1se)
-coef <- c[c[, 1] != 0, 1]
-
-plot(y, x[, names(which.max(coef[-1]))])
 ```
+
 
 
 {% include links.md %}

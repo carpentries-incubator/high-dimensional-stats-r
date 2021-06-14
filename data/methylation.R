@@ -15,7 +15,7 @@ y <- as.numeric(factor(norm$smoker)) - 1
 cc <- complete.cases(y)
 norm <- norm[, cc]
 set.seed(42)
-norm <- norm[sample(nrow(norm), 50000), ]
+norm <- norm[sample(nrow(norm), 5000), ]
 
 # plot(norm$Age, age$Horvath)
 # library("methylclock")

@@ -5,38 +5,19 @@ title: "Clustering"
 teaching: 0
 exercises: 0
 questions:
-- "Q1"
+- "What does clustering mean?"
+- "How can we cluster data with a model?"
+- "How can we cluster data without a model?"
+- "How can we check if clusters are robust?"
 objectives:
-- "O1"
+- "Perform clustering with K-means and mixture models."
+- "Assess clustering performance with silhouette score and bootstrapping."
 keypoints:
 - "KP1"
 math: yes
 ---
 
 
-
-
-R code in RMarkdown (with output):
-
-
-~~~
-rnorm(5)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1]  1.7179361  0.9321669 -1.1776757 -1.0470257 -1.2338888
-~~~
-{: .output}
-
-$\LaTeX$ inline, and in blocks:
-
-
-$$
-    \exp(i\pi) = -1
-$$
 
 
 
@@ -54,147 +35,9 @@ suppressPackageStartupMessages({
     library("igraph")
     library("bluster")
 })
+set.seed(42)
 
 zd <- ZeiselBrainData()
-~~~
-{: .language-r}
-
-
-
-~~~
-using temporary cache /tmp/RtmpFOqwe4/BiocFileCache
-~~~
-{: .output}
-
-
-
-~~~
-snapshotDate(): 2020-10-27
-~~~
-{: .output}
-
-
-
-~~~
-see ?scRNAseq and browseVignettes('scRNAseq') for documentation
-~~~
-{: .output}
-
-
-
-~~~
-downloading 1 resources
-~~~
-{: .output}
-
-
-
-~~~
-retrieving 1 resource
-~~~
-{: .output}
-
-
-
-~~~
-loading from cache
-~~~
-{: .output}
-
-
-
-~~~
-see ?scRNAseq and browseVignettes('scRNAseq') for documentation
-~~~
-{: .output}
-
-
-
-~~~
-downloading 1 resources
-~~~
-{: .output}
-
-
-
-~~~
-retrieving 1 resource
-~~~
-{: .output}
-
-
-
-~~~
-loading from cache
-~~~
-{: .output}
-
-
-
-~~~
-see ?scRNAseq and browseVignettes('scRNAseq') for documentation
-~~~
-{: .output}
-
-
-
-~~~
-downloading 1 resources
-~~~
-{: .output}
-
-
-
-~~~
-retrieving 1 resource
-~~~
-{: .output}
-
-
-
-~~~
-loading from cache
-~~~
-{: .output}
-
-
-
-~~~
-snapshotDate(): 2020-10-27
-~~~
-{: .output}
-
-
-
-~~~
-see ?scRNAseq and browseVignettes('scRNAseq') for documentation
-~~~
-{: .output}
-
-
-
-~~~
-downloading 1 resources
-~~~
-{: .output}
-
-
-
-~~~
-retrieving 1 resource
-~~~
-{: .output}
-
-
-
-~~~
-loading from cache
-~~~
-{: .output}
-
-
-
-~~~
 zd <- computeSumFactors(zd, cluster=quickCluster(zd))
 zd <- logNormCounts(zd)
 
@@ -213,7 +56,7 @@ plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
 
 ~~~
 ## model-based
@@ -225,7 +68,7 @@ plotReducedDim(zd, "TSNE", colour_by = "mixture")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-3-2.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-2-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
 
 ~~~
 ## graph-based
@@ -237,7 +80,7 @@ plotReducedDim(zd, colour_by="label", dimred="force")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-3-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-2-3.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
 
 ~~~
 # bluster::clusterRows - maybe?
