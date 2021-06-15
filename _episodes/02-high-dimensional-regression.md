@@ -55,330 +55,21 @@ $$
     y \sim N(X\beta, \sigma^2)
 $$
 
-~~~
-## challenge 1:
-## Create a normally distributed predictor, x
-## then create a normally distributed outcome, y
-## that does not depend on x
-## then, create the same with dependence
-set.seed(42)
-noise_sd <- 2
-nobs <- 15
-x <- rnorm(nobs, mean = 0, sd = 1)
-noise <- rnorm(nobs, mean = 0, sd = noise_sd)
-slope <- 4
-intercept <- 2
-y <- (slope * x) + (intercept) + noise
 
-lik <- function(slope, intercept) {
-    sum(dnorm(y, mean = (slope * x) + intercept, sd = noise_sd, log=TRUE))
-}
-n <- 1000
-s <- seq(-5, 5, length.out = n)
-ll <- matrix(ncol = n, nrow = n)
-for (i in seq_along(s)) {
-    for (j in seq_along(s)) {
-        ll[i, j] <- lik(s[i], s[j])
-    }
-}
-image(s, s, ll, xlab = "slope", ylab = "intercept")
-abline(v = 0, lty = "dashed")
-abline(h = 0, lty = "dashed")
-# points(slope, intercept, pch=19)
-fit <- lm(y ~ x)
-points(coef(fit)[[2]], coef(fit)[[1]], pch=19)
-l1 <- 1
-lines(c(0, l1), c(l1, 0))
-lines(c(0, -l1), c(-l1, 0))
-lines(c(-l1, 0), c(0, l1))
-lines(c(0, l1), c(-l1, 0))
-~~~
-{: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
+> ## Exercise
+> Launch `shinystats::regressionApp` and adjust the parameters.
+> 
+> How does the degree of noise affect the level of certainty in the fitted
+> trend? What about the number of observations?
+> 
+> > ## Solution
+> > ??? What do I put here...
+> {: .solution}
+{: .challenge}
 
-~~~
-plot(x, y)
-abline(fit)
-~~~
-{: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-2-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
-
-
-~~~
-## challenge 2:
-## Create a set of normal predictors, X
-## then create a normally distributed outcome, y
-## that depends on a subset of X
-noise_sd <- 2
-npred <- 99
-frac <- 0.2
-X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
-colnames(X) <- paste0("predictor_", 1:(npred-1))
-noise <- rnorm(nobs, mean = 0, sd = noise_sd)
-X <- cbind(intercept = rep(1, nobs), X)
-beta <- rep(0, npred)
-names(beta) <- colnames(X)
-ind <- as.logical(rbinom(npred, 1, frac))
-beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
-y <- ((X %*% beta) + noise)[, 1]
-~~~
-{: .language-r}
-
-
-~~~
-## challenge 3: fit y on x univariate
-## compare with true betas
-cc <- sapply(1:ncol(X), function(i) {
-    coef(lm(y ~ X[, i]))[[2]]
-})
-plot(cc, beta, pch = 19, cex = 0.5)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="612" style="display: block; margin: auto;" />
-
-
-
-~~~
-## challenge 4: forward selection
-## compare with true betas
-xy <- as.data.frame(cbind(X, y = y))
-int <- lm(y ~ 1, data=xy)
-all <- lm(y ~ . + 0, data=xy)
-forward <- step(
-    int,
-    scope = list(upper = formula(all), lower = formula(int)),
-    direction = "forward",
-    trace = 0
-)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: attempting model selection on an essentially perfect fit is nonsense
-Warning: attempting model selection on an essentially perfect fit is nonsense
-~~~
-{: .warning}
-
-
-
-~~~
-forward$anova
-~~~
-{: .language-r}
-
-
-
-~~~
-             Step Df     Deviance Resid. Df   Resid. Dev         AIC
-1                 NA           NA        14 1.669967e+03   72.687630
-2  + predictor_97 -1 7.048685e+02        13 9.650980e+02   66.462692
-3  + predictor_94 -1 4.796907e+02        12 4.854073e+02   58.154072
-4   + predictor_6 -1 2.524887e+02        11 2.329186e+02   49.139581
-5  + predictor_76 -1 1.434165e+02        10 8.950210e+01   36.793179
-6  + predictor_50 -1 3.821840e+01         9 5.128370e+01   30.439842
-7  + predictor_45 -1 2.823966e+01         8 2.304404e+01   20.440356
-8  + predictor_81 -1 1.642676e+01         7 6.617286e+00    3.724526
-9  + predictor_52 -1 3.445934e+00         6 3.171351e+00   -5.308386
-10 + predictor_54 -1 2.159602e+00         5 1.011749e+00  -20.445538
-11 + predictor_61 -1 8.061650e-01         4 2.055845e-01  -42.349228
-12 + predictor_13 -1 1.904090e-01         3 1.517548e-02  -79.441865
-13 + predictor_84 -1 1.482752e-02         2 3.479585e-04 -134.072164
-14 + predictor_22 -1 3.479084e-04         1 5.005876e-08 -264.771778
-15  + predictor_1 -1 5.005876e-08         0 0.000000e+00        -Inf
-~~~
-{: .output}
-
-
-
-~~~
-plot(coef(forward), beta[names(coef(forward))])
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
-
-
-~~~
-## note about backward/both, not a challenge
-all <- lm(y ~ . + 0, data=xy)
-backward <- step(
-    all,
-    scope = formula(all),
-    direction = "backward",
-    trace = 0
-)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in step(all, scope = formula(all), direction = "backward", trace = 0): AIC is -infinity for this model, so 'step' cannot proceed
-~~~
-{: .error}
-
-
-
-~~~
-backward$anova
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'backward' not found
-~~~
-{: .error}
-
-
-
-~~~
-plot(coef(backward), beta[names(coef(backward))])
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in coef(backward): object 'backward' not found
-~~~
-{: .error}
-
-
-
-~~~
-abline(0, 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(v = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(h = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-~~~
-## Challenge 5:
-## one of these...? probably lasso
-library("glmnet")
-ridge <- cv.glmnet(X[, -1], y, alpha = 0)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: Option grouped=FALSE enforced in cv.glmnet, since < 3 observations per
-fold
-~~~
-{: .warning}
-
-
-
-~~~
-lasso <- cv.glmnet(X[, -1], y, alpha = 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: Option grouped=FALSE enforced in cv.glmnet, since < 3 observations per
-fold
-~~~
-{: .warning}
-
-
-
-~~~
-elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: Option grouped=FALSE enforced in cv.glmnet, since < 3 observations per
-fold
-~~~
-{: .warning}
-
-
-
-~~~
-plot(coef(lasso, s = lasso$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
-
-~~~
-plot(coef(elastic, s = elastic$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-unnamed-chunk-7-2.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
-
-~~~
-plot(coef(ridge, s = ridge$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-unnamed-chunk-7-3.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
-
-
-
+Do linear regression on each feature.
 
 
 ~~~
@@ -393,6 +84,7 @@ suppressPackageStartupMessages({
     library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
     library("ExperimentHub")
     library("here")
+    library("broom")
 })
 
 if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
@@ -400,117 +92,587 @@ if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
 }
 norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
 
-
-
-
 lim <- norm
-# lim <- lim[sample(nrow(lim), nrow(norm) / 10), ]
-
-
 y <- lim$Age
+X <- getM(lim)
 
-# dfs <- mclapply(1:10000,
-#     function(i) {
-#         cat(i, "/", ncol(x), "\n")
-#         df <- tidy(lm(x[, i] ~ y))[2, ]
-#         df$term <- colnames(x)[[i]]
-#         df
-#     }, mc.cores = 8
-# )
-# df_all <- do.call(rbind, dfs)
+dfs <- lapply(1:nrow(lim),
+    function(i) {
+        # cat(i, "/", nrow(X), "\n")
+        df <- tidy(lm(X[i, ] ~ y))[2, ]
+        df$term <- rownames(X)[[i]]
+        df
+    }
+)
+df_all <- do.call(rbind, dfs)
+plot(df_all$estimate, -log10(df_all$p.value))
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
 
 
+```
 ## age - strong comparison
 design <- model.matrix(~lim$Age)
 colnames(design) <- c("intercept", "age")
-fit <- lmFit(getM(lim)[1:10000, ], design = design)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in getM(lim)[1:10000, ]: subscript out of bounds
-~~~
-{: .error}
-
-
-
-~~~
+fit <- lmFit(getM(lim), design = design)
 fit <- eBayes(fit)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : No data, or argument is not a valid lmFit object
-~~~
-{: .error}
-
-
-
-~~~
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in topTable(fit, coef = 2, number = nrow(fit)): fit must be an MArrayLM object
-~~~
-{: .error}
-
-
-
-~~~
 plot(tt1$logFC, -log10(tt1$P.Value))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'tt1' not found
-~~~
-{: .error}
-
-
-
-~~~
 q <- qvalue(tt1$P.Value)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in qvalue(tt1$P.Value): object 'tt1' not found
-~~~
-{: .error}
-
-
-
-~~~
 hist(q)
+```
+
+
+> ## Exercise
+> Perform forward subset selection on the methylation data.
+> 
+> 
+> > ## Solution
+> > 
+> > ~~~
+> > library("Seurat")
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in library("Seurat"): there is no package called 'Seurat'
+> > ~~~
+> > {: .error}
+> > ??? What do I put here...
+> {: .solution}
+{: .challenge}
+
+
+
+
+~~~
+## challenge 2:
+## Create a set of normal predictors, X
+## then create a normally distributed outcome, y
+## that depends on a subset of X
+noise_sd <- 2
+npred <- 99
+frac <- 0.2
+X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error in hist.default(q): 'x' must be numeric
+Error in rnorm(nobs, mean = 0, sd = 1): invalid arguments
 ~~~
 {: .error}
 
 
 
 ~~~
-# plot(df_all$p.value, tt1[df_all$term, "P.Value"], log = "xy")
-# plot(df_all$estimate, tt1[df_all$term, "logFC"])
+colnames(X) <- paste0("predictor_", 1:(npred-1))
 ~~~
 {: .language-r}
+
+
+
+~~~
+Error in dimnames(x) <- dn: length of 'dimnames' [2] not equal to array extent
+~~~
+{: .error}
+
+
+
+~~~
+noise <- rnorm(nobs, mean = 0, sd = noise_sd)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in rnorm(nobs, mean = 0, sd = noise_sd): invalid arguments
+~~~
+{: .error}
+
+
+
+~~~
+X <- cbind(intercept = rep(1, nobs), X)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(quote(list(...)), env): cannot coerce type 'closure' to vector of type 'double'
+~~~
+{: .error}
+
+
+
+~~~
+beta <- rep(0, npred)
+names(beta) <- colnames(X)
+ind <- as.logical(rbinom(npred, 1, frac))
+beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
+y <- ((X %*% beta) + noise)[, 1]
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in X %*% beta: non-conformable arguments
+~~~
+{: .error}
+
+
+~~~
+## challenge 3: fit y on x univariate
+## compare with true betas
+cc <- sapply(1:ncol(X), function(i) {
+    coef(lm(y ~ X[, i]))[[2]]
+})
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': variable lengths differ (found for 'X[, i]')
+~~~
+{: .error}
+
+
+
+~~~
+plot(cc, beta, pch = 19, cex = 0.5)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+~~~
+{: .error}
+
+
+
+~~~
+abline(0, 1)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(v = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(h = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+## challenge 4: forward selection
+## compare with true betas
+xy <- as.data.frame(cbind(X, y = y))
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning in cbind(...): number of rows of result is not a multiple of vector
+length (arg 2)
+~~~
+{: .warning}
+
+
+
+~~~
+int <- lm(y ~ 1, data=xy)
+all <- lm(y ~ . + 0, data=xy)
+forward <- step(
+    int,
+    scope = list(upper = formula(all), lower = formula(int)),
+    direction = "forward",
+    trace = 0
+)
+forward$anova
+~~~
+{: .language-r}
+
+
+
+~~~
+  Step Df Deviance Resid. Df Resid. Dev     AIC
+1      NA       NA      4999     576502 23739.7
+~~~
+{: .output}
+
+
+
+~~~
+plot(coef(forward), beta[names(coef(forward))])
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning in min(x): no non-missing arguments to min; returning Inf
+~~~
+{: .warning}
+
+
+
+~~~
+Warning in max(x): no non-missing arguments to max; returning -Inf
+~~~
+{: .warning}
+
+
+
+~~~
+Error in plot.window(...): need finite 'ylim' values
+~~~
+{: .error}
+
+<img src="../fig/rmd-02-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="612" style="display: block; margin: auto;" />
+
+~~~
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+~~~
+## note about backward/both, not a challenge
+all <- lm(y ~ . + 0, data=xy)
+backward <- step(
+    all,
+    scope = formula(all),
+    direction = "backward",
+    trace = 0
+)
+backward$anova
+~~~
+{: .language-r}
+
+
+
+~~~
+                      Step Df    Deviance Resid. Df Resid. Dev      AIC
+1                          NA          NA      4963    5626621 35203.13
+2  - `201868590206_R08C01`  1    4.925358      4964    5626626 35201.14
+3  - `201870610056_R04C01`  1   19.584930      4965    5626646 35199.15
+4  - `201868590206_R04C01`  1   27.506376      4966    5626673 35197.18
+5  - `201869680009_R07C01`  1   48.146129      4967    5626721 35195.22
+6  - `201870610111_R02C01`  1   46.573247      4968    5626768 35193.26
+7  - `201868590243_R03C01`  1   68.048607      4969    5626836 35191.32
+8  - `201868590243_R07C01`  1  203.093459      4970    5627039 35189.50
+9  - `201868590243_R06C01`  1  178.229378      4971    5627217 35187.66
+10 - `201869680009_R08C01`  1  163.863091      4972    5627381 35185.81
+11 - `201868590243_R04C01`  1  202.339158      4973    5627583 35183.99
+12 - `201868500150_R07C01`  1  249.456845      4974    5627833 35182.21
+13 - `201869680030_R01C01`  1  349.487180      4975    5628182 35180.52
+14 - `201869680030_R06C01`  1  252.003787      4976    5628434 35178.74
+15 - `201870610111_R05C01`  1  579.227401      4977    5629013 35177.26
+16 - `201870610111_R06C01`  1  626.530027      4978    5629640 35175.81
+17 - `201868590267_R07C01`  1  678.349961      4979    5630318 35174.42
+18 - `201868590206_R05C01`  1  938.324254      4980    5631257 35173.25
+19 - `201869680030_R02C01`  1 1282.537896      4981    5632539 35172.39
+20 - `201868590193_R06C01`  1 1378.390290      4982    5633918 35171.61
+21 - `201869680009_R06C01`  1 1827.984434      4983    5635746 35171.23
+~~~
+{: .output}
+
+
+
+~~~
+plot(coef(backward), beta[names(coef(backward))])
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning in min(x): no non-missing arguments to min; returning Inf
+~~~
+{: .warning}
+
+
+
+~~~
+Warning in max(x): no non-missing arguments to max; returning -Inf
+~~~
+{: .warning}
+
+
+
+~~~
+Error in plot.window(...): need finite 'ylim' values
+~~~
+{: .error}
+
+<img src="../fig/rmd-02-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
+
+~~~
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+~~~
+## Challenge 5:
+## one of these...? probably lasso
+library("glmnet")
+ridge <- cv.glmnet(X[, -1], y, alpha = 0)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
+~~~
+{: .error}
+
+
+
+~~~
+lasso <- cv.glmnet(X[, -1], y, alpha = 1)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
+~~~
+{: .error}
+
+
+
+~~~
+elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
+~~~
+{: .error}
+
+
+
+~~~
+plot(coef(lasso, s = lasso$lambda.1se)[, 1], beta)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'coef': object 'lasso' not found
+~~~
+{: .error}
+
+
+
+~~~
+abline(0, 1)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(v = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(h = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+plot(coef(elastic, s = elastic$lambda.1se)[, 1], beta)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'coef': object 'elastic' not found
+~~~
+{: .error}
+
+
+
+~~~
+abline(0, 1)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(v = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(h = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+plot(coef(ridge, s = ridge$lambda.1se)[, 1], beta)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'coef': object 'ridge' not found
+~~~
+{: .error}
+
+
+
+~~~
+abline(0, 1)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(v = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+~~~
+abline(h = 0, lty="dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+
+
+
 
 
 
