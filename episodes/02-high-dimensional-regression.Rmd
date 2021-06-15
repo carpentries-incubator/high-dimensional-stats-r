@@ -56,49 +56,87 @@ Another way of saying this is that y follows a normal distribution with
 $$
     y \sim N(X\beta, \sigma^2)
 $$
+
+
+
+> ## Exercise
+> Launch `shinystats::regressionApp` and adjust the parameters.
+> 
+> How does the degree of noise affect the level of certainty in the fitted
+> trend? What about the number of observations?
+> 
+> > ## Solution
+> > ??? What do I put here...
+> {: .solution}
+{: .challenge}
+
+
+Do linear regression on each feature.
+
 ```{r}
-## challenge 1:
-## Create a normally distributed predictor, x
-## then create a normally distributed outcome, y
-## that does not depend on x
-## then, create the same with dependence
-set.seed(42)
-noise_sd <- 2
-nobs <- 15
-x <- rnorm(nobs, mean = 0, sd = 1)
-noise <- rnorm(nobs, mean = 0, sd = noise_sd)
-slope <- 4
-intercept <- 2
-y <- (slope * x) + (intercept) + noise
+suppressPackageStartupMessages({
+    library("glmnet")
+    library("limma")
+    library("qvalue")
+    library("minfi")
+    library("here")
+    library("FlowSorted.Blood.EPIC")
+    library("IlluminaHumanMethylationEPICmanifest")
+    library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
+    library("ExperimentHub")
+    library("here")
+    library("broom")
+})
 
-lik <- function(slope, intercept) {
-    sum(dnorm(y, mean = (slope * x) + intercept, sd = noise_sd, log=TRUE))
+if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
+    source(here("data/methylation.R"))
 }
-n <- 1000
-s <- seq(-5, 5, length.out = n)
-ll <- matrix(ncol = n, nrow = n)
-for (i in seq_along(s)) {
-    for (j in seq_along(s)) {
-        ll[i, j] <- lik(s[i], s[j])
+norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
+
+lim <- norm
+y <- lim$Age
+X <- getM(lim)
+
+dfs <- lapply(1:nrow(lim),
+    function(i) {
+        # cat(i, "/", nrow(X), "\n")
+        df <- tidy(lm(X[i, ] ~ y))[2, ]
+        df$term <- rownames(X)[[i]]
+        df
     }
-}
-image(s, s, ll, xlab = "slope", ylab = "intercept")
-abline(v = 0, lty = "dashed")
-abline(h = 0, lty = "dashed")
-# points(slope, intercept, pch=19)
-fit <- lm(y ~ x)
-points(coef(fit)[[2]], coef(fit)[[1]], pch=19)
-l1 <- 1
-lines(c(0, l1), c(l1, 0))
-lines(c(0, -l1), c(-l1, 0))
-lines(c(-l1, 0), c(0, l1))
-lines(c(0, l1), c(-l1, 0))
-
-
-
-plot(x, y)
-abline(fit)
+)
+df_all <- do.call(rbind, dfs)
+plot(df_all$estimate, -log10(df_all$p.value))
 ```
+
+
+```
+## age - strong comparison
+design <- model.matrix(~lim$Age)
+colnames(design) <- c("intercept", "age")
+fit <- lmFit(getM(lim), design = design)
+fit <- eBayes(fit)
+tt1 <- topTable(fit, coef = 2, number = nrow(fit))
+
+plot(tt1$logFC, -log10(tt1$P.Value))
+q <- qvalue(tt1$P.Value)
+hist(q)
+```
+
+
+> ## Exercise
+> Perform forward subset selection on the methylation data.
+> 
+> 
+> > ## Solution
+> > ```{r}
+> > library("Seurat")
+> > ```
+> > ??? What do I put here...
+> {: .solution}
+{: .challenge}
+
+
 
 ```{r}
 ## challenge 2:
@@ -194,59 +232,6 @@ abline(h = 0, lty="dashed", col = "firebrick")
 
 
 
-```{r}
-suppressPackageStartupMessages({
-    library("glmnet")
-    library("limma")
-    library("qvalue")
-    library("minfi")
-    library("here")
-    library("FlowSorted.Blood.EPIC")
-    library("IlluminaHumanMethylationEPICmanifest")
-    library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
-    library("ExperimentHub")
-    library("here")
-})
-
-if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
-    source(here("data/methylation.R"))
-}
-norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
-
-
-
-
-lim <- norm
-# lim <- lim[sample(nrow(lim), nrow(norm) / 10), ]
-
-
-y <- lim$Age
-
-# dfs <- mclapply(1:10000,
-#     function(i) {
-#         cat(i, "/", ncol(x), "\n")
-#         df <- tidy(lm(x[, i] ~ y))[2, ]
-#         df$term <- colnames(x)[[i]]
-#         df
-#     }, mc.cores = 8
-# )
-# df_all <- do.call(rbind, dfs)
-
-
-## age - strong comparison
-design <- model.matrix(~lim$Age)
-colnames(design) <- c("intercept", "age")
-fit <- lmFit(getM(lim)[1:10000, ], design = design)
-fit <- eBayes(fit)
-tt1 <- topTable(fit, coef = 2, number = nrow(fit))
-
-plot(tt1$logFC, -log10(tt1$P.Value))
-q <- qvalue(tt1$P.Value)
-hist(q)
-
-# plot(df_all$p.value, tt1[df_all$term, "P.Value"], log = "xy")
-# plot(df_all$estimate, tt1[df_all$term, "logFC"])
-```
 
 
 
