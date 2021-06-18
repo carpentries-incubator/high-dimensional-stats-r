@@ -70,10 +70,7 @@ $$
 > {: .solution}
 {: .challenge}
 
-
-Do linear regression on each feature.
-
-```{r}
+```{r, echo=FALSE}
 suppressPackageStartupMessages({
     library("glmnet")
     library("limma")
@@ -87,6 +84,18 @@ suppressPackageStartupMessages({
     library("here")
     library("broom")
 })
+```
+
+The following code will read in the data for this episode.
+
+```{r}
+suppressPackageStartupMessages({
+    library("glmnet")
+    library("limma")
+    library("minfi")
+    library("here")
+    library("broom")
+})
 
 if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
     source(here("data/methylation.R"))
@@ -96,7 +105,26 @@ norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
 lim <- norm
 y <- lim$Age
 X <- getM(lim)
+```
 
+We have a matrix of methylation values $X$ and a vector of ages in years $y$.
+One way to model this is to see if we can "predict" methylation using age.
+Formally we'd describe that as:
+
+$$
+    \text{feature}_{i,j} = \beta_0 + \beta_1 \text{Age}_j + \epsilon_i
+$$
+
+
+```{r}
+fit <- lm(X[1, ] ~ y)
+summary(fit)
+```
+
+We have a lot of features, though! This is what it looks like if we do that
+for every feature.
+
+```{r}
 dfs <- lapply(1:nrow(lim),
     function(i) {
         # cat(i, "/", nrow(X), "\n")
@@ -109,43 +137,74 @@ df_all <- do.call(rbind, dfs)
 plot(df_all$estimate, -log10(df_all$p.value))
 ```
 
+One idea is to take advantage of the fact that we're doing all these tests 
+at once. That's where ideas like empirical Bayes analysis come in.
+A few really popular analysis packages use these. They're a bit complex to 
+implement, but it's good to understand why these approaches may be more precise 
+and sensitive than the naive approach of fitting a model to each feature
+separately.
 
-```
+
+$$
+    t_{ij} = \frac{\hat{\beta}_{ij}}{SE(\hat{\beta}_{ij})}
+$$
+
+Knowing what distribution these t-values allows us to determine how unlikely
+they would
+
+not $j$ but rather $k$? for predictor.
+$$
+    t_{ij} = \frac{\hat{\beta}_{ij}}{s_i \sqrt{v_{ij}}}
+$$
+
+$s_i^2$ is the variance of residuals.
+
+The insight of empirical Bayes methods is to realise that variance parameters
+like these are probably similar between genes within the same experiment. This
+enables us to share information between genes to get more robust
+estimators.
+
+Similarly, DESeq2 shares information between genes
+to *shrink* estimates of a noise parameter, in that case to model counts.
+
+```{r}
 ## age - strong comparison
 design <- model.matrix(~lim$Age)
 colnames(design) <- c("intercept", "age")
 fit <- lmFit(getM(lim), design = design)
 fit <- eBayes(fit)
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
-
 plot(tt1$logFC, -log10(tt1$P.Value))
+```
+
+```{r echo = FALSE, eval=FALSE}
 q <- qvalue(tt1$P.Value)
 hist(q)
 ```
 
-
 > ## Exercise
-> Perform forward subset selection on the methylation data.
+> Launch `shinystats::limmaApp` and adjust the parameters.
 > 
+> How does the number of features affect the relationship between these two 
+> similar methods?
+> What about the number of samples?
 > 
 > > ## Solution
-> > ```{r}
-> > library("Seurat")
-> > ```
 > > ??? What do I put here...
 > {: .solution}
 {: .challenge}
 
 
+Another way of modelling these data is to model age as 
 
+$$
+    \text{Age}_j = \beta_0 + \beta_1 \text{feature}_1 + \dots \beta_p \text{feature}_p + \epsilon_j
+$$
 ```{r}
-## challenge 2:
-## Create a set of normal predictors, X
-## then create a normally distributed outcome, y
-## that depends on a subset of X
 noise_sd <- 2
 npred <- 99
 frac <- 0.2
+nobs <- 100
 X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
 colnames(X) <- paste0("predictor_", 1:(npred-1))
 noise <- rnorm(nobs, mean = 0, sd = noise_sd)
@@ -156,6 +215,19 @@ ind <- as.logical(rbinom(npred, 1, frac))
 beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
 y <- ((X %*% beta) + noise)[, 1]
 ```
+
+
+> ## Exercise
+> Perform forward subset selection on the methylation data.
+> 
+> 
+> > ## Solution
+> > ??? What do I put here...
+> {: .solution}
+{: .challenge}
+
+
+
 
 ```{r}
 ## challenge 3: fit y on x univariate
@@ -204,6 +276,8 @@ abline(0, 1)
 abline(v = 0, lty="dashed", col = "firebrick")
 abline(h = 0, lty="dashed", col = "firebrick")
 ```
+
+
 
 ```{r}
 ## Challenge 5:

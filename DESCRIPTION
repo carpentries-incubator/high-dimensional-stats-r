@@ -29,6 +29,7 @@ Imports:
     mclust,
     minfi,
     mixtools,
+    PCAtools,
     qvalue,
     renv,
     rmarkdown,

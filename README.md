@@ -15,23 +15,7 @@ and make sure you have everything you need to begin developing your new lesson.
 Before you begin developing your new lesson,
 here are a few things we recommend you do:
 
-* [ ] Decide on a title for your new lesson!
-  Once you've chosen a new title, you can set the value for `lesson_title`
-  in [`_config.yml`](_config.yml)
-* [ ] Add the URL to your built lesson pages to the repository description\*
 * [ ] [Add relevant topic tags to your lesson repository][cdh-topic-tags].
-* [ ] Fill in the fields marked `FIXME` in:
-  * this README
-  * [`_config.yml`](_config.yml)
-* [ ] If you're going to be developing lesson material for the first time
-  according to our design principles,
-  consider reading the [Carpentries Curriculum Development Handbook][cdh]
-* [ ] Consult the [Lesson Example][lesson-example] website to find out more about
-  working with the lesson template
-* [ ] If you are planning to write your lesson in RMarkdown,
-  [create a `main` branch and set this as the default branch in your repository settings][change-default-branch]
-* [ ] Update this README with relevant information about your lesson
-  and delete this section
 
 
 ## Contributing
@@ -43,7 +27,7 @@ We'd like to ask you to familiarize yourself with our [Contribution Guide](CONTR
 the [more detailed guidelines][lesson-example] on proper formatting, ways to render the lesson locally, and even
 how to write new episodes.
 
-Please see the current list of [issues]() for ideas for contributing to this
+Please see the current list of [issues](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues) for ideas for contributing to this
 repository. For making your contribution, we use the GitHub flow, which is
 nicely explained in the chapter [Contributing to a Project](http://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project) in Pro Git
 by Scott Chacon.
