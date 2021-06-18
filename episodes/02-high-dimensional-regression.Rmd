@@ -62,13 +62,25 @@ $$
 > ## Exercise
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
-> How does the degree of noise affect the level of certainty in the fitted
-> trend? What about the number of observations?
+> How does the "significance" of the model vary when you vary the parameters?
 > 
+> How does the degree of noise affect the level of certainty in the fitted
+> trend?
+> 
+> With a large number of observations, how weak of an effect can you detect?
+> Is a really small effect (0.1 slope) really "significant" in the way you'd
+> use that word conversationally?
+> 
+> With a small number of observations, how strong does the relationship need
+> to be (or how small the noise) before you can detect it?
+> 
+{: .challenge}
+
+<--
 > > ## Solution
 > > ??? What do I put here...
 > {: .solution}
-{: .challenge}
+-->
 
 ```{r, echo=FALSE}
 suppressPackageStartupMessages({
@@ -187,11 +199,11 @@ hist(q)
 > 
 > How does the number of features affect the relationship between these two 
 > similar methods?
+> 
 > What about the number of samples?
 > 
-> > ## Solution
-> > ??? What do I put here...
-> {: .solution}
+> When ranking genes, why would we want to downrank the most significant and
+> uprank some with more moderate changes?
 {: .challenge}
 
 
@@ -222,7 +234,8 @@ y <- ((X %*% beta) + noise)[, 1]
 > 
 > 
 > > ## Solution
-> > ??? What do I put here...
+> > 
+> > 
 > {: .solution}
 {: .challenge}
 
