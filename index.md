@@ -12,7 +12,7 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 > ## Prerequisites
 >
 > - Knowledge of R programming (eg, [a data carpentries course](https://datacarpentry.org/lessons/))
-> - Knowledge of basic statistical techniques (FIXME with link to basic stats course)
+> - Knowledge of basic statistical techniques (eg, [an introduction to linear regression for health sciences](https://carpentries-incubator.github.io/simple-linear-regression-public-health/))
 {: .prereq}
 
 {% include links.md %}
