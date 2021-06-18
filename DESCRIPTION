@@ -39,4 +39,5 @@ Imports:
     scran,
     scRNAseq,
     scuttle,
+    stats,
     stringr
