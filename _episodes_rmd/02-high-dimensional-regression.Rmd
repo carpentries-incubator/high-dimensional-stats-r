@@ -385,7 +385,4 @@ hist(q)
 plot(tt1$logFC, -log10(tt1$P.Value))
 ```
 
-
-
 {% include links.md %}
-

@@ -569,7 +569,4 @@ plot(y, x[, names(which.max(coef[-1]))])
 
 
 
-
-
 {% include links.md %}
-
