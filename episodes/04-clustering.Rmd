@@ -37,9 +37,11 @@ suppressPackageStartupMessages({
 })
 set.seed(42)
 
-zd <- ZeiselBrainData()
-zd <- computeSumFactors(zd, cluster=quickCluster(zd))
-zd <- logNormCounts(zd)
+if (!file.exists(here("data/scrnaseq.rds"))) {
+    source(here("data/scrnaseq.R"))
+}
+norm <- readRDS(here("data/scrnaseq.rds"))
+
 
 zd <- runPCA(zd, ncomponents = 15)
 zd <- runTSNE(zd)

@@ -1,0 +1,151 @@
+---
+title: "Stepwise feature selection for regression"
+teaching: 0
+exercises: 0
+questions:
+- "Why would we want to find a subset of features
+  that are associated with an outcome?"
+- "How can we iteratively find a good subset of our features
+  variables to use for regression?"
+- "What are some risks and downsides of iterative feature
+  selection?"
+objectives:
+- "Understand multiple regression in a biomedical context."
+- "Understand how to fit a stepwise regression model."
+keypoints:
+- "Sets of features can be more predictive and provide
+  a better explanation than a single feature alone."
+- "Stepwise regression allows us to find a set of features that
+  are associated with an outcome (eg, age)."
+- "Stepwise regression will tend to retain only one
+  feature out of many that are correlated."
+- "Stepwise regression is not very efficient."
+math: yes
+---
+
+
+```{r, include=FALSE}
+library("here")
+source(here("bin/chunk-options.R"))
+knitr_fig_path("02b-")
+```
+
+
+In the previous 
+
+Another way of modelling these data is to model age as 
+
+$$
+    y_j = \beta_0 + \beta_1 X_1 + \dots \beta_p X_p + \epsilon_j
+$$
+
+
+```{r}
+suppressPackageStartupMessages({
+    library("glmnet")
+    library("limma")
+    library("minfi")
+    library("here")
+    library("broom")
+})
+
+if (!file.exists(here("data/methylation.rds"))) {
+    source(here("data/methylation.R"))
+}
+norm <- readRDS(here("data/methylation.rds"))
+
+lim <- norm
+y <- lim$Age
+X <- getM(lim)
+```
+
+However when the number of predictors is greater than the number of samples
+(basically always true in genetics) it isn't possible to include everything!
+
+There are some techniques that you can use to find a set of predictors!
+
+- screening (correlation etc): bad, don't do
+- screening (variance): not necessarily bad if the screening variable is sensible
+- forward/reverse/best subset selection
+
+```{r}
+## todo: remove to external script
+noise_sd <- 2
+npred <- 99
+frac <- 0.2
+nobs <- 100
+X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
+colnames(X) <- paste0("predictor_", 1:(npred-1))
+noise <- rnorm(nobs, mean = 0, sd = noise_sd)
+X <- cbind(intercept = rep(1, nobs), X)
+beta <- rep(0, npred)
+names(beta) <- colnames(X)
+ind <- as.logical(rbinom(npred, 1, frac))
+beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
+y <- ((X %*% beta) + noise)[, 1]
+```
+
+
+> ## Exercise
+> Perform forward subset selection on the methylation data.
+> 
+> 
+> > ## Solution
+> > 
+> > 
+> {: .solution}
+{: .challenge}
+
+
+
+
+```{r}
+## challenge 3: fit y on x univariate
+## compare with true betas
+cc <- sapply(1:ncol(X), function(i) {
+    coef(lm(y ~ X[, i]))[[2]]
+})
+plot(cc, beta, pch = 19, cex = 0.5)
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+```
+
+
+```{r}
+## challenge 4: forward selection
+## compare with true betas
+xy <- as.data.frame(cbind(X, y = y))
+int <- lm(y ~ 1, data=xy)
+all <- lm(y ~ . + 0, data=xy)
+forward <- step(
+    int,
+    scope = list(upper = formula(all), lower = formula(int)),
+    direction = "forward",
+    trace = 0
+)
+forward$anova
+plot(coef(forward), beta[names(coef(forward))])
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+```
+
+```{r}
+## note about backward/both, not a challenge
+all <- lm(y ~ . + 0, data=xy)
+backward <- step(
+    all,
+    scope = formula(all),
+    direction = "backward",
+    trace = 0
+)
+backward$anova
+plot(coef(backward), beta[names(coef(backward))])
+abline(0, 1)
+abline(v = 0, lty="dashed", col = "firebrick")
+abline(h = 0, lty="dashed", col = "firebrick")
+```
+
+
+{% include links.md %}
