@@ -37,50 +37,235 @@ suppressPackageStartupMessages({
 })
 set.seed(42)
 
-zd <- ZeiselBrainData()
-zd <- computeSumFactors(zd, cluster=quickCluster(zd))
-zd <- logNormCounts(zd)
+if (!file.exists(here("data/scrnaseq.rds"))) {
+    source(here("data/scrnaseq.R"))
+}
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in here("data/scrnaseq.rds"): could not find function "here"
+~~~
+{: .error}
+
+
+
+~~~
+norm <- readRDS(here("data/scrnaseq.rds"))
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in here("data/scrnaseq.rds"): could not find function "here"
+~~~
+{: .error}
+
+
+
+~~~
 zd <- runPCA(zd, ncomponents = 15)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'runPCA': object 'zd' not found
+~~~
+{: .error}
+
+
+
+~~~
 zd <- runTSNE(zd)
+~~~
+{: .language-r}
 
 
 
+~~~
+Error in runTSNE(zd): object 'zd' not found
+~~~
+{: .error}
+
+
+
+~~~
 ## k-means
 
 ## ideas: vary centers, low iter.max, low nstart
 cluster <- kmeans(reducedDim(zd), centers = 7, iter.max = 1000, nstart = 100)
-zd$kmeans <- as.character(cluster$cluster)
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'reducedDim': object 'zd' not found
+~~~
+{: .error}
+
+
+
+~~~
+zd$kmeans <- as.character(cluster$cluster)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'cluster' not found
+~~~
+{: .error}
+
+
+
+~~~
 plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'reducedDim': object 'zd' not found
+~~~
+{: .error}
+
+
 
 ~~~
 ## model-based
 clust <- mclustBIC(reducedDim(zd), modelNames = "VVV")
-opt_clust <- which.max(clust)
-zd$mixture <- as.character(opt_clust)
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'reducedDim': object 'zd' not found
+~~~
+{: .error}
+
+
+
+~~~
+opt_clust <- which.max(clust)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'which.max': object 'clust' not found
+~~~
+{: .error}
+
+
+
+~~~
+zd$mixture <- as.character(opt_clust)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'opt_clust' not found
+~~~
+{: .error}
+
+
+
+~~~
 plotReducedDim(zd, "TSNE", colour_by = "mixture")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-2-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'reducedDim': object 'zd' not found
+~~~
+{: .error}
+
+
 
 ~~~
 ## graph-based
 g <- buildSNNGraph(zd, k=10, use.dimred = 'PCA')
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'buildSNNGraph': object 'zd' not found
+~~~
+{: .error}
+
+
+
+~~~
 clust <- igraph::cluster_walktrap(g)$membership
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in "igraph" %in% class(graph): object 'g' not found
+~~~
+{: .error}
+
+
+
+~~~
 reducedDim(zd, "force") <- igraph::layout_with_fr(g)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in "igraph" %in% class(graph): object 'g' not found
+~~~
+{: .error}
+
+
+
+~~~
 colLabels(zd) <- factor(clust)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in factor(clust): object 'clust' not found
+~~~
+{: .error}
+
+
+
+~~~
 plotReducedDim(zd, colour_by="label", dimred="force")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-2-3.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'reducedDim': object 'zd' not found
+~~~
+{: .error}
+
+
 
 ~~~
 # bluster::clusterRows - maybe?

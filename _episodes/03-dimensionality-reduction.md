@@ -348,8 +348,49 @@ We will now load the microarray breast cancer gene expression data
 
 ~~~
 mat <- readRDS("data/cancer_expression.rds")
-metadata <- readRDS("data/cancer_metadata.rds")
+~~~
+{: .language-r}
 
+
+
+~~~
+Warning in gzfile(file, "rb"): cannot open compressed file 'data/
+cancer_expression.rds', probable reason 'No such file or directory'
+~~~
+{: .warning}
+
+
+
+~~~
+Error in gzfile(file, "rb"): cannot open the connection
+~~~
+{: .error}
+
+
+
+~~~
+metadata <- readRDS("data/cancer_metadata.rds")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning in gzfile(file, "rb"): cannot open compressed file 'data/
+cancer_metadata.rds', probable reason 'No such file or directory'
+~~~
+{: .warning}
+
+
+
+~~~
+Error in gzfile(file, "rb"): cannot open the connection
+~~~
+{: .error}
+
+
+
+~~~
 head(mat)
 ~~~
 {: .language-r}

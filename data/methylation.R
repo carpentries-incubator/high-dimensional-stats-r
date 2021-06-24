@@ -22,4 +22,4 @@ norm <- norm[sample(nrow(norm), 5000), ]
 # age <- DNAmAge(norm)
 # norm$hage <- age$Horvath
 
-saveRDS(norm, here("data/FlowSorted_Blood_EPIC.rds"))
+saveRDS(norm, here("data/methylation.rds"))

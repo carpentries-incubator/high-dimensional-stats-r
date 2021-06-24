@@ -1,23 +1,23 @@
 ---
-title: "High dimensional regression"
+title: "Regression with many predictors"
 teaching: 0
 exercises: 0
 questions:
 - "How can we apply regression methods in a high-dimensional setting?"
 - "How can we control for the fact that we do many tests?"
 - "How can we benefit from the fact that we have many variables?"
-- "How can we find a good subset of variables to use for regression?"
 objectives:
 - "Perform and critically analyse high dimensional regression."
 - "Perform multiple testing adjustment."
-- "Perform and critically analyse penalised regression."
+- "Understand methods for shrinkage of noise parameters in
+  high-dimensional regression."
 keypoints:
+- "Running many tests with high-dimensional data requires us to pay attention to 
+   ..."
 - "Multiple testing correction can enable us to account for many null hypothesis
     significance tests while retaining power."
 - "Sharing information between features can increase power and reduce false 
     positives."
-- "Modelling features together can help to identify a subset of features
-    that contribute to the outcome."
 math: yes
 ---
 
@@ -28,6 +28,7 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("02-")
 ```
 
+# Linear regression (recap)
 
 Linear regression with one predictor variable $x$ comprises the following 
 equation
@@ -73,14 +74,11 @@ $$
 > 
 > With a small number of observations, how strong does the relationship need
 > to be (or how small the noise) before you can detect it?
-> 
+> > ## Solution
+> > todo: plot examples for each question
+> {: .solution}
 {: .challenge}
 
-<--
-> > ## Solution
-> > ??? What do I put here...
-> {: .solution}
--->
 
 ```{r, echo=FALSE}
 suppressPackageStartupMessages({
@@ -103,20 +101,20 @@ The following code will read in the data for this episode.
 ```{r}
 suppressPackageStartupMessages({
     library("glmnet")
-    library("limma")
     library("minfi")
+    library("limma")
     library("here")
     library("broom")
 })
 
-if (!file.exists(here("data/FlowSorted_Blood_EPIC.rds"))) {
+if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-norm <- readRDS(here("data/FlowSorted_Blood_EPIC.rds"))
+norm <- readRDS(here("data/methylation.rds"))
 
-lim <- norm
-y <- lim$Age
-X <- getM(lim)
+norm <- norm
+y <- norm$Age
+X <- getM(norm)
 ```
 
 We have a matrix of methylation values $X$ and a vector of ages in years $y$.
@@ -124,20 +122,31 @@ One way to model this is to see if we can "predict" methylation using age.
 Formally we'd describe that as:
 
 $$
-    \text{feature}_{i,j} = \beta_0 + \beta_1 \text{Age}_j + \epsilon_i
+    X_{i,j} = \beta_0 + \beta_1 y_j + \epsilon_i
 $$
 
+You may remember how to fit this model from a previous lesson, and how to
+get more information from the model object:
 
 ```{r}
 fit <- lm(X[1, ] ~ y)
 summary(fit)
 ```
 
+
+We can also use `broom` to extract information about
+the coefficients in this model:
+
+```{r}
+library("broom")
+tidy(fit)
+```
+
 We have a lot of features, though! This is what it looks like if we do that
 for every feature.
 
 ```{r}
-dfs <- lapply(1:nrow(lim),
+dfs <- lapply(1:nrow(X),
     function(i) {
         # cat(i, "/", nrow(X), "\n")
         df <- tidy(lm(X[i, ] ~ y))[2, ]
@@ -146,23 +155,102 @@ dfs <- lapply(1:nrow(lim),
     }
 )
 df_all <- do.call(rbind, dfs)
-plot(df_all$estimate, -log10(df_all$p.value))
+plot(df_all$estimate, -log10(df_all$p.value),
+    xlab = "Effect size", ylab = bquote(-log[10](p)),
+    pch = 19
+)
 ```
 
-One idea is to take advantage of the fact that we're doing all these tests 
-at once. That's where ideas like empirical Bayes analysis come in.
-A few really popular analysis packages use these. They're a bit complex to 
-implement, but it's good to understand why these approaches may be more precise 
-and sensitive than the naive approach of fitting a model to each feature
-separately.
+## The problem of multiple tests
 
+With such a large number of features, we often want some way
+to decide which features are "interesting" or "significant"
+for further study.
+
+To demonstrate this, it's useful to consider what happens if
+we scramble age and run the same test again:
+
+```{r}
+y_perm <- y[sample(1:ncol(X), ncol(X))]
+dfs <- lapply(1:nrow(X),
+    function(i) {
+        # cat(i, "/", nrow(X), "\n")
+        df <- tidy(lm(X[i, ] ~ y_perm))[2, ]
+        df$term <- rownames(X)[[i]]
+        df
+    }
+)
+df_all <- do.call(rbind, dfs)
+plot(df_all$estimate, -log10(df_all$p.value),
+    xlab = "Effect size", ylab = bquote(-log[10](p)),
+    pch = 19
+)
+```
+
+
+> ## Exercise
+>
+> 
+> 1. If we run 10,000 tests under the null hypothesis,
+>    how many of them (on average) will be statistically
+>    significant at a threshold of $p < 0.05$?
+> 2. Why would we want to be conservative in labelling features
+>    as significantly different?
+>    By conservative, we mean to err towards labelling true
+>    differences as "not significant" rather than vice versa.
+> 3. How could we account for a varying number of tests to
+>    ensure "significant" changes are truly different? 
+> 
+> > ## Solution
+> > 1. By default we expect $`r nrow(X)` \times 0.05 = `r nrow(X)*0.05`$
+> >    features to be statistically significant under the null hypothesis,
+> >    because p-values should always be uniformly distributed under
+> >    the null hypothesis.
+> > 2. Features that we label as "significantly different" will often
+> >    be reported in manuscripts. We may also spend time and money
+> >    investigating them further, computationally or in the lab.
+> >    Therefore, spurious results have a real cost for ourselves and
+> >    for others.
+> > 3. One approach to controlling for the number of tests is to
+> >    divide our significance threshold by the number of tests
+> >    performed. This is termed "Bonferroni correction" and
+> >    we'll discuss this further now.
+> {: .solution}
+{: .challenge}
+
+# Adjusting for multiple comparisons
+
+The t-statistic for a linear model like this is given by:
 
 $$
     t_{ij} = \frac{\hat{\beta}_{ij}}{SE(\hat{\beta}_{ij})}
 $$
 
-Knowing what distribution these t-values allows us to determine how unlikely
-they would
+$SE(\hat{\beta}_{ij})$ measures the uncertainty we have in our effect
+size estimate. 
+
+
+Knowing what distribution these t-values follow under the null
+hypothesis allows us to determine how unlikely it would be for
+us to observe what we have under those circumstances.
+
+# Sharing information
+
+One idea is to take advantage of the fact that we're doing all these tests 
+at once. We can leverage this fact to perform *shrinkage* of some model
+parameters. Shrinkage methods can be complex to implement and understand,
+but it's good to understand why these approaches may be more precise 
+and sensitive than the naive approach of fitting a model to each feature
+separately.
+
+
+
+The insight of shrinkage methods is to realise that variance parameters
+like these are probably similar between genes within the same experiment. This
+enables us to share information between genes to get more robust
+estimators.
+
+In this case, 
 
 not $j$ but rather $k$? for predictor.
 $$
@@ -171,22 +259,21 @@ $$
 
 $s_i^2$ is the variance of residuals.
 
-The insight of empirical Bayes methods is to realise that variance parameters
-like these are probably similar between genes within the same experiment. This
-enables us to share information between genes to get more robust
-estimators.
 
 Similarly, DESeq2 shares information between genes
 to *shrink* estimates of a noise parameter, in that case to model counts.
 
 ```{r}
 ## age - strong comparison
-design <- model.matrix(~lim$Age)
+design <- model.matrix(~y)
 colnames(design) <- c("intercept", "age")
-fit <- lmFit(getM(lim), design = design)
+fit <- lmFit(X, design = design)
 fit <- eBayes(fit)
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
-plot(tt1$logFC, -log10(tt1$P.Value))
+plot(tt1$logFC, -log10(tt1$P.Value),
+    xlab = "Effect size", ylab = bquote(-log[10](p)),
+    pch = 19
+)
 ```
 
 ```{r echo = FALSE, eval=FALSE}
@@ -195,194 +282,56 @@ hist(q)
 ```
 
 > ## Exercise
-> Launch `shinystats::limmaApp` and adjust the parameters.
+> Launch `shinystats::limmaApp` and adjust the parameters. 
 > 
-> How does the number of features affect the relationship between these two 
-> similar methods?
+> Discuss the output in groups. Consider the following questions:
 > 
-> What about the number of samples?
-> 
-> When ranking genes, why would we want to downrank the most significant and
-> uprank some with more moderate changes?
-{: .challenge}
-
-
-Another way of modelling these data is to model age as 
-
-$$
-    \text{Age}_j = \beta_0 + \beta_1 \text{feature}_1 + \dots \beta_p \text{feature}_p + \epsilon_j
-$$
-```{r}
-noise_sd <- 2
-npred <- 99
-frac <- 0.2
-nobs <- 100
-X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
-colnames(X) <- paste0("predictor_", 1:(npred-1))
-noise <- rnorm(nobs, mean = 0, sd = noise_sd)
-X <- cbind(intercept = rep(1, nobs), X)
-beta <- rep(0, npred)
-names(beta) <- colnames(X)
-ind <- as.logical(rbinom(npred, 1, frac))
-beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
-y <- ((X %*% beta) + noise)[, 1]
-```
-
-
-> ## Exercise
-> Perform forward subset selection on the methylation data.
-> 
+> 1. How does the number of features affect the relationship between these two 
+>    similar methods?
+> 2. What about the number of samples?
+> 3. When ranking genes, why would we want to downrank the most significant and
+>    uprank some with more moderate changes?
 > 
 > > ## Solution
 > > 
-> > 
+> > 1. With more features, the amount of shrinkage increases.
+> > 2. With more samples, the shrinkage is weaker and the difference between the
+> >    methods is smaller.
+> > 3. Because the p-value relies on the effect size estimate *and* its standard
+> >    error, a very small standard error by chance (with few replicates) can
+> >    lead to a very small p-value. "Moderating" or shrinking the standard errors
+> >    brings these more in line with features that have a similar effect size 
+> >    but larger standard error.
 > {: .solution}
 {: .challenge}
 
 
-
-
-```{r}
-## challenge 3: fit y on x univariate
-## compare with true betas
-cc <- sapply(1:ncol(X), function(i) {
-    coef(lm(y ~ X[, i]))[[2]]
-})
-plot(cc, beta, pch = 19, cex = 0.5)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-```
-
-
-```{r}
-## challenge 4: forward selection
-## compare with true betas
-xy <- as.data.frame(cbind(X, y = y))
-int <- lm(y ~ 1, data=xy)
-all <- lm(y ~ . + 0, data=xy)
-forward <- step(
-    int,
-    scope = list(upper = formula(all), lower = formula(int)),
-    direction = "forward",
-    trace = 0
-)
-forward$anova
-plot(coef(forward), beta[names(coef(forward))])
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-```
-
-```{r}
-## note about backward/both, not a challenge
-all <- lm(y ~ . + 0, data=xy)
-backward <- step(
-    all,
-    scope = formula(all),
-    direction = "backward",
-    trace = 0
-)
-backward$anova
-plot(coef(backward), beta[names(coef(backward))])
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-```
-
-
-
-```{r}
-## Challenge 5:
-## one of these...? probably lasso
-library("glmnet")
-ridge <- cv.glmnet(X[, -1], y, alpha = 0)
-lasso <- cv.glmnet(X[, -1], y, alpha = 1)
-elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
-plot(coef(lasso, s = lasso$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-
-plot(coef(elastic, s = elastic$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-
-plot(coef(ridge, s = ridge$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-                                      
-```
-
-
-
-
-
-
-
-
-
-```{r}
-x <- t(getM(norm))
-y <- as.numeric(factor(norm$smoker)) - 1
-
-fit <- cv.glmnet(x = x, y = y, family="binomial")
-
-c <- coef(fit, s = fit$lambda.1se)
-c[c[, 1] != 0, 1]
-
-
-y <- norm$Age
-fit <- cv.glmnet(x = x, y = y)
-
-c <- coef(fit, s = fit$lambda.1se)
-coef <- c[c[, 1] != 0, 1]
-
-plot(y, x[, names(which.max(coef[-1]))])
-```
-
-
-
-```{r, eval=FALSE, echo=FALSE}
-design <- model.matrix(~0 + lim$bmi_clas)
-colnames(design) <- gsub("lim$bmi_clas", "", colnames(design), fixed=TRUE)
-
-fit <- lmFit(getM(lim), design = design)
-contrasts <- makeContrasts(
-    Overweight - Normal,
-    Obese - Normal,
-    levels = design
-)
-fit <- contrasts.fit(fit, contrasts)
-fit <- eBayes(fit)
-tt1 <- topTable(fit, coef = 1, number = nrow(fit))
-tt2 <- topTable(fit, coef = 2, number = nrow(fit))
-
-q <- qvalue(tt2$P.Value)
-tt2$qvalue <- q$qvalue
-
-
-design <- model.matrix(~0 + lim$smoker)
-colnames(design) <- gsub("lim$smoker", "", colnames(design), fixed=TRUE)
-
-
-
-fit <- lmFit(getM(lim), design = design)
-contrasts <- makeContrasts(
-    Yes - No,
-    levels = design
-)
-fit <- contrasts.fit(fit, contrasts)
-fit <- eBayes(fit)
-tt1 <- topTable(fit, coef = 1, number = nrow(fit))
-
-
-q <- qvalue(tt1$P.Value)
-hist(q)
-
-plot(tt1$logFC, -log10(tt1$P.Value))
-```
+> ## Shrinkage
+> 
+> Shrinkage is an intuitive term for an effect
+> of a broad range of statistical models.
+> Often, shrinkage is induced by a *multilevel*
+> modelling approach or by *Bayesian* methods.
+> 
+> The general idea is that these models incorporate 
+> information about the hierarchical structure of the
+> data into account when fitting the parameters.
+> The sharing of information is accomplished because we use
+> this information to formulate the model.
+> 
+> For example in `DESeq2`, the authors used the observation
+> that genes with similar expression counts in RNAseq data
+> have similar *dispersion*.
+> Similarly, in `limma` the authors made the assumption that
+> in the absence of biological effects, we can often expect the
+> technical variation between genes to be similar. 
+> 
+> There are many good resources to learn about this type of approach,
+> including:
+> 
+> - [a blog post by TJ Mahr](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/)
+> - [a book by David Robinson](https://gumroad.com/l/empirical-bayes)
+> - [a (relatively technical) book by Gelman and Hill](http://www.stat.columbia.edu/~gelman/arm/)
+{: .callout}
 
 {% include links.md %}
