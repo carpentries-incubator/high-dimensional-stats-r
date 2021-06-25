@@ -1,5 +1,5 @@
 ---
-title: "Regression with many predictors"
+title: "Regression with many features"
 teaching: 0
 exercises: 0
 questions:
@@ -29,6 +29,10 @@ knitr_fig_path("02-")
 ```
 
 # Linear regression (recap)
+
+Linear regression is a tool we can use to quantify the relationship
+between two variables.
+
 
 Linear regression with one predictor variable $x$ comprises the following 
 equation
@@ -96,11 +100,19 @@ suppressPackageStartupMessages({
 })
 ```
 
+# Data
+
+For the following few episodes, we'll be working with human
+DNA methylation data from . These come in the form of a matrix
+of normalised methylation levels (M-values, for the technical among
+you).
+
+
+
 The following code will read in the data for this episode.
 
 ```{r}
 suppressPackageStartupMessages({
-    library("glmnet")
     library("minfi")
     library("limma")
     library("here")
@@ -115,6 +127,13 @@ norm <- readRDS(here("data/methylation.rds"))
 norm <- norm
 y <- norm$Age
 X <- getM(norm)
+```
+
+The distribution of each of these looks like this:
+
+```{r}
+hist(X, breaks = "FD", xlab = "M-value")
+hist(y, breaks = "FD", xlab = "Age (years)")
 ```
 
 We have a matrix of methylation values $X$ and a vector of ages in years $y$.
@@ -146,9 +165,8 @@ We have a lot of features, though! This is what it looks like if we do that
 for every feature.
 
 ```{r}
-dfs <- lapply(1:nrow(X),
+dfs <- lapply(seq_len(nrow(X)),
     function(i) {
-        # cat(i, "/", nrow(X), "\n")
         df <- tidy(lm(X[i, ] ~ y))[2, ]
         df$term <- rownames(X)[[i]]
         df
@@ -161,6 +179,8 @@ plot(df_all$estimate, -log10(df_all$p.value),
 )
 ```
 
+# Multiple testing
+
 ## The problem of multiple tests
 
 With such a large number of features, we often want some way
@@ -171,10 +191,9 @@ To demonstrate this, it's useful to consider what happens if
 we scramble age and run the same test again:
 
 ```{r}
-y_perm <- y[sample(1:ncol(X), ncol(X))]
-dfs <- lapply(1:nrow(X),
+y_perm <- y[sample(ncol(X), ncol(X))]
+dfs <- lapply(seq_len(nrow(X)),
     function(i) {
-        # cat(i, "/", nrow(X), "\n")
         df <- tidy(lm(X[i, ] ~ y_perm))[2, ]
         df$term <- rownames(X)[[i]]
         df
@@ -218,7 +237,16 @@ plot(df_all$estimate, -log10(df_all$p.value),
 > {: .solution}
 {: .challenge}
 
-# Adjusting for multiple comparisons
+
+## Adjusting for multiple comparisons
+
+When performing mul
+
+|              |Predicted true|Predicted false|
+|-------------:|-------------:|--------------:|
+|Actually true |True positive |False negative |
+|Actually false|False positive|True negative  |
+
 
 The t-statistic for a linear model like this is given by:
 

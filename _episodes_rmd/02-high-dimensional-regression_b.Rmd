@@ -69,21 +69,32 @@ There are some techniques that you can use to find a set of predictors!
 - forward/reverse/best subset selection
 
 ```{r}
-## todo: remove to external script
-noise_sd <- 2
-npred <- 99
-frac <- 0.2
-nobs <- 100
-X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
-colnames(X) <- paste0("predictor_", 1:(npred-1))
-noise <- rnorm(nobs, mean = 0, sd = noise_sd)
-X <- cbind(intercept = rep(1, nobs), X)
-beta <- rep(0, npred)
-names(beta) <- colnames(X)
-ind <- as.logical(rbinom(npred, 1, frac))
-beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
-y <- ((X %*% beta) + noise)[, 1]
+if (!file.exists(here("data/synthetic.rds"))) {
+    source(here("data/synthetic.R"))
+}
+synthetic <- readRDS(here("data/synthetic.rds"))
 ```
+
+
+
+
+```{r}
+X <- assay(synthetic)
+y <- synthetic$age
+beta <- rowData(synthetic)$true_beta
+names(beta) <- rownames(synthetic)
+## challenge 3: fit y on x univariate
+## compare with true betas
+cc <- sapply(seq_len(nrow(X)), function(i) {
+    coef(lm(y ~ X[i, ]))[[2]]
+})
+plot(cc, beta, pch = 19, cex = 0.5)
+abline(0, 1)
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
+```
+
+
 
 
 > ## Exercise
@@ -98,26 +109,12 @@ y <- ((X %*% beta) + noise)[, 1]
 
 
 
-
-```{r}
-## challenge 3: fit y on x univariate
-## compare with true betas
-cc <- sapply(1:ncol(X), function(i) {
-    coef(lm(y ~ X[, i]))[[2]]
-})
-plot(cc, beta, pch = 19, cex = 0.5)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-```
-
-
 ```{r}
 ## challenge 4: forward selection
 ## compare with true betas
-xy <- as.data.frame(cbind(X, y = y))
-int <- lm(y ~ 1, data=xy)
-all <- lm(y ~ . + 0, data=xy)
+xy <- as.data.frame(cbind(t(X), y = y))
+int <- lm(y ~ 1, data = xy)
+all <- lm(y ~ . + 0, data = xy)
 forward <- step(
     int,
     scope = list(upper = formula(all), lower = formula(int)),
@@ -127,13 +124,13 @@ forward <- step(
 forward$anova
 plot(coef(forward), beta[names(coef(forward))])
 abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
 ```
 
 ```{r}
 ## note about backward/both, not a challenge
-all <- lm(y ~ . + 0, data=xy)
+all <- lm(y ~ . + 0, data = xy)
 backward <- step(
     all,
     scope = formula(all),
@@ -143,8 +140,8 @@ backward <- step(
 backward$anova
 plot(coef(backward), beta[names(coef(backward))])
 abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
 ```
 
 
