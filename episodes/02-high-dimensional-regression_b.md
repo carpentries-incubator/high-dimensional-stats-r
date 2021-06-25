@@ -70,22 +70,37 @@ There are some techniques that you can use to find a set of predictors!
 
 
 ~~~
-## todo: remove to external script
-noise_sd <- 2
-npred <- 99
-frac <- 0.2
-nobs <- 100
-X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
-colnames(X) <- paste0("predictor_", 1:(npred-1))
-noise <- rnorm(nobs, mean = 0, sd = noise_sd)
-X <- cbind(intercept = rep(1, nobs), X)
-beta <- rep(0, npred)
-names(beta) <- colnames(X)
-ind <- as.logical(rbinom(npred, 1, frac))
-beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
-y <- ((X %*% beta) + noise)[, 1]
+if (!file.exists(here("data/synthetic.rds"))) {
+    source(here("data/synthetic.R"))
+}
+synthetic <- readRDS(here("data/synthetic.rds"))
 ~~~
 {: .language-r}
+
+
+
+
+
+~~~
+X <- assay(synthetic)
+y <- synthetic$age
+beta <- rowData(synthetic)$true_beta
+names(beta) <- rownames(synthetic)
+## challenge 3: fit y on x univariate
+## compare with true betas
+cc <- sapply(seq_len(nrow(X)), function(i) {
+    coef(lm(y ~ X[i, ]))[[2]]
+})
+plot(cc, beta, pch = 19, cex = 0.5)
+abline(0, 1)
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02b-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="612" style="display: block; margin: auto;" />
+
+
 
 
 > ## Exercise
@@ -101,30 +116,12 @@ y <- ((X %*% beta) + noise)[, 1]
 
 
 
-
-~~~
-## challenge 3: fit y on x univariate
-## compare with true betas
-cc <- sapply(1:ncol(X), function(i) {
-    coef(lm(y ~ X[, i]))[[2]]
-})
-plot(cc, beta, pch = 19, cex = 0.5)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02b-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="612" style="display: block; margin: auto;" />
-
-
-
 ~~~
 ## challenge 4: forward selection
 ## compare with true betas
-xy <- as.data.frame(cbind(X, y = y))
-int <- lm(y ~ 1, data=xy)
-all <- lm(y ~ . + 0, data=xy)
+xy <- as.data.frame(cbind(t(X), y = y))
+int <- lm(y ~ 1, data = xy)
+all <- lm(y ~ . + 0, data = xy)
 forward <- step(
     int,
     scope = list(upper = formula(all), lower = formula(int)),
@@ -138,105 +135,59 @@ forward$anova
 
 
 ~~~
-             Step Df     Deviance Resid. Df   Resid. Dev         AIC
-1                 NA           NA        99 9284.4124082  455.092200
-2  + predictor_35 -1 2.230495e+03        98 7053.9173486  429.616821
-3  + predictor_60 -1 7.606834e+02        97 6293.2339293  420.206017
-4   + predictor_7 -1 7.766077e+02        96 5516.6262008  409.035157
-5  + predictor_30 -1 8.743661e+02        95 4642.2600609  393.778642
-6   + predictor_5 -1 8.025787e+02        94 3839.6813593  376.797448
-7  + predictor_31 -1 6.285206e+02        93 3211.1607159  360.921756
-8  + predictor_95 -1 5.585176e+02        92 2652.6431613  343.814166
-9  + predictor_97 -1 3.983205e+02        91 2254.3226831  329.543466
-10 + predictor_74 -1 3.994806e+02        90 1854.8420503  312.038464
-11 + predictor_43 -1 4.383301e+02        89 1416.5119597  287.078258
-12 + predictor_15 -1 2.294611e+02        88 1187.0508600  271.405706
-13 + predictor_64 -1 2.398487e+02        87  947.2021835  250.834238
-14 + predictor_87 -1 1.743261e+02        86  772.8761250  232.494860
-15 + predictor_54 -1 1.278657e+02        85  645.0104068  216.409627
-16 + predictor_47 -1 1.364643e+02        84  508.5460971  194.638568
-17  + predictor_6 -1 1.415875e+02        83  366.9585783  164.007879
-18 + predictor_17 -1 1.676087e+01        82  350.1977130  161.332770
-19 + predictor_10 -1 1.709960e+01        81  333.0981165  158.326690
-20 + predictor_78 -1 1.742031e+01        80  315.6778045  154.955190
-21 + predictor_89 -1 1.980726e+01        79  295.8705441  150.475182
-22 + predictor_72 -1 1.716782e+01        78  278.7027193  146.497551
-23 + predictor_14 -1 1.926650e+01        77  259.4362232  141.334072
-24 + predictor_51 -1 1.618549e+01        76  243.2507349  136.892256
-25  + predictor_9 -1 1.058499e+01        75  232.6657456  134.443267
-26 + predictor_68 -1 9.131975e+00        74  223.5337707  132.439232
-27 + predictor_39 -1 1.013734e+01        73  213.3964317  129.798143
-28 + predictor_61 -1 9.206005e+00        72  204.1904265  127.388284
-29 + predictor_33 -1 1.058274e+01        71  193.6076830  124.066367
-30 + predictor_45 -1 8.472410e+00        70  185.1352727  121.591658
-31 + predictor_90 -1 9.468494e+00        69  175.6667792  118.341871
-32 + predictor_62 -1 8.660175e+00        68  167.0066041  115.286317
-33 + predictor_73 -1 9.390839e+00        67  157.6157650  111.499002
-34 + predictor_58 -1 1.081143e+01        66  146.8043338  106.393045
-35  + predictor_2 -1 7.270910e+00        65  139.5334239  103.313398
-36 + predictor_19 -1 8.108088e+00        64  131.4253355   99.326871
-37 + predictor_38 -1 7.765199e+00        63  123.6601365   95.236678
-38 + predictor_46 -1 6.214993e+00        62  117.4451434   92.080117
-39 + predictor_32 -1 5.740818e+00        61  111.7043250   89.068524
-40  + predictor_4 -1 4.688879e+00        60  107.0154460   86.780299
-41 + predictor_27 -1 4.217756e+00        59  102.7976896   84.759269
-42 + predictor_85 -1 6.403474e+00        58   96.3942155   80.327601
-43 + predictor_55 -1 7.145309e+00        57   89.2489062   74.625898
-44 + predictor_91 -1 5.289981e+00        56   83.9589255   70.515751
-45 + predictor_34 -1 6.351044e+00        55   77.6078819   64.649881
-46 + predictor_86 -1 4.734015e+00        54   72.8738673   60.355991
-47 + predictor_36 -1 3.545305e+00        53   69.3285624   57.368679
-48 + predictor_18 -1 4.172213e+00        52   65.1563495   53.161957
-49 + predictor_12 -1 3.658287e+00        51   61.4980622   49.383548
-50  + predictor_3 -1 3.512168e+00        50   57.9858943   45.502959
-51 + predictor_26 -1 4.077683e+00        49   53.9082112   40.211262
-52 + predictor_50 -1 2.860269e+00        48   51.0479425   36.759505
-53 + predictor_71 -1 2.718546e+00        47   48.3293964   33.286981
-54 + predictor_98 -1 2.937855e+00        46   45.3915411   29.015558
-55 + predictor_28 -1 2.666090e+00        45   42.7254509   24.962460
-56 + predictor_44 -1 4.168271e+00        44   38.5571799   16.697215
-57 + predictor_52 -1 2.829763e+00        43   35.7274173   11.074820
-58 + predictor_96 -1 1.884735e+00        42   33.8426827    7.655262
-59 + predictor_80 -1 2.117267e+00        41   31.7254153    3.194792
-60 + predictor_63 -1 2.071416e+00        40   29.6539998   -1.557317
-61 + predictor_75 -1 1.459463e+00        39   28.1945368   -4.604196
-62  + predictor_1 -1 2.190818e+00        38   26.0037189  -10.693062
-63 + predictor_29 -1 1.193415e+00        37   24.8103044  -13.391112
-64 + predictor_11 -1 1.160378e+00        36   23.6499263  -16.181019
-65 + predictor_42 -1 9.326755e-01        35   22.7172508  -18.204560
-66 + predictor_21 -1 1.062260e+00        34   21.6549903  -20.993426
-67 + predictor_20 -1 1.559922e+00        33   20.0950688  -26.469574
-68 + predictor_92 -1 6.526481e-01        32   19.4424207  -27.771287
-69 + predictor_70 -1 6.921344e-01        31   18.7502863  -29.396116
-70 + predictor_56 -1 8.396207e-01        30   17.9106656  -31.977381
-71 + predictor_94 -1 1.019323e+00        29   16.8913421  -35.836900
-72 + predictor_48 -1 1.792461e+00        28   15.0988809  -45.054956
-73 + predictor_49 -1 9.949585e-01        27   14.1039224  -49.871724
-74 + predictor_59 -1 5.704812e-01        26   13.5334412  -52.000644
-75 + predictor_93 -1 7.545410e-01        25   12.7789002  -55.737480
-76 + predictor_65 -1 7.562173e-01        24   12.0226829  -59.837508
-77 + predictor_77 -1 1.418514e+00        23   10.6041691  -70.392295
-78 + predictor_69 -1 6.769295e-01        22    9.9272396  -74.988773
-79  + predictor_8 -1 1.040503e+00        21    8.8867365  -84.061030
-80 + predictor_84 -1 1.423604e+00        20    7.4631325  -99.519495
-81 + predictor_25 -1 1.063838e+00        19    6.3992947 -112.898241
-82 + predictor_53 -1 6.378632e-01        18    5.7614314 -121.398423
-83 + predictor_13 -1 4.293089e-01        17    5.3321225 -127.142081
-84 + predictor_81 -1 4.725197e-01        16    4.8596028 -134.421347
-85 + predictor_41 -1 3.248876e-01        15    4.5347152 -139.340790
-86 + predictor_67 -1 1.965704e-01        14    4.3381448 -141.772340
-87 + predictor_22 -1 2.263084e-01        13    4.1118364 -145.130044
-88 + predictor_83 -1 5.902973e-01        12    3.5215391 -158.627206
-89 + predictor_16 -1 8.246786e-01        11    2.6968604 -183.308189
-90 + predictor_66 -1 4.585231e-01        10    2.2383373 -199.943688
-91 + predictor_40 -1 1.995555e-01         9    2.0387818 -207.281772
-92 + predictor_88 -1 2.465800e-01         8    1.7922018 -218.172528
-93 + predictor_24 -1 9.975775e-02         7    1.6924440 -221.899653
-94 + predictor_82 -1 9.306822e-02         6    1.5993758 -225.555675
-95 + predictor_79 -1 1.399124e-01         5    1.4594634 -232.710133
-96 + predictor_57 -1 1.996415e-01         4    1.2598220 -245.419978
-97 + predictor_37 -1 3.718436e-01         3    0.8879784 -278.397805
-98 + predictor_23 -1 1.664725e-01         2    0.7215059 -297.158493
+           Step Df    Deviance Resid. Df Resid. Dev        AIC
+1               NA          NA        99 1708.75000 285.834720
+2  + feature_39 -1 499.4536126        98 1209.29639 253.262379
+3  + feature_96 -1 324.0291081        97  885.26728 224.071942
+4  + feature_12 -1 294.9334647        96  590.33381 185.551798
+5  + feature_27 -1 207.3480230        95  382.98579 144.282770
+6  + feature_62 -1  54.2795132        94  328.70628 130.999440
+7  + feature_48 -1  52.0943130        93  276.61197 115.744549
+8  + feature_34 -1  56.5924450        92  220.01952  94.854609
+9  + feature_20 -1  61.8236485        91  158.19587  63.866377
+10 + feature_59 -1  26.2910194        90  131.90485  47.691066
+11 + feature_10 -1  11.0925496        89  120.81230  40.906794
+12  + feature_4 -1  12.0358132        88  108.77649  32.412504
+13 + feature_74 -1   8.7991872        87   99.97730  25.977300
+14  + feature_1 -1   9.5964044        86   90.38090  17.886275
+15 + feature_52 -1   5.5554267        85   84.82547  13.542568
+16 + feature_47 -1   3.9651056        84   80.86037  10.755360
+17 + feature_30 -1   5.4275720        83   75.43279   5.807193
+18 + feature_60 -1   4.3717436        82   71.06105   1.836918
+19 + feature_54 -1   3.8045694        81   67.25648  -1.665680
+20 + feature_71 -1   2.9892313        80   64.26725  -4.212002
+21 + feature_90 -1   2.9364471        79   61.33080  -6.888798
+22 + feature_40 -1   2.5696161        78   58.76119  -9.168865
+23  + feature_7 -1   2.4892286        77   56.27196 -11.497386
+24 + feature_64 -1   1.7325691        76   54.53939 -12.624702
+25  + feature_9 -1   1.9893105        75   52.55008 -14.340360
+26 + feature_81 -1   1.5544502        74   50.99563 -15.343028
+27 + feature_61 -1   1.9480462        73   49.04758 -17.237930
+28 + feature_70 -1   1.7640150        72   47.28357 -18.900738
+29 + feature_36 -1   1.4006782        71   45.88289 -19.907794
+30 + feature_87 -1   1.3910210        70   44.49187 -20.986376
+31 + feature_46 -1   1.4852141        69   43.00665 -22.381535
+32 + feature_22 -1   1.4623565        68   41.54430 -23.840993
+33 + feature_42 -1   1.3481457        67   40.19615 -25.139893
+34 + feature_89 -1   1.3304489        66   38.86570 -26.505801
+35 + feature_35 -1   1.1386274        65   37.72708 -27.479218
+36  + feature_5 -1   1.6045366        64   36.12254 -29.825318
+37 + feature_16 -1   0.9071641        63   35.21537 -30.368743
+38 + feature_51 -1   0.9663070        62   34.24907 -31.151085
+39 + feature_65 -1   1.5487561        61   32.70031 -33.778559
+40 + feature_80 -1   1.0909933        60   31.60932 -35.171824
+41 + feature_72 -1   1.5202071        59   30.08911 -38.100685
+42 + feature_24 -1   0.7262915        58   29.36282 -38.544096
+43 + feature_75 -1   0.8739263        57   28.48889 -39.565589
+44 + feature_37 -1   0.7598234        56   27.72907 -40.268888
+45  + feature_3 -1   0.9752670        55   26.75380 -41.849357
+46 + feature_78 -1   1.3023538        54   25.45145 -44.839752
+47 + feature_45 -1   0.7416338        53   24.70982 -45.796965
+48 + feature_79 -1   0.6356983        52   24.07412 -46.403292
+49 + feature_21 -1   0.4991660        51   23.57495 -46.498545
+50 + feature_69 -1   0.5362969        50   23.03865 -46.799678
+51 + feature_85 -1   0.4937631        49   22.54489 -46.966172
+52 + feature_83 -1   0.4581378        48   22.08675 -47.019217
 ~~~
 {: .output}
 
@@ -245,8 +196,8 @@ forward$anova
 ~~~
 plot(coef(forward), beta[names(coef(forward))])
 abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
 ~~~
 {: .language-r}
 
@@ -255,7 +206,7 @@ abline(h = 0, lty="dashed", col = "firebrick")
 
 ~~~
 ## note about backward/both, not a challenge
-all <- lm(y ~ . + 0, data=xy)
+all <- lm(y ~ . + 0, data = xy)
 backward <- step(
     all,
     scope = formula(all),
@@ -269,11 +220,11 @@ backward$anova
 
 
 ~~~
-            Step Df     Deviance Resid. Df Resid. Dev       AIC
-1                NA           NA         1  0.7193294 -295.4606
-2 - predictor_63  1 9.283588e-05         2  0.7194222 -297.4477
-3 - predictor_76  1 2.161080e-03         3  0.7215833 -299.1478
-4 - predictor_14  1 1.494866e-03         4  0.7230782 -300.9408
+          Step Df    Deviance Resid. Df Resid. Dev       AIC
+1              NA          NA         1   4.060464 -122.3873
+2 - feature_98  1 0.002594080         2   4.063058 -124.3234
+3 - feature_45  1 0.004159458         3   4.067217 -126.2211
+4 - feature_77  1 0.013398220         4   4.080616 -127.8922
 ~~~
 {: .output}
 
@@ -282,8 +233,8 @@ backward$anova
 ~~~
 plot(coef(backward), beta[names(coef(backward))])
 abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
 ~~~
 {: .language-r}
 

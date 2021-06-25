@@ -19,6 +19,8 @@ math: yes
 ---
 
 
+
+
 ```{r, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
@@ -62,83 +64,11 @@ There are some techniques that you can use to find a set of predictors!
 - forward/reverse/best subset selection
 
 ```{r}
-noise_sd <- 2
-npred <- 99
-frac <- 0.2
-nobs <- 100
-X <- replicate(npred - 1, rnorm(nobs, mean = 0, sd = 1))
-colnames(X) <- paste0("predictor_", 1:(npred-1))
-noise <- rnorm(nobs, mean = 0, sd = noise_sd)
-X <- cbind(intercept = rep(1, nobs), X)
-beta <- rep(0, npred)
-names(beta) <- colnames(X)
-ind <- as.logical(rbinom(npred, 1, frac))
-beta[ind] <- rnorm(sum(ind)) + sample(c(-2, 2), sum(ind), replace=TRUE)
-y <- ((X %*% beta) + noise)[, 1]
+if (!file.exists(here("data/synthetic.rds"))) {
+    source("data/synthetic.R")
+}
+synthetic <- readRDS("data/synthetic.rds")
 ```
-
-
-> ## Exercise
-> Perform forward subset selection on the methylation data.
-> 
-> 
-> > ## Solution
-> > 
-> > 
-> {: .solution}
-{: .challenge}
-
-
-
-
-```{r}
-## challenge 3: fit y on x univariate
-## compare with true betas
-cc <- sapply(1:ncol(X), function(i) {
-    coef(lm(y ~ X[, i]))[[2]]
-})
-plot(cc, beta, pch = 19, cex = 0.5)
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-```
-
-
-```{r}
-## challenge 4: forward selection
-## compare with true betas
-xy <- as.data.frame(cbind(X, y = y))
-int <- lm(y ~ 1, data=xy)
-all <- lm(y ~ . + 0, data=xy)
-forward <- step(
-    int,
-    scope = list(upper = formula(all), lower = formula(int)),
-    direction = "forward",
-    trace = 0
-)
-forward$anova
-plot(coef(forward), beta[names(coef(forward))])
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-```
-
-```{r}
-## note about backward/both, not a challenge
-all <- lm(y ~ . + 0, data=xy)
-backward <- step(
-    all,
-    scope = formula(all),
-    direction = "backward",
-    trace = 0
-)
-backward$anova
-plot(coef(backward), beta[names(coef(backward))])
-abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-```
-
 
 
 ```{r}
@@ -150,19 +80,18 @@ lasso <- cv.glmnet(X[, -1], y, alpha = 1)
 elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
 plot(coef(lasso, s = lasso$lambda.1se)[, 1], beta)
 abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
 
 plot(coef(elastic, s = elastic$lambda.1se)[, 1], beta)
 abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
 
 plot(coef(ridge, s = ridge$lambda.1se)[, 1], beta)
 abline(0, 1)
-abline(v = 0, lty="dashed", col = "firebrick")
-abline(h = 0, lty="dashed", col = "firebrick")
-                                      
+abline(v = 0, lty = "dashed", col = "firebrick")
+abline(h = 0, lty = "dashed", col = "firebrick")
 ```
 
 
@@ -177,7 +106,7 @@ abline(h = 0, lty="dashed", col = "firebrick")
 x <- t(getM(norm))
 y <- as.numeric(factor(norm$smoker)) - 1
 
-fit <- cv.glmnet(x = x, y = y, family="binomial")
+fit <- cv.glmnet(x = x, y = y, family = "binomial")
 
 c <- coef(fit, s = fit$lambda.1se)
 c[c[, 1] != 0, 1]
@@ -196,7 +125,7 @@ plot(y, x[, names(which.max(coef[-1]))])
 
 ```{r, eval=FALSE, echo=FALSE}
 design <- model.matrix(~0 + lim$bmi_clas)
-colnames(design) <- gsub("lim$bmi_clas", "", colnames(design), fixed=TRUE)
+colnames(design) <- gsub("lim$bmi_clas", "", colnames(design), fixed = TRUE)
 
 fit <- lmFit(getM(lim), design = design)
 contrasts <- makeContrasts(
@@ -214,7 +143,7 @@ tt2$qvalue <- q$qvalue
 
 
 design <- model.matrix(~0 + lim$smoker)
-colnames(design) <- gsub("lim$smoker", "", colnames(design), fixed=TRUE)
+colnames(design) <- gsub("lim$smoker", "", colnames(design), fixed = TRUE)
 
 
 

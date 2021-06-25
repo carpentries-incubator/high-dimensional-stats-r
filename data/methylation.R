@@ -5,21 +5,16 @@ suppressPackageStartupMessages({
 })
 
 hub <- ExperimentHub()
-query(hub, "FlowSorted.Blood.EPIC")  
+query(hub, "FlowSorted.Blood.EPIC")
 
-FlowSorted.Blood.EPIC <- hub[["EH1136"]]  
+unnorm <- hub[["EH1136"]]
 
-norm <- preprocessQuantile(FlowSorted.Blood.EPIC)
+norm <- preprocessQuantile(unnorm)
 y <- as.numeric(factor(norm$smoker)) - 1
 
 cc <- complete.cases(y)
 norm <- norm[, cc]
 set.seed(42)
 norm <- norm[sample(nrow(norm), 5000), ]
-
-# plot(norm$Age, age$Horvath)
-# library("methylclock")
-# age <- DNAmAge(norm)
-# norm$hage <- age$Horvath
 
 saveRDS(norm, here("data/methylation.rds"))
