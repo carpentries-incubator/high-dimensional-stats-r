@@ -54,28 +54,51 @@ $$
     y = X\beta + \epsilon
 $$
 
+
 Another way of saying this is that y follows a normal distribution with
 
 $$
     y \sim N(X\beta, \sigma^2)
 $$
 
+Or, visually, that (for example) this is the distribution 
+of new points conditional on their $x$ values:
+
+
+~~~
+x <- cbind(rep(1, 100), rnorm(100))
+beta <- rnorm(2)
+sx <- seq(min(x), max(x), length.out = 200)
+sy <- seq(min(x), max(x), length.out = 200)
+fx <- cbind(rep(1, 200), sx) %*% beta
+
+dens <- matrix(NA, 200, 200)
+for (i in seq_along(sx)) {
+    for (j in seq_along(sy)) {
+        dens[i, j] <- dnorm(sy[[j]], mean = fx[[i]])
+    }
+}
+image(sx, sy, dens, col = viridis::viridis(100, option = "magma"))
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise
+>
+>
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
-> How does the "significance" of the model vary when you vary the parameters?
-> 
-> How does the degree of noise affect the level of certainty in the fitted
-> trend?
-> 
-> With a large number of observations, how weak of an effect can you detect?
-> Is a really small effect (0.1 slope) really "significant" in the way you'd
-> use that word conversationally?
-> 
-> With a small number of observations, how strong does the relationship need
-> to be (or how small the noise) before you can detect it?
+> 1. How does the "significance" of the model vary when you vary the parameters?
+> 2. How does the degree of noise affect the level of certainty in the fitted
+>   trend?
+> 3. With a small number of observations, how strong does the relationship need
+>   to be (or how small the noise) before you can detect it?
+> 4. With a large number of observations, how weak of an effect can you detect?
+>   Is a really small effect (0.1 slope) really "significant" in the way you'd
+>   use that word conversationally?
+>
 > > ## Solution
 > > todo: plot examples for each question
 > {: .solution}
@@ -87,11 +110,11 @@ $$
 # Data
 
 For the following few episodes, we'll be working with human
-DNA methylation data from . These come in the form of a matrix
+DNA methylation data from flow-sorted blood samples.
+These come in the form of a matrix
 of normalised methylation levels (M-values, for the technical among
-you).
-
-
+you). Along with this, we have a number of sample phenotypes
+(eg, age in years, BMI).
 
 The following code will read in the data for this episode.
 
@@ -110,7 +133,6 @@ if (!file.exists(here("data/methylation.rds"))) {
 norm <- readRDS(here("data/methylation.rds"))
 
 norm <- norm
-y <- norm$Age
 X <- getM(norm)
 ~~~
 {: .language-r}
@@ -123,14 +145,64 @@ hist(X, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
+
+In high-throughput experiments like this, we commonly have one or more 
+phenotypes that we want to relate to molecular features.
+In this case, these phenotypes are as follows:
+
 
 ~~~
-hist(y, breaks = "FD", xlab = "Age (years)")
+knitr::kable(head(colData(norm)))
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-4-2.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="612" style="display: block; margin: auto;" />
+
+
+|                    |Sample_Plate   |Sample_Well |Sample_Name |Subject.ID |smp_type    |Sample_Group   |Pool_ID | Chip|Replicate |Array_well          |CellType | CD4T| CD8T| Bcell|  NK| Mono| Neu| purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide| normalmix|     xMed|      yMed|predictedSex |
+|:-------------------|:--------------|:-----------|:-----------|:----------|:-----------|:--------------|:-------|----:|:---------|:-------------------|:--------|----:|----:|-----:|---:|----:|---:|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|---------:|--------:|---------:|:------------|
+|201868500150_R01C01 |EPIC17_Plate01 |A07         |PCA0612     |PCA0612    |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R01C01 |Neu      |    0|    0|     0|   0|    0| 100|     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|         1| 12.66467| 12.913263|M            |
+|201868500150_R03C01 |EPIC17_Plate01 |C07         |NKpan2510   |NKpan2510  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R03C01 |NK       |    0|    0|     0| 100|    0|   0|     95|M   |  49|  81.19303|   1.6764| 28.89106|Overweight |Indo-European  |Caucasian      |No     |R03C01 | 201868500150|         1| 12.95019| 13.207167|M            |
+|201868500150_R05C01 |EPIC17_Plate01 |E07         |WB1148      |WB1148     |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R05C01 |Neu      |    0|    0|     0|   0|    0| 100|     95|M   |  20|  80.28585|   1.7526| 26.13806|Overweight |Indo-European  |Persian        |No     |R05C01 | 201868500150|         1| 13.05562| 13.308481|M            |
+|201868500150_R07C01 |EPIC17_Plate01 |G07         |B0044       |B0044      |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R07C01 |Bcell    |    0|    0|   100|   0|    0|   0|     97|M   |  49|  82.55381|   1.7272| 27.67272|Overweight |Indo-European  |Caucasian      |No     |R07C01 | 201868500150|         1| 13.08431| 13.349696|M            |
+|201868500150_R08C01 |EPIC17_Plate01 |H07         |NKpan1869   |NKpan1869  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R08C01 |NK       |    0|    0|     0| 100|    0|   0|     95|F   |  33|  87.54333|   1.7272| 29.34525|Overweight |Indo-European  |Caucasian      |No     |R08C01 | 201868500150|         1| 13.71301|  9.417853|F            |
+|201868590193_R02C01 |EPIC17_Plate01 |B03         |NKpan1850   |NKpan1850  |Cell Pellet |ChristensenLab |NA      |    3|          |201868590193_R02C01 |NK       |    0|    0|     0| 100|    0|   0|     93|F   |  21|  87.54333|   1.6764| 31.15070|Obese      |Mixed          |Finnish/Creole |No     |R02C01 | 201868590193|         1| 13.50438|  9.594325|F            |
+
+In this case, we will focus on age in years. The association between
+age and methylation status in blood samples has been studied extensively,
+and is actually a good case-study in how to perform some of the techniques
+we will cover in this lesson.
+The distribution of age in these samples is as follows:
+
+
+~~~
+y <- log(norm$Age)
+hist(y, breaks = "FD", xlab = "log(Age)")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
+
+
+~~~
+library("pheatmap")
+order <- order(y)
+y_ord <- y[order]
+X_ord <- X[, order]
+pheatmap(X_ord,
+    cluster_cols = FALSE,
+    cluster_rows = FALSE,
+    annotation_col = data.frame(
+        log_Age = y_ord,
+        row.names = colnames(X_ord)
+    ),
+    show_rownames = FALSE,
+    show_colnames = FALSE
+)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="612" style="display: block; margin: auto;" />
 
 We have a matrix of methylation values $X$ and a vector of ages in years $y$.
 One way to model this is to see if we can "predict" methylation using age.
@@ -159,18 +231,18 @@ lm(formula = X[1, ] ~ y)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--1.25406 -0.05719  0.18118  0.28574  0.40238 
+-1.25903 -0.05976  0.18199  0.27708  0.41292 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  2.03577    0.24947   8.160  1.3e-09 ***
-y            0.00572    0.00727   0.787    0.437    
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)   1.6020     0.8555   1.873   0.0695 .
+y             0.1807     0.2481   0.728   0.4714  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.4748 on 35 degrees of freedom
-Multiple R-squared:  0.01738,	Adjusted R-squared:  -0.01069 
-F-statistic: 0.6192 on 1 and 35 DF,  p-value: 0.4367
+Residual standard error: 0.4753 on 35 degrees of freedom
+Multiple R-squared:  0.01492,	Adjusted R-squared:  -0.01322 
+F-statistic: 0.5301 on 1 and 35 DF,  p-value: 0.4714
 ~~~
 {: .output}
 
@@ -189,10 +261,10 @@ tidy(fit)
 
 ~~~
 # A tibble: 2 x 5
-  term        estimate std.error statistic       p.value
-  <chr>          <dbl>     <dbl>     <dbl>         <dbl>
-1 (Intercept)  2.04      0.249       8.16  0.00000000130
-2 y            0.00572   0.00727     0.787 0.437        
+  term        estimate std.error statistic p.value
+  <chr>          <dbl>     <dbl>     <dbl>   <dbl>
+1 (Intercept)    1.60      0.855     1.87   0.0695
+2 y              0.181     0.248     0.728  0.471 
 ~~~
 {: .output}
 
@@ -216,7 +288,7 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="612" style="display: block; margin: auto;" />
 
 # Multiple testing
 
@@ -247,7 +319,7 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -283,7 +355,9 @@ plot(df_all$estimate, -log10(df_all$p.value),
 
 ## Adjusting for multiple comparisons
 
-When performing mul
+When performing many statistical tests to
+categorise features, we're effectively classifying
+features.
 
 |              |Predicted true|Predicted false|
 |-------------:|-------------:|--------------:|
@@ -349,7 +423,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="612" style="display: block; margin: auto;" />
 
 
 
