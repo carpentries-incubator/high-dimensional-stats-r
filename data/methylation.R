@@ -12,6 +12,9 @@ unnorm <- hub[["EH1136"]]
 norm <- preprocessQuantile(unnorm)
 y <- as.numeric(factor(norm$smoker)) - 1
 
+cn <- setdiff(colnames(colData(norm)), c("Basename", "filenames"))
+colData(norm) <- colData(norm)[, cn]
+
 cc <- complete.cases(y)
 norm <- norm[, cc]
 set.seed(42)

@@ -56,28 +56,47 @@ $$
     y = X\beta + \epsilon
 $$
 
+
 Another way of saying this is that y follows a normal distribution with
 
 $$
     y \sim N(X\beta, \sigma^2)
 $$
 
+Or, visually, that (for example) this is the distribution 
+of new points conditional on their $x$ values:
+
+```{r}
+x <- cbind(rep(1, 100), rnorm(100))
+beta <- rnorm(2)
+sx <- seq(min(x), max(x), length.out = 200)
+sy <- seq(min(x), max(x), length.out = 200)
+fx <- cbind(rep(1, 200), sx) %*% beta
+
+dens <- matrix(NA, 200, 200)
+for (i in seq_along(sx)) {
+    for (j in seq_along(sy)) {
+        dens[i, j] <- dnorm(sy[[j]], mean = fx[[i]])
+    }
+}
+image(sx, sy, dens, col = viridis::viridis(100, option = "magma"))
+```
 
 
 > ## Exercise
+>
+>
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
-> How does the "significance" of the model vary when you vary the parameters?
-> 
-> How does the degree of noise affect the level of certainty in the fitted
-> trend?
-> 
-> With a large number of observations, how weak of an effect can you detect?
-> Is a really small effect (0.1 slope) really "significant" in the way you'd
-> use that word conversationally?
-> 
-> With a small number of observations, how strong does the relationship need
-> to be (or how small the noise) before you can detect it?
+> 1. How does the "significance" of the model vary when you vary the parameters?
+> 2. How does the degree of noise affect the level of certainty in the fitted
+>   trend?
+> 3. With a small number of observations, how strong does the relationship need
+>   to be (or how small the noise) before you can detect it?
+> 4. With a large number of observations, how weak of an effect can you detect?
+>   Is a really small effect (0.1 slope) really "significant" in the way you'd
+>   use that word conversationally?
+>
 > > ## Solution
 > > todo: plot examples for each question
 > {: .solution}
@@ -103,11 +122,11 @@ suppressPackageStartupMessages({
 # Data
 
 For the following few episodes, we'll be working with human
-DNA methylation data from . These come in the form of a matrix
+DNA methylation data from flow-sorted blood samples.
+These come in the form of a matrix
 of normalised methylation levels (M-values, for the technical among
-you).
-
-
+you). Along with this, we have a number of sample phenotypes
+(eg, age in years, BMI).
 
 The following code will read in the data for this episode.
 
@@ -125,7 +144,6 @@ if (!file.exists(here("data/methylation.rds"))) {
 norm <- readRDS(here("data/methylation.rds"))
 
 norm <- norm
-y <- norm$Age
 X <- getM(norm)
 ```
 
@@ -133,7 +151,42 @@ The distribution of each of these looks like this:
 
 ```{r}
 hist(X, breaks = "FD", xlab = "M-value")
-hist(y, breaks = "FD", xlab = "Age (years)")
+```
+
+In high-throughput experiments like this, we commonly have one or more 
+phenotypes that we want to relate to molecular features.
+In this case, these phenotypes are as follows:
+
+```{r}
+knitr::kable(head(colData(norm)))
+```
+
+In this case, we will focus on age in years. The association between
+age and methylation status in blood samples has been studied extensively,
+and is actually a good case-study in how to perform some of the techniques
+we will cover in this lesson.
+The distribution of age in these samples is as follows:
+
+```{r}
+y <- log(norm$Age)
+hist(y, breaks = "FD", xlab = "log(Age)")
+```
+
+```{r}
+library("pheatmap")
+order <- order(y)
+y_ord <- y[order]
+X_ord <- X[, order]
+pheatmap(X_ord,
+    cluster_cols = FALSE,
+    cluster_rows = FALSE,
+    annotation_col = data.frame(
+        log_Age = y_ord,
+        row.names = colnames(X_ord)
+    ),
+    show_rownames = FALSE,
+    show_colnames = FALSE
+)
 ```
 
 We have a matrix of methylation values $X$ and a vector of ages in years $y$.
@@ -240,7 +293,9 @@ plot(df_all$estimate, -log10(df_all$p.value),
 
 ## Adjusting for multiple comparisons
 
-When performing mul
+When performing many statistical tests to
+categorise features, we're effectively classifying
+features.
 
 |              |Predicted true|Predicted false|
 |-------------:|-------------:|--------------:|

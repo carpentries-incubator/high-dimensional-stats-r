@@ -30,6 +30,7 @@ Imports:
     minfi,
     mixtools,
     PCAtools,
+    pheatmap,
     qvalue,
     renv,
     rmarkdown,
@@ -40,4 +41,5 @@ Imports:
     scRNAseq,
     scuttle,
     stats,
-    stringr
+    stringr,
+    viridis
