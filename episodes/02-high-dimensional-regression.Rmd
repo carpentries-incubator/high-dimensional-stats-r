@@ -1,7 +1,7 @@
 ---
 title: "Regression with many features"
-teaching: 0
-exercises: 0
+teaching: 60
+exercises: 30
 questions:
 - "How can we apply regression methods in a high-dimensional setting?"
 - "How can we control for the fact that we do many tests?"
@@ -28,34 +28,106 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("02-")
 ```
 
+# Problem statement
+
+In high-throughput studies, it's common to have one or more 
+phenotypes that we want to relate to molecular features.
+In general, we want to identify differences in the molecular
+features (eg, gene expression, DNA methylation levels)
+that are related to a phenotype or grouping of our samples.
+Identifying molecular features that vary along with
+phenotypes or groupings can allow us to understand how
+phenotypes arise or manifest.
+
+For example, we might want to identify genes that are
+expressed at a higher level in mutant mice relative
+to wild-type mice to understand the effect
+of a mutation on cellular phenotypes.
+Alternatively, we might have
+samples from a set of patients, and wish to identify
+epigenetic features that are different in young patients
+relative to old patients, to help us understand how aging
+manifests.
+
+Using linear regression, it's possible to identify differences
+like these . However, high-dimensional data like the ones we're
+working with require some special considerations.
+
+Ideally, we want to identify cases like this, where there is a
+clear difference, and we probably "don't need" statistics:
+```{r, echo=FALSE}
+library("ggplot2")
+set.seed(42)
+n <- 10
+x <- c(rnorm(n, 0), rnorm(n, 3))
+group <- (2 * x) + rnorm(n)
+ggplot() +
+    aes(x = group, y = x) +
+    geom_point() +
+    labs(x = "Age", y = "Gene expression")
+```
+
+or equivalently for a discrete covariate:
+
+```{r, echo=FALSE}
+library("ggplot2")
+set.seed(42)
+n <- 10
+x <- c(rnorm(n, 0), rnorm(n, 3))
+group <- c(rep("A", n), rep("B", n))
+ggplot() +
+    aes(x = group, y = x, colour = group) +
+    # geom_violin() +
+    # geom_boxplot(width = 0.25) +
+    geom_jitter(height = 0, width = 0.2) +
+    labs(y = "Gene expression")
+```
+
+However, often due to small differences and small sample sizes,
+the problem is a bit more difficult:
+```{r, echo=FALSE}
+library("ggplot2")
+set.seed(66)
+n <- 5
+x <- c(rnorm(n, 0), rnorm(n, 1))
+group <- c(rep("A", n), rep("B", n))
+ggplot() +
+    aes(x = group, y = x, colour = group) +
+    # geom_violin() +
+    # geom_boxplot(width = 0.25) +
+    geom_jitter(height = 0, width = 0.2) +
+    labs(y = "Gene expression")
+```
+
+And, of course, we often have an awful lot of features and need
+to prioritise a subset of them! We need a rigorous way to
+prioritise genes for further analysis.
+
 # Linear regression (recap)
 
 Linear regression is a tool we can use to quantify the relationship
-between two variables.
-
-
-Linear regression with one predictor variable $x$ comprises the following 
-equation
+between two variables. With one predictor variable $x$,
+it amounts to the following equation:
 
 $$
     y_i = \beta_0 + \beta_1 x_i + \epsilon_i
 $$
 
-
 where $\epsilon_i$ is the *noise*, or the variation in $y$ that isn't explained
 by the relationship we're modelling. We assume this noise follows a normal
-distribution, that is:
+distribution[^1], that is:
 
 $$
     \epsilon_i \sim N(0, \sigma^2)
 $$
+
+[^1]: It's not hugely problematic if the assumption of normal residuals is violated.
 
 We can also write this using linear algebra (matrices and vectors) as follows: 
 
 $$
     y = X\beta + \epsilon
 $$
-
 
 Another way of saying this is that y follows a normal distribution with
 
@@ -66,7 +138,8 @@ $$
 Or, visually, that (for example) this is the distribution 
 of new points conditional on their $x$ values:
 
-```{r}
+```{r, echo=FALSE}
+set.seed(42)
 x <- cbind(rep(1, 100), rnorm(100))
 beta <- rnorm(2)
 sx <- seq(min(x), max(x), length.out = 200)
@@ -79,7 +152,7 @@ for (i in seq_along(sx)) {
         dens[i, j] <- dnorm(sy[[j]], mean = fx[[i]])
     }
 }
-image(sx, sy, dens, col = viridis::viridis(100, option = "magma"))
+image(sx, sy, dens, col = viridis::viridis(100, option = "magma"), xlab="x", ylab="y")
 ```
 
 
@@ -88,11 +161,10 @@ image(sx, sy, dens, col = viridis::viridis(100, option = "magma"))
 >
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
-> 1. How does the "significance" of the model vary when you vary the parameters?
 > 2. How does the degree of noise affect the level of certainty in the fitted
 >   trend?
 > 3. With a small number of observations, how strong does the relationship need
->   to be (or how small the noise) before you can detect it?
+>   to be (or how small the noise) before it is significant?
 > 4. With a large number of observations, how weak of an effect can you detect?
 >   Is a really small effect (0.1 slope) really "significant" in the way you'd
 >   use that word conversationally?
@@ -121,9 +193,13 @@ suppressPackageStartupMessages({
 
 # Data
 
+
 For the following few episodes, we'll be working with human
 DNA methylation data from flow-sorted blood samples.
-These come in the form of a matrix
+DNA methylation assays measure, for many sites in the genome,
+the proportion of DNA that carries a methyl mark.
+
+In this case, the methylation data come in the form of a matrix
 of normalised methylation levels (M-values, for the technical among
 you). Along with this, we have a number of sample phenotypes
 (eg, age in years, BMI).
@@ -147,7 +223,7 @@ norm <- norm
 X <- getM(norm)
 ```
 
-The distribution of each of these looks like this:
+The distribution of these M-values looks like this:
 
 ```{r}
 hist(X, breaks = "FD", xlab = "M-value")
@@ -165,6 +241,7 @@ In this case, we will focus on age in years. The association between
 age and methylation status in blood samples has been studied extensively,
 and is actually a good case-study in how to perform some of the techniques
 we will cover in this lesson.
+
 The distribution of age in these samples is as follows:
 
 ```{r}
@@ -173,21 +250,70 @@ hist(y, breaks = "FD", xlab = "log(Age)")
 ```
 
 ```{r}
-library("pheatmap")
+library("ComplexHeatmap")
 order <- order(y)
 y_ord <- y[order]
 X_ord <- X[, order]
-pheatmap(X_ord,
-    cluster_cols = FALSE,
-    cluster_rows = FALSE,
-    annotation_col = data.frame(
-        log_Age = y_ord,
-        row.names = colnames(X_ord)
+Heatmap(X_ord,
+    cluster_columns = FALSE,
+    # cluster_rows = FALSE,
+    name = "M-value",
+    col = RColorBrewer::brewer.pal(10, "RdYlBu"),
+    top_annotation = columnAnnotation(
+        log_Age = y_ord
     ),
-    show_rownames = FALSE,
-    show_colnames = FALSE
+    show_row_names = FALSE,
+    show_column_names = FALSE,
+    row_title = "Feature",
+    column_title =  "Sample",
+    use_raster = FALSE
 )
 ```
+
+
+> ## Measuring DNA Methylation
+> 
+> DNA methylation is an epigenetic modification of DNA.
+> Generally, we are interested in the proportion of 
+> methylation at many sites or regions in the genome.
+> DNA methylation microarrays, as we are using here,
+> measure DNA methylation using two-channel microarrays,
+> where one channel captures signal from methylated
+> DNA and the other captures unmethylated signal.
+> These data can be summarised
+> as "Beta values" ($\beta$ values), which is the ratio
+> of the methylated signal to the total signal 
+> (methylated plus unmethylated).
+> The $\beta$ value for site $i$ is calculated as
+> 
+> $$
+>     \beta_i = \frac{
+>         m_i
+>     } {
+>         u_{i} + m_{i}
+>     }
+> $$
+> 
+> where $m_i$ is the methylated signal for site $i$ and
+> $u_i$ is the unmethylated signal for site $i$.
+> $\beta$ values take on a value in the range 
+> $[0, 1]$, with 0 representing a completely unmethylated 
+> site and 1 representing a completely methylated site.
+> 
+> The M-values we use here are the $\log_2$ ratio of 
+> methylated versus unmethylated signal:
+>
+> $$
+>     M_i = \log_2\left(\frac{m_i}{u_i}\right)
+> $$
+> 
+> M-values are not bounded to an interval as Beta-values
+> are, and therefore may be less problematic for 
+> statistical treatment.
+{: .callout}
+
+
+# Running linear regression
 
 We have a matrix of methylation values $X$ and a vector of ages in years $y$.
 One way to model this is to see if we can "predict" methylation using age.
@@ -196,6 +322,7 @@ Formally we'd describe that as:
 $$
     X_{i,j} = \beta_0 + \beta_1 y_j + \epsilon_i
 $$
+where $y_j$ is the age of sample $j$.
 
 You may remember how to fit this model from a previous lesson, and how to
 get more information from the model object:
@@ -404,10 +531,14 @@ hist(q)
 > 
 > For example in `DESeq2`, the authors used the observation
 > that genes with similar expression counts in RNAseq data
-> have similar *dispersion*.
+> have similar *dispersion*, and a better estimate of
+> these dispersion parameters makes inference about
+> fold changes much more stable.
 > Similarly, in `limma` the authors made the assumption that
 > in the absence of biological effects, we can often expect the
-> technical variation between genes to be similar. 
+> technical variation between genes to be similar, and better
+> estimates of variability allow us to prioritise genes
+> in a more reliable way.
 > 
 > There are many good resources to learn about this type of approach,
 > including:
