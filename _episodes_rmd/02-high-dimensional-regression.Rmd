@@ -121,8 +121,6 @@ $$
     \epsilon_i \sim N(0, \sigma^2)
 $$
 
-[^1]: It's not hugely problematic if the assumption of normal residuals is violated.
-
 We can also write this using linear algebra (matrices and vectors) as follows: 
 
 $$
@@ -154,6 +152,22 @@ for (i in seq_along(sx)) {
 }
 image(sx, sy, dens, col = viridis::viridis(100, option = "magma"), xlab="x", ylab="y")
 ```
+
+In order to decide whether a result would be unlikely
+under the null hypothesis, we can calculate a test statistic.
+For a coefficient in a linear model, the test statistic is
+a t-statistic given by:
+
+$$
+    t_{ij} = \frac{\hat{\beta}_{ij}}{SE(\hat{\beta}_{ij})}
+$$
+
+$SE(\hat{\beta}_{ij})$ measures the uncertainty we have in our effect
+size estimate. 
+
+Knowing what distribution these t-values follow under the null
+hypothesis allows us to determine how unlikely it would be for
+us to observe what we have under those circumstances.
 
 
 > ## Exercise
@@ -192,7 +206,6 @@ suppressPackageStartupMessages({
 ```
 
 # Data
-
 
 For the following few episodes, we'll be working with human
 DNA methylation data from flow-sorted blood samples.
@@ -359,9 +372,8 @@ plot(df_all$estimate, -log10(df_all$p.value),
 )
 ```
 
-# Multiple testing
 
-## The problem of multiple tests
+# The problem of multiple tests
 
 With such a large number of features, we often want some way
 to decide which features are "interesting" or "significant"
@@ -418,31 +430,89 @@ plot(df_all$estimate, -log10(df_all$p.value),
 {: .challenge}
 
 
-## Adjusting for multiple comparisons
+# Adjusting for multiple comparisons
 
 When performing many statistical tests to
 categorise features, we're effectively classifying
 features.
+
+We can think of these features as being 
+"truly different" or "not truly different"[^2].
+Using this idea, we can see that each 
+categorisation we make falls into four categories:
 
 |              |Predicted true|Predicted false|
 |-------------:|-------------:|--------------:|
 |Actually true |True positive |False negative |
 |Actually false|False positive|True negative  |
 
+Under the null hypothesis, as we perform more and more
+tests we'll tend to correctly categorise most
+results as negative. However, since p-values
+are uniformly distributed under the null,
+at a significance level of 5%, 5% of all
+results will be "significant" even though
+these are results we expect under the null.
+These can be considered "false discoveries."
 
-The t-statistic for a linear model like this is given by:
+There are two common ways of controlling these
+false discoveries.
 
-$$
-    t_{ij} = \frac{\hat{\beta}_{ij}}{SE(\hat{\beta}_{ij})}
-$$
+The first is to say that
+we want to have the same certainty of making
+one false discovery with $n$ tests as we had with
+one. This is "Bonferroni" correction,[^3] which
+divides the significance level by the number of
+tests performed. Equivalently, we can use the
+non-transformed p-value threshold but multiply
+our p-values by the number of tests.
+This is often very conservative, especially
+with a lot of features!
 
-$SE(\hat{\beta}_{ij})$ measures the uncertainty we have in our effect
-size estimate. 
+The second main way of controlling for multiple tests
+is to control the *false discovery rate*.[^4]
+This is the proportion of false discoveries
+we'd expect to get each time if we repeated
+the experiment over and over.
+
+1. Rank the p-values
+2. Assign each a rank (1 is smallest)
+3. Calculate the critical value 
+    $$
+        q = \left(\frac{i}{m}\right)Q
+    $$,
+    where $i$ is rank, $m$ is the number of tests, and $Q$ is the
+    false discovery rate we want to target.[^5]
+4. Find the largest p-value less than the critical value.
+    All smaller than this are significant.
 
 
-Knowing what distribution these t-values follow under the null
-hypothesis allows us to determine how unlikely it would be for
-us to observe what we have under those circumstances.
+> ## Exercise
+>
+> 1. At a significance level of 0.05, with 100 tests
+>   performed, what is the Bonferroni significance
+>   threshold?
+> 2. In a gene expression experiment, after FDR 
+>   correction we observe 500 significant genes.
+>   What proportion of these genes are truly
+>   different?
+> 
+> > ## Solution
+> > 
+> > 1. The Bonferroni threshold for this significance
+> >   threshold is
+> >   $$
+> >        \frac{0.05}{100} = 0.0005
+> >   $$
+> > 2. Trick question! We can't say what proportion
+> >   of these genes are truly different. However, if
+> >   we repeated this experiment and statistical test
+> >   over and over, on average 5% of the results from
+> >   each run would be false discoveries.
+> > 
+> {: .solution}
+{: .challenge}
+
 
 # Sharing information
 
@@ -452,8 +522,6 @@ parameters. Shrinkage methods can be complex to implement and understand,
 but it's good to understand why these approaches may be more precise 
 and sensitive than the naive approach of fitting a model to each feature
 separately.
-
-
 
 The insight of shrinkage methods is to realise that variance parameters
 like these are probably similar between genes within the same experiment. This
@@ -519,26 +587,36 @@ hist(q)
 > ## Shrinkage
 > 
 > Shrinkage is an intuitive term for an effect
-> of a broad range of statistical models.
+> of information sharing, and is something observed
+> in a broad range of statistical models.
 > Often, shrinkage is induced by a *multilevel*
 > modelling approach or by *Bayesian* methods.
 > 
 > The general idea is that these models incorporate 
-> information about the hierarchical structure of the
+> information about the structure of the
 > data into account when fitting the parameters.
-> The sharing of information is accomplished because we use
-> this information to formulate the model.
+> We can share information between features
+> because of our knowledge about the data structure;
+> this generally requires careful consideration about
+> how the data were generated and the relationships within.
+>
+> An example people often use is estimating the effect
+> of attendance on grades in several schools. We can
+> assume that this effect is similar in different schools
+> (but maybe not identical), so we can *share information*
+> about the effect size between schools and shink our
+> estimates towards a common value.
 > 
 > For example in `DESeq2`, the authors used the observation
 > that genes with similar expression counts in RNAseq data
 > have similar *dispersion*, and a better estimate of
-> these dispersion parameters makes inference about
+> these dispersion parameters makes estimates of
 > fold changes much more stable.
 > Similarly, in `limma` the authors made the assumption that
 > in the absence of biological effects, we can often expect the
-> technical variation between genes to be similar, and better
-> estimates of variability allow us to prioritise genes
-> in a more reliable way.
+> technical variation of each genes to be broadly similar.
+> Again, better estimates of variability allow us to
+> prioritise genes in a more reliable way.
 > 
 > There are many good resources to learn about this type of approach,
 > including:
@@ -547,5 +625,21 @@ hist(q)
 > - [a book by David Robinson](https://gumroad.com/l/empirical-bayes)
 > - [a (relatively technical) book by Gelman and Hill](http://www.stat.columbia.edu/~gelman/arm/)
 {: .callout}
+
+
+[^1]: It's not hugely problematic if the assumption of normal residuals is violated. It mainly affects our ability to accurately predict responses for new, unseen observations.
+
+[^2]: "True difference" is a hard category to rigidly define. As we've seen, with a lot of data, we can detect tiny differences, and with little data, we can't detect large differences. However, both can be argued to be "true".
+
+[^3]: Bonferroni correction is also termed "family-wise" error rate control.
+
+[^4]: This is often called "Benjamini-Hochberg" adjustment.
+
+[^5]: People often perform extra controls on FDR-adjusted p-values, ensuring that ranks don't change and the critical value is never smaller than the original p-value.
+
+
+
+
+
 
 {% include links.md %}
