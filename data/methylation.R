@@ -10,12 +10,24 @@ query(hub, "FlowSorted.Blood.EPIC")
 unnorm <- hub[["EH1136"]]
 
 norm <- preprocessQuantile(unnorm)
-y <- as.numeric(factor(norm$smoker)) - 1
+rm(unnorm); gc();
 
-cn <- setdiff(colnames(colData(norm)), c("Basename", "filenames"))
+drop <- c(
+    "Sample_Plate",
+    "Chip",
+    "Basename", "filenames",
+    "Subject.ID", "smp_type",
+    "Sample_Group",
+    "Pool_ID", "Replicate",
+    "Array_well",
+    "xMed", "yMed",
+    "CD4T", "CD8T", "Bcell", "NK", "Mono", "Neu", "CellType",
+    "predictedSex", "normalmix"
+)
+cn <- setdiff(colnames(colData(norm)), drop)
 colData(norm) <- colData(norm)[, cn]
 
-cc <- complete.cases(y)
+cc <- complete.cases(norm$Age)
 norm <- norm[, cc]
 set.seed(42)
 norm <- norm[sample(nrow(norm), 5000), ]
