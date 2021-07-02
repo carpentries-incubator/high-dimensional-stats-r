@@ -29,11 +29,12 @@ math: yes
 # Problem statement
 
 In high-throughput studies, it's common to have one or more 
-phenotypes that we want to relate to molecular features.
-In general, we want to identify differences in the molecular
-features (eg, gene expression, DNA methylation levels)
+phenotypes or groupings that we want to relate to features of 
+interest (eg, gene expression, DNA methylation levels).
+In general, we want to identify differences in the 
+features of interest
 that are related to a phenotype or grouping of our samples.
-Identifying molecular features that vary along with
+Identifying features of interest that vary along with
 phenotypes or groupings can allow us to understand how
 phenotypes arise or manifest.
 
@@ -53,15 +54,15 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="360" style="display: block; margin: auto;" />
 
 or equivalently for a discrete covariate:
 
-<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="360" style="display: block; margin: auto;" />
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="360" style="display: block; margin: auto;" />
 
 And, of course, we often have an awful lot of features and need
 to prioritise a subset of them! We need a rigorous way to
@@ -125,12 +126,12 @@ us to observe what we have under those circumstances.
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
 > 2. How does the degree of noise affect the level of certainty in the fitted
->   trend?
+>    trend?
 > 3. With a small number of observations, how strong does the relationship need
->   to be (or how small the noise) before it is significant?
+>    to be (or how small the noise) before it is significant?
 > 4. With a large number of observations, how weak of an effect can you detect?
->   Is a really small effect (0.1 slope) really "significant" in the way you'd
->   use that word conversationally?
+>    Is a really small effect (0.1 slope) really "significant" in the way you'd
+>    use that word conversationally?
 >
 > > ## Solution
 > > todo: plot examples for each question
@@ -166,10 +167,9 @@ suppressPackageStartupMessages({
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-norm <- readRDS(here("data/methylation.rds"))
+methylation <- readRDS(here("data/methylation.rds"))
 
-norm <- norm
-X <- getM(norm)
+xmat <- getM(methylation)
 ~~~
 {: .language-r}
 
@@ -177,62 +177,52 @@ The distribution of these M-values looks like this:
 
 
 ~~~
-hist(X, breaks = "FD", xlab = "M-value")
+hist(xmat, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
 <img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="612" style="display: block; margin: auto;" />
 
-In high-throughput experiments like this, we commonly have one or more 
-phenotypes that we want to relate to molecular features.
-In this case, these phenotypes are as follows:
+In this case, the phenotypes and groupings are as follows:
 
 
 ~~~
-knitr::kable(head(colData(norm)))
+knitr::kable(head(colData(methylation)), row.names = FALSE)
 ~~~
 {: .language-r}
 
 
 
-|                    |Sample_Plate   |Sample_Well |Sample_Name |Subject.ID |smp_type    |Sample_Group   |Pool_ID | Chip|Replicate |Array_well          |CellType | CD4T| CD8T| Bcell|  NK| Mono| Neu| purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide| normalmix|     xMed|      yMed|predictedSex |
-|:-------------------|:--------------|:-----------|:-----------|:----------|:-----------|:--------------|:-------|----:|:---------|:-------------------|:--------|----:|----:|-----:|---:|----:|---:|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|---------:|--------:|---------:|:------------|
-|201868500150_R01C01 |EPIC17_Plate01 |A07         |PCA0612     |PCA0612    |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R01C01 |Neu      |    0|    0|     0|   0|    0| 100|     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|         1| 12.66467| 12.913263|M            |
-|201868500150_R03C01 |EPIC17_Plate01 |C07         |NKpan2510   |NKpan2510  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R03C01 |NK       |    0|    0|     0| 100|    0|   0|     95|M   |  49|  81.19303|   1.6764| 28.89106|Overweight |Indo-European  |Caucasian      |No     |R03C01 | 201868500150|         1| 12.95019| 13.207167|M            |
-|201868500150_R05C01 |EPIC17_Plate01 |E07         |WB1148      |WB1148     |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R05C01 |Neu      |    0|    0|     0|   0|    0| 100|     95|M   |  20|  80.28585|   1.7526| 26.13806|Overweight |Indo-European  |Persian        |No     |R05C01 | 201868500150|         1| 13.05562| 13.308481|M            |
-|201868500150_R07C01 |EPIC17_Plate01 |G07         |B0044       |B0044      |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R07C01 |Bcell    |    0|    0|   100|   0|    0|   0|     97|M   |  49|  82.55381|   1.7272| 27.67272|Overweight |Indo-European  |Caucasian      |No     |R07C01 | 201868500150|         1| 13.08431| 13.349696|M            |
-|201868500150_R08C01 |EPIC17_Plate01 |H07         |NKpan1869   |NKpan1869  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R08C01 |NK       |    0|    0|     0| 100|    0|   0|     95|F   |  33|  87.54333|   1.7272| 29.34525|Overweight |Indo-European  |Caucasian      |No     |R08C01 | 201868500150|         1| 13.71301|  9.417853|F            |
-|201868590193_R02C01 |EPIC17_Plate01 |B03         |NKpan1850   |NKpan1850  |Cell Pellet |ChristensenLab |NA      |    3|          |201868590193_R02C01 |NK       |    0|    0|     0| 100|    0|   0|     93|F   |  21|  87.54333|   1.6764| 31.15070|Obese      |Mixed          |Finnish/Creole |No     |R02C01 | 201868590193|         1| 13.50438|  9.594325|F            |
+|Sample_Plate   |Sample_Well |Sample_Name |Subject.ID |smp_type    |Sample_Group   |Pool_ID | Chip|Replicate |Array_well          |CellType | CD4T| CD8T| Bcell|  NK| Mono| Neu| purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide| normalmix|     xMed|      yMed|predictedSex |
+|:--------------|:-----------|:-----------|:----------|:-----------|:--------------|:-------|----:|:---------|:-------------------|:--------|----:|----:|-----:|---:|----:|---:|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|---------:|--------:|---------:|:------------|
+|EPIC17_Plate01 |A07         |PCA0612     |PCA0612    |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R01C01 |Neu      |    0|    0|     0|   0|    0| 100|     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|         1| 12.66467| 12.913263|M            |
+|EPIC17_Plate01 |C07         |NKpan2510   |NKpan2510  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R03C01 |NK       |    0|    0|     0| 100|    0|   0|     95|M   |  49|  81.19303|   1.6764| 28.89106|Overweight |Indo-European  |Caucasian      |No     |R03C01 | 201868500150|         1| 12.95019| 13.207167|M            |
+|EPIC17_Plate01 |E07         |WB1148      |WB1148     |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R05C01 |Neu      |    0|    0|     0|   0|    0| 100|     95|M   |  20|  80.28585|   1.7526| 26.13806|Overweight |Indo-European  |Persian        |No     |R05C01 | 201868500150|         1| 13.05562| 13.308481|M            |
+|EPIC17_Plate01 |G07         |B0044       |B0044      |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R07C01 |Bcell    |    0|    0|   100|   0|    0|   0|     97|M   |  49|  82.55381|   1.7272| 27.67272|Overweight |Indo-European  |Caucasian      |No     |R07C01 | 201868500150|         1| 13.08431| 13.349696|M            |
+|EPIC17_Plate01 |H07         |NKpan1869   |NKpan1869  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R08C01 |NK       |    0|    0|     0| 100|    0|   0|     95|F   |  33|  87.54333|   1.7272| 29.34525|Overweight |Indo-European  |Caucasian      |No     |R08C01 | 201868500150|         1| 13.71301|  9.417853|F            |
+|EPIC17_Plate01 |B03         |NKpan1850   |NKpan1850  |Cell Pellet |ChristensenLab |NA      |    3|          |201868590193_R02C01 |NK       |    0|    0|     0| 100|    0|   0|     93|F   |  21|  87.54333|   1.6764| 31.15070|Obese      |Mixed          |Finnish/Creole |No     |R02C01 | 201868590193|         1| 13.50438|  9.594325|F            |
 
-In this case, we will focus on age in years. The association between
+In this case, we will focus on age. The association between
 age and methylation status in blood samples has been studied extensively,
 and is actually a good case-study in how to perform some of the techniques
 we will cover in this lesson.
 
-The distribution of age in these samples is as follows:
 
 
 ~~~
-y <- log(norm$Age)
-hist(y, breaks = "FD", xlab = "log(Age)")
-~~~
-{: .language-r}
+age <- methylation$Age
 
-<img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="612" style="display: block; margin: auto;" />
-
-
-~~~
 library("ComplexHeatmap")
-order <- order(y)
-y_ord <- y[order]
-X_ord <- X[, order]
-Heatmap(X_ord,
+order <- order(age)
+age_ord <- age[order]
+xmat_ord <- xmat[, order]
+Heatmap(xmat_ord,
     cluster_columns = FALSE,
     # cluster_rows = FALSE,
     name = "M-value",
     col = RColorBrewer::brewer.pal(10, "RdYlBu"),
     top_annotation = columnAnnotation(
-        log_Age = y_ord
+        age = age
     ),
     show_row_names = FALSE,
     show_column_names = FALSE,
@@ -243,7 +233,7 @@ Heatmap(X_ord,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="612" style="display: block; margin: auto;" />
 
 
 > ## Measuring DNA Methylation
@@ -290,7 +280,7 @@ Heatmap(X_ord,
 
 # Running linear regression
 
-We have a matrix of methylation values $X$ and a vector of ages in years $y$.
+We have a matrix of methylation values $X$ and a vector of ages, $y$.
 One way to model this is to see if we can "predict" methylation using age.
 Formally we'd describe that as:
 
@@ -304,7 +294,7 @@ get more information from the model object:
 
 
 ~~~
-fit <- lm(X[1, ] ~ y)
+fit <- lm(xmat[1, ] ~ age)
 summary(fit)
 ~~~
 {: .language-r}
@@ -314,22 +304,22 @@ summary(fit)
 ~~~
 
 Call:
-lm(formula = X[1, ] ~ y)
+lm(formula = xmat[1, ] ~ age)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--1.25903 -0.05976  0.18199  0.27708  0.41292 
+-1.25406 -0.05719  0.18118  0.28574  0.40238 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)  
-(Intercept)   1.6020     0.8555   1.873   0.0695 .
-y             0.1807     0.2481   0.728   0.4714  
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  2.03577    0.24947   8.160  1.3e-09 ***
+age          0.00572    0.00727   0.787    0.437    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.4753 on 35 degrees of freedom
-Multiple R-squared:  0.01492,	Adjusted R-squared:  -0.01322 
-F-statistic: 0.5301 on 1 and 35 DF,  p-value: 0.4714
+Residual standard error: 0.4748 on 35 degrees of freedom
+Multiple R-squared:  0.01738,	Adjusted R-squared:  -0.01069 
+F-statistic: 0.6192 on 1 and 35 DF,  p-value: 0.4367
 ~~~
 {: .output}
 
@@ -348,10 +338,10 @@ tidy(fit)
 
 ~~~
 # A tibble: 2 x 5
-  term        estimate std.error statistic p.value
-  <chr>          <dbl>     <dbl>     <dbl>   <dbl>
-1 (Intercept)    1.60      0.855     1.87   0.0695
-2 y              0.181     0.248     0.728  0.471 
+  term        estimate std.error statistic       p.value
+  <chr>          <dbl>     <dbl>     <dbl>         <dbl>
+1 (Intercept)  2.04      0.249       8.16  0.00000000130
+2 age          0.00572   0.00727     0.787 0.437        
 ~~~
 {: .output}
 
@@ -360,10 +350,10 @@ for every feature.
 
 
 ~~~
-dfs <- lapply(seq_len(nrow(X)),
+dfs <- lapply(seq_len(nrow(xmat)),
     function(i) {
-        df <- tidy(lm(X[i, ] ~ y))[2, ]
-        df$term <- rownames(X)[[i]]
+        df <- tidy(lm(xmat[i, ] ~ age))[2, ]
+        df$term <- rownames(xmat)[[i]]
         df
     }
 )
@@ -375,7 +365,7 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="612" style="display: block; margin: auto;" />
 
 
 # The problem of multiple tests
@@ -389,23 +379,23 @@ we scramble age and run the same test again:
 
 
 ~~~
-y_perm <- y[sample(ncol(X), ncol(X))]
-dfs <- lapply(seq_len(nrow(X)),
+age_perm <- age[sample(ncol(xmat), ncol(xmat))]
+dfs <- lapply(seq_len(nrow(xmat)),
     function(i) {
-        df <- tidy(lm(X[i, ] ~ y_perm))[2, ]
-        df$term <- rownames(X)[[i]]
+        df <- tidy(lm(xmat[i, ] ~ age_perm))[2, ]
+        df$term <- rownames(xmat)[[i]]
         df
     }
 )
-df_all <- do.call(rbind, dfs)
-plot(df_all$estimate, -log10(df_all$p.value),
+df_all_perm <- do.call(rbind, dfs)
+plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -478,6 +468,24 @@ our p-values by the number of tests.
 This is often very conservative, especially
 with a lot of features!
 
+
+~~~
+p_raw <- df_all$p.value
+p_fwer <- p.adjust(p_raw, method = "bonferroni")
+ggplot() +
+    aes(p_raw, p_fwer) +
+    geom_point() +
+    scale_x_log10() + scale_y_log10() +
+    geom_abline(slope = 1, linetype = "dashed") +
+    geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
+    geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+    labs(x = "Raw p-value", y = "Bonferroni p-value")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="612" style="display: block; margin: auto;" />
+
+
 The second main way of controlling for multiple tests
 is to control the *false discovery rate*.[^4]
 This is the proportion of false discoveries
@@ -496,29 +504,68 @@ the experiment over and over.
     All smaller than this are significant.
 
 
+|FWER|FDR|
+|-------------:|--------------:|
+|+ |+ |
+|+ |+ |
+
 > ## Exercise
 >
 > 1. At a significance level of 0.05, with 100 tests
->   performed, what is the Bonferroni significance
->   threshold?
+>    performed, what is the Bonferroni significance
+>    threshold?
 > 2. In a gene expression experiment, after FDR 
->   correction we observe 500 significant genes.
->   What proportion of these genes are truly
->   different?
-> 
+>    correction we observe 500 significant genes.
+>    What proportion of these genes are truly
+>    different?
+> 3. Try running FDR correction on the `p_raw` vector.
+>    (hint: check `help("p.adjust")` to see what the method)
+>    is called. Compare these values to the raw p-values
+>    and the Bonferroni p-values.
+>  
 > > ## Solution
 > > 
 > > 1. The Bonferroni threshold for this significance
-> >   threshold is
-> >   $$
-> >        \frac{0.05}{100} = 0.0005
-> >   $$
+> >    threshold is
+> >    $$
+> >         \frac{0.05}{100} = 0.0005
+> >    $$
 > > 2. Trick question! We can't say what proportion
-> >   of these genes are truly different. However, if
-> >   we repeated this experiment and statistical test
-> >   over and over, on average 5% of the results from
-> >   each run would be false discoveries.
-> > 
+> >    of these genes are truly different. However, if
+> >    we repeated this experiment and statistical test
+> >    over and over, on average 5% of the results from
+> >    each run would be false discoveries.
+> > 3. The following code runs FDR correction and compares it to
+> >    non-corrected values and to Bonferroni:
+> >    
+> >    ~~~
+> >    p_fdr <- p.adjust(p_raw, method = "BH")
+> >    ggplot() +
+> >        aes(p_raw, p_fdr) +
+> >        geom_point() +
+> >        scale_x_log10() + scale_y_log10() +
+> >        geom_abline(slope = 1, linetype = "dashed") +
+> >        geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
+> >        geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+> >        labs(x = "Raw p-value", y = "Benjamini-Hochberg p-value")
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    ggplot() +
+> >        aes(p_fdr, p_fwer) +
+> >        geom_point() +
+> >        scale_x_log10() + scale_y_log10() +
+> >        geom_abline(slope = 1, linetype = "dashed") +
+> >        geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
+> >        geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+> >        labs(x = "Benjamini-Hochberg p-value", y = "Bonferroni p-value")
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-16-2.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -526,13 +573,10 @@ the experiment over and over.
 # Sharing information
 
 One idea is to take advantage of the fact that we're doing all these tests 
-at once. We can leverage this fact to perform *shrinkage* of some model
-parameters. Shrinkage methods can be complex to implement and understand,
-but it's good to understand why these approaches may be more precise 
-and sensitive than the naive approach of fitting a model to each feature
-separately.
+at once. We can leverage this fact to *share information* between model
+parameters. 
 
-The insight of shrinkage methods is to realise that variance parameters
+The insight that we use to perform *information pooling* like this is that variance parameters
 like these are probably similar between genes within the same experiment. This
 enables us to share information between genes to get more robust
 estimators.
@@ -546,16 +590,28 @@ $$
 
 $s_i^2$ is the variance of residuals.
 
+todo: figure showing limma shrinkage
+todo: note about age of limma
+
+You can see that the effect of pooling is to shrink large 
+estimates downwards and small estimates upwards, all towards
+a common value. The degree of shrinkage generally depends on 
+the amount of pooled information and the strength of the 
+evidence independent of pooling.
 
 Similarly, DESeq2 shares information between genes
 to *shrink* estimates of a noise parameter, in that case to model counts.
 
+Shrinkage methods can be complex to implement and understand,
+but it's good to understand why these approaches may be more precise 
+and sensitive than the naive approach of fitting a model to each feature
+separately.
+
+
 
 ~~~
-## age - strong comparison
-design <- model.matrix(~y)
-colnames(design) <- c("intercept", "age")
-fit <- lmFit(X, design = design)
+design <- model.matrix(~age)
+fit <- lmFit(xmat, design = design)
 fit <- eBayes(fit)
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
 plot(tt1$logFC, -log10(tt1$P.Value),
@@ -565,11 +621,60 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-17-1.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" width="612" style="display: block; margin: auto;" />
+
 
 
 
 > ## Exercise
+> 
+> 1. Try to run the same kind of linear model with smoking 
+>    status as covariate instead of age, and making a volcano
+>    plot.
+> 2. Notice that `limma` creates an `adj.P.Val` column in the output you just 
+>    created. What
+>    kind of p-value adjustment is it doing? Bonferroni,
+>    Benjamini-Hochberg, or something else?
+> 
+> Note: smoking status is stored as `methylation$smoker`.
+>
+> > ## Solution
+> > 
+> > 1. The following code runs the same type of model with smoking status:
+> >    
+> >    ~~~
+> >    design <- model.matrix(~methylation$smoker)
+> >    fit <- lmFit(xmat, design = design)
+> >    fit <- eBayes(fit)
+> >    tt1 <- topTable(fit, coef = 2, number = nrow(fit))
+> >    plot(tt1$logFC, -log10(tt1$P.Value),
+> >        xlab = "Effect size", ylab = bquote(-log[10](p)),
+> >        pch = 19
+> >    )
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="612" style="display: block; margin: auto;" />
+> > 2. We can use `all.equal` to compare vectors:
+> >    
+> >    ~~~
+> >    all.equal(p.adjust(tt1$P.Value, method = "BH"), tt1$adj.P.Val)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] TRUE
+> >    ~~~
+> >    {: .output}
+> {: .solution}
+{: .challenge}
+
+
+
+> ## Exercise
+> 
 > Launch `shinystats::limmaApp` and adjust the parameters. 
 > 
 > Discuss the output in groups. Consider the following questions:
@@ -592,7 +697,6 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    but larger standard error.
 > {: .solution}
 {: .challenge}
-
 
 > ## Shrinkage
 > 
@@ -636,7 +740,6 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > - [a (relatively technical) book by Gelman and Hill](http://www.stat.columbia.edu/~gelman/arm/)
 {: .callout}
 
-
 [^1]: It's not hugely problematic if the assumption of normal residuals is violated. It mainly affects our ability to accurately predict responses for new, unseen observations.
 
 [^2]: "True difference" is a hard category to rigidly define. As we've seen, with a lot of data, we can detect tiny differences, and with little data, we can't detect large differences. However, both can be argued to be "true".
@@ -646,10 +749,5 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 [^4]: This is often called "Benjamini-Hochberg" adjustment.
 
 [^5]: People often perform extra controls on FDR-adjusted p-values, ensuring that ranks don't change and the critical value is never smaller than the original p-value.
-
-
-
-
-
 
 {% include links.md %}
