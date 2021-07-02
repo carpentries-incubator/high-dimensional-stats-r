@@ -31,11 +31,12 @@ knitr_fig_path("02-")
 # Problem statement
 
 In high-throughput studies, it's common to have one or more 
-phenotypes that we want to relate to molecular features.
-In general, we want to identify differences in the molecular
-features (eg, gene expression, DNA methylation levels)
+phenotypes or groupings that we want to relate to features of 
+interest (eg, gene expression, DNA methylation levels).
+In general, we want to identify differences in the 
+features of interest
 that are related to a phenotype or grouping of our samples.
-Identifying molecular features that vary along with
+Identifying features of interest that vary along with
 phenotypes or groupings can allow us to understand how
 phenotypes arise or manifest.
 
@@ -55,8 +56,9 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width=5, fig.height=4}
 library("ggplot2")
+theme_set(theme_bw())
 set.seed(42)
 n <- 10
 x <- c(rnorm(n, 0), rnorm(n, 3))
@@ -69,11 +71,11 @@ ggplot() +
 
 or equivalently for a discrete covariate:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width=5, fig.height=4}
 library("ggplot2")
 set.seed(42)
 n <- 10
-x <- c(rnorm(n, 0), rnorm(n, 3))
+x <- c(rnorm(n, 0), rnorm(n, 5))
 group <- c(rep("A", n), rep("B", n))
 ggplot() +
     aes(x = group, y = x, colour = group) +
@@ -85,7 +87,7 @@ ggplot() +
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width=5, fig.height=4}
 library("ggplot2")
 set.seed(66)
 n <- 5
@@ -176,12 +178,12 @@ us to observe what we have under those circumstances.
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
 > 2. How does the degree of noise affect the level of certainty in the fitted
->   trend?
+>    trend?
 > 3. With a small number of observations, how strong does the relationship need
->   to be (or how small the noise) before it is significant?
+>    to be (or how small the noise) before it is significant?
 > 4. With a large number of observations, how weak of an effect can you detect?
->   Is a really small effect (0.1 slope) really "significant" in the way you'd
->   use that word conversationally?
+>    Is a really small effect (0.1 slope) really "significant" in the way you'd
+>    use that word conversationally?
 >
 > > ## Solution
 > > todo: plot examples for each question
@@ -230,50 +232,43 @@ suppressPackageStartupMessages({
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-norm <- readRDS(here("data/methylation.rds"))
+methylation <- readRDS(here("data/methylation.rds"))
 
-norm <- norm
-X <- getM(norm)
+xmat <- getM(methylation)
 ```
 
 The distribution of these M-values looks like this:
 
 ```{r}
-hist(X, breaks = "FD", xlab = "M-value")
+hist(xmat, breaks = "FD", xlab = "M-value")
 ```
 
-In high-throughput experiments like this, we commonly have one or more 
-phenotypes that we want to relate to molecular features.
-In this case, these phenotypes are as follows:
+In this case, the phenotypes and groupings are as follows:
 
 ```{r}
-knitr::kable(head(colData(norm)))
+knitr::kable(head(colData(methylation)), row.names = FALSE)
 ```
 
-In this case, we will focus on age in years. The association between
+In this case, we will focus on age. The association between
 age and methylation status in blood samples has been studied extensively,
 and is actually a good case-study in how to perform some of the techniques
 we will cover in this lesson.
 
-The distribution of age in these samples is as follows:
 
 ```{r}
-y <- log(norm$Age)
-hist(y, breaks = "FD", xlab = "log(Age)")
-```
+age <- methylation$Age
 
-```{r}
 library("ComplexHeatmap")
-order <- order(y)
-y_ord <- y[order]
-X_ord <- X[, order]
-Heatmap(X_ord,
+order <- order(age)
+age_ord <- age[order]
+xmat_ord <- xmat[, order]
+Heatmap(xmat_ord,
     cluster_columns = FALSE,
     # cluster_rows = FALSE,
     name = "M-value",
     col = RColorBrewer::brewer.pal(10, "RdYlBu"),
     top_annotation = columnAnnotation(
-        log_Age = y_ord
+        age = age
     ),
     show_row_names = FALSE,
     show_column_names = FALSE,
@@ -328,7 +323,7 @@ Heatmap(X_ord,
 
 # Running linear regression
 
-We have a matrix of methylation values $X$ and a vector of ages in years $y$.
+We have a matrix of methylation values $X$ and a vector of ages, $y$.
 One way to model this is to see if we can "predict" methylation using age.
 Formally we'd describe that as:
 
@@ -341,7 +336,7 @@ You may remember how to fit this model from a previous lesson, and how to
 get more information from the model object:
 
 ```{r}
-fit <- lm(X[1, ] ~ y)
+fit <- lm(xmat[1, ] ~ age)
 summary(fit)
 ```
 
@@ -358,10 +353,10 @@ We have a lot of features, though! This is what it looks like if we do that
 for every feature.
 
 ```{r}
-dfs <- lapply(seq_len(nrow(X)),
+dfs <- lapply(seq_len(nrow(xmat)),
     function(i) {
-        df <- tidy(lm(X[i, ] ~ y))[2, ]
-        df$term <- rownames(X)[[i]]
+        df <- tidy(lm(xmat[i, ] ~ age))[2, ]
+        df$term <- rownames(xmat)[[i]]
         df
     }
 )
@@ -383,16 +378,16 @@ To demonstrate this, it's useful to consider what happens if
 we scramble age and run the same test again:
 
 ```{r}
-y_perm <- y[sample(ncol(X), ncol(X))]
-dfs <- lapply(seq_len(nrow(X)),
+age_perm <- age[sample(ncol(xmat), ncol(xmat))]
+dfs <- lapply(seq_len(nrow(xmat)),
     function(i) {
-        df <- tidy(lm(X[i, ] ~ y_perm))[2, ]
-        df$term <- rownames(X)[[i]]
+        df <- tidy(lm(xmat[i, ] ~ age_perm))[2, ]
+        df$term <- rownames(xmat)[[i]]
         df
     }
 )
-df_all <- do.call(rbind, dfs)
-plot(df_all$estimate, -log10(df_all$p.value),
+df_all_perm <- do.call(rbind, dfs)
+plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
@@ -413,7 +408,7 @@ plot(df_all$estimate, -log10(df_all$p.value),
 >    ensure "significant" changes are truly different? 
 > 
 > > ## Solution
-> > 1. By default we expect $`r nrow(X)` \times 0.05 = `r nrow(X)*0.05`$
+> > 1. By default we expect $`r nrow(xmat)` \times 0.05 = `r nrow(xmat)*0.05`$
 > >    features to be statistically significant under the null hypothesis,
 > >    because p-values should always be uniformly distributed under
 > >    the null hypothesis.
@@ -469,6 +464,20 @@ our p-values by the number of tests.
 This is often very conservative, especially
 with a lot of features!
 
+```{r}
+p_raw <- df_all$p.value
+p_fwer <- p.adjust(p_raw, method = "bonferroni")
+ggplot() +
+    aes(p_raw, p_fwer) +
+    geom_point() +
+    scale_x_log10() + scale_y_log10() +
+    geom_abline(slope = 1, linetype = "dashed") +
+    geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
+    geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+    labs(x = "Raw p-value", y = "Bonferroni p-value")
+```
+
+
 The second main way of controlling for multiple tests
 is to control the *false discovery rate*.[^4]
 This is the proportion of false discoveries
@@ -487,29 +496,58 @@ the experiment over and over.
     All smaller than this are significant.
 
 
+|FWER|FDR|
+|-------------:|--------------:|
+|+ |+ |
+|+ |+ |
+
 > ## Exercise
 >
 > 1. At a significance level of 0.05, with 100 tests
->   performed, what is the Bonferroni significance
->   threshold?
+>    performed, what is the Bonferroni significance
+>    threshold?
 > 2. In a gene expression experiment, after FDR 
->   correction we observe 500 significant genes.
->   What proportion of these genes are truly
->   different?
-> 
+>    correction we observe 500 significant genes.
+>    What proportion of these genes are truly
+>    different?
+> 3. Try running FDR correction on the `p_raw` vector.
+>    (hint: check `help("p.adjust")` to see what the method)
+>    is called. Compare these values to the raw p-values
+>    and the Bonferroni p-values.
+>  
 > > ## Solution
 > > 
 > > 1. The Bonferroni threshold for this significance
-> >   threshold is
-> >   $$
-> >        \frac{0.05}{100} = 0.0005
-> >   $$
+> >    threshold is
+> >    $$
+> >         \frac{0.05}{100} = 0.0005
+> >    $$
 > > 2. Trick question! We can't say what proportion
-> >   of these genes are truly different. However, if
-> >   we repeated this experiment and statistical test
-> >   over and over, on average 5% of the results from
-> >   each run would be false discoveries.
-> > 
+> >    of these genes are truly different. However, if
+> >    we repeated this experiment and statistical test
+> >    over and over, on average 5% of the results from
+> >    each run would be false discoveries.
+> > 3. The following code runs FDR correction and compares it to
+> >    non-corrected values and to Bonferroni:
+> >    ```{r}
+> >    p_fdr <- p.adjust(p_raw, method = "BH")
+> >    ggplot() +
+> >        aes(p_raw, p_fdr) +
+> >        geom_point() +
+> >        scale_x_log10() + scale_y_log10() +
+> >        geom_abline(slope = 1, linetype = "dashed") +
+> >        geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
+> >        geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+> >        labs(x = "Raw p-value", y = "Benjamini-Hochberg p-value")
+> >    ggplot() +
+> >        aes(p_fdr, p_fwer) +
+> >        geom_point() +
+> >        scale_x_log10() + scale_y_log10() +
+> >        geom_abline(slope = 1, linetype = "dashed") +
+> >        geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
+> >        geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+> >        labs(x = "Benjamini-Hochberg p-value", y = "Bonferroni p-value")
+> >    ```
 > {: .solution}
 {: .challenge}
 
@@ -517,13 +555,10 @@ the experiment over and over.
 # Sharing information
 
 One idea is to take advantage of the fact that we're doing all these tests 
-at once. We can leverage this fact to perform *shrinkage* of some model
-parameters. Shrinkage methods can be complex to implement and understand,
-but it's good to understand why these approaches may be more precise 
-and sensitive than the naive approach of fitting a model to each feature
-separately.
+at once. We can leverage this fact to *share information* between model
+parameters. 
 
-The insight of shrinkage methods is to realise that variance parameters
+The insight that we use to perform *information pooling* like this is that variance parameters
 like these are probably similar between genes within the same experiment. This
 enables us to share information between genes to get more robust
 estimators.
@@ -537,15 +572,27 @@ $$
 
 $s_i^2$ is the variance of residuals.
 
+todo: figure showing limma shrinkage
+todo: note about age of limma
+
+You can see that the effect of pooling is to shrink large 
+estimates downwards and small estimates upwards, all towards
+a common value. The degree of shrinkage generally depends on 
+the amount of pooled information and the strength of the 
+evidence independent of pooling.
 
 Similarly, DESeq2 shares information between genes
 to *shrink* estimates of a noise parameter, in that case to model counts.
 
+Shrinkage methods can be complex to implement and understand,
+but it's good to understand why these approaches may be more precise 
+and sensitive than the naive approach of fitting a model to each feature
+separately.
+
+
 ```{r}
-## age - strong comparison
-design <- model.matrix(~y)
-colnames(design) <- c("intercept", "age")
-fit <- lmFit(X, design = design)
+design <- model.matrix(~age)
+fit <- lmFit(xmat, design = design)
 fit <- eBayes(fit)
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
 plot(tt1$logFC, -log10(tt1$P.Value),
@@ -559,7 +606,43 @@ q <- qvalue(tt1$P.Value)
 hist(q)
 ```
 
+
 > ## Exercise
+> 
+> 1. Try to run the same kind of linear model with smoking 
+>    status as covariate instead of age, and making a volcano
+>    plot.
+> 2. Notice that `limma` creates an `adj.P.Val` column in the output you just 
+>    created. What
+>    kind of p-value adjustment is it doing? Bonferroni,
+>    Benjamini-Hochberg, or something else?
+> 
+> Note: smoking status is stored as `methylation$smoker`.
+>
+> > ## Solution
+> > 
+> > 1. The following code runs the same type of model with smoking status:
+> >    ```{r}
+> >    design <- model.matrix(~methylation$smoker)
+> >    fit <- lmFit(xmat, design = design)
+> >    fit <- eBayes(fit)
+> >    tt1 <- topTable(fit, coef = 2, number = nrow(fit))
+> >    plot(tt1$logFC, -log10(tt1$P.Value),
+> >        xlab = "Effect size", ylab = bquote(-log[10](p)),
+> >        pch = 19
+> >    )
+> >    ```
+> > 2. We can use `all.equal` to compare vectors:
+> >    ```{r}
+> >    all.equal(p.adjust(tt1$P.Value, method = "BH"), tt1$adj.P.Val)
+> >    ```
+> {: .solution}
+{: .challenge}
+
+
+
+> ## Exercise
+> 
 > Launch `shinystats::limmaApp` and adjust the parameters. 
 > 
 > Discuss the output in groups. Consider the following questions:
@@ -582,7 +665,6 @@ hist(q)
 > >    but larger standard error.
 > {: .solution}
 {: .challenge}
-
 
 > ## Shrinkage
 > 
@@ -626,7 +708,6 @@ hist(q)
 > - [a (relatively technical) book by Gelman and Hill](http://www.stat.columbia.edu/~gelman/arm/)
 {: .callout}
 
-
 [^1]: It's not hugely problematic if the assumption of normal residuals is violated. It mainly affects our ability to accurately predict responses for new, unseen observations.
 
 [^2]: "True difference" is a hard category to rigidly define. As we've seen, with a lot of data, we can detect tiny differences, and with little data, we can't detect large differences. However, both can be argued to be "true".
@@ -636,10 +717,5 @@ hist(q)
 [^4]: This is often called "Benjamini-Hochberg" adjustment.
 
 [^5]: People often perform extra controls on FDR-adjusted p-values, ensuring that ranks don't change and the critical value is never smaller than the original p-value.
-
-
-
-
-
 
 {% include links.md %}
