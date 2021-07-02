@@ -193,14 +193,14 @@ knitr::kable(head(colData(methylation)), row.names = FALSE)
 
 
 
-|Sample_Plate   |Sample_Well |Sample_Name |Subject.ID |smp_type    |Sample_Group   |Pool_ID | Chip|Replicate |Array_well          |CellType | CD4T| CD8T| Bcell|  NK| Mono| Neu| purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide| normalmix|     xMed|      yMed|predictedSex |
-|:--------------|:-----------|:-----------|:----------|:-----------|:--------------|:-------|----:|:---------|:-------------------|:--------|----:|----:|-----:|---:|----:|---:|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|---------:|--------:|---------:|:------------|
-|EPIC17_Plate01 |A07         |PCA0612     |PCA0612    |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R01C01 |Neu      |    0|    0|     0|   0|    0| 100|     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|         1| 12.66467| 12.913263|M            |
-|EPIC17_Plate01 |C07         |NKpan2510   |NKpan2510  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R03C01 |NK       |    0|    0|     0| 100|    0|   0|     95|M   |  49|  81.19303|   1.6764| 28.89106|Overweight |Indo-European  |Caucasian      |No     |R03C01 | 201868500150|         1| 12.95019| 13.207167|M            |
-|EPIC17_Plate01 |E07         |WB1148      |WB1148     |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R05C01 |Neu      |    0|    0|     0|   0|    0| 100|     95|M   |  20|  80.28585|   1.7526| 26.13806|Overweight |Indo-European  |Persian        |No     |R05C01 | 201868500150|         1| 13.05562| 13.308481|M            |
-|EPIC17_Plate01 |G07         |B0044       |B0044      |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R07C01 |Bcell    |    0|    0|   100|   0|    0|   0|     97|M   |  49|  82.55381|   1.7272| 27.67272|Overweight |Indo-European  |Caucasian      |No     |R07C01 | 201868500150|         1| 13.08431| 13.349696|M            |
-|EPIC17_Plate01 |H07         |NKpan1869   |NKpan1869  |Cell Pellet |ChristensenLab |NA      |    7|          |201868500150_R08C01 |NK       |    0|    0|     0| 100|    0|   0|     95|F   |  33|  87.54333|   1.7272| 29.34525|Overweight |Indo-European  |Caucasian      |No     |R08C01 | 201868500150|         1| 13.71301|  9.417853|F            |
-|EPIC17_Plate01 |B03         |NKpan1850   |NKpan1850  |Cell Pellet |ChristensenLab |NA      |    3|          |201868590193_R02C01 |NK       |    0|    0|     0| 100|    0|   0|     93|F   |  21|  87.54333|   1.6764| 31.15070|Obese      |Mixed          |Finnish/Creole |No     |R02C01 | 201868590193|         1| 13.50438|  9.594325|F            |
+|Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
+|:-----------|:-----------|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|
+|A07         |PCA0612     |     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|
+|C07         |NKpan2510   |     95|M   |  49|  81.19303|   1.6764| 28.89106|Overweight |Indo-European  |Caucasian      |No     |R03C01 | 201868500150|
+|E07         |WB1148      |     95|M   |  20|  80.28585|   1.7526| 26.13806|Overweight |Indo-European  |Persian        |No     |R05C01 | 201868500150|
+|G07         |B0044       |     97|M   |  49|  82.55381|   1.7272| 27.67272|Overweight |Indo-European  |Caucasian      |No     |R07C01 | 201868500150|
+|H07         |NKpan1869   |     95|F   |  33|  87.54333|   1.7272| 29.34525|Overweight |Indo-European  |Caucasian      |No     |R08C01 | 201868500150|
+|B03         |NKpan1850   |     93|F   |  21|  87.54333|   1.6764| 31.15070|Obese      |Mixed          |Finnish/Creole |No     |R02C01 | 201868590193|
 
 In this case, we will focus on age. The association between
 age and methylation status in blood samples has been studied extensively,
