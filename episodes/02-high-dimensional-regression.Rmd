@@ -56,7 +56,7 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-```{r, echo=FALSE, fig.width=5, fig.height=4}
+```{r, echo=FALSE, fig.width=6, fig.height=6}
 library("ggplot2")
 theme_set(theme_bw())
 set.seed(42)
@@ -71,7 +71,7 @@ ggplot() +
 
 or equivalently for a discrete covariate:
 
-```{r, echo=FALSE, fig.width=5, fig.height=4}
+```{r, echo=FALSE, fig.width=6, fig.height=6}
 library("ggplot2")
 set.seed(42)
 n <- 10
@@ -87,7 +87,7 @@ ggplot() +
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-```{r, echo=FALSE, fig.width=5, fig.height=4}
+```{r, echo=FALSE, fig.width=6, fig.height=6}
 library("ggplot2")
 set.seed(66)
 n <- 5
@@ -157,19 +157,20 @@ image(sx, sy, dens, col = viridis::viridis(100, option = "magma"), xlab="x", yla
 
 In order to decide whether a result would be unlikely
 under the null hypothesis, we can calculate a test statistic.
-For a coefficient in a linear model, the test statistic is
+For coefficient $j$ in a linear model, the test statistic is
 a t-statistic given by:
 
 $$
-    t_{ij} = \frac{\hat{\beta}_{ij}}{SE(\hat{\beta}_{ij})}
+    t_{j} = \frac{\hat{\beta}_{j}}{SE\left(\hat{\beta}_{j}\right)}
 $$
 
-$SE(\hat{\beta}_{ij})$ measures the uncertainty we have in our effect
-size estimate. 
+$SE\left(\hat{\beta}_{j}\right)$ measures the uncertainty we have in our effect
+size estimate.
 
 Knowing what distribution these t-values follow under the null
 hypothesis allows us to determine how unlikely it would be for
-us to observe what we have under those circumstances.
+us to observe what we have under those circumstances (the basis
+of null hypothesis significance testing).
 
 
 > ## Exercise
@@ -177,16 +178,81 @@ us to observe what we have under those circumstances.
 >
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
-> 2. How does the degree of noise affect the level of certainty in the fitted
->    trend?
-> 3. With a small number of observations, how strong does the relationship need
->    to be (or how small the noise) before it is significant?
-> 4. With a large number of observations, how weak of an effect can you detect?
->    Is a really small effect (0.1 slope) really "significant" in the way you'd
->    use that word conversationally?
+> 1. If the noise parameter is small (eg, 0.5), how small an effect is significant?
+>    If the noise parameter is large (eg, 5), how big must an effect be?
+> 2. With a small number of observations (eg, 10), how strong does the relationship 
+>    need to be (or how small the noise) before it is significant?
+> 3. With a large number of observations (eg, 1000), how weak of an effect can you 
+>    detect? Is a really small effect (0.1 slope) really "significant" in the way 
+>    you'd use that word conversationally?
 >
 > > ## Solution
-> > todo: plot examples for each question
+> > 1. 
+> >    ```{r}
+> >    n <- 100
+> >    noise_sd <- 0.5
+> >    x <- rnorm(n)
+> >    beta <- c(0.2, 0.2)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ```
+> >    
+> >    ```{r}
+> >    n <- 100
+> >    noise_sd <- 5
+> >    x <- rnorm(n)
+> >    beta <- c(1, 1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ```
+> > 2. 
+> >    ```{r}
+> >    n <- 10
+> >    noise_sd <- 2
+> >    x <- rnorm(n)
+> >    beta <- c(1, 1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ```
+> >    
+> >    ```{r}
+> >    n <- 10
+> >    noise_sd <- 0.4
+> >    x <- rnorm(n)
+> >    beta <- c(0.2, 0.2)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ```
+> > 3. 
+> >    ```{r}
+> >    n <- 1000
+> >    noise_sd <- 5
+> >    x <- rnorm(n)
+> >    beta <- c(1, 1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ```
+> >    
+> >    ```{r}
+> >    n <- 1000
+> >    noise_sd <- 1
+> >    x <- rnorm(n)
+> >    beta <- c(0.1, 0.1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ```
 > {: .solution}
 {: .challenge}
 
@@ -243,9 +309,9 @@ The distribution of these M-values looks like this:
 hist(xmat, breaks = "FD", xlab = "M-value")
 ```
 
-In this case, the phenotypes and groupings are as follows:
+In this case, the phenotypes and groupings look like this (for the first 6 samples):
 
-```{r}
+```{r, echo=FALSE}
 knitr::kable(head(colData(methylation)), row.names = FALSE)
 ```
 
@@ -268,7 +334,7 @@ Heatmap(xmat_ord,
     name = "M-value",
     col = RColorBrewer::brewer.pal(10, "RdYlBu"),
     top_annotation = columnAnnotation(
-        age = age
+        age = age_ord
     ),
     show_row_names = FALSE,
     show_column_names = FALSE,
@@ -340,7 +406,6 @@ fit <- lm(xmat[1, ] ~ age)
 summary(fit)
 ```
 
-
 We can also use `broom` to extract information about
 the coefficients in this model:
 
@@ -366,6 +431,20 @@ plot(df_all$estimate, -log10(df_all$p.value),
     pch = 19
 )
 ```
+
+In this figure, every point represents a feature of interest. The x-axis
+represents the effect size observed for that feature in a linear model,
+while the y-axis is the $-log10(\text{p-value})$, where larger values
+indicate increasing statistical evidence of a non-zero effect size. 
+
+Given that we often use procedures like this to identify differentially
+methylated features or differentially expressed genes, we can imagine that
+in an ideal case there would be clear separation between "null" and "non-null"
+features. However, usually we observe results as we did here: there is a continuum
+of effect sizes and p-values, with no clear. While statistical methods exist to
+derive insights from continuous measure like these, it is often convenient to obtain
+a list of features which we are confident have non-zero effect sizes.
+This is made more difficult by the number of tests we perform.
 
 
 # The problem of multiple tests
@@ -498,8 +577,10 @@ the experiment over and over.
 
 |FWER|FDR|
 |-------------:|--------------:|
-|+ |+ |
-|+ |+ |
+|+ Controls probability of identifying a false positive|+ Controls rate of false discoveries|
+|+ Strict error rate control |+ Allows error control with less stringency|
+|- Often results in no significant results |- Does not control probability of making errors|
+|- Requires larger statistical power|- May result in false discoveries|
 
 > ## Exercise
 >
@@ -511,8 +592,9 @@ the experiment over and over.
 >    What proportion of these genes are truly
 >    different?
 > 3. Try running FDR correction on the `p_raw` vector.
->    (hint: check `help("p.adjust")` to see what the method)
->    is called. Compare these values to the raw p-values
+>    *Hint: check `help("p.adjust")` to see what the method
+>    is called*.  
+>    Compare these values to the raw p-values
 >    and the Bonferroni p-values.
 >  
 > > ## Solution
@@ -563,31 +645,22 @@ like these are probably similar between genes within the same experiment. This
 enables us to share information between genes to get more robust
 estimators.
 
-In this case, 
+Specifically, recall that the t-statistic for feature $i$, coefficient $j$ $\beta$ 
+in a linear model is as follows:
 
-not $j$ but rather $k$? for predictor.
 $$
-    t_{ij} = \frac{\hat{\beta}_{ij}}{s_i \sqrt{v_{ij}}}
+    t_{ij} = \frac{\hat{\beta}_{ij}}{SE\left(\hat{\beta}_{ij}\right)}
 $$
 
-$s_i^2$ is the variance of residuals.
-
-todo: figure showing limma shrinkage
-todo: note about age of limma
-
-You can see that the effect of pooling is to shrink large 
-estimates downwards and small estimates upwards, all towards
-a common value. The degree of shrinkage generally depends on 
-the amount of pooled information and the strength of the 
-evidence independent of pooling.
-
-Similarly, DESeq2 shares information between genes
-to *shrink* estimates of a noise parameter, in that case to model counts.
-
-Shrinkage methods can be complex to implement and understand,
-but it's good to understand why these approaches may be more precise 
-and sensitive than the naive approach of fitting a model to each feature
-separately.
+It's clear that large effect sizes will likely lead to small p-values,
+as long as the standard error for the coefficent is not large.
+However, the standard error is affected by the strength of noise, 
+as we saw earlier.
+With small numbers of replicates, it's common for the noise for some features to
+be extremely small simply by chance, leading to an inflated level of significance.
+The authors of `limma` made some assumptions about the distributions that these
+follow, and pool information across genes to get a better estimate of the uncertainty
+in effect size estimates.
 
 
 ```{r}
@@ -639,6 +712,20 @@ hist(q)
 > {: .solution}
 {: .challenge}
 
+
+You can see that the effect of pooling is to shrink large 
+estimates downwards and small estimates upwards, all towards
+a common value. The degree of shrinkage generally depends on 
+the amount of pooled information and the strength of the 
+evidence independent of pooling.
+
+Similarly, DESeq2 shares information between genes
+to *shrink* estimates of a noise parameter, in that case to model counts.
+
+Shrinkage methods can be complex to implement and understand,
+but it's good to understand why these approaches may be more precise 
+and sensitive than the naive approach of fitting a model to each feature
+separately.
 
 
 > ## Exercise
