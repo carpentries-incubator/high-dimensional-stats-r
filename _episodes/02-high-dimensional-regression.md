@@ -54,15 +54,15 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="360" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="432" style="display: block; margin: auto;" />
 
 or equivalently for a discrete covariate:
 
-<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="360" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="432" style="display: block; margin: auto;" />
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="360" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="432" style="display: block; margin: auto;" />
 
 And, of course, we often have an awful lot of features and need
 to prioritise a subset of them! We need a rigorous way to
@@ -105,19 +105,20 @@ of new points conditional on their $x$ values:
 
 In order to decide whether a result would be unlikely
 under the null hypothesis, we can calculate a test statistic.
-For a coefficient in a linear model, the test statistic is
+For coefficient $j$ in a linear model, the test statistic is
 a t-statistic given by:
 
 $$
-    t_{ij} = \frac{\hat{\beta}_{ij}}{SE(\hat{\beta}_{ij})}
+    t_{j} = \frac{\hat{\beta}_{j}}{SE\left(\hat{\beta}_{j}\right)}
 $$
 
-$SE(\hat{\beta}_{ij})$ measures the uncertainty we have in our effect
-size estimate. 
+$SE\left(\hat{\beta}_{j}\right)$ measures the uncertainty we have in our effect
+size estimate.
 
 Knowing what distribution these t-values follow under the null
 hypothesis allows us to determine how unlikely it would be for
-us to observe what we have under those circumstances.
+us to observe what we have under those circumstances (the basis
+of null hypothesis significance testing).
 
 
 > ## Exercise
@@ -125,16 +126,171 @@ us to observe what we have under those circumstances.
 >
 > Launch `shinystats::regressionApp` and adjust the parameters.
 > 
-> 2. How does the degree of noise affect the level of certainty in the fitted
->    trend?
-> 3. With a small number of observations, how strong does the relationship need
->    to be (or how small the noise) before it is significant?
-> 4. With a large number of observations, how weak of an effect can you detect?
->    Is a really small effect (0.1 slope) really "significant" in the way you'd
->    use that word conversationally?
+> 1. If the noise parameter is small (eg, 0.5), how small an effect is significant?
+>    If the noise parameter is large (eg, 5), how big must an effect be?
+> 2. With a small number of observations (eg, 10), how strong does the relationship 
+>    need to be (or how small the noise) before it is significant?
+> 3. With a large number of observations (eg, 1000), how weak of an effect can you 
+>    detect? Is a really small effect (0.1 slope) really "significant" in the way 
+>    you'd use that word conversationally?
 >
 > > ## Solution
-> > todo: plot examples for each question
+> > 1. 
+> >    
+> >    ~~~
+> >    n <- 100
+> >    noise_sd <- 0.5
+> >    x <- rnorm(n)
+> >    beta <- c(0.2, 0.2)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 1.159195e-05
+> >    ~~~
+> >    {: .output}
+> >    
+> >    
+> >    ~~~
+> >    n <- 100
+> >    noise_sd <- 5
+> >    x <- rnorm(n)
+> >    beta <- c(1, 1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 0.0003121515
+> >    ~~~
+> >    {: .output}
+> > 2. 
+> >    
+> >    ~~~
+> >    n <- 10
+> >    noise_sd <- 2
+> >    x <- rnorm(n)
+> >    beta <- c(1, 1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 0.3000536
+> >    ~~~
+> >    {: .output}
+> >    
+> >    
+> >    ~~~
+> >    n <- 10
+> >    noise_sd <- 0.4
+> >    x <- rnorm(n)
+> >    beta <- c(0.2, 0.2)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 0.005212146
+> >    ~~~
+> >    {: .output}
+> > 3. 
+> >    
+> >    ~~~
+> >    n <- 1000
+> >    noise_sd <- 5
+> >    x <- rnorm(n)
+> >    beta <- c(1, 1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 3.436623e-06
+> >    ~~~
+> >    {: .output}
+> >    
+> >    
+> >    ~~~
+> >    n <- 1000
+> >    noise_sd <- 1
+> >    x <- rnorm(n)
+> >    beta <- c(0.1, 0.1)
+> >    X <- cbind(1, x)
+> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
+> >    plot(x, y, pch = 19)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    anova(lm(y ~ x))$Pr[[1]]
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 0.000126255
+> >    ~~~
+> >    {: .output}
 > {: .solution}
 {: .challenge}
 
@@ -181,16 +337,9 @@ hist(xmat, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="612" style="display: block; margin: auto;" />
 
-In this case, the phenotypes and groupings are as follows:
-
-
-~~~
-knitr::kable(head(colData(methylation)), row.names = FALSE)
-~~~
-{: .language-r}
-
+In this case, the phenotypes and groupings look like this (for the first 6 samples):
 
 
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
@@ -222,7 +371,7 @@ Heatmap(xmat_ord,
     name = "M-value",
     col = RColorBrewer::brewer.pal(10, "RdYlBu"),
     top_annotation = columnAnnotation(
-        age = age
+        age = age_ord
     ),
     show_row_names = FALSE,
     show_column_names = FALSE,
@@ -233,7 +382,7 @@ Heatmap(xmat_ord,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
 
 
 > ## Measuring DNA Methylation
@@ -323,7 +472,6 @@ F-statistic: 0.6192 on 1 and 35 DF,  p-value: 0.4367
 ~~~
 {: .output}
 
-
 We can also use `broom` to extract information about
 the coefficients in this model:
 
@@ -365,7 +513,21 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="612" style="display: block; margin: auto;" />
+
+In this figure, every point represents a feature of interest. The x-axis
+represents the effect size observed for that feature in a linear model,
+while the y-axis is the $-log10(\text{p-value})$, where larger values
+indicate increasing statistical evidence of a non-zero effect size. 
+
+Given that we often use procedures like this to identify differentially
+methylated features or differentially expressed genes, we can imagine that
+in an ideal case there would be clear separation between "null" and "non-null"
+features. However, usually we observe results as we did here: there is a continuum
+of effect sizes and p-values, with no clear. While statistical methods exist to
+derive insights from continuous measure like these, it is often convenient to obtain
+a list of features which we are confident have non-zero effect sizes.
+This is made more difficult by the number of tests we perform.
 
 
 # The problem of multiple tests
@@ -395,7 +557,7 @@ plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -483,7 +645,7 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" width="612" style="display: block; margin: auto;" />
 
 
 The second main way of controlling for multiple tests
@@ -506,8 +668,10 @@ the experiment over and over.
 
 |FWER|FDR|
 |-------------:|--------------:|
-|+ |+ |
-|+ |+ |
+|+ Controls probability of identifying a false positive|+ Controls rate of false discoveries|
+|+ Strict error rate control |+ Allows error control with less stringency|
+|- Often results in no significant results |- Does not control probability of making errors|
+|- Requires larger statistical power|- May result in false discoveries|
 
 > ## Exercise
 >
@@ -519,8 +683,9 @@ the experiment over and over.
 >    What proportion of these genes are truly
 >    different?
 > 3. Try running FDR correction on the `p_raw` vector.
->    (hint: check `help("p.adjust")` to see what the method)
->    is called. Compare these values to the raw p-values
+>    *Hint: check `help("p.adjust")` to see what the method
+>    is called*.  
+>    Compare these values to the raw p-values
 >    and the Bonferroni p-values.
 >  
 > > ## Solution
@@ -551,7 +716,7 @@ the experiment over and over.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-22-1.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    ggplot() +
@@ -565,7 +730,7 @@ the experiment over and over.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-16-2.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-22-2.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -581,31 +746,22 @@ like these are probably similar between genes within the same experiment. This
 enables us to share information between genes to get more robust
 estimators.
 
-In this case, 
+Specifically, recall that the t-statistic for feature $i$, coefficient $j$ $\beta$ 
+in a linear model is as follows:
 
-not $j$ but rather $k$? for predictor.
 $$
-    t_{ij} = \frac{\hat{\beta}_{ij}}{s_i \sqrt{v_{ij}}}
+    t_{ij} = \frac{\hat{\beta}_{ij}}{SE\left(\hat{\beta}_{ij}\right)}
 $$
 
-$s_i^2$ is the variance of residuals.
-
-todo: figure showing limma shrinkage
-todo: note about age of limma
-
-You can see that the effect of pooling is to shrink large 
-estimates downwards and small estimates upwards, all towards
-a common value. The degree of shrinkage generally depends on 
-the amount of pooled information and the strength of the 
-evidence independent of pooling.
-
-Similarly, DESeq2 shares information between genes
-to *shrink* estimates of a noise parameter, in that case to model counts.
-
-Shrinkage methods can be complex to implement and understand,
-but it's good to understand why these approaches may be more precise 
-and sensitive than the naive approach of fitting a model to each feature
-separately.
+It's clear that large effect sizes will likely lead to small p-values,
+as long as the standard error for the coefficent is not large.
+However, the standard error is affected by the strength of noise, 
+as we saw earlier.
+With small numbers of replicates, it's common for the noise for some features to
+be extremely small simply by chance, leading to an inflated level of significance.
+The authors of `limma` made some assumptions about the distributions that these
+follow, and pool information across genes to get a better estimate of the uncertainty
+in effect size estimates.
 
 
 
@@ -621,7 +777,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-17-1.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" width="612" style="display: block; margin: auto;" />
 
 
 
@@ -654,7 +810,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-25-1.png" title="plot of chunk unnamed-chunk-25" alt="plot of chunk unnamed-chunk-25" width="612" style="display: block; margin: auto;" />
 > > 2. We can use `all.equal` to compare vectors:
 > >    
 > >    ~~~
@@ -671,6 +827,20 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > {: .solution}
 {: .challenge}
 
+
+You can see that the effect of pooling is to shrink large 
+estimates downwards and small estimates upwards, all towards
+a common value. The degree of shrinkage generally depends on 
+the amount of pooled information and the strength of the 
+evidence independent of pooling.
+
+Similarly, DESeq2 shares information between genes
+to *shrink* estimates of a noise parameter, in that case to model counts.
+
+Shrinkage methods can be complex to implement and understand,
+but it's good to understand why these approaches may be more precise 
+and sensitive than the naive approach of fitting a model to each feature
+separately.
 
 
 > ## Exercise
