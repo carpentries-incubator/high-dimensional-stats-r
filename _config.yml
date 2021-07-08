@@ -27,7 +27,9 @@ kind: "lesson"
 # Magic to make URLs resolve both locally and on GitHub.
 # See https://help.github.com/articles/repository-metadata-on-github-pages/.
 # Please don't change it: <USERNAME>/<PROJECT> is correct.
-repository: carpentries-incubator/high-dimensional-stats-r
+repository: <USERNAME>/<PROJECT>
+
+# url: https://carpentries-incubator.github.io/high-dimensional-stats-r/
 
 # Email address, no mailto:
 email: "alan.ocallaghan@outlook.com"
