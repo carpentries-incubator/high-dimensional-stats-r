@@ -36,7 +36,7 @@ Intro to PCA (15 mins: lecture)
 * What kinds of data/questions exist for which a PCA would be useful
 * Limitations of PCA
 
-> # Challenge 1 
+> ## Challenge 1 
 > 
 > (5 mins)
 >
@@ -71,7 +71,7 @@ Intro to PCA (15 mins: lecture)
 
 
 
-> # Challenge 2
+> ## Challenge 2
 > 
 > (5 mins)
 > Why might it be necessary to standardise continuous variables before
@@ -91,7 +91,7 @@ Intro to PCA (15 mins: lecture)
 {: .challenge}
 
 
-> # Challenge 2
+> ## Challenge 2
 > 
 > (5 mins)
 > 
@@ -347,50 +347,9 @@ We will now load the microarray breast cancer gene expression data
 
 
 ~~~
-mat <- readRDS("data/cancer_expression.rds")
-~~~
-{: .language-r}
+mat <- readRDS(here("data/cancer_expression.rds"))
+metadata <- readRDS(here("data/cancer_metadata.rds"))
 
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file 'data/
-cancer_expression.rds', probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
-metadata <- readRDS("data/cancer_metadata.rds")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file 'data/
-cancer_metadata.rds', probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 head(mat)
 ~~~
 {: .language-r}
@@ -573,7 +532,7 @@ expression data, plot the amount of variation in the data explained by each
 principal component and plot the most important principal components against
 each other as well as understanding what each principal component represents.
 
-> # Challenge 3
+> ## Challenge 3
 > 
 > (5 mins)
 > 
@@ -670,7 +629,7 @@ whether these principal components represent a reasonable amount of the
 variation. The proportion of variance explained should sum to one.
 
 
-> # Challenge 4
+> ## Challenge 4
 > (5 mins)
 > 
 > Using the screeplot function in PCAtools, create a screeplot to show
@@ -736,7 +695,7 @@ We can use these plots, called biplots, to look for patterns in the output from
 the PCA. 
 
 
-> # Challenge 5
+> ## Challenge 5
 > 
 > (5 mins)
 > 
@@ -787,7 +746,7 @@ PC axes.
 
 
 
-> # Challenge 6
+> ## Challenge 6
 > 
 > (5 mins)
 > 
