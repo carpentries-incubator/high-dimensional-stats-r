@@ -769,7 +769,7 @@ PC axes.
 > > 
 > > 
 > > ~~~
-> > Warning: ggrepel: 6 unlabeled data points (too many overlaps). Consider
+> > Warning: ggrepel: 8 unlabeled data points (too many overlaps). Consider
 > > increasing max.overlaps
 > > ~~~
 > > {: .warning}
