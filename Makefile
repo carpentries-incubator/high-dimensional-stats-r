@@ -41,11 +41,11 @@ endif
 ## =================================================
 
 ## * serve            : render website and run a local server
-serve : lesson-md
+serve : lesson-md slides
 	${JEKYLL} serve
 
 ## * site             : build website but do not run a server
-site : lesson-md
+site : lesson-md slides
 	${JEKYLL} build
 
 ## * docker-serve     : use Docker to serve the site
@@ -93,7 +93,7 @@ workshop-check :
 ## III. Commands specific to lesson websites
 ## =================================================
 
-.PHONY : lesson-check lesson-md lesson-files lesson-fixme install-rmd-deps
+.PHONY : lesson-check lesson-md lesson-files lesson-fixme install-rmd-deps slides
 
 # RMarkdown files
 RMD_SRC = $(wildcard _episodes_rmd/??-*.Rmd)
@@ -129,6 +129,9 @@ lesson-md : ${RMD_DST}
 _episodes/%.md: _episodes_rmd/%.Rmd install-rmd-deps
 	@mkdir -p _episodes
 	@bin/knit_lessons.sh $< $@
+
+slides: lesson-md
+	Rscript "bin/slider.R"
 
 ## * lesson-check     : validate lesson Markdown
 lesson-check : lesson-fixme

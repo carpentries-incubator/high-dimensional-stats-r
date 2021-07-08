@@ -68,6 +68,8 @@ collections:
   extras:
     output: true
     permalink: /:path/index.html
+  slides:
+    output: false
 
 # Set the default layout for things in the episodes collection.
 defaults:
