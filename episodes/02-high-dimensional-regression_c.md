@@ -68,6 +68,27 @@ There are some techniques that you can use to find a set of predictors!
 if (!file.exists(here("data/synthetic.rds"))) {
     source("data/synthetic.R")
 }
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning in file(filename, "r", encoding = encoding): cannot open file 'data/
+synthetic.R': No such file or directory
+~~~
+{: .warning}
+
+
+
+~~~
+Error in file(filename, "r", encoding = encoding): cannot open the connection
+~~~
+{: .error}
+
+
+
+~~~
 synthetic <- readRDS("data/synthetic.rds")
 ~~~
 {: .language-r}
