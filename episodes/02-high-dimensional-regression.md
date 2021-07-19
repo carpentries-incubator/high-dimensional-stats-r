@@ -120,6 +120,45 @@ hypothesis allows us to determine how unlikely it would be for
 us to observe what we have under those circumstances (the basis
 of null hypothesis significance testing).
 
+To demonstrate, we can manually (this is not important to remember).
+
+~~~
+x <- rnorm(100)
+y <- rnorm(100)
+fit <- lm(y ~ x)
+tab <- as.data.frame(summary(fit)$coef)
+tvals <- tab$Estimate / tab$Std
+all.equal(tvals, tab$t)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] TRUE
+~~~
+{: .output}
+
+We want to do a 2-tail test, so we take the absolute value of the t-statistic,
+and look at the upper rather than lower tail. Because in a 2-tail test we're
+looking at "half" of the t-distribution, we also multiply the p-value by 2.
+
+
+~~~
+pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail=FALSE)
+all.equal(tvals, pvals)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] "Mean relative difference: 0.930878"
+~~~
+{: .output}
+
+<img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="612" style="display: block; margin: auto;" />
+
 
 > ## Exercise
 >
@@ -136,159 +175,45 @@ of null hypothesis significance testing).
 >
 > > ## Solution
 > > 1. 
-> >    
-> >    ~~~
-> >    n <- 100
-> >    noise_sd <- 0.5
-> >    x <- rnorm(n)
-> >    beta <- c(0.2, 0.2)
-> >    X <- cbind(1, x)
-> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
-> >    plot(x, y, pch = 19)
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="612" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    anova(lm(y ~ x))$Pr[[1]]
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    [1] 1.159195e-05
-> >    ~~~
-> >    {: .output}
-> >    
-> >    
-> >    ~~~
-> >    n <- 100
-> >    noise_sd <- 5
-> >    x <- rnorm(n)
-> >    beta <- c(1, 1)
-> >    X <- cbind(1, x)
-> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
-> >    plot(x, y, pch = 19)
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    anova(lm(y ~ x))$Pr[[1]]
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    [1] 0.0003121515
-> >    ~~~
-> >    {: .output}
-> > 2. 
-> >    
-> >    ~~~
-> >    n <- 10
-> >    noise_sd <- 2
-> >    x <- rnorm(n)
-> >    beta <- c(1, 1)
-> >    X <- cbind(1, x)
-> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
-> >    plot(x, y, pch = 19)
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="612" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    anova(lm(y ~ x))$Pr[[1]]
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    [1] 0.3000536
-> >    ~~~
-> >    {: .output}
-> >    
-> >    
-> >    ~~~
-> >    n <- 10
-> >    noise_sd <- 0.4
-> >    x <- rnorm(n)
-> >    beta <- c(0.2, 0.2)
-> >    X <- cbind(1, x)
-> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
-> >    plot(x, y, pch = 19)
-> >    ~~~
-> >    {: .language-r}
-> >    
 > >    <img src="../fig/rmd-02-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
-> >    anova(lm(y ~ x))$Pr[[1]]
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    [1] 0.005212146
+> >    [1] 3.060592e-07
 > >    ~~~
 > >    {: .output}
-> > 3. 
-> >    
-> >    ~~~
-> >    n <- 1000
-> >    noise_sd <- 5
-> >    x <- rnorm(n)
-> >    beta <- c(1, 1)
-> >    X <- cbind(1, x)
-> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
-> >    plot(x, y, pch = 19)
-> >    ~~~
-> >    {: .language-r}
 > >    
 > >    <img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
-> >    anova(lm(y ~ x))$Pr[[1]]
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    [1] 3.436623e-06
+> >    [1] 0.3804761
 > >    ~~~
 > >    {: .output}
-> >    
-> >    
-> >    ~~~
-> >    n <- 1000
-> >    noise_sd <- 1
-> >    x <- rnorm(n)
-> >    beta <- c(0.1, 0.1)
-> >    X <- cbind(1, x)
-> >    y <- rnorm(n, X %*% beta, sd = noise_sd)
-> >    plot(x, y, pch = 19)
-> >    ~~~
-> >    {: .language-r}
-> >    
+> > 2. 
 > >    <img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
-> >    anova(lm(y ~ x))$Pr[[1]]
+> >    [1] 0.08869178
 > >    ~~~
-> >    {: .language-r}
+> >    {: .output}
 > >    
-> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
-> >    [1] 0.000126255
+> >    [1] 0.174728
+> >    ~~~
+> >    {: .output}
+> > 3. 
+> >    <img src="../fig/rmd-02-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 8.894783e-10
+> >    ~~~
+> >    {: .output}
+> >    
+> >    <img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="612" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 6.295652e-05
 > >    ~~~
 > >    {: .output}
 > {: .solution}
@@ -324,8 +249,49 @@ if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
 methylation <- readRDS(here("data/methylation.rds"))
+~~~
+{: .language-r}
 
-xmat <- getM(methylation)
+This `methylation` object is a `GenomicRatioSet`, a Bioconductor data object
+derived from the `SummarizedExperiment` class.
+These `SummarizedExperiment` objects contain `assay`s, in this case methylation
+levels, and optional sample-level `colData` and feature-level `metadata`.
+These objects are very convenient to contain all of the information about 
+a dataset in a high-throughput context and may be covered in more
+detail in other Carpentries lessons.
+
+~~~
+methylation
+~~~
+{: .language-r}
+
+
+
+~~~
+class: GenomicRatioSet 
+dim: 5000 37 
+metadata(0):
+assays(2): M CN
+rownames(5000): cg01884767 cg03955296 ... cg17150854 cg06600447
+rowData names(0):
+colnames(37): 201868500150_R01C01 201868500150_R03C01 ...
+  201870610111_R06C01 201870610111_R07C01
+colData names(14): Sample_Well Sample_Name ... Array Slide
+Annotation
+  array: IlluminaHumanMethylationEPIC
+  annotation: ilm10b4.hg19
+Preprocessing
+  Method: Raw (no normalization or bg correction)
+  minfi version: 1.38.0
+  Manifest version: 0.3.0
+~~~
+{: .output}
+
+To extract the matrix of methylation values, we use the `assay` function.
+
+
+~~~
+xmat <- assay(methylation)
 ~~~
 {: .language-r}
 
@@ -337,9 +303,10 @@ hist(xmat, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="612" style="display: block; margin: auto;" />
 
-In this case, the phenotypes and groupings look like this (for the first 6 samples):
+In this case, the phenotypes and groupings look like this
+(for the first 6 samples):
 
 
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
@@ -354,36 +321,15 @@ In this case, the phenotypes and groupings look like this (for the first 6 sampl
 In this case, we will focus on age. The association between
 age and methylation status in blood samples has been studied extensively,
 and is actually a good case-study in how to perform some of the techniques
-we will cover in this lesson.
+we will cover in this lesson. The methylation levels for these data 
+can be presented in a heatmap:
 
+<img src="../fig/rmd-02-unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" width="612" style="display: block; margin: auto;" />
 
-
-~~~
-age <- methylation$Age
-
-library("ComplexHeatmap")
-order <- order(age)
-age_ord <- age[order]
-xmat_ord <- xmat[, order]
-Heatmap(xmat_ord,
-    cluster_columns = FALSE,
-    # cluster_rows = FALSE,
-    name = "M-value",
-    col = RColorBrewer::brewer.pal(10, "RdYlBu"),
-    top_annotation = columnAnnotation(
-        age = age_ord
-    ),
-    show_row_names = FALSE,
-    show_column_names = FALSE,
-    row_title = "Feature",
-    column_title =  "Sample",
-    use_raster = FALSE
-)
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
-
+We would like to identify features that are related to our outcome of interest
+(age). It's clear from the heatmap that there are too many features to do so
+manually, even with this reduced number of features - the original dataset
+contained over 800,000!
 
 > ## Measuring DNA Methylation
 > 
@@ -493,19 +439,132 @@ tidy(fit)
 ~~~
 {: .output}
 
-We have a lot of features, though! This is what it looks like if we do that
-for every feature.
+The first coefficient in this model is the intercept, measuring the overall 
+offset between age and methylation levels. In this instance, we're more 
+interested if there is a relationship between increasing age and methylation
+levels. Therefore, we'll focus only on the second coefficient.
 
 
 ~~~
-dfs <- lapply(seq_len(nrow(xmat)),
-    function(i) {
-        df <- tidy(lm(xmat[i, ] ~ age))[2, ]
-        df$term <- rownames(xmat)[[i]]
-        df
-    }
-)
+coef1 <- tidy(fit)[2, ]
+coef1
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 1 x 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00572   0.00727     0.787   0.437
+~~~
+{: .output}
+
+We can write a function to fit this kind of model for any given row of the
+matrix, and then use it to fit a model to each feature:
+
+
+~~~
+lm_feature <- function(i) {
+    tidy(lm(xmat[i, ] ~ age))[2, ]
+}
+coef2 <- lm_feature(2)
+coef3 <- lm_feature(3)
+~~~
+{: .language-r}
+
+
+We have a lot of features, though! Instead of looping through these values,
+we can `lapply` over the number of rows of the matrix to fit a model for each
+feature.
+
+
+~~~
+dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
+head(dfs)
+~~~
+{: .language-r}
+
+
+
+~~~
+[[1]]
+# A tibble: 1 x 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00572   0.00727     0.787   0.437
+
+[[2]]
+# A tibble: 1 x 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age   -0.00149   0.00325    -0.458   0.650
+
+[[3]]
+# A tibble: 1 x 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age   -0.00354   0.00648    -0.547   0.588
+
+[[4]]
+# A tibble: 1 x 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age   -0.00715   0.00427     -1.68   0.103
+
+[[5]]
+# A tibble: 1 x 5
+  term  estimate std.error statistic  p.value
+  <chr>    <dbl>     <dbl>     <dbl>    <dbl>
+1 age    -0.0174   0.00456     -3.82 0.000527
+
+[[6]]
+# A tibble: 1 x 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00982   0.00410      2.39  0.0221
+~~~
+{: .output}
+
+Now we have a list of coefficients, standard errors, and associated p-values
+for each of the rows of our matrix, we can `rbind` them together.
+To do this with each of the elements of our list, we can use `do.call`.
+This calls the function supplied as the first argument (here, `rbind`) using
+the second argument as a list of arguments to that function.
+Here, it's equivalent to writing `rbind(dfs[[1]], dfs[[2]], [etc])`.
+
+~~~
+## bind together all of our small tables to make one big table
 df_all <- do.call(rbind, dfs)
+## set the rownames of the table to be the names of the features
+~~~
+{: .language-r}
+
+We can then create a plot of effect size estimates (model coefficients) against
+p-values for each of these figures, to visualise the magnitude of effects.
+It's worth noting here that many p-values are very small (high on the y-axis)
+despite the small effect size estimates. This is because, as we noted above, 
+a p-value in this case is a function of both the effect size estimate and
+the associated uncertainty.
+These plots are often called "volcano plots", because they
+resemble an eruption.
+
+~~~
+rownames(df_all) <- rownames(xmat)
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: Setting row names on a tibble is deprecated.
+~~~
+{: .warning}
+
+
+
+~~~
 plot(df_all$estimate, -log10(df_all$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
@@ -513,7 +572,7 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-28-1.png" title="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." width="612" style="display: block; margin: auto;" />
 
 In this figure, every point represents a feature of interest. The x-axis
 represents the effect size observed for that feature in a linear model,
@@ -557,7 +616,7 @@ plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-29-1.png" title="plot of chunk unnamed-chunk-29" alt="plot of chunk unnamed-chunk-29" width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -646,7 +705,7 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-30-1.png" title="plot of chunk unnamed-chunk-30" alt="plot of chunk unnamed-chunk-30" width="612" style="display: block; margin: auto;" />
 
 
 The second main way of controlling for multiple tests
@@ -717,7 +776,7 @@ the experiment over and over.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-22-1.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-31-1.png" title="plot of chunk unnamed-chunk-31" alt="plot of chunk unnamed-chunk-31" width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    ggplot() +
@@ -731,7 +790,7 @@ the experiment over and over.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-22-2.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-31-2.png" title="plot of chunk unnamed-chunk-31" alt="plot of chunk unnamed-chunk-31" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -778,7 +837,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-32-1.png" title="plot of chunk unnamed-chunk-32" alt="plot of chunk unnamed-chunk-32" width="612" style="display: block; margin: auto;" />
 
 
 
@@ -811,7 +870,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-25-1.png" title="plot of chunk unnamed-chunk-25" alt="plot of chunk unnamed-chunk-25" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" width="612" style="display: block; margin: auto;" />
 > > 2. We can use `all.equal` to compare vectors:
 > >    
 > >    ~~~

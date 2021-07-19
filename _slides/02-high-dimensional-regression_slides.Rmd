@@ -29,19 +29,7 @@ knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-5-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-6
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-6-1.png"))
-```
-
-\newpage
-# plot of chunk unnamed-chunk-7
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-7-1.png"))
-```
-
-\newpage
-# plot of chunk unnamed-chunk-8
+# Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines.
 ```{r out.width="0.5\\textwidth", echo=FALSE}
 knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-8-1.png"))
 ```
@@ -65,15 +53,21 @@ knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-11-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-14
+# plot of chunk unnamed-chunk-12
 ```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-14-1.png"))
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-12-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-16
+# plot of chunk unnamed-chunk-13
 ```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-16-1.png"))
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-13-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-14
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-14-1.png"))
 ```
 
 \newpage
@@ -83,39 +77,51 @@ knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-19-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-20
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-20-1.png"))
-```
-
-\newpage
 # plot of chunk unnamed-chunk-21
 ```{r out.width="0.5\\textwidth", echo=FALSE}
 knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-21-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-22
+# Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data.
 ```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-22-1.png"))
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-28-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-22
+# plot of chunk unnamed-chunk-29
 ```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-22-2.png"))
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-29-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-23
+# plot of chunk unnamed-chunk-30
 ```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-23-1.png"))
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-30-1.png"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-25
+# plot of chunk unnamed-chunk-31
 ```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-25-1.png"))
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-31-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-31
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-31-2.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-32
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-32-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-34
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-34-1.png"))
 ```
 
 \newpage
