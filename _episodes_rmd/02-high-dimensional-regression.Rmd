@@ -172,6 +172,49 @@ hypothesis allows us to determine how unlikely it would be for
 us to observe what we have under those circumstances (the basis
 of null hypothesis significance testing).
 
+To demonstrate, we can manually (this is not important to remember).
+```{r}
+x <- rnorm(100)
+y <- rnorm(100)
+fit <- lm(y ~ x)
+tab <- as.data.frame(summary(fit)$coef)
+tvals <- tab$Estimate / tab$Std
+all.equal(tvals, tab$t)
+```
+
+We want to do a 2-tail test, so we take the absolute value of the t-statistic,
+and look at the upper rather than lower tail. Because in a 2-tail test we're
+looking at "half" of the t-distribution, we also multiply the p-value by 2.
+
+```{r}
+pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail=FALSE)
+all.equal(tvals, pvals)
+```
+
+```{r, echo = FALSE, fig.cap="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines."}
+ggplot() +
+    geom_function(fun = function(x) dt(x, df=fit$df)) +
+    xlim(0, 4) +
+    geom_vline(
+        aes(xintercept = abs(tvals), color = rownames(tab)),
+        lty = "dashed"
+    ) +
+    stat_function(fun = function(x) dt(x, df=fit$df), 
+        aes(fill = rownames(tab)[[1]]),
+        xlim = c(abs(tvals)[[1]], 4),
+        alpha = 0.25,
+        geom = "area"
+    ) +
+    stat_function(fun = function(x) dt(x, df=fit$df), 
+        aes(fill=rownames(tab)[[2]]),
+        xlim = c(abs(tvals)[[2]], 4),
+        alpha = 0.25,
+        geom = "area"
+    ) +
+    scale_color_discrete("Parameter", aesthetics = c("fill", "colour")) +
+    labs(x = "Density", y = "t-statistic")
+```
+
 
 > ## Exercise
 >
@@ -188,7 +231,7 @@ of null hypothesis significance testing).
 >
 > > ## Solution
 > > 1. 
-> >    ```{r}
+> >    ```{r, echo=FALSE}
 > >    n <- 100
 > >    noise_sd <- 0.5
 > >    x <- rnorm(n)
@@ -199,7 +242,7 @@ of null hypothesis significance testing).
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > >    
-> >    ```{r}
+> >    ```{r, echo=FALSE}
 > >    n <- 100
 > >    noise_sd <- 5
 > >    x <- rnorm(n)
@@ -210,7 +253,7 @@ of null hypothesis significance testing).
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > > 2. 
-> >    ```{r}
+> >    ```{r, echo=FALSE}
 > >    n <- 10
 > >    noise_sd <- 2
 > >    x <- rnorm(n)
@@ -221,7 +264,7 @@ of null hypothesis significance testing).
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > >    
-> >    ```{r}
+> >    ```{r, echo=FALSE}
 > >    n <- 10
 > >    noise_sd <- 0.4
 > >    x <- rnorm(n)
@@ -232,7 +275,7 @@ of null hypothesis significance testing).
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > > 3. 
-> >    ```{r}
+> >    ```{r, echo=FALSE}
 > >    n <- 1000
 > >    noise_sd <- 5
 > >    x <- rnorm(n)
@@ -243,7 +286,7 @@ of null hypothesis significance testing).
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > >    
-> >    ```{r}
+> >    ```{r, echo=FALSE}
 > >    n <- 1000
 > >    noise_sd <- 1
 > >    x <- rnorm(n)
@@ -299,8 +342,23 @@ if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
 methylation <- readRDS(here("data/methylation.rds"))
+```
 
-xmat <- getM(methylation)
+This `methylation` object is a `GenomicRatioSet`, a Bioconductor data object
+derived from the `SummarizedExperiment` class.
+These `SummarizedExperiment` objects contain `assay`s, in this case methylation
+levels, and optional sample-level `colData` and feature-level `metadata`.
+These objects are very convenient to contain all of the information about 
+a dataset in a high-throughput context and may be covered in more
+detail in other Carpentries lessons.
+```{r}
+methylation
+```
+
+To extract the matrix of methylation values, we use the `assay` function.
+
+```{r}
+xmat <- assay(methylation)
 ```
 
 The distribution of these M-values looks like this:
@@ -309,7 +367,8 @@ The distribution of these M-values looks like this:
 hist(xmat, breaks = "FD", xlab = "M-value")
 ```
 
-In this case, the phenotypes and groupings look like this (for the first 6 samples):
+In this case, the phenotypes and groupings look like this
+(for the first 6 samples):
 
 ```{r, echo=FALSE}
 knitr::kable(head(colData(methylation)), row.names = FALSE)
@@ -318,10 +377,10 @@ knitr::kable(head(colData(methylation)), row.names = FALSE)
 In this case, we will focus on age. The association between
 age and methylation status in blood samples has been studied extensively,
 and is actually a good case-study in how to perform some of the techniques
-we will cover in this lesson.
+we will cover in this lesson. The methylation levels for these data 
+can be presented in a heatmap:
 
-
-```{r}
+```{r, echo=FALSE}
 age <- methylation$Age
 
 library("ComplexHeatmap")
@@ -344,6 +403,10 @@ Heatmap(xmat_ord,
 )
 ```
 
+We would like to identify features that are related to our outcome of interest
+(age). It's clear from the heatmap that there are too many features to do so
+manually, even with this reduced number of features - the original dataset
+contained over 800,000!
 
 > ## Measuring DNA Methylation
 > 
@@ -414,18 +477,59 @@ library("broom")
 tidy(fit)
 ```
 
-We have a lot of features, though! This is what it looks like if we do that
-for every feature.
+The first coefficient in this model is the intercept, measuring the overall 
+offset between age and methylation levels. In this instance, we're more 
+interested if there is a relationship between increasing age and methylation
+levels. Therefore, we'll focus only on the second coefficient.
 
 ```{r}
-dfs <- lapply(seq_len(nrow(xmat)),
-    function(i) {
-        df <- tidy(lm(xmat[i, ] ~ age))[2, ]
-        df$term <- rownames(xmat)[[i]]
-        df
-    }
-)
+coef1 <- tidy(fit)[2, ]
+coef1
+```
+
+We can write a function to fit this kind of model for any given row of the
+matrix, and then use it to fit a model to each feature:
+
+```{r}
+lm_feature <- function(i) {
+    tidy(lm(xmat[i, ] ~ age))[2, ]
+}
+coef2 <- lm_feature(2)
+coef3 <- lm_feature(3)
+```
+
+
+We have a lot of features, though! Instead of looping through these values,
+we can `lapply` over the number of rows of the matrix to fit a model for each
+feature.
+
+```{r}
+dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
+head(dfs)
+```
+
+Now we have a list of coefficients, standard errors, and associated p-values
+for each of the rows of our matrix, we can `rbind` them together.
+To do this with each of the elements of our list, we can use `do.call`.
+This calls the function supplied as the first argument (here, `rbind`) using
+the second argument as a list of arguments to that function.
+Here, it's equivalent to writing `rbind(dfs[[1]], dfs[[2]], [etc])`.
+```{r}
+## bind together all of our small tables to make one big table
 df_all <- do.call(rbind, dfs)
+## set the rownames of the table to be the names of the features
+```
+
+We can then create a plot of effect size estimates (model coefficients) against
+p-values for each of these figures, to visualise the magnitude of effects.
+It's worth noting here that many p-values are very small (high on the y-axis)
+despite the small effect size estimates. This is because, as we noted above, 
+a p-value in this case is a function of both the effect size estimate and
+the associated uncertainty.
+These plots are often called "volcano plots", because they
+resemble an eruption.
+```{r, fig.cap="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data."}
+rownames(df_all) <- rownames(xmat)
 plot(df_all$estimate, -log10(df_all$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
