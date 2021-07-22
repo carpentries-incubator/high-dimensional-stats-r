@@ -394,7 +394,7 @@ plot(y, x[, names(which.max(coef[-1]))])
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02c-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
 
 
 
