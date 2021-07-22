@@ -1,0 +1,25 @@
+---
+title: Stepwise feature selection for regression
+output: beamer_presentation
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# plot of chunk unnamed-chunk-4
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02b-unnamed-chunk-4-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-5
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02b-unnamed-chunk-5-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-6
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02b-unnamed-chunk-6-1.png"))
+```
+
+\newpage

@@ -1,0 +1,49 @@
+---
+title: Principle component analysis
+output: beamer_presentation
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# plot of chunk unnamed-chunk-9
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-03-unnamed-chunk-9-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-10
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-03-unnamed-chunk-10-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-15
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-03-unnamed-chunk-15-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-16
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-03-unnamed-chunk-16-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-17
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-03-unnamed-chunk-17-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-18
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-03-unnamed-chunk-18-1.png"))
+```
+
+\newpage
+# plot of chunk unnamed-chunk-19
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-03-unnamed-chunk-19-1.png"))
+```
+
+\newpage

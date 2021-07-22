@@ -1,0 +1,13 @@
+---
+title: Regularised regression with many features
+output: beamer_presentation
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# plot of chunk unnamed-chunk-5
+```{r out.width="0.5\\textwidth", echo=FALSE}
+knitr::include_graphics(here("fig/rmd-02c-unnamed-chunk-5-1.png"))
+```
+
+\newpage
