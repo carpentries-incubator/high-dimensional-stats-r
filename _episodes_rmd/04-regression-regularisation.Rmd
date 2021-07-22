@@ -24,7 +24,7 @@ math: yes
 ```{r, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
-knitr_fig_path("02c-")
+knitr_fig_path("04-")
 ```
 
 ```{r}

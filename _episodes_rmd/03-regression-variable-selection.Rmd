@@ -1,10 +1,11 @@
 ---
-title: "Stepwise feature selection for regression"
+title: "Feature selection for regression"
 teaching: 0
 exercises: 0
 questions:
 - "Why would we want to find a subset of features
   that are associated with an outcome?"
+- "How should we *not* select features?"
 - "How can we iteratively find a good subset of our features
   variables to use for regression?"
 - "What are some risks and downsides of iterative feature
@@ -27,7 +28,7 @@ math: yes
 ```{r, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
-knitr_fig_path("02b-")
+knitr_fig_path("03-")
 ```
 
 
