@@ -54,15 +54,15 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" style="display: block; margin: auto;" />
 
 or equivalently for a discrete covariate:
 
-<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." width="432" style="display: block; margin: auto;" />
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." width="432" style="display: block; margin: auto;" />
 
 And, of course, we often have an awful lot of features and need
 to prioritise a subset of them! We need a rigorous way to
@@ -101,7 +101,7 @@ $$
 Or, visually, that (for example) this is the distribution 
 of new points conditional on their $x$ values:
 
-<img src="../fig/rmd-02-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-5-1.png" title="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." width="612" style="display: block; margin: auto;" />
 
 In order to decide whether a result would be unlikely
 under the null hypothesis, we can calculate a test statistic.
@@ -127,6 +127,24 @@ x <- rnorm(100)
 y <- rnorm(100)
 fit <- lm(y ~ x)
 tab <- as.data.frame(summary(fit)$coef)
+tab
+~~~
+{: .language-r}
+
+
+
+~~~
+              Estimate Std. Error   t value  Pr(>|t|)
+(Intercept) 0.02791565  0.1008966 0.2766759 0.7826117
+x           0.11101669  0.1105607 1.0041247 0.3177914
+~~~
+{: .output}
+
+We can see that the t-statistic is just the ratio of the estimate to the 
+standard error:
+
+
+~~~
 tvals <- tab$Estimate / tab$Std
 all.equal(tvals, tab$t)
 ~~~
@@ -139,6 +157,7 @@ all.equal(tvals, tab$t)
 ~~~
 {: .output}
 
+Calculating the p-values is a bit more tricky.
 We want to do a 2-tail test, so we take the absolute value of the t-statistic,
 and look at the upper rather than lower tail. Because in a 2-tail test we're
 looking at "half" of the t-distribution, we also multiply the p-value by 2.
@@ -146,18 +165,20 @@ looking at "half" of the t-distribution, we also multiply the p-value by 2.
 
 ~~~
 pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail=FALSE)
-all.equal(tvals, pvals)
+all.equal(tab$Pr, pvals)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-[1] "Mean relative difference: 0.930878"
+[1] TRUE
 ~~~
 {: .output}
 
-<img src="../fig/rmd-02-unnamed-chunk-8-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="612" style="display: block; margin: auto;" />
+This is much more easy to observe visually, by plotting the distribution:
+
+<img src="../fig/rmd-02-unnamed-chunk-9-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -175,42 +196,42 @@ all.equal(tvals, pvals)
 >
 > > ## Solution
 > > 1. 
-> >    <img src="../fig/rmd-02-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 3.060592e-07
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.3804761
 > >    ~~~
 > >    {: .output}
 > > 2. 
-> >    <img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-12-1.png" title="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
-> >    [1] 0.08869178
+> >    [1] 0.009102573
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-13-1.png" title="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
-> >    [1] 0.174728
+> >    [1] 0.02494196
 > >    ~~~
 > >    {: .output}
 > > 3. 
-> >    <img src="../fig/rmd-02-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
-> >    [1] 8.894783e-10
+> >    [1] 0.2960559
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-15-1.png" title="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 6.295652e-05
@@ -303,7 +324,7 @@ hist(xmat, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-20-1.png" title="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="612" style="display: block; margin: auto;" />
 
 In this case, the phenotypes and groupings look like this
 (for the first 6 samples):
@@ -324,7 +345,7 @@ and is actually a good case-study in how to perform some of the techniques
 we will cover in this lesson. The methylation levels for these data 
 can be presented in a heatmap:
 
-<img src="../fig/rmd-02-unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-22-1.png" title="Heatmap of methylation values across all features. Samples are ordered according to age." alt="Heatmap of methylation values across all features. Samples are ordered according to age." width="612" style="display: block; margin: auto;" />
 
 We would like to identify features that are related to our outcome of interest
 (age). It's clear from the heatmap that there are too many features to do so
@@ -443,10 +464,11 @@ The first coefficient in this model is the intercept, measuring the overall
 offset between age and methylation levels. In this instance, we're more 
 interested if there is a relationship between increasing age and methylation
 levels. Therefore, we'll focus only on the second coefficient.
+We'll also convert these objects from a `tibble` to a normal `data.frame`.
 
 
 ~~~
-coef1 <- tidy(fit)[2, ]
+coef1 <- as.data.frame(tidy(fit)[2, ])
 coef1
 ~~~
 {: .language-r}
@@ -454,20 +476,18 @@ coef1
 
 
 ~~~
-# A tibble: 1 x 5
-  term  estimate std.error statistic p.value
-  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
-1 age    0.00572   0.00727     0.787   0.437
+  term    estimate   std.error statistic  p.value
+1  age 0.005720243 0.007269633 0.7868681 0.436655
 ~~~
 {: .output}
 
 We can write a function to fit this kind of model for any given row of the
-matrix, and then use it to fit a model to each feature:
+matrix, and then use it to fit a model to any feature we like:
 
 
 ~~~
 lm_feature <- function(i) {
-    tidy(lm(xmat[i, ] ~ age))[2, ]
+    as.data.frame(tidy(lm(xmat[i, ] ~ age))[2, ])
 }
 coef2 <- lm_feature(2)
 coef3 <- lm_feature(3)
@@ -490,40 +510,28 @@ head(dfs)
 
 ~~~
 [[1]]
-# A tibble: 1 x 5
-  term  estimate std.error statistic p.value
-  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
-1 age    0.00572   0.00727     0.787   0.437
+  term    estimate   std.error statistic  p.value
+1  age 0.005720243 0.007269633 0.7868681 0.436655
 
 [[2]]
-# A tibble: 1 x 5
-  term  estimate std.error statistic p.value
-  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
-1 age   -0.00149   0.00325    -0.458   0.650
+  term     estimate  std.error statistic   p.value
+1  age -0.001486529 0.00324632 -0.457912 0.6498459
 
 [[3]]
-# A tibble: 1 x 5
-  term  estimate std.error statistic p.value
-  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
-1 age   -0.00354   0.00648    -0.547   0.588
+  term     estimate   std.error statistic   p.value
+1  age -0.003544772 0.006478682 -0.547144 0.5877519
 
 [[4]]
-# A tibble: 1 x 5
-  term  estimate std.error statistic p.value
-  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
-1 age   -0.00715   0.00427     -1.68   0.103
+  term     estimate   std.error statistic   p.value
+1  age -0.007147633 0.004267026 -1.675085 0.1028311
 
 [[5]]
-# A tibble: 1 x 5
-  term  estimate std.error statistic  p.value
-  <chr>    <dbl>     <dbl>     <dbl>    <dbl>
-1 age    -0.0174   0.00456     -3.82 0.000527
+  term    estimate   std.error statistic      p.value
+1  age -0.01742771 0.004564708 -3.817924 0.0005268469
 
 [[6]]
-# A tibble: 1 x 5
-  term  estimate std.error statistic p.value
-  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
-1 age    0.00982   0.00410      2.39  0.0221
+  term    estimate   std.error statistic    p.value
+1  age 0.009815117 0.004099074  2.394472 0.02213364
 ~~~
 {: .output}
 
@@ -538,6 +546,7 @@ Here, it's equivalent to writing `rbind(dfs[[1]], dfs[[2]], [etc])`.
 ## bind together all of our small tables to make one big table
 df_all <- do.call(rbind, dfs)
 ## set the rownames of the table to be the names of the features
+rownames(df_all) <- rownames(xmat)
 ~~~
 {: .language-r}
 
@@ -551,20 +560,6 @@ These plots are often called "volcano plots", because they
 resemble an eruption.
 
 ~~~
-rownames(df_all) <- rownames(xmat)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: Setting row names on a tibble is deprecated.
-~~~
-{: .warning}
-
-
-
-~~~
 plot(df_all$estimate, -log10(df_all$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
@@ -572,11 +567,11 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-28-1.png" title="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-29-1.png" title="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." width="612" style="display: block; margin: auto;" />
 
 In this figure, every point represents a feature of interest. The x-axis
 represents the effect size observed for that feature in a linear model,
-while the y-axis is the $-log10(\text{p-value})$, where larger values
+while the y-axis is the $-\log_{10}(\text{p})$, where larger values
 indicate increasing statistical evidence of a non-zero effect size. 
 
 Given that we often use procedures like this to identify differentially
@@ -593,30 +588,25 @@ This is made more difficult by the number of tests we perform.
 
 With such a large number of features, we often want some way
 to decide which features are "interesting" or "significant"
-for further study.
-
+for further study. However, if we were to apply a normal significance threshold
+of 0.05, we might not end up 
 To demonstrate this, it's useful to consider what happens if
 we scramble age and run the same test again:
 
 
 ~~~
 age_perm <- age[sample(ncol(xmat), ncol(xmat))]
-dfs <- lapply(seq_len(nrow(xmat)),
-    function(i) {
-        df <- tidy(lm(xmat[i, ] ~ age_perm))[2, ]
-        df$term <- rownames(xmat)[[i]]
-        df
-    }
-)
+dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
 df_all_perm <- do.call(rbind, dfs)
 plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
+abline(h = -log10(0.05), lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-29-1.png" title="plot of chunk unnamed-chunk-29" alt="plot of chunk unnamed-chunk-29" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-30-1.png" title="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -705,7 +695,7 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-30-1.png" title="plot of chunk unnamed-chunk-30" alt="plot of chunk unnamed-chunk-30" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-31-1.png" title="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="612" style="display: block; margin: auto;" />
 
 
 The second main way of controlling for multiple tests
@@ -776,21 +766,8 @@ the experiment over and over.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-31-1.png" title="plot of chunk unnamed-chunk-31" alt="plot of chunk unnamed-chunk-31" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-32-1.png" title="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="612" style="display: block; margin: auto;" />
 > >    
-> >    ~~~
-> >    ggplot() +
-> >        aes(p_fdr, p_fwer) +
-> >        geom_point() +
-> >        scale_x_log10() + scale_y_log10() +
-> >        geom_abline(slope = 1, linetype = "dashed") +
-> >        geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
-> >        geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
-> >        labs(x = "Benjamini-Hochberg p-value", y = "Bonferroni p-value")
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-31-2.png" title="plot of chunk unnamed-chunk-31" alt="plot of chunk unnamed-chunk-31" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -837,7 +814,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-32-1.png" title="plot of chunk unnamed-chunk-32" alt="plot of chunk unnamed-chunk-32" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-34-1.png" title="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." width="612" style="display: block; margin: auto;" />
 
 
 
@@ -870,7 +847,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-unnamed-chunk-36-1.png" title="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." width="612" style="display: block; margin: auto;" />
 > > 2. We can use `all.equal` to compare vectors:
 > >    
 > >    ~~~
