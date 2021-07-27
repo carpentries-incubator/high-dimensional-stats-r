@@ -1,0 +1,21 @@
+---
+title: High dimensional regression
+output: beamer_presentation
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# <img src="../fig/rmd-03-unnamed-chunk-3-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-03-unnamed-chunk-3-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-03-unnamed-chunk-3-1.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
+# <img src="../fig/rmd-03-unnamed-chunk-3-2.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-03-unnamed-chunk-3-2.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-03-unnamed-chunk-3-2.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage

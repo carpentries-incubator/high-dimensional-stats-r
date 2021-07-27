@@ -41,66 +41,12 @@ library("minfi")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in loadNamespace(x): there is no package called 'methylclock'
-~~~
-{: .error}
-
-
-
-~~~
 methylation <- readRDS(here("data/methylation.rds"))
-~~~
-{: .language-r}
 
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file '/home/runner/
-work/high-dimensional-stats-r/high-dimensional-stats-r/data/methylation.rds',
-probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 methyl_mat <- t(assay(methylation))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': error in evaluating the argument 'x' in selecting a method for function 'assay': object 'methylation' not found
-~~~
-{: .error}
-
-
-
-~~~
 age <- methylation$Age
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'methylation' not found
-~~~
-{: .error}
 
 # Why would we want to do feature selection?
 
@@ -126,19 +72,6 @@ What happens if we try to fit a model here?
 
 ~~~
 fit <- lm(age ~ methyl_mat)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(predvars, data, env): object 'age' not found
-~~~
-{: .error}
-
-
-
-~~~
 summary(fit)
 ~~~
 {: .language-r}
@@ -146,9 +79,27 @@ summary(fit)
 
 
 ~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit' not found
+
+Call:
+lm(formula = age ~ methyl_mat)
+
+Residuals:
+ALL 37 residuals are 0: no residual degrees of freedom!
+
+Coefficients: (4964 not defined because of singularities)
+                            Estimate Std. Error t value Pr(>|t|)
+(Intercept)                 131.4644        NaN     NaN      NaN
+methyl_matcg01884767         87.8823        NaN     NaN      NaN
+methyl_matcg03955296         -4.9777        NaN     NaN      NaN
+methyl_matcg06945697       -155.8711        NaN     NaN      NaN
+methyl_matcg01375417         61.9513        NaN     NaN      NaN
+ [ reached getOption("max.print") -- omitted 4996 rows ]
+
+Residual standard error: NaN on 0 degrees of freedom
+Multiple R-squared:      1,	Adjusted R-squared:    NaN 
+F-statistic:   NaN on 36 and 0 DF,  p-value: NA
 ~~~
-{: .error}
+{: .output}
 
 So we can't do that mathematically, we have to find another way.
 
@@ -183,28 +134,28 @@ Call:
 lm(formula = y_synth ~ ., data = as.data.frame(X_pred))
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--1.52126 -0.39983 -0.06845  0.35397  1.53089 
+    Min      1Q  Median      3Q     Max 
+-1.8168 -0.4991  0.0431  0.5345  1.9119 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept) -0.07345    0.07074  -1.038  0.30190    
-V1          -0.24762    0.08297  -2.984  0.00367 ** 
-V2           0.32665    0.06858   4.763 7.37e-06 ***
-V3           0.22532    0.06917   3.258  0.00159 ** 
-V4          -0.19275    0.06921  -2.785  0.00654 ** 
-V5           0.17612    0.06289   2.800  0.00626 ** 
-V6           0.15285    0.08573   1.783  0.07802 .  
-V7           0.13310    0.07115   1.871  0.06467 .  
-V8           0.16824    0.07967   2.112  0.03751 *  
-V9          -0.15644    0.07539  -2.075  0.04086 *  
-V10          0.19829    0.07529   2.634  0.00996 ** 
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  0.06825    0.08608   0.793  0.42996   
+V1          -0.31693    0.10260  -3.089  0.00268 **
+V2           0.19308    0.09468   2.039  0.04439 * 
+V3          -0.21355    0.08752  -2.440  0.01667 * 
+V4          -0.16622    0.09134  -1.820  0.07216 . 
+V5           0.12758    0.08650   1.475  0.14378   
+V6           0.09465    0.09209   1.028  0.30684   
+V7          -0.25008    0.08387  -2.982  0.00370 **
+V8          -0.19176    0.09868  -1.943  0.05515 . 
+V9          -0.24142    0.08543  -2.826  0.00582 **
+V10         -0.16546    0.08681  -1.906  0.05988 . 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.6853 on 89 degrees of freedom
-Multiple R-squared:  0.5734,	Adjusted R-squared:  0.5255 
-F-statistic: 11.96 on 10 and 89 DF,  p-value: 8.048e-13
+Residual standard error: 0.7994 on 89 degrees of freedom
+Multiple R-squared:  0.4677,	Adjusted R-squared:  0.4079 
+F-statistic:  7.82 on 10 and 89 DF,  p-value: 7.016e-09
 ~~~
 {: .output}
 
@@ -223,47 +174,8 @@ because blah blah number of permutations probably $p!$ but need to check.
 ~~~
 library("leaps")
 small_methyl <- methyl_mat[, 1:10]
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'methyl_mat' not found
-~~~
-{: .error}
-
-
-
-~~~
 fit_all <- regsubsets(x = small_methyl, y = age, really.big = TRUE)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in regsubsets(x = small_methyl, y = age, really.big = TRUE): object 'small_methyl' not found
-~~~
-{: .error}
-
-
-
-~~~
 summ <- summary(fit_all)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_all' not found
-~~~
-{: .error}
-
-
-
-~~~
 coef(fit_all, which.min(summ$rss))
 ~~~
 {: .language-r}
@@ -271,9 +183,12 @@ coef(fit_all, which.min(summ$rss))
 
 
 ~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_all' not found
+(Intercept)  cg01884767  cg01375417  cg17051304  cg14037832  cg21318318 
+   2.348818   -7.170163    2.678007  -22.424639   14.785674   11.882970 
+ cg06750118  cg23520688  cg15177551 
+   1.858702    5.624383   -7.009826 
 ~~~
-{: .error}
+{: .output}
 
 Let's try running BS on the full dataset.
 
@@ -288,7 +203,7 @@ coef(fit_all, which.min(summ$rss))
 This doesn't really work in a reasonable time because of the number of possible
 combinations!
 
-<img src="../fig/bs_fs.png" title="plot of chunk bstab" alt="plot of chunk bstab" width="500px" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
 
 Figure taken from [Hastie et al. (2020)](https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf),
 published [here](https://doi.org/10.1214/19-STS733).
@@ -349,9 +264,10 @@ will generalise beyond the present dataset.
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_all' not found
+> > (Intercept)  cg17051304  cg14037832 
+> >    5.608864  -20.473848   19.927762 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
@@ -363,9 +279,12 @@ will generalise beyond the present dataset.
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_all' not found
+> > (Intercept)  cg01884767  cg01375417  cg17051304  cg14037832  cg21318318 
+> >    2.348818   -7.170163    2.678007  -22.424639   14.785674   11.882970 
+> >  cg06750118  cg23520688  cg15177551 
+> >    1.858702    5.624383   -7.009826 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
@@ -393,71 +312,11 @@ predictors.
 if (!file.exists(here("data/synthetic.rds"))) {
   source(here("data/synthetic.R"))
 }
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in validObject(.Object): invalid class "SummarizedExperiment" object: 
-    'x@assays' is not parallel to 'x'
-~~~
-{: .error}
-
-
-
-~~~
 synthetic <- readRDS(here("data/synthetic.rds"))
-~~~
-{: .language-r}
 
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file '/home/runner/work/
-high-dimensional-stats-r/high-dimensional-stats-r/data/synthetic.rds', probable
-reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 synth_mat <- t(assay(synthetic))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': error in evaluating the argument 'x' in selecting a method for function 'assay': object 'synthetic' not found
-~~~
-{: .error}
-
-
-
-~~~
 synth_age <- synthetic$age
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'synthetic' not found
-~~~
-{: .error}
-
-
-
-~~~
 fit_forward <- regsubsets(x = synth_mat, y = synth_age, method = "forward")
 ~~~
 {: .language-r}
@@ -465,55 +324,24 @@ fit_forward <- regsubsets(x = synth_mat, y = synth_age, method = "forward")
 
 
 ~~~
-Error in leaps.setup(x, y, wt = weights, nbest = nbest, nvmax = nvmax, : object 'synth_age' not found
+Warning in leaps.setup(x, y, wt = weights, nbest = nbest, nvmax = nvmax, : 1
+linear dependencies found
 ~~~
-{: .error}
+{: .warning}
+
+
+
+~~~
+Reordering variables and trying again:
+~~~
+{: .output}
 
 
 
 ~~~
 summ_forward <- summary(fit_forward)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_forward' not found
-~~~
-{: .error}
-
-
-
-~~~
 est_coef_fwd <- coef(fit_forward, id = which.min(summ_forward$bic))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_forward' not found
-~~~
-{: .error}
-
-
-
-~~~
 true_coefs <- rowData(synthetic)[names(est_coef_fwd)[-1], "true_beta"]
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rowData': object 'synthetic' not found
-~~~
-{: .error}
-
-
-
-~~~
 true_coefs
 ~~~
 {: .language-r}
@@ -521,9 +349,10 @@ true_coefs
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'true_coefs' not found
+[1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.6142645 0.0000000
+[8] 0.0000000 0.0000000
 ~~~
-{: .error}
+{: .output}
 
 
 
@@ -535,79 +364,25 @@ est_coef_fwd
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'est_coef_fwd' not found
+(Intercept)   feature_7  feature_22  feature_28  feature_30  feature_36 
+38.08667755  0.03426189 -0.47685131 -0.08787090  0.66387439 -0.65928005 
+ feature_65  feature_77  feature_79  feature_87 
+ 0.45080649  0.87361796  0.32491977  0.06165128 
 ~~~
-{: .error}
+{: .output}
 
 
 
 ~~~
 all_coefs <- c(true_coefs, est_coef_fwd[-1])
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'true_coefs' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(true_coefs, est_coef_fwd[-1], xlim = range(all_coefs), ylim = range(all_coefs))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'true_coefs' not found
-~~~
-{: .error}
-
-
-
-~~~
 abline(0, 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
 abline(v = 0, lty = "dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
 abline(h = 0, lty = "dashed", col = "firebrick")
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -631,41 +406,16 @@ Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has 
 > > 
 > > 
 > > ~~~
-> > Error in regsubsets(x = methyl_mat, y = age, method = "forward"): object 'methyl_mat' not found
+> > Warning in leaps.setup(x, y, wt = weights, nbest = nbest, nvmax = nvmax, : 4964
+> > linear dependencies found
 > > ~~~
-> > {: .error}
+> > {: .warning}
 > > 
 > > 
 > > 
 > > ~~~
 > > summ_forward <- summary(fit_forward)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_forward' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > est_coef_fwd <- coef(fit_forward, id = which.min(summ_forward$bic))
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_forward' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > est_coef_fwd
 > > ~~~
 > > {: .language-r}
@@ -673,9 +423,12 @@ Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has 
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): object 'est_coef_fwd' not found
+> > (Intercept)  cg14195318  cg01021271  cg12209024  cg27358375  cg17355919 
+> >  -16.313222  -16.175834   -4.691812   21.976663  -16.468929   12.229371 
+> >  cg01774454  cg06363207  cg01351425 
+> >   -9.655544  -13.680655  -15.611642 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > {: .solution}
 {: .challenge}
@@ -699,33 +452,7 @@ can do reverse subset selection.
 > > 
 > > ~~~
 > > features <- methylclock::coefHorvath$CpGmarker
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in loadNamespace(x): there is no package called 'methylclock'
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > features <- intersect(features, colnames(methyl_mat))
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'intersect': object 'features' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > methyl_horvath <- methyl_mat[, features[1:30]]
 > > ~~~
 > > {: .language-r}
@@ -733,7 +460,7 @@ can do reverse subset selection.
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): object 'methyl_mat' not found
+> > Error in methyl_mat[, features[1:30]]: subscript out of bounds
 > > ~~~
 > > {: .error}
 > > 
@@ -801,19 +528,6 @@ can do reverse subset selection.
 > >   methylclock::coefHorvath$CoefficientTraining,
 > >   methylclock::coefHorvath$CpGmarker
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in loadNamespace(x): there is no package called 'methylclock'
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(est_coef_back[-1], true_coef[names(est_coef_back)[-1]])
 > > ~~~
 > > {: .language-r}
@@ -891,9 +605,10 @@ can do reverse subset selection.
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): object 'est_coef_fwd' not found
+> > [1] "cg14195318" "cg01021271" "cg12209024" "cg27358375" "cg17355919"
+> > [6] "cg01774454" "cg06363207" "cg01351425"
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
