@@ -31,132 +31,105 @@ library("here")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-norm <- readRDS(here("data/methylation.rds"))
+methylation <- readRDS(here("data/methylation.rds"))
 
-lim <- norm
-y <- lim$Age
-X <- getM(lim)
+y <- methylation$Age
+methyl_mat <- getM(methylation)
 ```
 
-In the previous 
+In the previous episode we covered variable selection using stepwise/best subset
+selection.
+These have issues with respect to computation time and efficiency.
 
-Another way of modelling these data is to model age as 
+In low noise settings and with few or strong relationships, stepwise/subset
+works well. However that's often not what we're faced with in biomedicine.
+
+
+# Ridge regression
+
+When we fit a linear model, we're minimising the RSS.
 
 $$
-    y_j = \beta_0 + \beta_1 X_1 + \dots \beta_p X_p + \epsilon_j
+    \sum_{i=1}^N y_i - X\beta
 $$
 
-However when the number of predictors is greater than the number of samples
-(basically always true in genetics) it isn't possible to include everything!
+The idea of regularisation is to add another condition to this to control
+the size of the coefficients that come out.
 
-There are some techniques that you can use to find a set of predictors!
+One idea is to control the squared sum of the coefficients, $\beta$.
+This is also sometimes called the $L^2$ norm. This is defined as
 
-- screening (correlation etc): bad, don't do
-- screening (variance): not necessarily bad if the screening variable is sensible
-- forward/reverse/best subset selection
+$$
+    |\beta|_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+$$
+
+To control this, we specify that the solution for the equation above
+also has to have an $L^2$ norm smaller than a certain amount. Or, equivalently,
+we try to minimise a function that includes our $L^2$ norm scaled by a 
+factor that is usually written $\lambda$.
+
+$$
+    \sum_{i=1}^N y_i - X\beta + \lambda|\beta|_2
+$$
+
+> # Exercise
+> 
+> Run `shinystats::ridgeApp()` and play with the parameters
+> 
+> Questions:
+> 
+> > ## Solution
+> > 
+> {: .solution}
+{: .challenge}
+
+Now we can fit a model using ridge regression.
 
 ```{r}
-if (!file.exists(here("data/synthetic.rds"))) {
-    source("data/synthetic.R")
-}
-synthetic <- readRDS("data/synthetic.rds")
+library("glmnet")
+ridge <- glmnet(methyl_mat, age, alpha = 0)
 ```
 
+# LASSO regression
+
+```{r}
+lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
+```
 
 ```{r}
 ## Challenge 5:
 ## one of these...? probably lasso
-library("glmnet")
-ridge <- cv.glmnet(X[, -1], y, alpha = 0)
-lasso <- cv.glmnet(X[, -1], y, alpha = 1)
-elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
-plot(coef(lasso, s = lasso$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty = "dashed", col = "firebrick")
-abline(h = 0, lty = "dashed", col = "firebrick")
-
-plot(coef(elastic, s = elastic$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty = "dashed", col = "firebrick")
-abline(h = 0, lty = "dashed", col = "firebrick")
-
-plot(coef(ridge, s = ridge$lambda.1se)[, 1], beta)
-abline(0, 1)
-abline(v = 0, lty = "dashed", col = "firebrick")
-abline(h = 0, lty = "dashed", col = "firebrick")
+elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
 ```
 
 
-
-
-
-
-
-
-
-```{r}
-x <- t(getM(norm))
-y <- as.numeric(factor(norm$smoker)) - 1
-
-fit <- cv.glmnet(x = x, y = y, family = "binomial")
-
-c <- coef(fit, s = fit$lambda.1se)
-c[c[, 1] != 0, 1]
-
-
-y <- norm$Age
-fit <- cv.glmnet(x = x, y = y)
-
-c <- coef(fit, s = fit$lambda.1se)
-coef <- c[c[, 1] != 0, 1]
-
-plot(y, x[, names(which.max(coef[-1]))])
-```
-
-
-
-```{r, eval=FALSE, echo=FALSE}
-design <- model.matrix(~0 + lim$bmi_clas)
-colnames(design) <- gsub("lim$bmi_clas", "", colnames(design), fixed = TRUE)
-
-fit <- lmFit(getM(lim), design = design)
-contrasts <- makeContrasts(
-    Overweight - Normal,
-    Obese - Normal,
-    levels = design
-)
-fit <- contrasts.fit(fit, contrasts)
-fit <- eBayes(fit)
-tt1 <- topTable(fit, coef = 1, number = nrow(fit))
-tt2 <- topTable(fit, coef = 2, number = nrow(fit))
-
-q <- qvalue(tt2$P.Value)
-tt2$qvalue <- q$qvalue
-
-
-design <- model.matrix(~0 + lim$smoker)
-colnames(design) <- gsub("lim$smoker", "", colnames(design), fixed = TRUE)
-
-
-
-fit <- lmFit(getM(lim), design = design)
-contrasts <- makeContrasts(
-    Yes - No,
-    levels = design
-)
-fit <- contrasts.fit(fit, contrasts)
-fit <- eBayes(fit)
-tt1 <- topTable(fit, coef = 1, number = nrow(fit))
-
-
-q <- qvalue(tt1$P.Value)
-hist(q)
-
-plot(tt1$logFC, -log10(tt1$P.Value))
-```
+> ## Other types of outcomes
+> 
+> You may have noticed that `glmnet` is written as `glm`, not `lm`.
+> This means we can actually model a variety of different outcomes
+> using this regularisation approach. For example, we can model binary
+> variables using logistic regression, as shown below.
+> 
+> In fact, `glmnet` is somewhat cheeky as it also allows you to model
+> survival using Cox proportional hazards models, which aren't GLMs, strictly
+> speaking.
+> 
+> ```{r}
+> smoking <- as.numeric(factor(norm$smoker)) - 1
+> # binary outcome
+> smoking
+> fit <- cv.glmnet(x = methyl_mat, y = smoking, family = "binomial")
+> 
+> coef <- coef(fit, s = fit$lambda.1se)
+> coef[coef[, 1] != 0, 1]
+> plot(smoking, methyl_mat[, names(which.max(coef[-1]))])
+> 
+> ```
+{: .callout}
 
 
 Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
+
 ```{r}
 knitr::include_graphics("../fig/bs_fs_lasso.png")
 ```

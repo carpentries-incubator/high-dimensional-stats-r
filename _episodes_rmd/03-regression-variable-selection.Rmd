@@ -179,6 +179,10 @@ will generalise beyond the present dataset.
 > {: .solution}
 {: .challenge}
 
+> # Selecting a model
+> Yes, selecting a model with BIC on the training set is not ideal, we talk
+> about cross-validation later.
+{: .callout}
 
 # Forward stepwise selection
 

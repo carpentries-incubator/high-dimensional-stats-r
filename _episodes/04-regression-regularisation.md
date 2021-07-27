@@ -30,356 +30,212 @@ library("here")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-norm <- readRDS(here("data/methylation.rds"))
+methylation <- readRDS(here("data/methylation.rds"))
 
-lim <- norm
-y <- lim$Age
-X <- getM(lim)
+y <- methylation$Age
+methyl_mat <- getM(methylation)
 ~~~
 {: .language-r}
 
-In the previous 
+In the previous episode we covered variable selection using stepwise/best subset
+selection.
+These have issues with respect to computation time and efficiency.
 
-Another way of modelling these data is to model age as 
+In low noise settings and with few or strong relationships, stepwise/subset
+works well. However that's often not what we're faced with in biomedicine.
+
+
+# Ridge regression
+
+When we fit a linear model, we're minimising the RSS.
 
 $$
-    y_j = \beta_0 + \beta_1 X_1 + \dots \beta_p X_p + \epsilon_j
+    \sum_{i=1}^N y_i - X\beta
 $$
 
-However when the number of predictors is greater than the number of samples
-(basically always true in genetics) it isn't possible to include everything!
+The idea of regularisation is to add another condition to this to control
+the size of the coefficients that come out.
 
-There are some techniques that you can use to find a set of predictors!
+One idea is to control the squared sum of the coefficients, $\beta$.
+This is also sometimes called the $L^2$ norm. This is defined as
 
-- screening (correlation etc): bad, don't do
-- screening (variance): not necessarily bad if the screening variable is sensible
-- forward/reverse/best subset selection
+$$
+    |\beta|_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+$$
+
+To control this, we specify that the solution for the equation above
+also has to have an $L^2$ norm smaller than a certain amount. Or, equivalently,
+we try to minimise a function that includes our $L^2$ norm scaled by a 
+factor that is usually written $\lambda$.
+
+$$
+    \sum_{i=1}^N y_i - X\beta + \lambda|\beta|_2
+$$
+
+> # Exercise
+> 
+> Run `shinystats::ridgeApp()` and play with the parameters
+> 
+> Questions:
+> 
+> > ## Solution
+> > 
+> {: .solution}
+{: .challenge}
+
+Now we can fit a model using ridge regression.
 
 
 ~~~
-if (!file.exists(here("data/synthetic.rds"))) {
-    source("data/synthetic.R")
-}
-synthetic <- readRDS("data/synthetic.rds")
+library("glmnet")
+ridge <- glmnet(methyl_mat, age, alpha = 0)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Warning in gzfile(file, "rb"): cannot open compressed file 'data/synthetic.rds',
-probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'age' not found
 ~~~
 {: .error}
 
+# LASSO regression
+
+
+~~~
+lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'age' not found
+~~~
+{: .error}
 
 
 ~~~
 ## Challenge 5:
 ## one of these...? probably lasso
-library("glmnet")
-ridge <- cv.glmnet(X[, -1], y, alpha = 0)
+elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'age' not found
 ~~~
 {: .error}
 
 
-
-~~~
-lasso <- cv.glmnet(X[, -1], y, alpha = 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
-~~~
-{: .error}
-
-
-
-~~~
-elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
-~~~
-{: .error}
-
-
-
-~~~
-plot(coef(lasso, s = lasso$lambda.1se)[, 1], beta)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'coef': object 'lasso' not found
-~~~
-{: .error}
-
-
-
-~~~
-abline(0, 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(v = 0, lty = "dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(h = 0, lty = "dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-plot(coef(elastic, s = elastic$lambda.1se)[, 1], beta)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'coef': object 'elastic' not found
-~~~
-{: .error}
-
-
-
-~~~
-abline(0, 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(v = 0, lty = "dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(h = 0, lty = "dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-plot(coef(ridge, s = ridge$lambda.1se)[, 1], beta)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'coef': object 'ridge' not found
-~~~
-{: .error}
-
-
-
-~~~
-abline(0, 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(v = 0, lty = "dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-~~~
-abline(h = 0, lty = "dashed", col = "firebrick")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
-
-
-
-
-
-
-
-
-
-
-~~~
-x <- t(getM(norm))
-y <- as.numeric(factor(norm$smoker)) - 1
-
-fit <- cv.glmnet(x = x, y = y, family = "binomial")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-multinomial or binomial class has fewer than 8 observations; dangerous ground
-~~~
-{: .warning}
-
-
-
-~~~
-c <- coef(fit, s = fit$lambda.1se)
-c[c[, 1] != 0, 1]
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] -1.455287
-~~~
-{: .output}
-
-
-
-~~~
-y <- norm$Age
-fit <- cv.glmnet(x = x, y = y)
-
-c <- coef(fit, s = fit$lambda.1se)
-coef <- c[c[, 1] != 0, 1]
-
-plot(y, x[, names(which.max(coef[-1]))])
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-04-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
-
-
-
-
+> ## Other types of outcomes
+> 
+> You may have noticed that `glmnet` is written as `glm`, not `lm`.
+> This means we can actually model a variety of different outcomes
+> using this regularisation approach. For example, we can model binary
+> variables using logistic regression, as shown below.
+> 
+> In fact, `glmnet` is somewhat cheeky as it also allows you to model
+> survival using Cox proportional hazards models, which aren't GLMs, strictly
+> speaking.
+> 
+> 
+> ~~~
+> smoking <- as.numeric(factor(norm$smoker)) - 1
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error in norm$smoker: object of type 'closure' is not subsettable
+> ~~~
+> {: .error}
+> 
+> 
+> 
+> ~~~
+> # binary outcome
+> smoking
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error in eval(expr, envir, enclos): object 'smoking' not found
+> ~~~
+> {: .error}
+> 
+> 
+> 
+> ~~~
+> fit <- cv.glmnet(x = methyl_mat, y = smoking, family = "binomial")
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'smoking' not found
+> ~~~
+> {: .error}
+> 
+> 
+> 
+> ~~~
+> coef <- coef(fit, s = fit$lambda.1se)
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit' not found
+> ~~~
+> {: .error}
+> 
+> 
+> 
+> ~~~
+> coef[coef[, 1] != 0, 1]
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error in h(simpleError(msg, call)): error in evaluating the argument 'i' in selecting a method for function '[': object of type 'closure' is not subsettable
+> ~~~
+> {: .error}
+> 
+> 
+> 
+> ~~~
+> plot(smoking, methyl_mat[, names(which.max(coef[-1]))])
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'smoking' not found
+> ~~~
+> {: .error}
+{: .callout}
 
 
 Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
+
 
 ~~~
 knitr::include_graphics("../fig/bs_fs_lasso.png")
 ~~~
 {: .language-r}
 
-<img src="../fig/bs_fs_lasso.png" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs_lasso.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
 
 
 > ## Selecting hyperparameters
@@ -391,7 +247,7 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 > as the test set. Repeating this process for each of the
 > $K$ chunks produces more variability.
 > 
-> <img src="../fig/cross_validation.svg" style="display: block; margin: auto;" />
+> <img src="../fig/cross_validation.svg" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 >
 > To be really rigorous, we could even repeat this *cross-validation*
 > process a number of times! This is termed "repeated cross-validation".

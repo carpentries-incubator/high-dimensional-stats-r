@@ -5,24 +5,17 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-# <img src="../fig/rmd-04-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
+# plot of chunk unnamed-chunk-7
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/rmd-04-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/rmd-04-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='<img src="../fig/bs_fs_lasso.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+knitr::include_graphics(here("fig/bs_fs_lasso.png"))
 ```
 
 \newpage
-# <img src="../fig/bs_fs_lasso.png" style="display: block; margin: auto;" />
+# plot of chunk unnamed-chunk-8
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/bs_fs_lasso.png" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/bs_fs_lasso.png" style="display: block; margin: auto;" />"))
-```
-
-\newpage
-# > <img src="../fig/cross_validation.svg" style="display: block; margin: auto;" />
-```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='> <img src="../fig/cross_validation.svg" style="display: block; margin: auto;" />
-knitr::include_graphics(> <img src="here("fig/cross_validation.svg" style="display: block; margin: auto;" />"))
+# , fig.cap='> <img src="../fig/cross_validation.svg" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
+knitr::include_graphics(here("fig/cross_validation.svg"))
 ```
 
 \newpage
