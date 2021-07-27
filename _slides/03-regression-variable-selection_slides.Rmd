@@ -5,17 +5,17 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-# <img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
+# plot of chunk bstab
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />"))
+# , fig.cap='plot of chunk bstab
+knitr::include_graphics(here("fig/bs_fs.png"))
 ```
 
 \newpage
-# <img src="../fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />
+# plot of chunk forwardsyn
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='plot of chunk forwardsyn
+knitr::include_graphics(here("fig/rmd-03-forwardsyn-1.png"))
 ```
 
 \newpage

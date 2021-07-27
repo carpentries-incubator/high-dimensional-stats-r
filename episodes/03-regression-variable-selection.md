@@ -87,12 +87,12 @@ Residuals:
 ALL 37 residuals are 0: no residual degrees of freedom!
 
 Coefficients: (4964 not defined because of singularities)
-                            Estimate Std. Error t value Pr(>|t|)
-(Intercept)                 131.4644        NaN     NaN      NaN
-methyl_matcg01884767         87.8823        NaN     NaN      NaN
-methyl_matcg03955296         -4.9777        NaN     NaN      NaN
-methyl_matcg06945697       -155.8711        NaN     NaN      NaN
-methyl_matcg01375417         61.9513        NaN     NaN      NaN
+                          Estimate Std. Error t value Pr(>|t|)
+(Intercept)               2640.474        NaN     NaN      NaN
+methyl_matcg00075967      -108.216        NaN     NaN      NaN
+methyl_matcg00374717      -139.637        NaN     NaN      NaN
+methyl_matcg00864867        33.102        NaN     NaN      NaN
+methyl_matcg00945507        72.250        NaN     NaN      NaN
  [ reached getOption("max.print") -- omitted 4996 rows ]
 
 Residual standard error: NaN on 0 degrees of freedom
@@ -134,28 +134,28 @@ Call:
 lm(formula = y_synth ~ ., data = as.data.frame(X_pred))
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--1.8168 -0.4991  0.0431  0.5345  1.9119 
+     Min       1Q   Median       3Q      Max 
+-1.58045 -0.35914 -0.04379  0.31736  1.59182 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)   
-(Intercept)  0.06825    0.08608   0.793  0.42996   
-V1          -0.31693    0.10260  -3.089  0.00268 **
-V2           0.19308    0.09468   2.039  0.04439 * 
-V3          -0.21355    0.08752  -2.440  0.01667 * 
-V4          -0.16622    0.09134  -1.820  0.07216 . 
-V5           0.12758    0.08650   1.475  0.14378   
-V6           0.09465    0.09209   1.028  0.30684   
-V7          -0.25008    0.08387  -2.982  0.00370 **
-V8          -0.19176    0.09868  -1.943  0.05515 . 
-V9          -0.24142    0.08543  -2.826  0.00582 **
-V10         -0.16546    0.08681  -1.906  0.05988 . 
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.15617    0.06577   2.375 0.019717 *  
+V1          -0.26036    0.06414  -4.059 0.000106 ***
+V2           0.06486    0.06374   1.018 0.311644    
+V3           0.11694    0.05789   2.020 0.046389 *  
+V4          -0.11563    0.06165  -1.876 0.063966 .  
+V5          -0.23887    0.06325  -3.776 0.000287 ***
+V6           0.18500    0.05868   3.153 0.002204 ** 
+V7          -0.17706    0.06366  -2.782 0.006604 ** 
+V8           0.20675    0.06354   3.254 0.001612 ** 
+V9          -0.06335    0.06143  -1.031 0.305207    
+V10         -0.10403    0.06514  -1.597 0.113819    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.7994 on 89 degrees of freedom
-Multiple R-squared:  0.4677,	Adjusted R-squared:  0.4079 
-F-statistic:  7.82 on 10 and 89 DF,  p-value: 7.016e-09
+Residual standard error: 0.6142 on 89 degrees of freedom
+Multiple R-squared:  0.5667,	Adjusted R-squared:  0.5181 
+F-statistic: 11.64 on 10 and 89 DF,  p-value: 1.534e-12
 ~~~
 {: .output}
 
@@ -183,10 +183,10 @@ coef(fit_all, which.min(summ$rss))
 
 
 ~~~
-(Intercept)  cg01884767  cg01375417  cg17051304  cg14037832  cg21318318 
-   2.348818   -7.170163    2.678007  -22.424639   14.785674   11.882970 
- cg06750118  cg23520688  cg15177551 
-   1.858702    5.624383   -7.009826 
+(Intercept)  cg00374717  cg00864867  cg01027739  cg01353448  cg01584473 
+ 145.118554    1.073187   13.767298   22.683667    9.489186  -14.784050 
+ cg01644850  cg01656216  cg01873645 
+   4.853302    7.915842   -9.715682 
 ~~~
 {: .output}
 
@@ -203,7 +203,7 @@ coef(fit_all, which.min(summ$rss))
 This doesn't really work in a reasonable time because of the number of possible
 combinations!
 
-<img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs.png" title="plot of chunk bstab" alt="plot of chunk bstab" width="500px" style="display: block; margin: auto;" />
 
 Figure taken from [Hastie et al. (2020)](https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf),
 published [here](https://doi.org/10.1214/19-STS733).
@@ -264,8 +264,8 @@ will generalise beyond the present dataset.
 > > 
 > > 
 > > ~~~
-> > (Intercept)  cg17051304  cg14037832 
-> >    5.608864  -20.473848   19.927762 
+> > (Intercept)  cg01353448 
+> >    31.52262    10.92400 
 > > ~~~
 > > {: .output}
 > > 
@@ -279,15 +279,19 @@ will generalise beyond the present dataset.
 > > 
 > > 
 > > ~~~
-> > (Intercept)  cg01884767  cg01375417  cg17051304  cg14037832  cg21318318 
-> >    2.348818   -7.170163    2.678007  -22.424639   14.785674   11.882970 
-> >  cg06750118  cg23520688  cg15177551 
-> >    1.858702    5.624383   -7.009826 
+> > (Intercept)  cg00374717  cg00864867  cg01027739  cg01353448  cg01584473 
+> >  145.118554    1.073187   13.767298   22.683667    9.489186  -14.784050 
+> >  cg01644850  cg01656216  cg01873645 
+> >    4.853302    7.915842   -9.715682 
 > > ~~~
 > > {: .output}
 > {: .solution}
 {: .challenge}
 
+> # Selecting a model
+> Yes, selecting a model with BIC on the training set is not ideal, we talk
+> about cross-validation later.
+{: .callout}
 
 # Forward stepwise selection
 
@@ -318,27 +322,6 @@ synth_mat <- t(assay(synthetic))
 synth_age <- synthetic$age
 
 fit_forward <- regsubsets(x = synth_mat, y = synth_age, method = "forward")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning in leaps.setup(x, y, wt = weights, nbest = nbest, nvmax = nvmax, : 1
-linear dependencies found
-~~~
-{: .warning}
-
-
-
-~~~
-Reordering variables and trying again:
-~~~
-{: .output}
-
-
-
-~~~
 summ_forward <- summary(fit_forward)
 est_coef_fwd <- coef(fit_forward, id = which.min(summ_forward$bic))
 true_coefs <- rowData(synthetic)[names(est_coef_fwd)[-1], "true_beta"]
@@ -349,8 +332,8 @@ true_coefs
 
 
 ~~~
-[1] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.6142645 0.0000000
-[8] 0.0000000 0.0000000
+[1] -2.262349 -1.178890 -1.614445 -1.650195  1.056577  3.205232 -2.862240
+[8]  2.100281
 ~~~
 {: .output}
 
@@ -364,10 +347,10 @@ est_coef_fwd
 
 
 ~~~
-(Intercept)   feature_7  feature_22  feature_28  feature_30  feature_36 
-38.08667755  0.03426189 -0.47685131 -0.08787090  0.66387439 -0.65928005 
- feature_65  feature_77  feature_79  feature_87 
- 0.45080649  0.87361796  0.32491977  0.06165128 
+(Intercept)   feature_6  feature_12  feature_18  feature_45  feature_65 
+  40.737563   -1.672063   -1.644779   -1.724151   -1.541074    1.773289 
+ feature_88  feature_89  feature_93 
+   3.455787   -2.531996    2.454369 
 ~~~
 {: .output}
 
@@ -382,7 +365,7 @@ abline(h = 0, lty = "dashed", col = "firebrick")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-forwardsyn-1.png" title="plot of chunk forwardsyn" alt="plot of chunk forwardsyn" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -423,10 +406,10 @@ abline(h = 0, lty = "dashed", col = "firebrick")
 > > 
 > > 
 > > ~~~
-> > (Intercept)  cg14195318  cg01021271  cg12209024  cg27358375  cg17355919 
-> >  -16.313222  -16.175834   -4.691812   21.976663  -16.468929   12.229371 
-> >  cg01774454  cg06363207  cg01351425 
-> >   -9.655544  -13.680655  -15.611642 
+> > (Intercept)  cg06493994  cg09516423  cg06839820  cg06102342  cg16279544 
+> >   -9.712995   23.441089  -31.301058  -20.811742   18.060034   15.088039 
+> >  cg17646874  cg15007454  cg03727836 
+> >   11.454640    7.832117   -2.837760 
 > > ~~~
 > > {: .output}
 > > 
@@ -452,7 +435,33 @@ can do reverse subset selection.
 > > 
 > > ~~~
 > > features <- methylclock::coefHorvath$CpGmarker
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in loadNamespace(x): there is no package called 'methylclock'
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > features <- intersect(features, colnames(methyl_mat))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'intersect': object 'features' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > methyl_horvath <- methyl_mat[, features[1:30]]
 > > ~~~
 > > {: .language-r}
@@ -460,7 +469,7 @@ can do reverse subset selection.
 > > 
 > > 
 > > ~~~
-> > Error in methyl_mat[, features[1:30]]: subscript out of bounds
+> > Error in eval(expr, envir, enclos): object 'features' not found
 > > ~~~
 > > {: .error}
 > > 
@@ -528,6 +537,19 @@ can do reverse subset selection.
 > >   methylclock::coefHorvath$CoefficientTraining,
 > >   methylclock::coefHorvath$CpGmarker
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in loadNamespace(x): there is no package called 'methylclock'
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > plot(est_coef_back[-1], true_coef[names(est_coef_back)[-1]])
 > > ~~~
 > > {: .language-r}
@@ -605,8 +627,8 @@ can do reverse subset selection.
 > > 
 > > 
 > > ~~~
-> > [1] "cg14195318" "cg01021271" "cg12209024" "cg27358375" "cg17355919"
-> > [6] "cg01774454" "cg06363207" "cg01351425"
+> > [1] "cg06493994" "cg09516423" "cg06839820" "cg06102342" "cg16279544"
+> > [6] "cg17646874" "cg15007454" "cg03727836"
 > > ~~~
 > > {: .output}
 > > 
