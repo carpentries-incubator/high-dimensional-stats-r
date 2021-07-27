@@ -36,7 +36,11 @@ suppressPackageStartupMessages({
     library("bluster")
 })
 set.seed(42)
+~~~
+{: .language-r}
 
+
+~~~
 if (!file.exists(here("data/scrnaseq.rds"))) {
     source(here("data/scrnaseq.R"))
 }
@@ -65,7 +69,6 @@ Error in here("data/scrnaseq.rds"): could not find function "here"
 {: .error}
 
 
-
 ~~~
 zd <- runPCA(zd, ncomponents = 15)
 ~~~
@@ -92,11 +95,10 @@ Error in runTSNE(zd): object 'zd' not found
 ~~~
 {: .error}
 
+## k-means
 
 
 ~~~
-## k-means
-
 ## ideas: vary centers, low iter.max, low nstart
 cluster <- kmeans(reducedDim(zd), centers = 7, iter.max = 1000, nstart = 100)
 ~~~
@@ -136,7 +138,6 @@ plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'reducedDim': object 'zd' not found
 ~~~
 {: .error}
-
 
 
 ~~~
@@ -195,10 +196,9 @@ Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in sele
 {: .error}
 
 
-
 ~~~
 ## graph-based
-g <- buildSNNGraph(zd, k=10, use.dimred = 'PCA')
+g <- buildSNNGraph(zd, k = 10, use.dimred = 'PCA')
 ~~~
 {: .language-r}
 
@@ -254,7 +254,7 @@ Error in factor(clust): object 'clust' not found
 
 
 ~~~
-plotReducedDim(zd, colour_by="label", dimred="force")
+plotReducedDim(zd, colour_by = "label", dimred = "force")
 ~~~
 {: .language-r}
 

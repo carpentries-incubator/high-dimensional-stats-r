@@ -16,12 +16,12 @@ y <- y - min(y) + 20
 y <- round(y)
 
 se <- SummarizedExperiment(
-    assays = list(methylation = t(x)),
+    assays = list(methylation = x[, -1]),
     colData = data.frame(
         age = y
     ),
     rowData = data.frame(
-        true_beta = beta
+        true_beta = beta[-1]
     )
 )
 

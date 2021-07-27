@@ -6,116 +6,93 @@ output: beamer_presentation
 library("here")
 ```
 # An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-2-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two.
+knitr::include_graphics(here("fig/rmd-02-example1-1.png"))
 ```
 
 \newpage
 # An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-3-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression.
+knitr::include_graphics(here("fig/rmd-02-example2-1.png"))
 ```
 
 \newpage
 # An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-4-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak.
+knitr::include_graphics(here("fig/rmd-02-example3-1.png"))
 ```
 
 \newpage
 # The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-5-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability.
+knitr::include_graphics(here("fig/rmd-02-conditionalprob-1.png"))
 ```
 
 \newpage
 # Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-9-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines.
+knitr::include_graphics(here("fig/rmd-02-tdist-1.png"))
 ```
 
 \newpage
 # An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-10-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant.
+knitr::include_graphics(here("fig/rmd-02-regex1-1.png"))
 ```
 
 \newpage
 # An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-11-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant.
+knitr::include_graphics(here("fig/rmd-02-regex2-1.png"))
 ```
 
 \newpage
 # An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-12-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant.
+knitr::include_graphics(here("fig/rmd-02-regex3-1.png"))
 ```
 
 \newpage
 # An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-13-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant.
+knitr::include_graphics(here("fig/rmd-02-regex4-1.png"))
 ```
 
 \newpage
 # An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-14-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant.
+knitr::include_graphics(here("fig/rmd-02-regex5-1.png"))
 ```
 
 \newpage
 # An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-15-1.png"))
-```
-
-\newpage
-# Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-20-1.png"))
-```
-
-\newpage
-# Heatmap of methylation values across all features. Samples are ordered according to age.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-22-1.png"))
-```
-
-\newpage
-# Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-29-1.png"))
-```
-
-\newpage
-# Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-30-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant.
+knitr::include_graphics(here("fig/rmd-02-regex6-1.png"))
 ```
 
 \newpage
 # Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-31-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds.
+knitr::include_graphics(here("fig/rmd-02-p-fwer-1.png"))
 ```
 
 \newpage
 # Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-32-1.png"))
-```
-
-\newpage
-# A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-34-1.png"))
-```
-
-\newpage
-# A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma.
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02-unnamed-chunk-36-1.png"))
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds.
+knitr::include_graphics(here("fig/rmd-02-p-fdr-1.png"))
 ```
 
 \newpage

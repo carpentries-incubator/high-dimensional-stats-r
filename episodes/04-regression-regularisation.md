@@ -24,22 +24,48 @@ math: yes
 
 
 
-
-
 ~~~
-suppressPackageStartupMessages({
-    library("glmnet")
-    library("limma")
-    library("minfi")
-    library("here")
-    library("broom")
-})
-
+library("minfi")
+library("here")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-norm <- readRDS(here("data/methylation.rds"))
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in loadNamespace(x): there is no package called 'methylclock'
+~~~
+{: .error}
+
+
+
+~~~
+norm <- readRDS(here("data/methylation.rds"))
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning in gzfile(file, "rb"): cannot open compressed file '/home/runner/
+work/high-dimensional-stats-r/high-dimensional-stats-r/data/methylation.rds',
+probable reason 'No such file or directory'
+~~~
+{: .warning}
+
+
+
+~~~
+Error in gzfile(file, "rb"): cannot open the connection
+~~~
+{: .error}
+
+
+
+~~~
 lim <- norm
 y <- lim$Age
 X <- getM(lim)
@@ -121,7 +147,7 @@ ridge <- cv.glmnet(X[, -1], y, alpha = 0)
 
 
 ~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (865859)
 ~~~
 {: .error}
 
@@ -135,7 +161,7 @@ lasso <- cv.glmnet(X[, -1], y, alpha = 1)
 
 
 ~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (865859)
 ~~~
 {: .error}
 
@@ -149,7 +175,7 @@ elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
 
 
 ~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (865859)
 ~~~
 {: .error}
 
@@ -394,11 +420,21 @@ plot(y, x[, names(which.max(coef[-1]))])
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="432" style="display: block; margin: auto;" />
 
 
 
 
+
+
+Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
+
+~~~
+knitr::include_graphics("../fig/bs_fs_lasso.png")
+~~~
+{: .language-r}
+
+<img src="../fig/bs_fs_lasso.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
 
 
 > ## Selecting hyperparameters
@@ -406,22 +442,11 @@ plot(y, x[, names(which.max(coef[-1]))])
 > There are various methods to select the "best"
 > value for $\lambda$. One idea is to split
 > the data into $K$ chunks. We then use $K-1$ of
-> these as the training set, and $the remaining $1$ chunk
+> these as the training set, and the remaining $1$ chunk
 > as the test set. Repeating this process for each of the
 > $K$ chunks produces more variability.
 > 
-> 
-> ~~~
-> knitr::include_graphics(here("fig/cross_validaiton.svg"))
-> ~~~
-> {: .language-r}
-> 
-> 
-> 
-> ~~~
-> Error in knitr::include_graphics(here("fig/cross_validaiton.svg")): Cannot find the file(s): "/home/runner/work/high-dimensional-stats-r/high-dimensional-stats-r/fig/cross_validaiton.svg"
-> ~~~
-> {: .error}
+> <img src="../fig/cross_validation.svg" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 >
 > To be really rigorous, we could even repeat this *cross-validation*
 > process a number of times! This is termed "repeated cross-validation".

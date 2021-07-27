@@ -14,12 +14,14 @@ objectives:
 - "Understand methods for shrinkage of noise parameters in
   high-dimensional regression."
 keypoints:
-- "Running many tests with high-dimensional data requires us to pay attention to 
-   ..."
+- "When running a lot of tests for high-dimensional data, it's important to
+  correct for the number of tests performed."
 - "Multiple testing correction can enable us to account for many null hypothesis
-    significance tests while retaining power."
+  significance tests while retaining power."
+- "Multiple testing methods can be more conservative or more liberal, depending
+  on our goals."
 - "Sharing information between features can increase power and reduce false 
-    positives."
+  positives."
 math: yes
 ---
 
@@ -54,15 +56,15 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-example1-1.png" title="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" style="display: block; margin: auto;" />
 
 or equivalently for a discrete covariate:
 
-<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-example2-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." width="432" style="display: block; margin: auto;" />
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-<img src="../fig/rmd-02-unnamed-chunk-4-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-example3-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." width="432" style="display: block; margin: auto;" />
 
 And, of course, we often have an awful lot of features and need
 to prioritise a subset of them! We need a rigorous way to
@@ -101,7 +103,7 @@ $$
 Or, visually, that (for example) this is the distribution 
 of new points conditional on their $x$ values:
 
-<img src="../fig/rmd-02-unnamed-chunk-5-1.png" title="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-conditionalprob-1.png" title="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." width="432" style="display: block; margin: auto;" />
 
 In order to decide whether a result would be unlikely
 under the null hypothesis, we can calculate a test statistic.
@@ -120,7 +122,8 @@ hypothesis allows us to determine how unlikely it would be for
 us to observe what we have under those circumstances (the basis
 of null hypothesis significance testing).
 
-To demonstrate, we can manually (this is not important to remember).
+To demonstrate, we can manually demonstrate the relationship between these
+quantities (this is not important to remember).
 
 ~~~
 x <- rnorm(100)
@@ -178,7 +181,7 @@ all.equal(tab$Pr, pvals)
 
 This is much more easy to observe visually, by plotting the distribution:
 
-<img src="../fig/rmd-02-unnamed-chunk-9-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-tdist-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -196,42 +199,42 @@ This is much more easy to observe visually, by plotting the distribution:
 >
 > > ## Solution
 > > 1. 
-> >    <img src="../fig/rmd-02-unnamed-chunk-10-1.png" title="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex1-1.png" title="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 3.060592e-07
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex2-1.png" title="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.3804761
 > >    ~~~
 > >    {: .output}
 > > 2. 
-> >    <img src="../fig/rmd-02-unnamed-chunk-12-1.png" title="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex3-1.png" title="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.009102573
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-13-1.png" title="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex4-1.png" title="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.02494196
 > >    ~~~
 > >    {: .output}
 > > 3. 
-> >    <img src="../fig/rmd-02-unnamed-chunk-14-1.png" title="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex5-1.png" title="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.2960559
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-15-1.png" title="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." width="612" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex6-1.png" title="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 6.295652e-05
@@ -259,19 +262,43 @@ The following code will read in the data for this episode.
 
 
 ~~~
-suppressPackageStartupMessages({
-    library("minfi")
-    library("limma")
-    library("here")
-    library("broom")
-})
-
+library("here")
+library("minfi")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in loadNamespace(x): there is no package called 'methylclock'
+~~~
+{: .error}
+
+
+
+~~~
 methylation <- readRDS(here("data/methylation.rds"))
 ~~~
 {: .language-r}
+
+
+
+~~~
+Warning in gzfile(file, "rb"): cannot open compressed file '/home/runner/
+work/high-dimensional-stats-r/high-dimensional-stats-r/data/methylation.rds',
+probable reason 'No such file or directory'
+~~~
+{: .warning}
+
+
+
+~~~
+Error in gzfile(file, "rb"): cannot open the connection
+~~~
+{: .error}
 
 This `methylation` object is a `GenomicRatioSet`, a Bioconductor data object
 derived from the `SummarizedExperiment` class.
@@ -289,24 +316,9 @@ methylation
 
 
 ~~~
-class: GenomicRatioSet 
-dim: 5000 37 
-metadata(0):
-assays(2): M CN
-rownames(5000): cg01884767 cg03955296 ... cg17150854 cg06600447
-rowData names(0):
-colnames(37): 201868500150_R01C01 201868500150_R03C01 ...
-  201870610111_R06C01 201870610111_R07C01
-colData names(14): Sample_Well Sample_Name ... Array Slide
-Annotation
-  array: IlluminaHumanMethylationEPIC
-  annotation: ilm10b4.hg19
-Preprocessing
-  Method: Raw (no normalization or bg correction)
-  minfi version: 1.38.0
-  Manifest version: 0.3.0
+Error in eval(expr, envir, enclos): object 'methylation' not found
 ~~~
-{: .output}
+{: .error}
 
 To extract the matrix of methylation values, we use the `assay` function.
 
@@ -316,6 +328,13 @@ xmat <- assay(methylation)
 ~~~
 {: .language-r}
 
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'assay': object 'methylation' not found
+~~~
+{: .error}
+
 The distribution of these M-values looks like this:
 
 
@@ -324,20 +343,21 @@ hist(xmat, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-20-1.png" title="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in hist(xmat, breaks = "FD", xlab = "M-value"): object 'xmat' not found
+~~~
+{: .error}
 
 In this case, the phenotypes and groupings look like this
 (for the first 6 samples):
 
 
-|Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
-|:-----------|:-----------|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|
-|A07         |PCA0612     |     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|
-|C07         |NKpan2510   |     95|M   |  49|  81.19303|   1.6764| 28.89106|Overweight |Indo-European  |Caucasian      |No     |R03C01 | 201868500150|
-|E07         |WB1148      |     95|M   |  20|  80.28585|   1.7526| 26.13806|Overweight |Indo-European  |Persian        |No     |R05C01 | 201868500150|
-|G07         |B0044       |     97|M   |  49|  82.55381|   1.7272| 27.67272|Overweight |Indo-European  |Caucasian      |No     |R07C01 | 201868500150|
-|H07         |NKpan1869   |     95|F   |  33|  87.54333|   1.7272| 29.34525|Overweight |Indo-European  |Caucasian      |No     |R08C01 | 201868500150|
-|B03         |NKpan1850   |     93|F   |  21|  87.54333|   1.6764| 31.15070|Obese      |Mixed          |Finnish/Creole |No     |R02C01 | 201868590193|
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': error in evaluating the argument 'x' in selecting a method for function 'colData': object 'methylation' not found
+~~~
+{: .error}
 
 In this case, we will focus on age. The association between
 age and methylation status in blood samples has been studied extensively,
@@ -345,7 +365,39 @@ and is actually a good case-study in how to perform some of the techniques
 we will cover in this lesson. The methylation levels for these data 
 can be presented in a heatmap:
 
-<img src="../fig/rmd-02-unnamed-chunk-22-1.png" title="Heatmap of methylation values across all features. Samples are ordered according to age." alt="Heatmap of methylation values across all features. Samples are ordered according to age." width="612" style="display: block; margin: auto;" />
+
+~~~
+Error in eval(expr, envir, enclos): object 'methylation' not found
+~~~
+{: .error}
+
+
+
+~~~
+Error in eval(quote(list(...)), env): object 'age' not found
+~~~
+{: .error}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'age' not found
+~~~
+{: .error}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'xmat' not found
+~~~
+{: .error}
+
+
+
+~~~
+Error in is.data.frame(matrix): object 'xmat_ord' not found
+~~~
+{: .error}
 
 We would like to identify features that are related to our outcome of interest
 (age). It's clear from the heatmap that there are too many features to do so
@@ -411,6 +463,19 @@ get more information from the model object:
 
 ~~~
 fit <- lm(xmat[1, ] ~ age)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(predvars, data, env): object 'xmat' not found
+~~~
+{: .error}
+
+
+
+~~~
 summary(fit)
 ~~~
 {: .language-r}
@@ -420,22 +485,20 @@ summary(fit)
 ~~~
 
 Call:
-lm(formula = xmat[1, ] ~ age)
+lm(formula = y ~ x)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--1.25406 -0.05719  0.18118  0.28574  0.40238 
+-2.73727 -0.70548 -0.05059  0.66290  2.35388 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  2.03577    0.24947   8.160  1.3e-09 ***
-age          0.00572    0.00727   0.787    0.437    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)  0.02792    0.10090   0.277    0.783
+x            0.11102    0.11056   1.004    0.318
 
-Residual standard error: 0.4748 on 35 degrees of freedom
-Multiple R-squared:  0.01738,	Adjusted R-squared:  -0.01069 
-F-statistic: 0.6192 on 1 and 35 DF,  p-value: 0.4367
+Residual standard error: 0.9992 on 98 degrees of freedom
+Multiple R-squared:  0.01018,	Adjusted R-squared:  8.349e-05 
+F-statistic: 1.008 on 1 and 98 DF,  p-value: 0.3178
 ~~~
 {: .output}
 
@@ -453,10 +516,10 @@ tidy(fit)
 
 ~~~
 # A tibble: 2 x 5
-  term        estimate std.error statistic       p.value
-  <chr>          <dbl>     <dbl>     <dbl>         <dbl>
-1 (Intercept)  2.04      0.249       8.16  0.00000000130
-2 age          0.00572   0.00727     0.787 0.437        
+  term        estimate std.error statistic p.value
+  <chr>          <dbl>     <dbl>     <dbl>   <dbl>
+1 (Intercept)   0.0279     0.101     0.277   0.783
+2 x             0.111      0.111     1.00    0.318
 ~~~
 {: .output}
 
@@ -476,8 +539,8 @@ coef1
 
 
 ~~~
-  term    estimate   std.error statistic  p.value
-1  age 0.005720243 0.007269633 0.7868681 0.436655
+  term  estimate std.error statistic   p.value
+1    x 0.1110167 0.1105607  1.004125 0.3177914
 ~~~
 {: .output}
 
@@ -490,9 +553,29 @@ lm_feature <- function(i) {
     as.data.frame(tidy(lm(xmat[i, ] ~ age))[2, ])
 }
 coef2 <- lm_feature(2)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': object 'xmat' not found
+~~~
+{: .error}
+
+
+
+~~~
 coef3 <- lm_feature(3)
 ~~~
 {: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': object 'xmat' not found
+~~~
+{: .error}
 
 
 We have a lot of features, though! Instead of looping through these values,
@@ -502,6 +585,19 @@ feature.
 
 ~~~
 dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'X' in selecting a method for function 'lapply': error in evaluating the argument 'x' in selecting a method for function 'nrow': object 'xmat' not found
+~~~
+{: .error}
+
+
+
+~~~
 head(dfs)
 ~~~
 {: .language-r}
@@ -509,31 +605,9 @@ head(dfs)
 
 
 ~~~
-[[1]]
-  term    estimate   std.error statistic  p.value
-1  age 0.005720243 0.007269633 0.7868681 0.436655
-
-[[2]]
-  term     estimate  std.error statistic   p.value
-1  age -0.001486529 0.00324632 -0.457912 0.6498459
-
-[[3]]
-  term     estimate   std.error statistic   p.value
-1  age -0.003544772 0.006478682 -0.547144 0.5877519
-
-[[4]]
-  term     estimate   std.error statistic   p.value
-1  age -0.007147633 0.004267026 -1.675085 0.1028311
-
-[[5]]
-  term    estimate   std.error statistic      p.value
-1  age -0.01742771 0.004564708 -3.817924 0.0005268469
-
-[[6]]
-  term    estimate   std.error statistic    p.value
-1  age 0.009815117 0.004099074  2.394472 0.02213364
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'dfs' not found
 ~~~
-{: .output}
+{: .error}
 
 Now we have a list of coefficients, standard errors, and associated p-values
 for each of the rows of our matrix, we can `rbind` them together.
@@ -542,13 +616,34 @@ This calls the function supplied as the first argument (here, `rbind`) using
 the second argument as a list of arguments to that function.
 Here, it's equivalent to writing `rbind(dfs[[1]], dfs[[2]], [etc])`.
 
+
 ~~~
 ## bind together all of our small tables to make one big table
 df_all <- do.call(rbind, dfs)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'args' in selecting a method for function 'do.call': object 'dfs' not found
+~~~
+{: .error}
+
+
+
+~~~
 ## set the rownames of the table to be the names of the features
 rownames(df_all) <- rownames(xmat)
 ~~~
 {: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rownames': object 'xmat' not found
+~~~
+{: .error}
 
 We can then create a plot of effect size estimates (model coefficients) against
 p-values for each of these figures, to visualise the magnitude of effects.
@@ -559,6 +654,7 @@ the associated uncertainty.
 These plots are often called "volcano plots", because they
 resemble an eruption.
 
+
 ~~~
 plot(df_all$estimate, -log10(df_all$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
@@ -567,7 +663,12 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-29-1.png" title="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'df_all' not found
+~~~
+{: .error}
 
 In this figure, every point represents a feature of interest. The x-axis
 represents the effect size observed for that feature in a linear model,
@@ -596,17 +697,74 @@ we scramble age and run the same test again:
 
 ~~~
 age_perm <- age[sample(ncol(xmat), ncol(xmat))]
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'age' not found
+~~~
+{: .error}
+
+
+
+~~~
 dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'X' in selecting a method for function 'lapply': error in evaluating the argument 'x' in selecting a method for function 'nrow': object 'xmat' not found
+~~~
+{: .error}
+
+
+
+~~~
 df_all_perm <- do.call(rbind, dfs)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'args' in selecting a method for function 'do.call': object 'dfs' not found
+~~~
+{: .error}
+
+
+
+~~~
 plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'df_all_perm' not found
+~~~
+{: .error}
+
+
+
+~~~
 abline(h = -log10(0.05), lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-30-1.png" title="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
 
 
 > ## Exercise
@@ -623,7 +781,7 @@ abline(h = -log10(0.05), lty = "dashed")
 >    ensure "significant" changes are truly different? 
 > 
 > > ## Solution
-> > 1. By default we expect $5000 \times 0.05 = 250$
+> > 1. By default we expect $10,000 \times 0.05 = 250$
 > >    features to be statistically significant under the null hypothesis,
 > >    because p-values should always be uniformly distributed under
 > >    the null hypothesis.
@@ -682,7 +840,33 @@ with a lot of features!
 
 ~~~
 p_raw <- df_all$p.value
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'df_all' not found
+~~~
+{: .error}
+
+
+
+~~~
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in p.adjust(p_raw, method = "bonferroni"): object 'p_raw' not found
+~~~
+{: .error}
+
+
+
+~~~
 library("ggplot2")
 ggplot() +
     aes(p_raw, p_fwer) +
@@ -695,7 +879,14 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-31-1.png" title="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in FUN(X[[i]], ...): object 'p_raw' not found
+~~~
+{: .error}
+
+<img src="../fig/rmd-02-p-fwer-1.png" title="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 
 
 The second main way of controlling for multiple tests
@@ -755,6 +946,19 @@ the experiment over and over.
 > >    
 > >    ~~~
 > >    p_fdr <- p.adjust(p_raw, method = "BH")
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error in p.adjust(p_raw, method = "BH"): object 'p_raw' not found
+> >    ~~~
+> >    {: .error}
+> >    
+> >    
+> >    
+> >    ~~~
 > >    ggplot() +
 > >        aes(p_raw, p_fdr) +
 > >        geom_point() +
@@ -766,7 +970,14 @@ the experiment over and over.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-32-1.png" title="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="612" style="display: block; margin: auto;" />
+> >    
+> >    
+> >    ~~~
+> >    Error in FUN(X[[i]], ...): object 'p_raw' not found
+> >    ~~~
+> >    {: .error}
+> >    
+> >    <img src="../fig/rmd-02-p-fdr-1.png" title="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 > >    
 > {: .solution}
 {: .challenge}
@@ -803,10 +1014,64 @@ in effect size estimates.
 
 
 ~~~
+library("limma")
+
 design <- model.matrix(~age)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(predvars, data, env): object 'age' not found
+~~~
+{: .error}
+
+
+
+~~~
 fit <- lmFit(xmat, design = design)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in getEAWP(object): object 'xmat' not found
+~~~
+{: .error}
+
+
+
+~~~
 fit <- eBayes(fit)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : No data, or argument is not a valid lmFit object
+~~~
+{: .error}
+
+
+
+~~~
 tt1 <- topTable(fit, coef = 2, number = nrow(fit))
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in topTable(fit, coef = 2, number = nrow(fit)): fit must be an MArrayLM object
+~~~
+{: .error}
+
+
+
+~~~
 plot(tt1$logFC, -log10(tt1$P.Value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
@@ -814,7 +1079,12 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-unnamed-chunk-34-1.png" title="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'tt1' not found
+~~~
+{: .error}
 
 
 
@@ -837,9 +1107,61 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    
 > >    ~~~
 > >    design <- model.matrix(~methylation$smoker)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error in eval(predvars, data, env): object 'methylation' not found
+> >    ~~~
+> >    {: .error}
+> >    
+> >    
+> >    
+> >    ~~~
 > >    fit <- lmFit(xmat, design = design)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error in getEAWP(object): object 'xmat' not found
+> >    ~~~
+> >    {: .error}
+> >    
+> >    
+> >    
+> >    ~~~
 > >    fit <- eBayes(fit)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : No data, or argument is not a valid lmFit object
+> >    ~~~
+> >    {: .error}
+> >    
+> >    
+> >    
+> >    ~~~
 > >    tt1 <- topTable(fit, coef = 2, number = nrow(fit))
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error in topTable(fit, coef = 2, number = nrow(fit)): fit must be an MArrayLM object
+> >    ~~~
+> >    {: .error}
+> >    
+> >    
+> >    
+> >    ~~~
 > >    plot(tt1$logFC, -log10(tt1$P.Value),
 > >        xlab = "Effect size", ylab = bquote(-log[10](p)),
 > >        pch = 19
@@ -847,7 +1169,12 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-unnamed-chunk-36-1.png" title="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." width="612" style="display: block; margin: auto;" />
+> >    
+> >    
+> >    ~~~
+> >    Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'tt1' not found
+> >    ~~~
+> >    {: .error}
 > > 2. We can use `all.equal` to compare vectors:
 > >    
 > >    ~~~
@@ -858,9 +1185,9 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    
 > >    
 > >    ~~~
-> >    [1] TRUE
+> >    Error in h(simpleError(msg, call)): error in evaluating the argument 'target' in selecting a method for function 'all.equal': object 'tt1' not found
 > >    ~~~
-> >    {: .output}
+> >    {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -878,7 +1205,6 @@ Shrinkage methods can be complex to implement and understand,
 but it's good to understand why these approaches may be more precise 
 and sensitive than the naive approach of fitting a model to each feature
 separately.
-
 
 > ## Exercise
 > 

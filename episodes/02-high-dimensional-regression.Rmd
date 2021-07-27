@@ -12,17 +12,19 @@ objectives:
 - "Understand methods for shrinkage of noise parameters in
   high-dimensional regression."
 keypoints:
-- "Running many tests with high-dimensional data requires us to pay attention to 
-   ..."
+- "When running a lot of tests for high-dimensional data, it's important to
+  correct for the number of tests performed."
 - "Multiple testing correction can enable us to account for many null hypothesis
-    significance tests while retaining power."
+  significance tests while retaining power."
+- "Multiple testing methods can be more conservative or more liberal, depending
+  on our goals."
 - "Sharing information between features can increase power and reduce false 
-    positives."
+  positives."
 math: yes
 ---
 
 
-```{r, include=FALSE}
+```{r settings, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
 knitr_fig_path("02-")
@@ -56,7 +58,7 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-```{r, echo=FALSE, fig.cap="A scatter plot of age and a feature of interest.", fig.alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two.", fig.width=6, fig.height=6}
+```{r example1, echo=FALSE, fig.cap="A scatter plot of age and a feature of interest.", fig.alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two.", fig.width=6, fig.height=6}
 library("ggplot2")
 theme_set(theme_bw())
 set.seed(42)
@@ -71,7 +73,7 @@ ggplot() +
 
 or equivalently for a discrete covariate:
 
-```{r, echo=FALSE, fig.cap="A scatter plot of a grouping and a feature of interest.", fig.alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression.", fig.width=6, fig.height=6}
+```{r example2, echo=FALSE, fig.cap="A scatter plot of a grouping and a feature of interest.", fig.alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression.", fig.width=6, fig.height=6}
 library("ggplot2")
 set.seed(42)
 n <- 10
@@ -87,7 +89,7 @@ ggplot() +
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-```{r, echo=FALSE, fig.cap="A scatter plot of a grouping and a feature of interest.", fig.alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak.", fig.width=6, fig.height=6}
+```{r example3, echo=FALSE, fig.cap="A scatter plot of a grouping and a feature of interest.", fig.alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak.", fig.width=6, fig.height=6}
 library("ggplot2")
 set.seed(66)
 n <- 5
@@ -138,7 +140,7 @@ $$
 Or, visually, that (for example) this is the distribution 
 of new points conditional on their $x$ values:
 
-```{r, echo=FALSE, fig.cap="Regression is like a normal distribution with varying mean.", fig.alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability."}
+```{r conditionalprob, echo=FALSE, fig.cap="Regression is like a normal distribution with varying mean.", fig.alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability."}
 set.seed(42)
 x <- cbind(rep(1, 100), rnorm(100))
 beta <- rnorm(2)
@@ -172,8 +174,9 @@ hypothesis allows us to determine how unlikely it would be for
 us to observe what we have under those circumstances (the basis
 of null hypothesis significance testing).
 
-To demonstrate, we can manually (this is not important to remember).
-```{r}
+To demonstrate, we can manually demonstrate the relationship between these
+quantities (this is not important to remember).
+```{r simfit}
 x <- rnorm(100)
 y <- rnorm(100)
 fit <- lm(y ~ x)
@@ -184,7 +187,7 @@ tab
 We can see that the t-statistic is just the ratio of the estimate to the 
 standard error:
 
-```{r}
+```{r simtval}
 tvals <- tab$Estimate / tab$Std
 all.equal(tvals, tab$t)
 ```
@@ -194,14 +197,14 @@ We want to do a 2-tail test, so we take the absolute value of the t-statistic,
 and look at the upper rather than lower tail. Because in a 2-tail test we're
 looking at "half" of the t-distribution, we also multiply the p-value by 2.
 
-```{r}
+```{r simpval}
 pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail=FALSE)
 all.equal(tab$Pr, pvals)
 ```
 
 This is much more easy to observe visually, by plotting the distribution:
 
-```{r, echo = FALSE, fig.cap="The p-value for a regression coefficient represents how often it'd be observed under the null.", fig.alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines."}
+```{r tdist, echo = FALSE, fig.cap="The p-value for a regression coefficient represents how often it'd be observed under the null.", fig.alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines."}
 ggplot() +
     geom_function(fun = function(x) dt(x, df=fit$df)) +
     xlim(0, 4) +
@@ -241,7 +244,7 @@ ggplot() +
 >
 > > ## Solution
 > > 1. 
-> >    ```{r, echo=FALSE, fig.cap="Relationships can be significant with small noise and small effects.", fig.alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant."}
+> >    ```{r regex1, echo=FALSE, fig.cap="Relationships can be significant with small noise and small effects.", fig.alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant."}
 > >    n <- 100
 > >    noise_sd <- 0.5
 > >    x <- rnorm(n)
@@ -252,7 +255,7 @@ ggplot() +
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > >    
-> >    ```{r, echo=FALSE, fig.cap="Relationships can be non-significant with large noise and large effects.", fig.alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant."}
+> >    ```{r regex2, echo=FALSE, fig.cap="Relationships can be non-significant with large noise and large effects.", fig.alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant."}
 > >    n <- 100
 > >    noise_sd <- 5
 > >    x <- rnorm(n)
@@ -263,7 +266,7 @@ ggplot() +
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > > 2. 
-> >    ```{r, echo=FALSE, fig.cap="With few points, relationships can be non-significant with large noise and large effects.", fig.alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant."}
+> >    ```{r regex3, echo=FALSE, fig.cap="With few points, relationships can be non-significant with large noise and large effects.", fig.alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant."}
 > >    n <- 10
 > >    noise_sd <- 1
 > >    x <- rnorm(n)
@@ -274,7 +277,7 @@ ggplot() +
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > >    
-> >    ```{r, echo=FALSE, fig.cap="With few points, relationships can be significant with small noise and small effects.",  fig.alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant."}
+> >    ```{r regex4, echo=FALSE, fig.cap="With few points, relationships can be significant with small noise and small effects.",  fig.alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant."}
 > >    n <- 10
 > >    noise_sd <- 0.2
 > >    x <- rnorm(n)
@@ -285,7 +288,7 @@ ggplot() +
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > > 3. 
-> >    ```{r, echo=FALSE, fig.cap="With many points, relationships can be significant with large noise and small effects.", fig.alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant."}
+> >    ```{r regex5, echo=FALSE, fig.cap="With many points, relationships can be significant with large noise and small effects.", fig.alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant."}
 > >    n <- 1000
 > >    noise_sd <- 5
 > >    x <- rnorm(n)
@@ -296,7 +299,7 @@ ggplot() +
 > >    anova(lm(y ~ x))$Pr[[1]]
 > >    ```
 > >    
-> >    ```{r, echo=FALSE, fig.cap="With many points, relationships can be significant with small noise and tiny effects.", fig.alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant."}
+> >    ```{r regex6, echo=FALSE, fig.cap="With many points, relationships can be significant with small noise and tiny effects.", fig.alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant."}
 > >    n <- 1000
 > >    noise_sd <- 0.5
 > >    x <- rnorm(n)
@@ -310,7 +313,7 @@ ggplot() +
 {: .challenge}
 
 
-```{r, echo=FALSE}
+```{r pkgs, echo=FALSE}
 suppressPackageStartupMessages({
     library("glmnet")
     library("limma")
@@ -340,14 +343,9 @@ you). Along with this, we have a number of sample phenotypes
 
 The following code will read in the data for this episode.
 
-```{r}
-suppressPackageStartupMessages({
-    library("minfi")
-    library("limma")
-    library("here")
-    library("broom")
-})
-
+```{r loadmethy}
+library("here")
+library("minfi")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
@@ -361,26 +359,26 @@ levels, and optional sample-level `colData` and feature-level `metadata`.
 These objects are very convenient to contain all of the information about 
 a dataset in a high-throughput context and may be covered in more
 detail in other Carpentries lessons.
-```{r}
+```{r showmethy}
 methylation
 ```
 
 To extract the matrix of methylation values, we use the `assay` function.
 
-```{r}
+```{r grabx}
 xmat <- assay(methylation)
 ```
 
 The distribution of these M-values looks like this:
 
-```{r, fig.cap="Methylation levels are generally bimodally distributed.", fig.alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features."}
+```{r histx, fig.cap="Methylation levels are generally bimodally distributed.", fig.alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features."}
 hist(xmat, breaks = "FD", xlab = "M-value")
 ```
 
 In this case, the phenotypes and groupings look like this
 (for the first 6 samples):
 
-```{r, echo=FALSE}
+```{r datatable, echo=FALSE}
 knitr::kable(head(colData(methylation)), row.names = FALSE)
 ```
 
@@ -390,7 +388,7 @@ and is actually a good case-study in how to perform some of the techniques
 we will cover in this lesson. The methylation levels for these data 
 can be presented in a heatmap:
 
-```{r, echo=FALSE, fig.cap="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
+```{r heatmap, echo=FALSE, fig.cap="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
 age <- methylation$Age
 
 library("ComplexHeatmap")
@@ -474,7 +472,7 @@ where $y_j$ is the age of sample $j$.
 You may remember how to fit this model from a previous lesson, and how to
 get more information from the model object:
 
-```{r}
+```{r fit1}
 fit <- lm(xmat[1, ] ~ age)
 summary(fit)
 ```
@@ -482,7 +480,7 @@ summary(fit)
 We can also use `broom` to extract information about
 the coefficients in this model:
 
-```{r}
+```{r tidyfit}
 library("broom")
 tidy(fit)
 ```
@@ -493,7 +491,7 @@ interested if there is a relationship between increasing age and methylation
 levels. Therefore, we'll focus only on the second coefficient.
 We'll also convert these objects from a `tibble` to a normal `data.frame`.
 
-```{r}
+```{r tidyfit2}
 coef1 <- as.data.frame(tidy(fit)[2, ])
 coef1
 ```
@@ -501,7 +499,7 @@ coef1
 We can write a function to fit this kind of model for any given row of the
 matrix, and then use it to fit a model to any feature we like:
 
-```{r}
+```{r fitfunction}
 lm_feature <- function(i) {
     as.data.frame(tidy(lm(xmat[i, ] ~ age))[2, ])
 }
@@ -514,7 +512,7 @@ We have a lot of features, though! Instead of looping through these values,
 we can `lapply` over the number of rows of the matrix to fit a model for each
 feature.
 
-```{r}
+```{r lapplyfitfun}
 dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
 head(dfs)
 ```
@@ -525,7 +523,8 @@ To do this with each of the elements of our list, we can use `do.call`.
 This calls the function supplied as the first argument (here, `rbind`) using
 the second argument as a list of arguments to that function.
 Here, it's equivalent to writing `rbind(dfs[[1]], dfs[[2]], [etc])`.
-```{r}
+
+```{r rbindfits}
 ## bind together all of our small tables to make one big table
 df_all <- do.call(rbind, dfs)
 ## set the rownames of the table to be the names of the features
@@ -540,7 +539,8 @@ a p-value in this case is a function of both the effect size estimate and
 the associated uncertainty.
 These plots are often called "volcano plots", because they
 resemble an eruption.
-```{r, fig.cap="Plotting significance against effect size, it's clear that the two are related (but not 1-1).", fig.alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data."}
+
+```{r volcplot1, fig.cap="Plotting significance against effect size, it's clear that the two are related (but not 1-1).", fig.alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data."}
 plot(df_all$estimate, -log10(df_all$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
@@ -571,7 +571,7 @@ of 0.05, we might not end up
 To demonstrate this, it's useful to consider what happens if
 we scramble age and run the same test again:
 
-```{r, fig.cap="Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results.", fig.alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level.", test="foo"}
+```{r volcplotfake, fig.cap="Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results.", fig.alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level.", test="foo"}
 age_perm <- age[sample(ncol(xmat), ncol(xmat))]
 dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
 df_all_perm <- do.call(rbind, dfs)
@@ -597,7 +597,7 @@ abline(h = -log10(0.05), lty = "dashed")
 >    ensure "significant" changes are truly different? 
 > 
 > > ## Solution
-> > 1. By default we expect $`r nrow(xmat)` \times 0.05 = `r nrow(xmat)*0.05`$
+> > 1. By default we expect $10,000 \times 0.05 = 250$
 > >    features to be statistically significant under the null hypothesis,
 > >    because p-values should always be uniformly distributed under
 > >    the null hypothesis.
@@ -653,7 +653,7 @@ our p-values by the number of tests.
 This is often very conservative, especially
 with a lot of features!
 
-```{r, fig.cap="Bonferroni correction often produces very large p-values, especially with low sample sizes.", fig.alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
+```{r p-fwer, fig.cap="Bonferroni correction often produces very large p-values, especially with low sample sizes.", fig.alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
 p_raw <- df_all$p.value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
 library("ggplot2")
@@ -722,7 +722,7 @@ the experiment over and over.
 > >    each run would be false discoveries.
 > > 3. The following code runs FDR correction and compares it to
 > >    non-corrected values and to Bonferroni:
-> >    ```{r, fig.cap="Benjamini-Hochberg correction is less conservative than Bonferroni", fig.alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
+> >    ```{r p-fdr, fig.cap="Benjamini-Hochberg correction is less conservative than Bonferroni", fig.alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
 > >    p_fdr <- p.adjust(p_raw, method = "BH")
 > >    ggplot() +
 > >        aes(p_raw, p_fdr) +
@@ -776,7 +776,9 @@ follow, and pool information across genes to get a better estimate of the uncert
 in effect size estimates.
 
 
-```{r, fig.cap="Plotting p-values against effect sizes using limma; the results are similar to a standard linear model.", fig.alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma."}
+```{r limmavolc1, fig.cap="Plotting p-values against effect sizes using limma; the results are similar to a standard linear model.", fig.alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma."}
+library("limma")
+
 design <- model.matrix(~age)
 fit <- lmFit(xmat, design = design)
 fit <- eBayes(fit)
@@ -808,7 +810,7 @@ hist(q)
 > > ## Solution
 > > 
 > > 1. The following code runs the same type of model with smoking status:
-> >    ```{r, fig.cap="A plot of significance against effect size for a regression of smoking against methylation.", fig.alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma."}
+> >    ```{r limmavolc2, fig.cap="A plot of significance against effect size for a regression of smoking against methylation.", fig.alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma."}
 > >    design <- model.matrix(~methylation$smoker)
 > >    fit <- lmFit(xmat, design = design)
 > >    fit <- eBayes(fit)
@@ -839,7 +841,6 @@ Shrinkage methods can be complex to implement and understand,
 but it's good to understand why these approaches may be more precise 
 and sensitive than the naive approach of fitting a model to each feature
 separately.
-
 
 > ## Exercise
 > 
