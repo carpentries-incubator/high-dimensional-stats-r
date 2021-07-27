@@ -5,21 +5,24 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-# plot of chunk unnamed-chunk-4
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02b-unnamed-chunk-4-1.png"))
+# <img src="../fig/rmd-02b-unnamed-chunk-4-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-02b-unnamed-chunk-4-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-02b-unnamed-chunk-4-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-5
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02b-unnamed-chunk-5-1.png"))
+# <img src="../fig/rmd-02b-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-02b-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-02b-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
-# plot of chunk unnamed-chunk-6
-```{r out.width="0.5\\textwidth", echo=FALSE}
-knitr::include_graphics(here("fig/rmd-02b-unnamed-chunk-6-1.png"))
+# <img src="../fig/rmd-02b-unnamed-chunk-6-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-02b-unnamed-chunk-6-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-02b-unnamed-chunk-6-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage

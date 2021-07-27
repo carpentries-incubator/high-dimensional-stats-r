@@ -373,7 +373,7 @@ plot(y, x[, names(which.max(coef[-1]))])
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02c-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02c-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -398,7 +398,7 @@ plot(y, x[, names(which.max(coef[-1]))])
 > 
 > 
 > ~~~
-> Error in knitr::include_graphics(here("fig/cross_validaiton.svg")): Cannot find the file(s): "/home/alan/Documents/github/high-dimensional-stats-r/fig/cross_validaiton.svg"
+> Error in knitr::include_graphics(here("fig/cross_validaiton.svg")): Cannot find the file(s): "/home/alan/Documents/github/carpentries/high-dimensional-stats-r/fig/cross_validaiton.svg"
 > ~~~
 > {: .error}
 >

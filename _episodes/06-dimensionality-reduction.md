@@ -258,7 +258,7 @@ plot(varDF, ylab = "Percentage of variance explained", xlab = "Principal compone
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-unnamed-chunk-9-1.png" width="432" style="display: block; margin: auto;" />
 
 The screeplot shows that the first principal component explains most of the
 variance in the data (>60%) and each subsequent principal component explains
@@ -281,7 +281,7 @@ stats::biplot(pcaUS)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" />
 This biplot shows the position of each state on a 2-dimensional plot where
 weight of loadings can be observed via the red arrows associated with each
 of the variables. The scale = 0 included as an argument in biplot function
@@ -648,21 +648,7 @@ screeplot(pc, axisLabSize = 5, titleLabSize = 8)
 ~~~
 {: .language-r}
 
-
-
-~~~
-Warning: Removed 2 row(s) containing missing values (geom_path).
-~~~
-{: .warning}
-
-
-
-~~~
-Warning: Removed 2 rows containing missing values (geom_point).
-~~~
-{: .warning}
-
-<img src="../fig/rmd-03-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />
 
 Note that first principal component (PC1) explains more variation than other
 principal components (which is always the case in PCA). The screeplot shows
@@ -711,7 +697,7 @@ the PCA.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-03-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-03-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > #Find genes associated with probe labels on loadings
@@ -737,7 +723,15 @@ biplot(pc, lab = rownames(pc$metadata), pointSize=1, labSize=1)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-unnamed-chunk-17-1.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" width="612" style="display: block; margin: auto;" />
+
+
+~~~
+Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps
+~~~
+{: .warning}
+
+<img src="../fig/rmd-03-unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />
 
 We can see from this plot that there appear to be two separate groups of points
 that separate on the PC1 axis, but that no other grouping is apparent on other
@@ -769,12 +763,12 @@ PC axes.
 > > 
 > > 
 > > ~~~
-> > Warning: ggrepel: 8 unlabeled data points (too many overlaps). Consider
+> > Warning: ggrepel: 35 unlabeled data points (too many overlaps). Consider
 > > increasing max.overlaps
 > > ~~~
 > > {: .warning}
 > > 
-> > <img src="../fig/rmd-03-unnamed-chunk-18-1.png" title="plot of chunk unnamed-chunk-18" alt="plot of chunk unnamed-chunk-18" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-03-unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -791,7 +785,7 @@ pairsplot(pc)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-unnamed-chunk-19-1.png" width="432" style="display: block; margin: auto;" />
 
 Use components to define which principal components will be included in the
 plot. Default is 5 PCs.

@@ -30,42 +30,8 @@ library("here")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in loadNamespace(x): there is no package called 'methylclock'
-~~~
-{: .error}
-
-
-
-~~~
 norm <- readRDS(here("data/methylation.rds"))
-~~~
-{: .language-r}
 
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file '/home/runner/
-work/high-dimensional-stats-r/high-dimensional-stats-r/data/methylation.rds',
-probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 lim <- norm
 y <- lim$Age
 X <- getM(lim)
@@ -94,27 +60,6 @@ There are some techniques that you can use to find a set of predictors!
 if (!file.exists(here("data/synthetic.rds"))) {
     source("data/synthetic.R")
 }
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning in file(filename, "r", encoding = encoding): cannot open file 'data/
-synthetic.R': No such file or directory
-~~~
-{: .warning}
-
-
-
-~~~
-Error in file(filename, "r", encoding = encoding): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 synthetic <- readRDS("data/synthetic.rds")
 ~~~
 {: .language-r}
@@ -147,7 +92,7 @@ ridge <- cv.glmnet(X[, -1], y, alpha = 0)
 
 
 ~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (865859)
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
 ~~~
 {: .error}
 
@@ -161,7 +106,7 @@ lasso <- cv.glmnet(X[, -1], y, alpha = 1)
 
 
 ~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (865859)
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
 ~~~
 {: .error}
 
@@ -175,7 +120,7 @@ elastic <- cv.glmnet(X[, -1], y, alpha = 0.5, intercept = FALSE)
 
 
 ~~~
-Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (865859)
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda, : number of observations in y (37) not equal to the number of rows of x (5000)
 ~~~
 {: .error}
 
@@ -420,7 +365,7 @@ plot(y, x[, names(which.max(coef[-1]))])
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -434,7 +379,7 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 ~~~
 {: .language-r}
 
-<img src="../fig/bs_fs_lasso.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs_lasso.png" style="display: block; margin: auto;" />
 
 
 > ## Selecting hyperparameters
@@ -446,7 +391,7 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 > as the test set. Repeating this process for each of the
 > $K$ chunks produces more variability.
 > 
-> <img src="../fig/cross_validation.svg" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
+> <img src="../fig/cross_validation.svg" style="display: block; margin: auto;" />
 >
 > To be really rigorous, we could even repeat this *cross-validation*
 > process a number of times! This is termed "repeated cross-validation".
