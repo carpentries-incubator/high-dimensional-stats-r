@@ -19,8 +19,6 @@ math: yes
 ---
 
 
-
-
 ```{r, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
@@ -28,14 +26,8 @@ knitr_fig_path("04-")
 ```
 
 ```{r}
-suppressPackageStartupMessages({
-    library("glmnet")
-    library("limma")
-    library("minfi")
-    library("here")
-    library("broom")
-})
-
+library("minfi")
+library("here")
 if (!file.exists(here("data/methylation.rds"))) {
     source(here("data/methylation.R"))
 }
@@ -164,17 +156,23 @@ plot(tt1$logFC, -log10(tt1$P.Value))
 ```
 
 
+Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
+```{r}
+knitr::include_graphics("../fig/bs_fs_lasso.png")
+```
+
+
 > ## Selecting hyperparameters
 > 
 > There are various methods to select the "best"
 > value for $\lambda$. One idea is to split
 > the data into $K$ chunks. We then use $K-1$ of
-> these as the training set, and $the remaining $1$ chunk
+> these as the training set, and the remaining $1$ chunk
 > as the test set. Repeating this process for each of the
 > $K$ chunks produces more variability.
 > 
-> ```{r}
-> knitr::include_graphics(here("fig/cross_validaiton.svg"))
+> ```{r, echo = FALSE}
+> knitr::include_graphics("../fig/cross_validation.svg")
 > ```
 >
 > To be really rigorous, we could even repeat this *cross-validation*

@@ -9,7 +9,7 @@ for (file in files) {
     figfiles <- gsub("../fig/(.*)", "here(\"fig/\\1\")", figfiles)
     titles <- gsub(".*title=\"(.*)\" alt.*", "\\1", images)
     alts <- gsub(".*alt=\"(.*)\" width.*", "\\1", images)
-    widths <- gsub(".*width=\"(.*)\" style.*", "\\1", images)
+    # widths <- gsub(".*width=\"(.*)\" style.*", "\\1", images)
     title <- grep("title: ", lines, value = TRUE)[[1]]
     title <- gsub("title:\\s+\"(.*)\"", "\\1", title)
     outfile <- gsub("_episodes/(.*).md", "_slides/\\1_slides.Rmd", file)
@@ -34,7 +34,8 @@ for (file in files) {
         out <- glue(
             "
             # <<titles[[i]]>>
-            ```{r out.width=\"0.5\\\\textwidth\", echo=FALSE}
+            ```{r, out.width=\"0.5\\\\textwidth\", echo=FALSE'}
+            # , fig.cap='<<alts[[i]]>>
             knitr::include_graphics(<<figfiles[[i]]>>)
             ```
 

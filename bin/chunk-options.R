@@ -34,8 +34,8 @@ opts_chunk$set(
   fig.align = "center",
   fig.path = "fig/rmd-",
   fig.process = fix_fig_path,
-  fig.width = 8.5,
-  fig.height = 8.5,
+  fig.width = 6,
+  fig.height = 6,
   fig.retina = 2,
   message = FALSE
 )
