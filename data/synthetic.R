@@ -16,7 +16,7 @@ y <- y - min(y) + 20
 y <- round(y)
 
 se <- SummarizedExperiment(
-    assays = list(methylation = x[, -1]),
+    assays = list(methylation = t(x[, -1])),
     colData = data.frame(
         age = y
     ),

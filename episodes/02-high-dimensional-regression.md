@@ -56,15 +56,15 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
-<img src="../fig/rmd-02-example1-1.png" title="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-example1-1.png" title="A scatter plot of age and a feature of interest." alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" style="display: block; margin: auto;" />
 
 or equivalently for a discrete covariate:
 
-<img src="../fig/rmd-02-example2-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-example2-1.png" title="A scatter plot of a grouping and a feature of interest." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups clearly differ with respect to gene expression." width="432" style="display: block; margin: auto;" />
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
-<img src="../fig/rmd-02-example3-1.png" title="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-example3-1.png" title="A scatter plot of a grouping and a feature of interest." alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. The two groups seem to differ with respect to gene expression, but the relationship is weak." width="432" style="display: block; margin: auto;" />
 
 And, of course, we often have an awful lot of features and need
 to prioritise a subset of them! We need a rigorous way to
@@ -103,7 +103,7 @@ $$
 Or, visually, that (for example) this is the distribution 
 of new points conditional on their $x$ values:
 
-<img src="../fig/rmd-02-conditionalprob-1.png" title="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-conditionalprob-1.png" title="Regression is like a normal distribution with varying mean." alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." width="432" style="display: block; margin: auto;" />
 
 In order to decide whether a result would be unlikely
 under the null hypothesis, we can calculate a test statistic.
@@ -181,7 +181,7 @@ all.equal(tab$Pr, pvals)
 
 This is much more easy to observe visually, by plotting the distribution:
 
-<img src="../fig/rmd-02-tdist-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-tdist-1.png" title="The p-value for a regression coefficient represents how often it'd be observed under the null." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -199,42 +199,42 @@ This is much more easy to observe visually, by plotting the distribution:
 >
 > > ## Solution
 > > 1. 
-> >    <img src="../fig/rmd-02-regex1-1.png" title="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex1-1.png" title="Relationships can be significant with small noise and small effects." alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 3.060592e-07
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-regex2-1.png" title="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex2-1.png" title="Relationships can be non-significant with large noise and large effects." alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.3804761
 > >    ~~~
 > >    {: .output}
 > > 2. 
-> >    <img src="../fig/rmd-02-regex3-1.png" title="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex3-1.png" title="With few points, relationships can be non-significant with large noise and large effects." alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.009102573
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-regex4-1.png" title="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex4-1.png" title="With few points, relationships can be significant with small noise and small effects." alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.02494196
 > >    ~~~
 > >    {: .output}
 > > 3. 
-> >    <img src="../fig/rmd-02-regex5-1.png" title="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex5-1.png" title="With many points, relationships can be significant with large noise and small effects." alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 0.2960559
 > >    ~~~
 > >    {: .output}
 > >    
-> >    <img src="../fig/rmd-02-regex6-1.png" title="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-regex6-1.png" title="With many points, relationships can be significant with small noise and tiny effects." alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    [1] 6.295652e-05
@@ -322,7 +322,7 @@ hist(xmat, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-histx-1.png" title="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-histx-1.png" title="Methylation levels are generally bimodally distributed." alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="432" style="display: block; margin: auto;" />
 
 In this case, the phenotypes and groupings look like this
 (for the first 6 samples):
@@ -343,7 +343,7 @@ and is actually a good case-study in how to perform some of the techniques
 we will cover in this lesson. The methylation levels for these data 
 can be presented in a heatmap:
 
-<img src="../fig/rmd-02-heatmap-1.png" title="Heatmap of methylation values across all features. Samples are ordered according to age." alt="Heatmap of methylation values across all features. Samples are ordered according to age." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-heatmap-1.png" title="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'." alt="Heatmap of methylation values across all features. Samples are ordered according to age." width="432" style="display: block; margin: auto;" />
 
 We would like to identify features that are related to our outcome of interest
 (age). It's clear from the heatmap that there are too many features to do so
@@ -450,7 +450,7 @@ tidy(fit)
 
 
 ~~~
-# A tibble: 2 x 5
+# A tibble: 2 × 5
   term        estimate std.error statistic p.value
   <chr>          <dbl>     <dbl>     <dbl>   <dbl>
 1 (Intercept)  0.902      0.344      2.62   0.0129
@@ -567,7 +567,7 @@ plot(df_all$estimate, -log10(df_all$p.value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-volcplot1-1.png" title="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-volcplot1-1.png" title="Plotting significance against effect size, it's clear that the two are related (but not 1-1)." alt="Plot of -log10(p) against effect size estimates for a regression of age against methylation level for each feature in the data." width="432" style="display: block; margin: auto;" />
 
 In this figure, every point represents a feature of interest. The x-axis
 represents the effect size observed for that feature in a linear model,
@@ -606,7 +606,7 @@ abline(h = -log10(0.05), lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-volcplotfake-1.png" title="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-volcplotfake-1.png" title="Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results." alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="432" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -695,7 +695,7 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-p-fwer-1.png" title="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-p-fwer-1.png" title="Bonferroni correction often produces very large p-values, especially with low sample sizes." alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 
 
 The second main way of controlling for multiple tests
@@ -766,7 +766,7 @@ the experiment over and over.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-p-fdr-1.png" title="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-p-fdr-1.png" title="Benjamini-Hochberg correction is less conservative than Bonferroni" alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 > >    
 > {: .solution}
 {: .challenge}
@@ -816,7 +816,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-limmavolc1-1.png" title="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-limmavolc1-1.png" title="Plotting p-values against effect sizes using limma; the results are similar to a standard linear model." alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." width="432" style="display: block; margin: auto;" />
 
 
 
@@ -849,7 +849,7 @@ plot(tt1$logFC, -log10(tt1$P.Value),
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-02-limmavolc2-1.png" title="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-02-limmavolc2-1.png" title="A plot of significance against effect size for a regression of smoking against methylation." alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." width="432" style="display: block; margin: auto;" />
 > > 2. We can use `all.equal` to compare vectors:
 > >    
 > >    ~~~

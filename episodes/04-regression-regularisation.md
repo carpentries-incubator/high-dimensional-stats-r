@@ -32,8 +32,8 @@ if (!file.exists(here("data/methylation.rds"))) {
 }
 methylation <- readRDS(here("data/methylation.rds"))
 
-y <- methylation$Age
-methyl_mat <- getM(methylation)
+age <- methylation$Age
+methyl_mat <- t(assay(methylation))
 ~~~
 {: .language-r}
 
@@ -92,14 +92,25 @@ ridge <- glmnet(methyl_mat, age, alpha = 0)
 ~~~
 {: .language-r}
 
+# LASSO regression
+
+LASSO is another type of regularisation. In this case we use the $L^1$ norm,
+or the sum of the absolute values of the coefficients.
+
+$$
+    |\beta|_1 = \sqrt{\sum_{j=1}^p \beta_j}
+$$
+
+This tends to produce
 
 
 ~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'age' not found
+Error in viridis(40, option = "A", direction = 1): could not find function "viridis"
 ~~~
 {: .error}
 
-# LASSO regression
+<img src="../fig/rmd-04-unnamed-chunk-4-1.png" width="432" style="display: block; margin: auto;" />
+
 
 
 ~~~
@@ -108,26 +119,12 @@ lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 {: .language-r}
 
 
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'age' not found
-~~~
-{: .error}
-
-
 ~~~
 ## Challenge 5:
 ## one of these...? probably lasso
 elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'age' not found
-~~~
-{: .error}
 
 
 > ## Other types of outcomes
@@ -143,20 +140,7 @@ Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in sele
 > 
 > 
 > ~~~
-> smoking <- as.numeric(factor(norm$smoker)) - 1
-> ~~~
-> {: .language-r}
-> 
-> 
-> 
-> ~~~
-> Error in norm$smoker: object of type 'closure' is not subsettable
-> ~~~
-> {: .error}
-> 
-> 
-> 
-> ~~~
+> smoking <- as.numeric(factor(methylation$smoker)) - 1
 > # binary outcome
 > smoking
 > ~~~
@@ -165,9 +149,9 @@ Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in sele
 > 
 > 
 > ~~~
-> Error in eval(expr, envir, enclos): object 'smoking' not found
+>  [1] 0 0 0 0 0 0 1 0 1 0 0 0 1 0 0 0 0 0 1 1 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0
 > ~~~
-> {: .error}
+> {: .output}
 > 
 > 
 > 
@@ -179,27 +163,35 @@ Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in sele
 > 
 > 
 > ~~~
-> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'drop': object 'smoking' not found
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
+> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+> multinomial or binomial class has fewer than 8 observations; dangerous ground
 > ~~~
-> {: .error}
+> {: .warning}
 > 
 > 
 > 
 > ~~~
 > coef <- coef(fit, s = fit$lambda.1se)
-> ~~~
-> {: .language-r}
-> 
-> 
-> 
-> ~~~
-> Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit' not found
-> ~~~
-> {: .error}
-> 
-> 
-> 
-> ~~~
 > coef[coef[, 1] != 0, 1]
 > ~~~
 > {: .language-r}
@@ -207,9 +199,9 @@ Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in sele
 > 
 > 
 > ~~~
-> Error in h(simpleError(msg, call)): error in evaluating the argument 'i' in selecting a method for function '[': object of type 'closure' is not subsettable
+> [1] -1.455287
 > ~~~
-> {: .error}
+> {: .output}
 > 
 > 
 > 
@@ -221,7 +213,7 @@ Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in sele
 > 
 > 
 > ~~~
-> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'smoking' not found
+> Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
 > ~~~
 > {: .error}
 {: .callout}
@@ -235,7 +227,7 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 ~~~
 {: .language-r}
 
-<img src="../fig/bs_fs_lasso.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs_lasso.png" style="display: block; margin: auto;" />
 
 
 > ## Selecting hyperparameters
@@ -247,7 +239,7 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 > as the test set. Repeating this process for each of the
 > $K$ chunks produces more variability.
 > 
-> <img src="../fig/cross_validation.svg" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
+> <img src="../fig/cross_validation.svg" style="display: block; margin: auto;" />
 >
 > To be really rigorous, we could even repeat this *cross-validation*
 > process a number of times! This is termed "repeated cross-validation".

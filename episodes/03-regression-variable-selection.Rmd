@@ -111,7 +111,12 @@ because blah blah number of permutations probably $p!$ but need to check.
 ```{r bestsub}
 library("leaps")
 small_methyl <- methyl_mat[, 1:10]
-fit_all <- regsubsets(x = small_methyl, y = age, really.big = TRUE)
+fit_all <- regsubsets(
+  x = small_methyl,
+  y = age,
+  method = "exhaustive",
+  really.big = TRUE
+)
 summ <- summary(fit_all)
 coef(fit_all, which.min(summ$rss))
 ```
@@ -119,7 +124,12 @@ coef(fit_all, which.min(summ$rss))
 Let's try running BS on the full dataset.
 
 ```{r bestsub_all, eval = FALSE}
-fit_all <- regsubsets(x = methyl_mat, y = age, really.big = TRUE)
+fit_all <- regsubsets(
+  x = methyl_mat,
+  y = age,
+  method = "exhaustive",
+  really.big = TRUE
+)
 summ <- summary(fit_all)
 coef(fit_all, which.min(summ$rss))
 ```
@@ -150,8 +160,8 @@ perfect.
 nvar <- 100
 nobs <- 100
 y_synth <- rnorm(nobs)
-X_synth <- matrix(rnorm(nobs * nvar), nrow = nobs, ncol = nvar)
-fit <- lm(y_synth ~ 0 + ., data = as.data.frame(X_synth))
+x_synth <- matrix(rnorm(nobs * nvar), nrow = nobs, ncol = nvar)
+fit <- lm(y_synth ~ 0 + ., data = as.data.frame(x_synth))
 sum(residuals(fit)^2)
 ```
 

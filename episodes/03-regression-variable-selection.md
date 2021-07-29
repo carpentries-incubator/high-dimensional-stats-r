@@ -135,27 +135,27 @@ lm(formula = y_synth ~ ., data = as.data.frame(X_pred))
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--1.58045 -0.35914 -0.04379  0.31736  1.59182 
+-2.37362 -0.42697 -0.05788  0.43522  1.73940 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  0.15617    0.06577   2.375 0.019717 *  
-V1          -0.26036    0.06414  -4.059 0.000106 ***
-V2           0.06486    0.06374   1.018 0.311644    
-V3           0.11694    0.05789   2.020 0.046389 *  
-V4          -0.11563    0.06165  -1.876 0.063966 .  
-V5          -0.23887    0.06325  -3.776 0.000287 ***
-V6           0.18500    0.05868   3.153 0.002204 ** 
-V7          -0.17706    0.06366  -2.782 0.006604 ** 
-V8           0.20675    0.06354   3.254 0.001612 ** 
-V9          -0.06335    0.06143  -1.031 0.305207    
-V10         -0.10403    0.06514  -1.597 0.113819    
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept) -0.15093    0.07765  -1.944   0.0551 .
+V1          -0.11645    0.08153  -1.428   0.1567  
+V2           0.20013    0.08278   2.417   0.0177 *
+V3          -0.13931    0.08405  -1.657   0.1010  
+V4          -0.13893    0.09460  -1.469   0.1455  
+V5           0.15641    0.08581   1.823   0.0717 .
+V6           0.22510    0.08566   2.628   0.0101 *
+V7          -0.14774    0.07693  -1.920   0.0580 .
+V8          -0.17535    0.07638  -2.296   0.0240 *
+V9           0.12791    0.08543   1.497   0.1379  
+V10          0.14574    0.08362   1.743   0.0848 .
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.6142 on 89 degrees of freedom
-Multiple R-squared:  0.5667,	Adjusted R-squared:  0.5181 
-F-statistic: 11.64 on 10 and 89 DF,  p-value: 1.534e-12
+Residual standard error: 0.7583 on 89 degrees of freedom
+Multiple R-squared:  0.4707,	Adjusted R-squared:  0.4112 
+F-statistic: 7.915 on 10 and 89 DF,  p-value: 5.581e-09
 ~~~
 {: .output}
 
@@ -203,7 +203,7 @@ coef(fit_all, which.min(summ$rss))
 This doesn't really work in a reasonable time because of the number of possible
 combinations!
 
-<img src="../fig/bs_fs.png" title="plot of chunk bstab" alt="plot of chunk bstab" width="500px" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
 
 Figure taken from [Hastie et al. (2020)](https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf),
 published [here](https://doi.org/10.1214/19-STS733).
@@ -365,7 +365,7 @@ abline(h = 0, lty = "dashed", col = "firebrick")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-forwardsyn-1.png" title="plot of chunk forwardsyn" alt="plot of chunk forwardsyn" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -435,76 +435,13 @@ can do reverse subset selection.
 > > 
 > > ~~~
 > > features <- methylclock::coefHorvath$CpGmarker
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in loadNamespace(x): there is no package called 'methylclock'
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > features <- intersect(features, colnames(methyl_mat))
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'intersect': object 'features' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > methyl_horvath <- methyl_mat[, features[1:30]]
-> > ~~~
-> > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in eval(expr, envir, enclos): object 'features' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > ## note about backward/both, not a challenge
 > > fit_back <- regsubsets(x = methyl_horvath, y = age, method = "backward")
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in regsubsets(x = methyl_horvath, y = age, method = "backward"): object 'methyl_horvath' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > summ_back <- summary(fit_back)
-> > ~~~
-> > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_back' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > summ_back$bic
 > > ~~~
 > > {: .language-r}
@@ -512,98 +449,27 @@ can do reverse subset selection.
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): object 'summ_back' not found
+> > [1] -11.827037 -11.841527 -10.671471 -12.328255 -12.596295 -11.690432 -10.603882
+> > [8]  -9.830097
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
 > > ~~~
 > > est_coef_back <- coef(fit_back, id = which.min(summ_back$bic))
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_back' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > true_coef <- setNames(
 > >   methylclock::coefHorvath$CoefficientTraining,
 > >   methylclock::coefHorvath$CpGmarker
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in loadNamespace(x): there is no package called 'methylclock'
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(est_coef_back[-1], true_coef[names(est_coef_back)[-1]])
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'est_coef_back' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > abline(0, 1)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > abline(v = 0, lty = "dashed", col = "firebrick")
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > abline(h = 0, lty = "dashed", col = "firebrick")
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-> > ~~~
-> > {: .error}
-> > 
-> > 
+> > <img src="../fig/rmd-03-reverse-1.png" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > names(est_coef_back[-1])
@@ -613,9 +479,9 @@ can do reverse subset selection.
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): object 'est_coef_back' not found
+> > [1] "cg02388150" "cg02489552" "cg03167275" "cg03760483" "cg04084157"
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
@@ -642,9 +508,9 @@ can do reverse subset selection.
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'intersect': object 'est_coef_back' not found
+> > character(0)
 > > ~~~
-> > {: .error}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
