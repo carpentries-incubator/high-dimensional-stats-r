@@ -5,17 +5,24 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-# plot of chunk bstab
+# <img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='plot of chunk bstab
-knitr::include_graphics(here("fig/bs_fs.png"))
+# , fig.cap='<img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
-# plot of chunk forwardsyn
+# <img src="../fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='plot of chunk forwardsyn
-knitr::include_graphics(here("fig/rmd-03-forwardsyn-1.png"))
+# , fig.cap='<img src="../fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-03-forwardsyn-1.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
+# > > <img src="../fig/rmd-03-reverse-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='> > <img src="../fig/rmd-03-reverse-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(> > <img src="here("fig/rmd-03-reverse-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
