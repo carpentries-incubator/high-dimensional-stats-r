@@ -58,6 +58,7 @@ working with require some special considerations.
 
 Ideally, we want to identify cases like this, where there is a
 clear difference, and we probably "don't need" statistics:
+
 ```{r example1, echo=FALSE, fig.cap="A scatter plot of age and a feature of interest.", fig.alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (gene expression for a given gene) on the y-axis. A strong linear relationship with a positive slope exists between the two.", fig.width=6, fig.height=6}
 library("ggplot2")
 theme_set(theme_bw())
@@ -154,7 +155,10 @@ for (i in seq_along(sx)) {
         dens[i, j] <- dnorm(sy[[j]], mean = fx[[i]])
     }
 }
-image(sx, sy, dens, col = viridis::viridis(100, option = "magma"), xlab="x", ylab="y")
+image(sx, sy, dens,
+    col = viridis::viridis(100, option = "magma"),
+    xlab = "x", ylab = "y"
+)
 ```
 
 In order to decide whether a result would be unlikely
@@ -198,7 +202,7 @@ and look at the upper rather than lower tail. Because in a 2-tail test we're
 looking at "half" of the t-distribution, we also multiply the p-value by 2.
 
 ```{r simpval}
-pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail=FALSE)
+pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail = FALSE)
 all.equal(tab$Pr, pvals)
 ```
 
@@ -206,20 +210,20 @@ This is much more easy to observe visually, by plotting the distribution:
 
 ```{r tdist, echo = FALSE, fig.cap="The p-value for a regression coefficient represents how often it'd be observed under the null.", fig.alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines."}
 ggplot() +
-    geom_function(fun = function(x) dt(x, df=fit$df)) +
+    geom_function(fun = function(x) dt(x, df = fit$df)) +
     xlim(0, 4) +
     geom_vline(
         aes(xintercept = abs(tvals), color = rownames(tab)),
         lty = "dashed"
     ) +
-    stat_function(fun = function(x) dt(x, df=fit$df), 
+    stat_function(fun = function(x) dt(x, df = fit$df),
         aes(fill = rownames(tab)[[1]]),
         xlim = c(abs(tvals)[[1]], 4),
         alpha = 0.25,
         geom = "area"
     ) +
-    stat_function(fun = function(x) dt(x, df=fit$df), 
-        aes(fill=rownames(tab)[[2]]),
+    stat_function(fun = function(x) dt(x, df = fit$df),
+        aes(fill = rownames(tab)[[2]]),
         xlim = c(abs(tvals)[[2]], 4),
         alpha = 0.25,
         geom = "area"
@@ -346,9 +350,6 @@ The following code will read in the data for this episode.
 ```{r loadmethy}
 library("here")
 library("minfi")
-if (!file.exists(here("data/methylation.rds"))) {
-    source(here("data/methylation.R"))
-}
 methylation <- readRDS(here("data/methylation.rds"))
 ```
 
@@ -359,20 +360,28 @@ levels, and optional sample-level `colData` and feature-level `metadata`.
 These objects are very convenient to contain all of the information about 
 a dataset in a high-throughput context and may be covered in more
 detail in other Carpentries lessons.
+
 ```{r showmethy}
 methylation
 ```
 
 To extract the matrix of methylation values, we use the `assay` function.
+One thing to bear in mind with these objects (and data 
+structures for computational biology in R generally) is that
+in the matrix of methylation data, samples or observations
+are stored as columns, while features (in this case, CpG sites)
+are stored as rows. This is in contrast to usual tabular data,
+where features or variables are stored as columns and 
+observations are stored as rows.
 
 ```{r grabx}
-xmat <- assay(methylation)
+methyl_mat <- assay(methylation)
 ```
 
 The distribution of these M-values looks like this:
 
 ```{r histx, fig.cap="Methylation levels are generally bimodally distributed.", fig.alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features."}
-hist(xmat, breaks = "FD", xlab = "M-value")
+hist(methyl_mat, breaks = "FD", xlab = "M-value")
 ```
 
 In this case, the phenotypes and groupings look like this
@@ -394,8 +403,8 @@ age <- methylation$Age
 library("ComplexHeatmap")
 order <- order(age)
 age_ord <- age[order]
-xmat_ord <- xmat[, order]
-Heatmap(xmat_ord,
+methyl_mat_ord <- methyl_mat[, order]
+Heatmap(methyl_mat_ord,
     cluster_columns = FALSE,
     # cluster_rows = FALSE,
     name = "M-value",
@@ -473,7 +482,7 @@ You may remember how to fit this model from a previous lesson, and how to
 get more information from the model object:
 
 ```{r fit1}
-fit <- lm(xmat[1, ] ~ age)
+fit <- lm(methyl_mat[1, ] ~ age)
 summary(fit)
 ```
 
@@ -501,7 +510,7 @@ matrix, and then use it to fit a model to any feature we like:
 
 ```{r fitfunction}
 lm_feature <- function(i) {
-    as.data.frame(tidy(lm(xmat[i, ] ~ age))[2, ])
+    as.data.frame(tidy(lm(methyl_mat[i, ] ~ age))[2, ])
 }
 coef2 <- lm_feature(2)
 coef3 <- lm_feature(3)
@@ -513,7 +522,7 @@ we can `lapply` over the number of rows of the matrix to fit a model for each
 feature.
 
 ```{r lapplyfitfun}
-dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
+dfs <- lapply(seq_len(nrow(methyl_mat)), lm_feature)
 head(dfs)
 ```
 
@@ -528,7 +537,7 @@ Here, it's equivalent to writing `rbind(dfs[[1]], dfs[[2]], [etc])`.
 ## bind together all of our small tables to make one big table
 df_all <- do.call(rbind, dfs)
 ## set the rownames of the table to be the names of the features
-rownames(df_all) <- rownames(xmat)
+rownames(df_all) <- rownames(methyl_mat)
 ```
 
 We can then create a plot of effect size estimates (model coefficients) against
@@ -572,8 +581,8 @@ To demonstrate this, it's useful to consider what happens if
 we scramble age and run the same test again:
 
 ```{r volcplotfake, fig.cap="Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results.", fig.alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level.", test="foo"}
-age_perm <- age[sample(ncol(xmat), ncol(xmat))]
-dfs <- lapply(seq_len(nrow(xmat)), lm_feature)
+age_perm <- age[sample(ncol(methyl_mat), ncol(methyl_mat))]
+dfs <- lapply(seq_len(nrow(methyl_mat)), lm_feature)
 df_all_perm <- do.call(rbind, dfs)
 plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
@@ -780,17 +789,17 @@ in effect size estimates.
 library("limma")
 
 design <- model.matrix(~age)
-fit <- lmFit(xmat, design = design)
-fit <- eBayes(fit)
-tt1 <- topTable(fit, coef = 2, number = nrow(fit))
-plot(tt1$logFC, -log10(tt1$P.Value),
+fit_age <- lmFit(methyl_mat, design = design)
+fit_age <- eBayes(fit_age)
+toptab_age <- topTable(fit_age, coef = 2, number = nrow(fit_age))
+plot(toptab_age$logFC, -log10(toptab_age$P.Value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
 ```
 
 ```{r echo = FALSE, eval=FALSE}
-q <- qvalue(tt1$P.Value)
+q <- qvalue(toptab_age$P.Value)
 hist(q)
 ```
 
@@ -812,17 +821,17 @@ hist(q)
 > > 1. The following code runs the same type of model with smoking status:
 > >    ```{r limmavolc2, fig.cap="A plot of significance against effect size for a regression of smoking against methylation.", fig.alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma."}
 > >    design <- model.matrix(~methylation$smoker)
-> >    fit <- lmFit(xmat, design = design)
-> >    fit <- eBayes(fit)
-> >    tt1 <- topTable(fit, coef = 2, number = nrow(fit))
-> >    plot(tt1$logFC, -log10(tt1$P.Value),
+> >    fit_smoke <- lmFit(methyl_mat, design = design)
+> >    fit_smoke <- eBayes(fit_smoke)
+> >    toptab_smoke <- topTable(fit_smoke, coef = 2, number = nrow(fit_smoke))
+> >    plot(toptab_smoke$logFC, -log10(toptab_smoke$P.Value),
 > >        xlab = "Effect size", ylab = bquote(-log[10](p)),
 > >        pch = 19
 > >    )
 > >    ```
 > > 2. We can use `all.equal` to compare vectors:
 > >    ```{r}
-> >    all.equal(p.adjust(tt1$P.Value, method = "BH"), tt1$adj.P.Val)
+> >    all.equal(p.adjust(toptab_smoke$P.Value, method = "BH"), toptab_smoke$adj.P.Val)
 > >    ```
 > {: .solution}
 {: .challenge}
@@ -907,6 +916,87 @@ separately.
 > - [a blog post by TJ Mahr](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/)
 > - [a book by David Robinson](https://gumroad.com/l/empirical-bayes)
 > - [a (relatively technical) book by Gelman and Hill](http://www.stat.columbia.edu/~gelman/arm/)
+{: .callout}
+
+
+# Screening
+
+What people sometimes do is to select variables based on correlation with
+the outcome, or using a univariate modelling approach like we used in the 
+previous lesson.
+The p-values we get out of this kind of approach
+model are meaningless because we're basically doing a 2-stage model and only
+reporting one set of p-values (ignoring all the non-significant ones) and
+not correctly adjusting for the true number of tests we're performing.
+
+```{r screening-cor}
+cors <- apply(methyl_mat, 1, function(col) cor(col, age))
+x_cor <- methyl_mat[abs(cors) > quantile(abs(cors), 0.95), ]
+design <- model.matrix(~age)
+fit_cor <- lmFit(x_cor, design = design)
+fit_cor <- eBayes(fit_cor)
+toptab_cor <- topTable(fit_cor, coef = 2, number = nrow(fit_cor))
+plot(toptab_cor$logFC, -log10(toptab_cor$P.Value),
+    xlab = "Effect size", ylab = bquote(-log[10](p)),
+    pch = 19
+)
+
+
+feats <- rownames(toptab_cor)
+pvals_both <- cbind(
+    Original = toptab_age[feats, "adj.P.Val"],
+    Screened = toptab_cor[feats, "adj.P.Val"]
+)
+lims <- range(pvals_both)
+plot(pvals_both, xlim = lims, ylim = lims, log = "xy")
+abline(h = 0.05, lty = "dashed", col = "firebrick")
+abline(v = 0.05, lty = "dashed", col = "firebrick")
+abline(coef = 0:1, lty = "dashed")
+```
+
+This two-step selection process biases the results towards
+significance, and it means that the p-values we
+report aren't accurate.
+
+> ## Screening using variance
+> 
+> One way to screen for variables that *does* work is to use a filter
+> or screen that is independent of the test statistic.
+> Correlation is not independent of the t-statistic. However,
+> Overall variance of a feature is independent of this statistic, because
+> the overall variability level does not. However, we might suspect that
+> features that don't vary much at all don't vary in our groups of interest,
+> or alongside our continuous features (age in this example).
+> 
+> This approach was introduced by 
+> [Bourgon, Gentleman and Huber (2010)](https://www.pnas.org/content/107/21/9546.short)
+> and can be shown to be valid. This is because variance and the t-statistic
+> are not correlated under the null hypothesis, but are correlated under
+> the alternative.
+> 
+> ```{r screening-var}
+> vars <- apply(methyl_mat, 1, var)
+> x_var <- methyl_mat[abs(vars) > quantile(abs(cors), 0.5), ]
+> design <- model.matrix(~age)
+> fit_var <- lmFit(x_var, design = design)
+> fit_var <- eBayes(fit_var)
+> toptab_var <- topTable(fit_var, coef = 2, number = nrow(fit_var))
+> feats <- rownames(toptab_var)
+> plot(toptab_var$logFC, -log10(toptab_var$P.Value),
+>     xlab = "Effect size", ylab = bquote(-log[10](p)),
+>     pch = 19
+> )
+> pvals_both_var <- cbind(
+>     Original = toptab_age[feats, "adj.P.Val"],
+>     Screened = toptab_var[feats, "adj.P.Val"]
+> )
+> lims <- range(pvals_both_var)
+> plot(pvals_both_var, xlim = lims, ylim = lims, log = "xy")
+> abline(h = 0.05, lty = "dashed", col = "firebrick")
+> abline(v = 0.05, lty = "dashed", col = "firebrick")
+> abline(coef = 0:1, lty = "dashed")
+> ```
+> 
 {: .callout}
 
 [^1]: It's not hugely problematic if the assumption of normal residuals is violated. It mainly affects our ability to accurately predict responses for new, unseen observations.

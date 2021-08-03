@@ -41,22 +41,6 @@ set.seed(42)
 
 
 ~~~
-if (!file.exists(here("data/scrnaseq.rds"))) {
-    source(here("data/scrnaseq.R"))
-}
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in here("data/scrnaseq.rds"): could not find function "here"
-~~~
-{: .error}
-
-
-
-~~~
 norm <- readRDS(here("data/scrnaseq.rds"))
 ~~~
 {: .language-r}
@@ -198,7 +182,7 @@ Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in sele
 
 ~~~
 ## graph-based
-g <- buildSNNGraph(zd, k = 10, use.dimred = 'PCA')
+g <- buildSNNGraph(zd, k = 10, use.dimred = "PCA")
 ~~~
 {: .language-r}
 

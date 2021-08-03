@@ -21,13 +21,6 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("05-")
 ```
 
-
-```{r}
-if (!file.exists(here("data/cancer_expression.rds"))) {
-    source(here("data/expression.R"))
-}
-```
-
 # Introduction
 
 Intro to PCA (15 mins: lecture)

@@ -45,6 +45,5 @@ for (file in files) {
         )
         write(out, file = outfile, append = TRUE)
     }
-    system(paste0("Rscript -e 'rmarkdown::render(\"", outfile, "\")'"))
 }
 
