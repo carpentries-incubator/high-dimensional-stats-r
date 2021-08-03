@@ -93,11 +93,14 @@ workshop-check :
 ## III. Commands specific to lesson websites
 ## =================================================
 
-.PHONY : lesson-check lesson-md lesson-files lesson-fixme install-rmd-deps slides
+.PHONY : lesson-check lesson-md lesson-files lesson-fixme slides
 
 # RMarkdown files
 RMD_SRC = $(wildcard _episodes_rmd/??-*.Rmd)
 RMD_DST = $(patsubst _episodes_rmd/%.Rmd,_episodes/%.md,$(RMD_SRC))
+SLI_SRC = $(patsubst _episodes/%.md,slides/%.Rmd,$(RMD_DST))
+SLI_DST = $(patsubst _episodes/%.md,slides/%.Rmd,$(SLI_SRC))
+
 
 # Lesson source files in the order they appear in the navigation menu.
 MARKDOWN_SRC = \
@@ -119,19 +122,27 @@ HTML_DST = \
   $(patsubst _extras/%.md,${DST}/%/index.html,$(sort $(wildcard _extras/*.md))) \
   ${DST}/license/index.html
 
+
 ## * install-rmd-deps : Install R packages dependencies to build the RMarkdown lesson
-install-rmd-deps:
-	@${SHELL} bin/install_r_deps.sh
+dependencies.csv: _episodes_rmd/*.Rmd
+	@${SHELL} bin/list_r_deps.sh
+
+.installed: dependencies.csv
+	@${SHELL} bin/install_r_deps.sh \
+	@touch .installed
 
 ## * lesson-md        : convert Rmarkdown files to markdown
 lesson-md : ${RMD_DST}
 
-_episodes/%.md: _episodes_rmd/%.Rmd install-rmd-deps
+_episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
-	@bin/knit_lessons.sh $< $@
+	@${SHELL} bin/knit_lessons.sh $< $@
 
-slides: lesson-md
+slides-md: ${SLI_DST}
 	Rscript "bin/slider.R"
+
+slides-pdf: _slides/%.pdf
+    Rscript -e 'rmarkdown::render("$@", output_file = "$@")'
 
 ## * lesson-check     : validate lesson Markdown
 lesson-check : lesson-fixme

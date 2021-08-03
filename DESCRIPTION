@@ -28,6 +28,7 @@ Imports:
     IlluminaHumanMethylationEPICmanifest,
     irlba,
     knitr,
+    lasso2,
     leaps,
     limma,
     mclust,

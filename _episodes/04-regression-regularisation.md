@@ -27,9 +27,7 @@ math: yes
 ~~~
 library("minfi")
 library("here")
-if (!file.exists(here("data/methylation.rds"))) {
-    source(here("data/methylation.R"))
-}
+
 methylation <- readRDS(here("data/methylation.rds"))
 
 age <- methylation$Age

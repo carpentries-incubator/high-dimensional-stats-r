@@ -5,6 +5,13 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
+# <img src="../fig/rmd-05-unnamed-chunk-8-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-8-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-8-1.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
 # <img src="../fig/rmd-05-unnamed-chunk-9-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
 # , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-9-1.png" width="432" style="display: block; margin: auto;" />
@@ -12,45 +19,38 @@ knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-9-1.png" width=
 ```
 
 \newpage
-# <img src="../fig/rmd-05-unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" />
+# <img src="../fig/rmd-05-unnamed-chunk-14-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-10-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-14-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-14-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
-# <img src="../fig/rmd-05-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />
+# > > <img src="../fig/rmd-05-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='> > <img src="../fig/rmd-05-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(> > <img src="here("fig/rmd-05-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
-# > > <img src="../fig/rmd-05-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />
+# <img src="../fig/rmd-05-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='> > <img src="../fig/rmd-05-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(> > <img src="here("fig/rmd-05-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
-# <img src="../fig/rmd-05-unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />
+# > > <img src="../fig/rmd-05-unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='> > <img src="../fig/rmd-05-unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(> > <img src="here("fig/rmd-05-unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage
-# > > <img src="../fig/rmd-05-unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" />
+# <img src="../fig/rmd-05-unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='> > <img src="../fig/rmd-05-unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(> > <img src="here("fig/rmd-05-unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" />"))
-```
-
-\newpage
-# <img src="../fig/rmd-05-unnamed-chunk-19-1.png" width="432" style="display: block; margin: auto;" />
-```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-19-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-19-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='<img src="../fig/rmd-05-unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-05-unnamed-chunk-18-1.png" width="432" style="display: block; margin: auto;" />"))
 ```
 
 \newpage

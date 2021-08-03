@@ -138,3 +138,31 @@ knitr::include_graphics(here("fig/rmd-02-limmavolc2-1.png"))
 ```
 
 \newpage
+# <img src="../fig/rmd-02-screening-cor-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-02-screening-cor-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-02-screening-cor-1.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
+# <img src="../fig/rmd-02-screening-cor-2.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='<img src="../fig/rmd-02-screening-cor-2.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(<img src="here("fig/rmd-02-screening-cor-2.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
+# > <img src="../fig/rmd-02-screening-var-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='> <img src="../fig/rmd-02-screening-var-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(> <img src="here("fig/rmd-02-screening-var-1.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
+# > <img src="../fig/rmd-02-screening-var-2.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='> <img src="../fig/rmd-02-screening-var-2.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(> <img src="here("fig/rmd-02-screening-var-2.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
