@@ -116,7 +116,7 @@ fit_bs <- regsubsets(
 The function in this case refuses to proceed unless we are sure we want
 to wait around for a long time. It's worth noting this may not even finish
 at all, as the process is likely to run out of memory given for 5000
-features it needs to try $2^{4999}$ models (this number is to big to be 
+features it needs to try $2^{4999}$ models (this number is too big to be 
 represented as a floating point number in R!).
 
 ```{r bignum}
@@ -212,6 +212,7 @@ prostate_scaled <- scale(prostate_mat)
 > >      xlab = "Coefficients without scaling",
 > >      ylab = "Coefficients with scaling"
 > >    )
+> >    ```
 > > 2. The intercept is different, because the mean and scale of the input
 > >    features have changed! If we were to scale the output, that would also
 > >    change the intercept. The intercept quantifies the difference in means
