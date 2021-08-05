@@ -89,9 +89,9 @@ quite difficult, but thankfully the `leaps` package implements a quick way
 to do it. They term it "exhaustive search" because we are exhausting every
 possible combination of features to find the best one.
 
-
 ```{r bestsub}
 library("leaps")
+## Take a small number of features
 small_methyl <- methyl_mat[, 1:10]
 fit_bs <- regsubsets(
   x = small_methyl,
@@ -99,7 +99,19 @@ fit_bs <- regsubsets(
   method = "exhaustive"
 )
 summ <- summary(fit_bs)
-coef(fit_bs, which.min(summ$rss))
+## We need to select which features we want. Here we use RSS
+## (residual sum of squares) to choose
+coefs_bs <- coef(fit_bs, id = which.min(summ$rss))
+coefs_bs
+## regsubsets doesn't fit the full model for each combination
+## to save time.
+## To get a model summary, we could use the features identified to fit
+## a full model
+fit_bs <- lm(
+  age ~ .,
+  data = as.data.frame(small_methyl[, names(coefs_bs[-1])]
+)
+summary(fit_bs)
 ```
 
 If we try to run best subset selection on the full dataset, we run into 
@@ -140,10 +152,15 @@ published [here](https://doi.org/10.1214/19-STS733).
 Since we have many more features than observations in this 
 methylation data, we'll work with the `Prostate` dataset
 that's available in the `lasso2` package for this model selection lesson.
+Further, this data is actually better suited to this statistical approach than the methylation data.
+Generally, best subset selection and similar approaches work really well 
+when you have a relatively low number of features with relatively strong 
+impact on the outcome, which is commonly not the case with methylation 
+data.
 
 ```{r load-prostate}
 library("lasso2")
-data(Prostate)
+data("Prostate")
 ```
 
 These data come from a study examining the correlation between levels of 
@@ -188,7 +205,9 @@ the relative impact of different features.
 Scaling features to have mean zero and standard deviation of one
 means that a coefficient value of 1 means that the outcome changes by one
 unit for every standard deviation of the input feature. You may not always
-want to do this
+want to do this - unscaled features can be easier to understand at times, 
+because coefficients then measure the unit change in the outcome variable
+in response to unit changes in the input features.
 
 To scale our data, we can use the `scale` function.
 
