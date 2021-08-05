@@ -144,7 +144,7 @@ _slides/%.Rmd: ${RMD_DST}
 _slides/%.pdf: _slides/%.Rmd
 	Rscript -e 'rmarkdown::render("$<")'
 
-slides: ${SLI_PDF}
+slides: ${SLI_DST} ${SLI_PDF}
 
 ## * lesson-check     : validate lesson Markdown
 lesson-check : lesson-fixme

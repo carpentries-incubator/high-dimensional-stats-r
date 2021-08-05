@@ -117,9 +117,9 @@ to do it. They term it "exhaustive search" because we are exhausting every
 possible combination of features to find the best one.
 
 
-
 ~~~
 library("leaps")
+## Take a small number of features
 small_methyl <- methyl_mat[, 1:10]
 fit_bs <- regsubsets(
   x = small_methyl,
@@ -127,19 +127,31 @@ fit_bs <- regsubsets(
   method = "exhaustive"
 )
 summ <- summary(fit_bs)
-coef(fit_bs, which.min(summ$rss))
+## We need to select which features we want. Here we use RSS
+## (residual sum of squares) to choose
+coefs_bs <- coef(fit_bs, id = which.min(summ$rss))
+coefs_bs
+## regsubsets doesn't fit the full model for each combination
+## to save time.
+## To get a model summary, we could use the features identified to fit
+## a full model
+fit_bs <- lm(
+  age ~ .,
+  data = as.data.frame(small_methyl[, names(coefs_bs[-1])]
+)
+summary(fit_bs)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-(Intercept)  cg00374717  cg00864867  cg01027739  cg01353448  cg01584473 
- 145.118554    1.073187   13.767298   22.683667    9.489186  -14.784050 
- cg01644850  cg01656216  cg01873645 
-   4.853302    7.915842   -9.715682 
+Error: <text>:22:1: unexpected symbol
+21: )
+22: summary
+    ^
 ~~~
-{: .output}
+{: .error}
 
 If we try to run best subset selection on the full dataset, we run into 
 problems:
@@ -157,15 +169,7 @@ fit_bs <- regsubsets(
 
 
 ~~~
-Warning in leaps.setup(x, y, wt = weights, nbest = nbest, nvmax = nvmax, : 4964
-linear dependencies found
-~~~
-{: .warning}
-
-
-
-~~~
-Error in leaps.exhaustive(a, really.big = really.big): Exhaustive search will be S L O W, must specify really.big=T
+Error in regsubsets(x = methyl_mat, y = age, method = "exhaustive"): could not find function "regsubsets"
 ~~~
 {: .error}
 
@@ -203,11 +207,16 @@ published [here](https://doi.org/10.1214/19-STS733).
 Since we have many more features than observations in this 
 methylation data, we'll work with the `Prostate` dataset
 that's available in the `lasso2` package for this model selection lesson.
+Further, this data is actually better suited to this statistical approach than the methylation data.
+Generally, best subset selection and similar approaches work really well 
+when you have a relatively low number of features with relatively strong 
+impact on the outcome, which is commonly not the case with methylation 
+data.
 
 
 ~~~
 library("lasso2")
-data(Prostate)
+data("Prostate")
 ~~~
 {: .language-r}
 
@@ -292,7 +301,9 @@ the relative impact of different features.
 Scaling features to have mean zero and standard deviation of one
 means that a coefficient value of 1 means that the outcome changes by one
 unit for every standard deviation of the input feature. You may not always
-want to do this
+want to do this - unscaled features can be easier to understand at times, 
+because coefficients then measure the unit change in the outcome variable
+in response to unit changes in the input features.
 
 To scale our data, we can use the `scale` function.
 
@@ -419,7 +430,33 @@ values we really observe.
 > >   y = cancer_volume,
 > >   method = "exhaustive"
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in regsubsets(x = prostate_mat, y = cancer_volume, method = "exhaustive"): could not find function "regsubsets"
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > summ_bs <- summary(fit_bs)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_bs' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > coef(fit_bs, which.min(summ_bs$rss))
 > > ~~~
 > > {: .language-r}
@@ -427,12 +464,9 @@ values we really observe.
 > > 
 > > 
 > > ~~~
-> >  (Intercept)      lweight          age         lbph          svi          lcp 
-> > -2.260100746 -0.073166458  0.022736050 -0.087449206 -0.153591285  0.367299994 
-> >      gleason        pgg45         lpsa 
-> >  0.190758511 -0.007157575  0.572797361 
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bs' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -585,10 +619,9 @@ and AIC (Akaike information criterion).
 > > 
 > > 
 > > ~~~
-> > (Intercept)         lcp        lpsa 
-> >  0.09134598  0.32837479  0.53162109 
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bs' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > > 
 > > 
 > > 
@@ -600,12 +633,9 @@ and AIC (Akaike information criterion).
 > > 
 > > 
 > > ~~~
-> >  (Intercept)      lweight          age         lbph          svi          lcp 
-> > -2.260100746 -0.073166458  0.022736050 -0.087449206 -0.153591285  0.367299994 
-> >      gleason        pgg45         lpsa 
-> >  0.190758511 -0.007157575  0.572797361 
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bs' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -666,11 +696,50 @@ and one feature. Then
 > >   y = cancer_volume,
 > >   method = "forward"
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in regsubsets(x = prostate_mat, y = cancer_volume, method = "forward"): could not find function "regsubsets"
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > summ_fwd <- summary(fit_fwd)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_fwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > est_coef_fwd <- coef(
 > >   fit_fwd,
 > >   id = which.min(summ_fwd$bic)
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_fwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > est_coef_fwd
 > > ~~~
 > > {: .language-r}
@@ -678,19 +747,44 @@ and one feature. Then
 > > 
 > > 
 > > ~~~
-> > (Intercept)         lcp        lpsa 
-> >  0.09134598  0.32837479  0.53162109 
+> > Error in eval(expr, envir, enclos): object 'est_coef_fwd' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > > 
 > > 
 > > 
 > > ~~~
 > > chosen_coef_fwd <- names(est_coef_fwd)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(expr, envir, enclos): object 'est_coef_fwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > fit_fwd_lm <- lm(
 > >   cancer_volume ~ .,
 > >   data = as.data.frame(prostate_mat[, chosen_coef_fwd[-1]])
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': object 'chosen_coef_fwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > summary(fit_fwd_lm)
 > > ~~~
 > > {: .language-r}
@@ -698,28 +792,9 @@ and one feature. Then
 > > 
 > > 
 > > ~~~
-> > 
-> > Call:
-> > lm(formula = cancer_volume ~ ., data = as.data.frame(prostate_mat[, 
-> >     chosen_coef_fwd[-1]]))
-> > 
-> > Residuals:
-> >      Min       1Q   Median       3Q      Max 
-> > -1.65744 -0.54398 -0.05502  0.57163  2.07959 
-> > 
-> > Coefficients:
-> >             Estimate Std. Error t value Pr(>|t|)    
-> > (Intercept)  0.09135    0.20527   0.445    0.657    
-> > lcp          0.32837    0.06193   5.303 7.54e-07 ***
-> > lpsa         0.53162    0.07501   7.087 2.49e-10 ***
-> > ---
-> > Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-> > 
-> > Residual standard error: 0.7092 on 94 degrees of freedom
-> > Multiple R-squared:  0.6455,	Adjusted R-squared:  0.6379 
-> > F-statistic: 85.57 on 2 and 94 DF,  p-value: < 2.2e-16
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_fwd_lm' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -755,11 +830,50 @@ The `leaps` package also allows us to do this process.
 > >   y = cancer_volume,
 > >   method = "backward"
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in regsubsets(x = prostate_mat, y = cancer_volume, method = "backward"): could not find function "regsubsets"
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > summ_bwd <- summary(fit_bwd)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_bwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > est_coef_bwd <- coef(
 > >   fit_bwd,
 > >   id = which.min(summ_bwd$bic)
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > est_coef_bwd
 > > ~~~
 > > {: .language-r}
@@ -767,19 +881,44 @@ The `leaps` package also allows us to do this process.
 > > 
 > > 
 > > ~~~
-> > (Intercept)         lcp        lpsa 
-> >  0.09134598  0.32837479  0.53162109 
+> > Error in eval(expr, envir, enclos): object 'est_coef_bwd' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > > 
 > > 
 > > 
 > > ~~~
 > > chosen_coef_bwd <- names(est_coef_bwd)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(expr, envir, enclos): object 'est_coef_bwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > fit_bwd_lm <- lm(
 > >   cancer_volume ~ .,
 > >   data = as.data.frame(prostate_mat[, chosen_coef_bwd[-1]])
 > > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': object 'chosen_coef_bwd' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > summary(fit_bwd_lm)
 > > ~~~
 > > {: .language-r}
@@ -787,28 +926,9 @@ The `leaps` package also allows us to do this process.
 > > 
 > > 
 > > ~~~
-> > 
-> > Call:
-> > lm(formula = cancer_volume ~ ., data = as.data.frame(prostate_mat[, 
-> >     chosen_coef_bwd[-1]]))
-> > 
-> > Residuals:
-> >      Min       1Q   Median       3Q      Max 
-> > -1.65744 -0.54398 -0.05502  0.57163  2.07959 
-> > 
-> > Coefficients:
-> >             Estimate Std. Error t value Pr(>|t|)    
-> > (Intercept)  0.09135    0.20527   0.445    0.657    
-> > lcp          0.32837    0.06193   5.303 7.54e-07 ***
-> > lpsa         0.53162    0.07501   7.087 2.49e-10 ***
-> > ---
-> > Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-> > 
-> > Residual standard error: 0.7092 on 94 degrees of freedom
-> > Multiple R-squared:  0.6455,	Adjusted R-squared:  0.6379 
-> > F-statistic: 85.57 on 2 and 94 DF,  p-value: < 2.2e-16
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_bwd_lm' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
