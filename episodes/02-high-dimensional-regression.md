@@ -330,8 +330,8 @@ hist(methyl_mat, breaks = "FD", xlab = "M-value")
 
 <img src="../fig/rmd-02-histx-1.png" title="Methylation levels are generally bimodally distributed." alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="432" style="display: block; margin: auto;" />
 
-In this case, the phenotypes and groupings look like this
-(for the first 6 samples):
+In this case, the phenotypes and groupings in the `colData` 
+look like this for the first 6 samples:
 
 
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
@@ -973,30 +973,25 @@ design <- model.matrix(~age)
 fit_cor <- lmFit(x_cor, design = design)
 fit_cor <- eBayes(fit_cor)
 toptab_cor <- topTable(fit_cor, coef = 2, number = nrow(fit_cor))
+par(mfrow=c(1, 2))
 plot(toptab_cor$logFC, -log10(toptab_cor$P.Value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-02-screening-cor-1.png" width="432" style="display: block; margin: auto;" />
-
-~~~
 feats <- rownames(toptab_cor)
 pvals_both <- cbind(
     Original = toptab_age[feats, "adj.P.Val"],
     Screened = toptab_cor[feats, "adj.P.Val"]
 )
 lims <- range(pvals_both)
-plot(pvals_both, xlim = lims, ylim = lims, log = "xy")
+plot(pvals_both, pch = 19, xlim = lims, ylim = lims, log = "xy")
 abline(h = 0.05, lty = "dashed", col = "firebrick")
 abline(v = 0.05, lty = "dashed", col = "firebrick")
 abline(coef = 0:1, lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-screening-cor-2.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-screening-cor-1.png" title="Caption" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 This two-step selection process biases the results towards
 significance, and it means that the p-values we
@@ -1034,7 +1029,7 @@ report aren't accurate.
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-02-screening-var-1.png" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-02-screening-var-1.png" title="Screening" alt="Alt-text" width="432" style="display: block; margin: auto;" />
 > 
 > ~~~
 > pvals_both_var <- cbind(
@@ -1049,7 +1044,7 @@ report aren't accurate.
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-02-screening-var-2.png" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-02-screening-var-2.png" title="Screening" alt="Alt-text" width="432" style="display: block; margin: auto;" />
 > 
 {: .callout}
 
