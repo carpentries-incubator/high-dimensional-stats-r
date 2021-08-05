@@ -29,7 +29,6 @@ Imports:
     irlba,
     knitr,
     lasso2,
-    leaps,
     limma,
     mclust,
     minfi,
