@@ -7,22 +7,27 @@ exercises: 15
 questions:
 - "Why would we want to find a subset of features
   that are associated with an outcome?"
-- "How should we *not* select features?"
 - "How can we iteratively find a good subset of our features
   variables to use for regression?"
 - "What are some risks and downsides of iterative feature
   selection?"
 objectives:
-- "Understand multiple regression in a biomedical context."
+- "Understand feature selection for multiple regression in a 
+  biomedical context."
 - "Understand how to fit a stepwise regression model."
 keypoints:
+- "Feature selection can help us to understand the mechanisms behind
+  an outcome, or to predict an outcome from some easy-to-gather 
+  features (or both)."
 - "Sets of features can be more predictive and provide
   a better explanation than a single feature alone."
-- "Stepwise regression allows us to find a set of features that
-  are associated with an outcome (eg, age)."
-- "Stepwise regression is not very efficient."
-# - "Stepwise regression will tend to retain only one
-#   feature out of many that are correlated."
+- "Best subset selection is a powerful but expensive way to select 
+  features."
+- "Forward stepwise regression allows us to find a set of features that
+  are associated with an outcome (eg, cancer volume)."
+- "Reverse stepwise regression allows us to take a predictive set of 
+  features and remove those that are less strongly predictive."
+- "Stepwise regression may not be very efficient."
 math: yes
 ---
 
@@ -131,13 +136,29 @@ summ <- summary(fit_bs)
 ## (residual sum of squares) to choose
 coefs_bs <- coef(fit_bs, id = which.min(summ$rss))
 coefs_bs
+~~~
+{: .language-r}
+
+
+
+~~~
+(Intercept)  cg00374717  cg00864867  cg01027739  cg01353448  cg01584473 
+ 145.118554    1.073187   13.767298   22.683667    9.489186  -14.784050 
+ cg01644850  cg01656216  cg01873645 
+   4.853302    7.915842   -9.715682 
+~~~
+{: .output}
+
+
+
+~~~
 ## regsubsets doesn't fit the full model for each combination
 ## to save time.
 ## To get a model summary, we could use the features identified to fit
 ## a full model
 fit_bs <- lm(
   age ~ .,
-  data = as.data.frame(small_methyl[, names(coefs_bs[-1])]
+  data = as.data.frame(small_methyl[, names(coefs_bs[-1])])
 )
 summary(fit_bs)
 ~~~
@@ -146,12 +167,33 @@ summary(fit_bs)
 
 
 ~~~
-Error: <text>:22:1: unexpected symbol
-21: )
-22: summary
-    ^
+
+Call:
+lm(formula = age ~ ., data = as.data.frame(small_methyl[, names(coefs_bs[-1])]))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-14.198  -4.929  -1.763   4.634  16.277 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)  145.119     62.221   2.332   0.0271 *
+cg00374717     1.073      2.229   0.481   0.6339  
+cg00864867    13.767      6.970   1.975   0.0582 .
+cg01027739    22.684     10.431   2.175   0.0383 *
+cg01353448     9.489      3.869   2.453   0.0207 *
+cg01584473   -14.784     10.321  -1.432   0.1631  
+cg01644850     4.853      8.430   0.576   0.5694  
+cg01656216     7.916      3.932   2.013   0.0538 .
+cg01873645    -9.716      7.260  -1.338   0.1916  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.134 on 28 degrees of freedom
+Multiple R-squared:  0.4523,	Adjusted R-squared:  0.2958 
+F-statistic:  2.89 on 8 and 28 DF,  p-value: 0.01762
 ~~~
-{: .error}
+{: .output}
 
 If we try to run best subset selection on the full dataset, we run into 
 problems:
@@ -169,7 +211,15 @@ fit_bs <- regsubsets(
 
 
 ~~~
-Error in regsubsets(x = methyl_mat, y = age, method = "exhaustive"): could not find function "regsubsets"
+Warning in leaps.setup(x, y, wt = weights, nbest = nbest, nvmax = nvmax, : 4964
+linear dependencies found
+~~~
+{: .warning}
+
+
+
+~~~
+Error in leaps.exhaustive(a, really.big = really.big): Exhaustive search will be S L O W, must specify really.big=T
 ~~~
 {: .error}
 
@@ -430,33 +480,7 @@ values we really observe.
 > >   y = cancer_volume,
 > >   method = "exhaustive"
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in regsubsets(x = prostate_mat, y = cancer_volume, method = "exhaustive"): could not find function "regsubsets"
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > summ_bs <- summary(fit_bs)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_bs' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > coef(fit_bs, which.min(summ_bs$rss))
 > > ~~~
 > > {: .language-r}
@@ -464,9 +488,12 @@ values we really observe.
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bs' not found
+> >  (Intercept)      lweight          age         lbph          svi          lcp 
+> > -2.260100746 -0.073166458  0.022736050 -0.087449206 -0.153591285  0.367299994 
+> >      gleason        pgg45         lpsa 
+> >  0.190758511 -0.007157575  0.572797361 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
@@ -619,9 +646,10 @@ and AIC (Akaike information criterion).
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bs' not found
+> > (Intercept)         lcp        lpsa 
+> >  0.09134598  0.32837479  0.53162109 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
@@ -633,9 +661,12 @@ and AIC (Akaike information criterion).
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bs' not found
+> >  (Intercept)      lweight          age         lbph          svi          lcp 
+> > -2.260100746 -0.073166458  0.022736050 -0.087449206 -0.153591285  0.367299994 
+> >      gleason        pgg45         lpsa 
+> >  0.190758511 -0.007157575  0.572797361 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
@@ -696,50 +727,11 @@ and one feature. Then
 > >   y = cancer_volume,
 > >   method = "forward"
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in regsubsets(x = prostate_mat, y = cancer_volume, method = "forward"): could not find function "regsubsets"
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > summ_fwd <- summary(fit_fwd)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_fwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > est_coef_fwd <- coef(
 > >   fit_fwd,
 > >   id = which.min(summ_fwd$bic)
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_fwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > est_coef_fwd
 > > ~~~
 > > {: .language-r}
@@ -747,44 +739,19 @@ and one feature. Then
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): object 'est_coef_fwd' not found
+> > (Intercept)         lcp        lpsa 
+> >  0.09134598  0.32837479  0.53162109 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
 > > ~~~
 > > chosen_coef_fwd <- names(est_coef_fwd)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in eval(expr, envir, enclos): object 'est_coef_fwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > fit_fwd_lm <- lm(
 > >   cancer_volume ~ .,
 > >   data = as.data.frame(prostate_mat[, chosen_coef_fwd[-1]])
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': object 'chosen_coef_fwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > summary(fit_fwd_lm)
 > > ~~~
 > > {: .language-r}
@@ -792,9 +759,28 @@ and one feature. Then
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_fwd_lm' not found
+> > 
+> > Call:
+> > lm(formula = cancer_volume ~ ., data = as.data.frame(prostate_mat[, 
+> >     chosen_coef_fwd[-1]]))
+> > 
+> > Residuals:
+> >      Min       1Q   Median       3Q      Max 
+> > -1.65744 -0.54398 -0.05502  0.57163  2.07959 
+> > 
+> > Coefficients:
+> >             Estimate Std. Error t value Pr(>|t|)    
+> > (Intercept)  0.09135    0.20527   0.445    0.657    
+> > lcp          0.32837    0.06193   5.303 7.54e-07 ***
+> > lpsa         0.53162    0.07501   7.087 2.49e-10 ***
+> > ---
+> > Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+> > 
+> > Residual standard error: 0.7092 on 94 degrees of freedom
+> > Multiple R-squared:  0.6455,	Adjusted R-squared:  0.6379 
+> > F-statistic: 85.57 on 2 and 94 DF,  p-value: < 2.2e-16
 > > ~~~
-> > {: .error}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
@@ -830,50 +816,11 @@ The `leaps` package also allows us to do this process.
 > >   y = cancer_volume,
 > >   method = "backward"
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in regsubsets(x = prostate_mat, y = cancer_volume, method = "backward"): could not find function "regsubsets"
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > summ_bwd <- summary(fit_bwd)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_bwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > est_coef_bwd <- coef(
 > >   fit_bwd,
 > >   id = which.min(summ_bwd$bic)
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_bwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > est_coef_bwd
 > > ~~~
 > > {: .language-r}
@@ -881,44 +828,19 @@ The `leaps` package also allows us to do this process.
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): object 'est_coef_bwd' not found
+> > (Intercept)         lcp        lpsa 
+> >  0.09134598  0.32837479  0.53162109 
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
 > > ~~~
 > > chosen_coef_bwd <- names(est_coef_bwd)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in eval(expr, envir, enclos): object 'est_coef_bwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > fit_bwd_lm <- lm(
 > >   cancer_volume ~ .,
 > >   data = as.data.frame(prostate_mat[, chosen_coef_bwd[-1]])
 > > )
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': object 'chosen_coef_bwd' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > summary(fit_bwd_lm)
 > > ~~~
 > > {: .language-r}
@@ -926,9 +848,28 @@ The `leaps` package also allows us to do this process.
 > > 
 > > 
 > > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'fit_bwd_lm' not found
+> > 
+> > Call:
+> > lm(formula = cancer_volume ~ ., data = as.data.frame(prostate_mat[, 
+> >     chosen_coef_bwd[-1]]))
+> > 
+> > Residuals:
+> >      Min       1Q   Median       3Q      Max 
+> > -1.65744 -0.54398 -0.05502  0.57163  2.07959 
+> > 
+> > Coefficients:
+> >             Estimate Std. Error t value Pr(>|t|)    
+> > (Intercept)  0.09135    0.20527   0.445    0.657    
+> > lcp          0.32837    0.06193   5.303 7.54e-07 ***
+> > lpsa         0.53162    0.07501   7.087 2.49e-10 ***
+> > ---
+> > Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+> > 
+> > Residual standard error: 0.7092 on 94 degrees of freedom
+> > Multiple R-squared:  0.6455,	Adjusted R-squared:  0.6379 
+> > F-statistic: 85.57 on 2 and 94 DF,  p-value: < 2.2e-16
 > > ~~~
-> > {: .error}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 

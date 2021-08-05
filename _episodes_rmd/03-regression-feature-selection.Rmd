@@ -5,22 +5,27 @@ exercises: 15
 questions:
 - "Why would we want to find a subset of features
   that are associated with an outcome?"
-- "How should we *not* select features?"
 - "How can we iteratively find a good subset of our features
   variables to use for regression?"
 - "What are some risks and downsides of iterative feature
   selection?"
 objectives:
-- "Understand multiple regression in a biomedical context."
+- "Understand feature selection for multiple regression in a 
+  biomedical context."
 - "Understand how to fit a stepwise regression model."
 keypoints:
+- "Feature selection can help us to understand the mechanisms behind
+  an outcome, or to predict an outcome from some easy-to-gather 
+  features (or both)."
 - "Sets of features can be more predictive and provide
   a better explanation than a single feature alone."
-- "Stepwise regression allows us to find a set of features that
-  are associated with an outcome (eg, age)."
-- "Stepwise regression is not very efficient."
-# - "Stepwise regression will tend to retain only one
-#   feature out of many that are correlated."
+- "Best subset selection is a powerful but expensive way to select 
+  features."
+- "Forward stepwise regression allows us to find a set of features that
+  are associated with an outcome (eg, cancer volume)."
+- "Reverse stepwise regression allows us to take a predictive set of 
+  features and remove those that are less strongly predictive."
+- "Stepwise regression may not be very efficient."
 math: yes
 ---
 
@@ -109,7 +114,7 @@ coefs_bs
 ## a full model
 fit_bs <- lm(
   age ~ .,
-  data = as.data.frame(small_methyl[, names(coefs_bs[-1])]
+  data = as.data.frame(small_methyl[, names(coefs_bs[-1])])
 )
 summary(fit_bs)
 ```
