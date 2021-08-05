@@ -172,7 +172,7 @@ Error in leaps.exhaustive(a, really.big = really.big): Exhaustive search will be
 The function in this case refuses to proceed unless we are sure we want
 to wait around for a long time. It's worth noting this may not even finish
 at all, as the process is likely to run out of memory given for 5000
-features it needs to try $2^{4999}$ models (this number is to big to be 
+features it needs to try $2^{4999}$ models (this number is too big to be 
 represented as a floating point number in R!).
 
 
@@ -315,27 +315,57 @@ prostate_scaled <- scale(prostate_mat)
 > >    fit_prostate_scaled <- lm(cancer_volume ~ prostate_scaled)
 > >    summ_scaled <- summary(fit_prostate_scaled)
 > >    summ_scaled
-> >    plot(summ_prostate$coef[, "Pr(>|t|)"], summ_scaled$coef[, "Pr(>|t|)"],
-> >      xlab = "Coefficients without scaling",
-> >      ylab = "Coefficients with scaling"
-> >    )
-> >     2. The intercept is different, because the mean and scale of the input
-> >    features have changed! If we were to scale the output, that would also
-> >    change the intercept. The intercept quantifies the difference in means
-> >    independent of changes in the features.
-> >     
 > >    ~~~
 > >    {: .language-r}
 > >    
 > >    
 > >    
 > >    ~~~
-> >    Error: <text>:8:5: unexpected symbol
-> >    7: )
-> >    8:  2. The
-> >           ^
+> >    
+> >    Call:
+> >    lm(formula = cancer_volume ~ prostate_scaled)
+> >    
+> >    Residuals:
+> >         Min       1Q   Median       3Q      Max 
+> >    -1.88603 -0.47346 -0.03987  0.55719  1.86870 
+> >    
+> >    Coefficients:
+> >                           Estimate Std. Error t value Pr(>|t|)    
+> >    (Intercept)             1.35001    0.07105  19.000  < 2e-16 ***
+> >    prostate_scaledlweight -0.03634    0.08664  -0.419    0.676    
+> >    prostate_scaledage      0.16927    0.08163   2.074    0.041 *  
+> >    prostate_scaledlbph    -0.12687    0.08427  -1.506    0.136    
+> >    prostate_scaledsvi     -0.06359    0.10513  -0.605    0.547    
+> >    prostate_scaledlcp      0.51358    0.11422   4.496 2.10e-05 ***
+> >    prostate_scaledgleason  0.13775    0.11141   1.236    0.220    
+> >    prostate_scaledpgg45   -0.20187    0.12202  -1.654    0.102    
+> >    prostate_scaledlpsa     0.66120    0.09903   6.677 2.11e-09 ***
+> >    ---
+> >    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+> >    
+> >    Residual standard error: 0.6998 on 88 degrees of freedom
+> >    Multiple R-squared:  0.6769,	Adjusted R-squared:  0.6475 
+> >    F-statistic: 23.04 on 8 and 88 DF,  p-value: < 2.2e-16
 > >    ~~~
-> >    {: .error}
+> >    {: .output}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    plot(summ_prostate$coef[, "Pr(>|t|)"], summ_scaled$coef[, "Pr(>|t|)"],
+> >      xlab = "Coefficients without scaling",
+> >      ylab = "Coefficients with scaling"
+> >    )
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-03-fit-scale-1.png" width="432" style="display: block; margin: auto;" />
+> > 2. The intercept is different, because the mean and scale of the input
+> >    features have changed! If we were to scale the output, that would also
+> >    change the intercept. The intercept quantifies the difference in means
+> >    independent of changes in the features.
+> > 
+> > ```
 > {: .solution}
 {: .challenge}
 
@@ -595,13 +625,13 @@ and AIC (Akaike information criterion).
 > the model. This may reduce the amount of data we have available to fit the 
 > model, but it means we can be more confident about the performance of the
 > model afterwards.
-> 
 > This is especially important when our goal is prediction. Predictive 
 > performance in the data used to train the model is typically very good,
 > even when predictive performance on new, unseen data is very poor.
 > 
 > Predictive performance on unseen data can be thought of a measure of how
-> well our findings *generalise*.
+> well our findings *generalise*. This very important topic is 
+> addressed in much more detail in the Carpentries machine learning course.
 > 
 {: .callout}
 

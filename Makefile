@@ -98,8 +98,8 @@ workshop-check :
 # RMarkdown files
 RMD_SRC = $(wildcard _episodes_rmd/??-*.Rmd)
 RMD_DST = $(patsubst _episodes_rmd/%.Rmd,_episodes/%.md,$(RMD_SRC))
-SLI_SRC = $(patsubst _episodes/%.md,slides/%.Rmd,$(RMD_DST))
-SLI_DST = $(patsubst _episodes/%.md,slides/%.Rmd,$(SLI_SRC))
+SLI_DST = $(patsubst _episodes/%.md,_slides/%.Rmd,$(RMD_DST))
+SLI_PDF = $(patsubst _slides/%.Rmd,_slides/%.pdf,$(SLI_DST))
 
 
 # Lesson source files in the order they appear in the navigation menu.
@@ -128,7 +128,7 @@ dependencies.csv: _episodes_rmd/*.Rmd
 	@${SHELL} bin/list_r_deps.sh
 
 .installed: dependencies.csv
-	@${SHELL} bin/install_r_deps.sh \
+	@${SHELL} bin/install_r_deps.sh
 	@touch .installed
 
 ## * lesson-md        : convert Rmarkdown files to markdown
@@ -138,11 +138,13 @@ _episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
-slides-md: ${SLI_DST}
-	Rscript "bin/slider.R"
+_slides/%.Rmd: ${RMD_DST}
+	Rscript bin/slider.R $< $@
 
-slides-pdf: _slides/%.pdf
-    Rscript -e 'rmarkdown::render("$@", output_file = "$@")'
+_slides/%.pdf: _slides/%.Rmd
+	Rscript -e 'rmarkdown::render("$<")'
+
+slides: ${SLI_PDF}
 
 ## * lesson-check     : validate lesson Markdown
 lesson-check : lesson-fixme
