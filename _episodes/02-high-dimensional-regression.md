@@ -1014,37 +1014,6 @@ report aren't accurate.
 > the alternative.
 > 
 > 
-> ~~~
-> vars <- apply(methyl_mat, 1, var)
-> x_var <- methyl_mat[abs(vars) > quantile(abs(cors), 0.5), ]
-> design <- model.matrix(~age)
-> fit_var <- lmFit(x_var, design = design)
-> fit_var <- eBayes(fit_var)
-> toptab_var <- topTable(fit_var, coef = 2, number = nrow(fit_var))
-> feats <- rownames(toptab_var)
-> plot(toptab_var$logFC, -log10(toptab_var$P.Value),
->     xlab = "Effect size", ylab = bquote(-log[10](p)),
->     pch = 19
-> )
-> ~~~
-> {: .language-r}
-> 
-> <img src="../fig/rmd-02-screening-var-1.png" title="Screening" alt="Alt-text" width="432" style="display: block; margin: auto;" />
-> 
-> ~~~
-> pvals_both_var <- cbind(
->     Original = toptab_age[feats, "adj.P.Val"],
->     Screened = toptab_var[feats, "adj.P.Val"]
-> )
-> lims <- range(pvals_both_var)
-> plot(pvals_both_var, xlim = lims, ylim = lims, log = "xy")
-> abline(h = 0.05, lty = "dashed", col = "firebrick")
-> abline(v = 0.05, lty = "dashed", col = "firebrick")
-> abline(coef = 0:1, lty = "dashed")
-> ~~~
-> {: .language-r}
-> 
-> <img src="../fig/rmd-02-screening-var-2.png" title="Screening" alt="Alt-text" width="432" style="display: block; margin: auto;" />
 > 
 {: .callout}
 
