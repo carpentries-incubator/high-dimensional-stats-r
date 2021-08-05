@@ -145,17 +145,3 @@ knitr::include_graphics(here("fig/rmd-02-screening-cor-1.png"))
 ```
 
 \newpage
-# Screening
-```{r, out.width="0.5\\textwidth", echo=FALSE}
-# , fig.cap='Alt-text
-knitr::include_graphics(here("fig/rmd-02-screening-var-1.png"))
-```
-
-\newpage
-# Screening
-```{r, out.width="0.5\\textwidth", echo=FALSE}
-# , fig.cap='Alt-text
-knitr::include_graphics(here("fig/rmd-02-screening-var-2.png"))
-```
-
-\newpage

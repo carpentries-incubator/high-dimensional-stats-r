@@ -973,9 +973,9 @@ report aren't accurate.
 > are not correlated under the null hypothesis, but are correlated under
 > the alternative.
 > 
-> ```{r screening-var, fig.cap="Screening", fig.alt="Alt-text"}
+> ```{r screening-var, fig.cap="Screening", fig.alt="Alt-text", echo = FALSE, eval = FALSE}
 > vars <- apply(methyl_mat, 1, var)
-> x_var <- methyl_mat[abs(vars) > quantile(abs(cors), 0.5), ]
+> x_var <- methyl_mat[vars > quantile(vars, 0.5), ]
 > design <- model.matrix(~age)
 > fit_var <- lmFit(x_var, design = design)
 > fit_var <- eBayes(fit_var)
