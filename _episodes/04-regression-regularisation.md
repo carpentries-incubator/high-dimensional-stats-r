@@ -107,7 +107,7 @@ Error in viridis(40, option = "A", direction = 1): could not find function "viri
 ~~~
 {: .error}
 
-<img src="../fig/rmd-04-unnamed-chunk-4-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-4-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -225,7 +225,7 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 ~~~
 {: .language-r}
 
-<img src="../fig/bs_fs_lasso.png" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs_lasso.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
 
 
 > ## Selecting hyperparameters
@@ -237,7 +237,7 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 > as the test set. Repeating this process for each of the
 > $K$ chunks produces more variability.
 > 
-> <img src="../fig/cross_validation.svg" style="display: block; margin: auto;" />
+> <img src="../fig/cross_validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
 >
 > To be really rigorous, we could even repeat this *cross-validation*
 > process a number of times! This is termed "repeated cross-validation".

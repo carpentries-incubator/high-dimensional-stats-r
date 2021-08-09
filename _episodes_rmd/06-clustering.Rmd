@@ -19,6 +19,9 @@ math: yes
 ```{r settings, include=FALSE}
 source("../bin/chunk-options.R")
 knitr_fig_path("06-")
+if (!file.exists(here::here("data/scrnaseq.rds"))) {
+    source(here::here("data/scrnaseq.R"))
+}
 ```
 
 ```{r pkgs}
@@ -34,12 +37,13 @@ suppressPackageStartupMessages({
     library("mclust")
     library("igraph")
     library("bluster")
+    library("here")
 })
 set.seed(42)
 ```
 
 ```{r data}
-norm <- readRDS(here("data/scrnaseq.rds"))
+zd <- readRDS(here("data/scrnaseq.rds"))
 ```
 
 ```{r dimred}
@@ -49,7 +53,7 @@ zd <- runTSNE(zd)
 
 ## k-means
 
-```{r kmeans}
+```{r kmeans, fig.cap = "Title", fig.alt = "Alt"}
 ## ideas: vary centers, low iter.max, low nstart
 cluster <- kmeans(reducedDim(zd), centers = 7, iter.max = 1000, nstart = 100)
 zd$kmeans <- as.character(cluster$cluster)
@@ -57,7 +61,7 @@ zd$kmeans <- as.character(cluster$cluster)
 plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 ```
 
-```{r mixture}
+```{r mixture, fig.cap = "Title", fig.alt = "Alt"}
 ## model-based
 clust <- mclustBIC(reducedDim(zd), modelNames = "VVV")
 opt_clust <- which.max(clust)
@@ -66,7 +70,7 @@ zd$mixture <- as.character(opt_clust)
 plotReducedDim(zd, "TSNE", colour_by = "mixture")
 ```
 
-```{r graph}
+```{r graph, fig.cap = "Title", fig.alt = "Alt"}
 ## graph-based
 g <- buildSNNGraph(zd, k = 10, use.dimred = "PCA")
 clust <- igraph::cluster_walktrap(g)$membership
@@ -76,7 +80,7 @@ plotReducedDim(zd, colour_by = "label", dimred = "force")
 ```
 
 
-```{r metrics}
+```{r metrics, fig.cap = "Title", fig.alt = "Alt"}
 # bluster::clusterRows - maybe?
 
 ## measures: silhouette, bootstrap
