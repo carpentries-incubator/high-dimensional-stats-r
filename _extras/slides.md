@@ -4,6 +4,8 @@ title: Lecture slides
 
 {% include base_path.html %}
 
+<!-- {{ site.slides }} -->
+
 {% for p in site.slides %}
 - [{{p.title}}]({{ relative_root_path }}/{{p.url | replace: "Rmd", "pdf"}})
 {% endfor %}

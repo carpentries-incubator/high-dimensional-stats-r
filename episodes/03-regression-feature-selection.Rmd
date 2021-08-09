@@ -144,7 +144,7 @@ This is a general problem with best subset selection (here termed
 BS). Forward stepwise selection (FS) is an alternative that is a bit more
 manageable.
 
-```{r bstab, echo = FALSE, out.width="500px"}
+```{r bstab, echo = FALSE, out.width="500px", fig.cap="Cap", fig.alt = "Alt"}
 knitr::include_graphics("../fig/bs_fs.png")
 ```
 
@@ -228,7 +228,7 @@ prostate_scaled <- scale(prostate_mat)
 > 
 > > ## Solution
 > > 1. 
-> >    ```{r fit-scale}
+> >    ```{r fit-scale, fig.cap="Cap", fig.alt = "Alt"}
 > >    fit_prostate_scaled <- lm(cancer_volume ~ prostate_scaled)
 > >    summ_scaled <- summary(fit_prostate_scaled)
 > >    summ_scaled
@@ -282,7 +282,7 @@ This is the sum of the square of the length of the dashed lines in the plot
 below. A low RSS value means that our predictions are very close to the 
 values we really observe.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, fig.cap="Cap", fig.alt = "Alt"}
 set.seed(66)
 n <- 25
 x <- rnorm(n)
@@ -391,7 +391,7 @@ and AIC (Akaike information criterion).
 > tool for thinking about data and models, and is a foundation of many more
 > advanced topics in statistics.
 > 
-> ```{r likelihood, echo = FALSE, fig.width = 10}
+> ```{r likelihood, echo = FALSE, fig.width = 10, fig.cap="Cap", fig.alt = "Alt"}
 > library("viridis")
 > set.seed(42)
 > noise_sd <- 1

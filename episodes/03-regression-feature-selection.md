@@ -246,7 +246,7 @@ This is a general problem with best subset selection (here termed
 BS). Forward stepwise selection (FS) is an alternative that is a bit more
 manageable.
 
-<img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs.png" title="Cap" alt="Alt" width="500px" style="display: block; margin: auto;" />
 
 Figure taken from [Hastie et al. (2020)](https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf),
 published [here](https://doi.org/10.1214/19-STS733).
@@ -420,7 +420,7 @@ prostate_scaled <- scale(prostate_mat)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-03-fit-scale-1.png" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-03-fit-scale-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 2. The intercept is different, because the mean and scale of the input
 > >    features have changed! If we were to scale the output, that would also
 > >    change the intercept. The intercept quantifies the difference in means
@@ -466,7 +466,7 @@ This is the sum of the square of the length of the dashed lines in the plot
 below. A low RSS value means that our predictions are very close to the 
 values we really observe.
 
-<img src="../fig/rmd-03-unnamed-chunk-2-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-unnamed-chunk-2-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 > ## Exercise 
 > 
@@ -625,7 +625,7 @@ and AIC (Akaike information criterion).
 > tool for thinking about data and models, and is a foundation of many more
 > advanced topics in statistics.
 > 
-> <img src="../fig/rmd-03-likelihood-1.png" width="720" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-03-likelihood-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
 {: .callout}
 
 

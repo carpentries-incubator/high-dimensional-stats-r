@@ -99,7 +99,7 @@ $$
 
 This tends to produce
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
 loglik <- function(slope, intercept, x, y, noise_sd) {
     sum(dnorm(y, mean = (slope * x) + intercept, sd = noise_sd, log = TRUE))
 }
@@ -195,7 +195,7 @@ elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
 > survival using Cox proportional hazards models, which aren't GLMs, strictly
 > speaking.
 > 
-> ```{r}
+> ```{r, fig.cap = "Title", fig.alt = "Alt"}
 > smoking <- as.numeric(factor(methylation$smoker)) - 1
 > # binary outcome
 > smoking
@@ -211,7 +211,7 @@ elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
 
 Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
 
-```{r}
+```{r, fig.cap = "Title", fig.alt = "Alt"}
 knitr::include_graphics("../fig/bs_fs_lasso.png")
 ```
 
@@ -225,8 +225,8 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 > as the test set. Repeating this process for each of the
 > $K$ chunks produces more variability.
 > 
-> ```{r, echo = FALSE}
-> knitr::include_graphics("../fig/cross_validation.svg")
+> ```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
+> knitr::include_graphics("../fig/cross_validation.png")
 > ```
 >
 > To be really rigorous, we could even repeat this *cross-validation*
