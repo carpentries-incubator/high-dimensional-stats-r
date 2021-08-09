@@ -138,7 +138,7 @@ _episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
-_slides/%.Rmd: ${RMD_DST}
+_slides/%.Rmd: _episodes/%.md
 	Rscript bin/slider.R $< $@
 
 _slides/%.pdf: _slides/%.Rmd
