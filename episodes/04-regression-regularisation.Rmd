@@ -9,12 +9,12 @@ questions:
 objectives:
 - "Understand the benefits of regularised models."
 - "Understand how different types of regularisation work."
-- "Perform and critically analyse penalised regression."
+- "Apply and critically analyse penalised regression models."
 keypoints:
 - "Regularisation is a way to avoid the problems of stepwise
   or iterative model building processes."
 - "Modelling features together can help to identify a subset of features
-    that contribute to the outcome."
+  that contribute to the outcome."
 math: yes
 ---
 
@@ -25,40 +25,202 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("04-")
 ```
 
-```{r}
+# Introduction
+
+
+In the previous episode we covered variable selection using stepwise/best subset
+selection.
+These have issues with respect to computation time and efficiency.
+In low noise settings and with few or strong relationships, stepwise/subset
+works well. However that's often not what we're faced with in biomedicine.
+Often, we have many variables that are all very correlated, with plenty
+of noise. For example, if we calculate the Pearson correlation between
+each feature in the methylation data seen earlier, we can see that
+many of these features essentially represent the same information.
+
+```{r corr-mat, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
 library("minfi")
 library("here")
+library("ComplexHeatmap")
 
 methylation <- readRDS(here("data/methylation.rds"))
 
 age <- methylation$Age
 methyl_mat <- t(assay(methylation))
+small <- methyl_mat[, 1:500]
+cor_mat <- cor(small)
+Heatmap(cor_mat,
+    column_title = "Feature-feature correlation in methylation data",
+    name = "Pearson correlation",
+    # cluster_rows = FALSE, cluster_columns = FALSE,
+    show_row_dend = FALSE, show_column_dend = FALSE,
+    show_row_names = FALSE, show_column_names = FALSE
+)
 ```
 
-In the previous episode we covered variable selection using stepwise/best subset
-selection.
-These have issues with respect to computation time and efficiency.
+For technical reasons, this correlation can be problematic, and if it's 
+very severe it may even make it impossible to fit a model! Furthermore,
+if we have many correlated features, it's likely that one of these will
+be retained and all others dropped; this can make it more difficult to
+infer the mechanisms behind an association.
 
-In low noise settings and with few or strong relationships, stepwise/subset
-works well. However that's often not what we're faced with in biomedicine.
+> ## Collinearity
+>
+>
+{: .callout}
+
+When we fit a linear model, we're finding the line through our data that 
+minimises the residual sum of squares.
+
+$$
+    \sum_{i=1}^N \hat{y}_i - X\beta
+$$
+
+We can think of that as finding
+the slope and intercept that minimises the square of the length of the dashed
+lines. In this case, the red line is in the left panel is the line that
+accomplishes this objective, and the red dot in the right panel is the point 
+that represents this line in terms of its slope and intercept among many 
+different possible models, where the background colour represents how well
+different combinations of slope and intercept accomplish this objective.
+
+```{r, regplot, echo = FALSE, fig.cap="Cap", fig.alt="Alt", fig.width=10}
+library("viridis")
+set.seed(42)
+noise_sd <- 1
+nobs <- 50
+slope <- 2
+intercept <- 2
+
+maxlim <- max(abs(slope), abs(intercept)) * 2
+maxlim <- max(maxlim, 5)
+lims <- c(-maxlim, maxlim)
+
+l2 <- 2
+x <- rnorm(nobs, mean = 0, sd = 1)
+noise <- rnorm(nobs, mean = 0, sd = noise_sd)
+y <- (slope * x) + (intercept) + noise
+
+n <- 200
+s <- seq(-maxlim, maxlim, length.out = n)
+loglik <- function(slope, intercept, x, y, noise_sd) {
+    sum(dnorm(y, mean = (slope * x) + intercept, sd = noise_sd, log = TRUE))
+}
+
+ll <- matrix(ncol = n, nrow = n)
+coef <- mask <- norm_mat <- matrix(ncol = n, nrow = n)
+for (i in seq_along(s)) {
+    coef[, ] <- s
+}
+for (i in seq_along(s)) {
+    for (j in seq_along(s)) {
+        norm_mat[i, j] <- sqrt(s[[i]]^2 + s[[j]]^2)
+        ll[i, j] <- loglik(s[i], s[j], x, y, noise_sd)
+    }
+}
+mask <- norm_mat <= l2
+ind_mle <- arrayInd(which.max(ll), dim(ll))
+pll <- ll * as.numeric(mask)
+pll[pll == 0] <- NA
+ind_ple <- arrayInd(which.max(pll), dim(pll))
+
+par(mfrow = 1:2)
+plot(x, y, pch = 19)
+abline(
+    a = coef[ind_mle[[2]]],
+    b = coef[ind_mle[[1]]],
+    col = "firebrick"
+)
+yhat <- x
+for (i in seq_along(x)) {
+    yhat[[i]] <- (x[[i]] * coef[ind_mle[[1]]]) + coef[ind_mle[[2]]]
+    lines(
+        x = rep(x[[i]], each = 2), y = c(yhat[[i]], y[[i]]),
+        lty = "dashed"
+    )
+}
+
+image(s, s, ll,
+    xlab = "slope", ylab = "intercept",
+    col = viridis(40, option = "A", direction = 1),
+    xlim = lims, ylim = lims
+)
+abline(v = 0, lty = "dashed")
+abline(h = 0, lty = "dashed")
+points(
+    coef[ind_mle[[1]]], coef[ind_mle[[2]]],
+    pch = 19, cex = 2, col = "firebrick"
+)
+```
+
+This line is the line of best fit through our data when considering this
+goal of minimising the sum of squared error. However, it is not the only 
+possible line we could use! For example, we might want to err on the side of
+caution when estimating effect sizes. That is, we might want to avoid estimating
+very large effect sizes.
+
+
+# Model selection revisited
+
+In the previous lesson we discussed using measures like adjusted $R^2$, AIC and
+BIC to show how well the model is learning the data used in fitting the model.
+However, this doesn't really tell us how well the model will perform on unseen
+data. This is especially important when our goal is prediction.
+
+```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
+knitr::include_graphics("../fig/validation.png")
+```
+
 
 
 # Ridge regression
 
-When we fit a linear model, we're minimising the RSS.
-
-$$
-    \sum_{i=1}^N y_i - X\beta
-$$
-
+One way to tackle these many correlated variables with lots of noise is
+*regularisation*
 The idea of regularisation is to add another condition to this to control
-the size of the coefficients that come out.
+the size of the coefficients that come out. 
+For example, we might say that the point representing the slope and intercept
+must fall within a certain distance of the origin, $(0, 0)$.
+
+
+```{r, ridgeplot, echo = FALSE, fig.cap="Cap", fig.alt="Alt", fig.width=10}
+par(mfrow = 1:2)
+plot(x, y, pch = 19)
+abline(
+    a = coef[ind_ple[[2]]],
+    b = coef[ind_ple[[1]]], col = "dodgerblue"
+)
+abline(
+    a = coef[ind_mle[[2]]],
+    b = coef[ind_mle[[1]]], col = "firebrick"
+)
+
+image(s, s, ll,
+    xlab = "slope", ylab = "intercept",
+    col = viridis(40, option = "A", direction = 1),
+    xlim = lims, ylim = lims
+)
+abline(v = 0, lty = "dashed")
+abline(h = 0, lty = "dashed")
+points(
+    coef[ind_mle[[1]]], coef[ind_mle[[2]]],
+    pch = 19, cex = 2, col = "firebrick"
+)
+contour(
+    s, s, norm_mat,
+    add = TRUE, levels = l2, drawlabels = FALSE
+)
+points(
+    coef[ind_ple[[1]]], coef[ind_ple[[2]]],
+    pch = 19, cex = 2, col = "dodgerblue"
+)
+```
 
 One idea is to control the squared sum of the coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
 $$
-    |\beta|_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+    \left\lVert \beta\left\lVert^2 = \sqrt{\sum_{j=1}^p \beta_j^2}
 $$
 
 To control this, we specify that the solution for the equation above
@@ -70,7 +232,18 @@ $$
     \sum_{i=1}^N y_i - X\beta + \lambda|\beta|_2
 $$
 
-> # Exercise
+
+```{r}
+library("minfi")
+library("here")
+
+methylation <- readRDS(here("data/methylation.rds"))
+
+age <- methylation$Age
+methyl_mat <- t(assay(methylation))
+```
+
+> ## Exercise
 > 
 > Run `shinystats::ridgeApp()` and play with the parameters
 > 
@@ -99,7 +272,7 @@ $$
 
 This tends to produce
 
-```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
+```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt", fig.width=10}
 loglik <- function(slope, intercept, x, y, noise_sd) {
     sum(dnorm(y, mean = (slope * x) + intercept, sd = noise_sd, log = TRUE))
 }
@@ -184,6 +357,20 @@ elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
 ```
 
 
+# Cross-validation
+
+There are various methods to select the "best"
+value for $\lambda$. One idea is to split
+the data into $K$ chunks. We then use $K-1$ of
+these as the training set, and the remaining $1$ chunk
+as the test set. Repeating this process for each of the
+$K$ chunks produces more variability.
+
+```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
+knitr::include_graphics("../fig/cross_validation.png")
+```
+
+
 > ## Other types of outcomes
 > 
 > You may have noticed that `glmnet` is written as `glm`, not `lm`.
@@ -218,16 +405,6 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 
 > ## Selecting hyperparameters
 > 
-> There are various methods to select the "best"
-> value for $\lambda$. One idea is to split
-> the data into $K$ chunks. We then use $K-1$ of
-> these as the training set, and the remaining $1$ chunk
-> as the test set. Repeating this process for each of the
-> $K$ chunks produces more variability.
-> 
-> ```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
-> knitr::include_graphics("../fig/cross_validation.png")
-> ```
 >
 > To be really rigorous, we could even repeat this *cross-validation*
 > process a number of times! This is termed "repeated cross-validation".

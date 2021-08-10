@@ -288,7 +288,6 @@ n <- 25
 x <- rnorm(n)
 y <- x * 2 + 1 + rnorm(n)
 fit <- lm(y ~ x)
-ord <- order(y)
 plot(x, y, pch = 19)
 abline(fit)
 for (i in seq_along(x)) {
