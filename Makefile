@@ -93,14 +93,16 @@ workshop-check :
 ## III. Commands specific to lesson websites
 ## =================================================
 
-.PHONY : lesson-check lesson-md lesson-files lesson-fixme slides
+.PHONY: lesson-check lesson-md lesson-files lesson-fixme slides figure clean-fig
 
 # RMarkdown files
 RMD_SRC = $(wildcard _episodes_rmd/??-*.Rmd)
 RMD_DST = $(patsubst _episodes_rmd/%.Rmd,_episodes/%.md,$(RMD_SRC))
 SLI_DST = $(patsubst _episodes/%.md,_slides/%.Rmd,$(RMD_DST))
 SLI_PDF = $(patsubst _slides/%.Rmd,_slides/%.pdf,$(SLI_DST))
-
+FIG_TEX = $(wildcard fig/*.tex)
+FIG_PDF = $(patsubst fig/%.tex,fig/%.pdf,$(FIG_TEX))
+FIG_PNG = $(patsubst fig/%.pdf,fig/%.png,$(FIG_PDF))
 
 # Lesson source files in the order they appear in the navigation menu.
 MARKDOWN_SRC = \
@@ -132,7 +134,7 @@ dependencies.csv: _episodes_rmd/*.Rmd
 	@touch .installed
 
 ## * lesson-md        : convert Rmarkdown files to markdown
-lesson-md: ${RMD_DST}
+lesson-md: ${RMD_DST} figure
 
 _episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
@@ -145,6 +147,17 @@ _slides/%.pdf: _slides/%.Rmd
 	Rscript -e 'rmarkdown::render("$<")'
 
 slides: ${SLI_DST} ${SLI_PDF}
+
+figure: ${FIG_PNG} clean-fig
+
+fig/%.pdf: fig/%.tex
+	rubber --inplace -d $<
+
+fig/%.png: fig/%.pdf
+	convert -density 300 $< $@
+
+clean-fig:
+	find fig/ -regextype egrep -regex ".*\.(aux|dvi|fdb_latexmk|fls|log)" | xargs -r rm
 
 ## * lesson-check     : validate lesson Markdown
 lesson-check : lesson-fixme

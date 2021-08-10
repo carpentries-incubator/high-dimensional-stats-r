@@ -11,16 +11,106 @@ questions:
 objectives:
 - "Understand the benefits of regularised models."
 - "Understand how different types of regularisation work."
-- "Perform and critically analyse penalised regression."
+- "Apply and critically analyse penalised regression models."
 keypoints:
 - "Regularisation is a way to avoid the problems of stepwise
   or iterative model building processes."
 - "Modelling features together can help to identify a subset of features
-    that contribute to the outcome."
+  that contribute to the outcome."
 math: yes
 ---
 
 
+
+
+# Introduction
+
+
+In the previous episode we covered variable selection using stepwise/best subset
+selection.
+These have issues with respect to computation time and efficiency.
+In low noise settings and with few or strong relationships, stepwise/subset
+works well. However that's often not what we're faced with in biomedicine.
+Often, we have many variables that are all very correlated, with plenty
+of noise. For example, if we calculate the Pearson correlation between
+each feature in the methylation data seen earlier, we can see that
+many of these features essentially represent the same information.
+
+<img src="../fig/rmd-04-corr-mat-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+For technical reasons, this correlation can be problematic, and if it's 
+very severe it may even make it impossible to fit a model! Furthermore,
+if we have many correlated features, it's likely that one of these will
+be retained and all others dropped; this can make it more difficult to
+infer the mechanisms behind an association.
+
+> ## Collinearity
+>
+>
+{: .callout}
+
+When we fit a linear model, we're finding the line through our data that 
+minimises the residual sum of squares.
+
+$$
+    \sum_{i=1}^N \hat{y}_i - X\beta
+$$
+
+We can think of that as finding
+the slope and intercept that minimises the square of the length of the dashed
+lines. In this case, the red line is in the left panel is the line that
+accomplishes this objective, and the red dot in the right panel is the point 
+that represents this line in terms of its slope and intercept among many 
+different possible models, where the background colour represents how well
+different combinations of slope and intercept accomplish this objective.
+
+<img src="../fig/rmd-04-regplot-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
+
+This line is the line of best fit through our data when considering this
+goal of minimising the sum of squared error. However, it is not the only 
+possible line we could use! For example, we might want to err on the side of
+caution when estimating effect sizes. That is, we might want to avoid estimating
+very large effect sizes.
+
+
+# Model selection revisited
+
+In the previous lesson we discussed using measures like adjusted $R^2$, AIC and
+BIC to show how well the model is learning the data used in fitting the model.
+However, this doesn't really tell us how well the model will perform on unseen
+data. This is especially important when our goal is prediction.
+
+<img src="../fig/validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
+
+
+
+# Ridge regression
+
+One way to tackle these many correlated variables with lots of noise is
+*regularisation*
+The idea of regularisation is to add another condition to this to control
+the size of the coefficients that come out. 
+For example, we might say that the point representing the slope and intercept
+must fall within a certain distance of the origin, $(0, 0)$.
+
+
+<img src="../fig/rmd-04-ridgeplot-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
+
+One idea is to control the squared sum of the coefficients, $\beta$.
+This is also sometimes called the $L^2$ norm. This is defined as
+
+$$
+    \left\lVert \beta\left\lVert^2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+$$
+
+To control this, we specify that the solution for the equation above
+also has to have an $L^2$ norm smaller than a certain amount. Or, equivalently,
+we try to minimise a function that includes our $L^2$ norm scaled by a 
+factor that is usually written $\lambda$.
+
+$$
+    \sum_{i=1}^N y_i - X\beta + \lambda|\beta|_2
+$$
 
 
 
@@ -35,42 +125,7 @@ methyl_mat <- t(assay(methylation))
 ~~~
 {: .language-r}
 
-In the previous episode we covered variable selection using stepwise/best subset
-selection.
-These have issues with respect to computation time and efficiency.
-
-In low noise settings and with few or strong relationships, stepwise/subset
-works well. However that's often not what we're faced with in biomedicine.
-
-
-# Ridge regression
-
-When we fit a linear model, we're minimising the RSS.
-
-$$
-    \sum_{i=1}^N y_i - X\beta
-$$
-
-The idea of regularisation is to add another condition to this to control
-the size of the coefficients that come out.
-
-One idea is to control the squared sum of the coefficients, $\beta$.
-This is also sometimes called the $L^2$ norm. This is defined as
-
-$$
-    |\beta|_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
-$$
-
-To control this, we specify that the solution for the equation above
-also has to have an $L^2$ norm smaller than a certain amount. Or, equivalently,
-we try to minimise a function that includes our $L^2$ norm scaled by a 
-factor that is usually written $\lambda$.
-
-$$
-    \sum_{i=1}^N y_i - X\beta + \lambda|\beta|_2
-$$
-
-> # Exercise
+> ## Exercise
 > 
 > Run `shinystats::ridgeApp()` and play with the parameters
 > 
@@ -101,13 +156,7 @@ $$
 
 This tends to produce
 
-
-~~~
-Error in viridis(40, option = "A", direction = 1): could not find function "viridis"
-~~~
-{: .error}
-
-<img src="../fig/rmd-04-unnamed-chunk-4-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="Title" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 
 
@@ -123,6 +172,18 @@ lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
 ~~~
 {: .language-r}
+
+
+# Cross-validation
+
+There are various methods to select the "best"
+value for $\lambda$. One idea is to split
+the data into $K$ chunks. We then use $K-1$ of
+these as the training set, and the remaining $1$ chunk
+as the test set. Repeating this process for each of the
+$K$ chunks produces more variability.
+
+<img src="../fig/cross_validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
 
 
 > ## Other types of outcomes
@@ -230,14 +291,6 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 
 > ## Selecting hyperparameters
 > 
-> There are various methods to select the "best"
-> value for $\lambda$. One idea is to split
-> the data into $K$ chunks. We then use $K-1$ of
-> these as the training set, and the remaining $1$ chunk
-> as the test set. Repeating this process for each of the
-> $K$ chunks produces more variability.
-> 
-> <img src="../fig/cross_validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
 >
 > To be really rigorous, we could even repeat this *cross-validation*
 > process a number of times! This is termed "repeated cross-validation".
