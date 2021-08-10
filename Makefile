@@ -132,7 +132,7 @@ dependencies.csv: _episodes_rmd/*.Rmd
 	@touch .installed
 
 ## * lesson-md        : convert Rmarkdown files to markdown
-lesson-md : ${RMD_DST}
+lesson-md: ${RMD_DST}
 
 _episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
