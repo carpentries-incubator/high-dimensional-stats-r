@@ -33,6 +33,13 @@ knitr::include_graphics(here("fig/rmd-04-ridgeplot-1.png"))
 ```
 
 \newpage
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-04-pred-ridge-lm-1.png"))
+```
+
+\newpage
 # Title
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt

@@ -82,6 +82,18 @@ data. This is especially important when our goal is prediction.
 
 <img src="../fig/validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
 
+One thing that happens a lot of the time in this context is that large 
+coefficient values minimise the training error, but they don't minimise the 
+test error on unseen data.
+
+> ## Exercise
+> Do test/training split on methylation data.
+>
+> > ## Solution
+> >
+> >
+> {: .solution}
+{: .challenge}
 
 
 # Ridge regression
@@ -100,7 +112,7 @@ One idea is to control the squared sum of the coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
 $$
-    \left\lVert \beta\left\lVert^2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+    \left\lVert \beta\right\lVert^2 = \sqrt{\sum_{j=1}^p \beta_j^2}
 $$
 
 To control this, we specify that the solution for the equation above
@@ -112,18 +124,103 @@ $$
     \sum_{i=1}^N y_i - X\beta + \lambda|\beta|_2
 $$
 
+# Why ridge?
+
+Can give better accuracy aside from the whole singularity issue.
 
 
 ~~~
-library("minfi")
-library("here")
-
-methylation <- readRDS(here("data/methylation.rds"))
-
+coef <- readRDS(here::here("data/coefHorvath.rds"))
+methylation <- readRDS(here::here("data/methylation.rds"))
+library("SummarizedExperiment")
 age <- methylation$Age
 methyl_mat <- t(assay(methylation))
+
+coef <- coef[-1, ]
+rcoef <- coef[order(coef$CoefficientTrainingShrunk, decreasing = TRUE), ]
+rcoef <- rcoef[1:20, ]
+features <- rcoef$CpGmarker
+
+train_ind <- sample(nrow(methyl_mat), 25)
+train_mat <- methyl_mat[train_ind, features]
+train_age <- age[train_ind]
+test_mat <- methyl_mat[-train_ind, features]
+test_age <- age[-train_ind]
+
+lm_fit <- lm(train_age ~ ., data = as.data.frame(train_mat))
+
+library("glmnet")
+ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
+plot(ridge_fit)
 ~~~
 {: .language-r}
+
+<img src="../fig/rmd-04-plot-ridge-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+Some text.
+
+
+~~~
+pred_lm <- predict(lm_fit, newdata = as.data.frame(test_mat))
+err_lm <- sum((test_age - pred_lm)^2)
+
+pred_ridge <- predict(ridge_fit, newx = test_mat)
+err_ridge <- apply(pred_ridge, 2, function(col) sum((test_age - col)^2))
+min(err_ridge)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 284.0557
+~~~
+{: .output}
+
+
+
+~~~
+err_lm
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 825.9211
+~~~
+{: .output}
+
+
+
+~~~
+par(mfrow = 1:2)
+plot(test_age, pred_lm,
+    pch = 19
+)
+abline(coef = 0:1, lty = "dashed")
+plot(test_age, pred_ridge[, which.min(err_ridge)],
+    pch = 19
+)
+abline(coef = 0:1, lty = "dashed")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-04-pred-ridge-lm-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
+
+
+~~~
+par(mfrow = c(1, 1))
+plot(coef(lm_fit), coef(ridge_fit, s = which.min(err_ridge)),
+    pch = 19
+)
+abline(coef = 0:1, lty = "dashed")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-04-coef-ridge-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+More text.
 
 > ## Exercise
 > 
@@ -136,14 +233,6 @@ methyl_mat <- t(assay(methylation))
 > {: .solution}
 {: .challenge}
 
-Now we can fit a model using ridge regression.
-
-
-~~~
-library("glmnet")
-ridge <- glmnet(methyl_mat, age, alpha = 0)
-~~~
-{: .language-r}
 
 # LASSO regression
 
@@ -156,7 +245,7 @@ $$
 
 This tends to produce
 
-<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="Title" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-3-1.png" title="Title" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 
 
@@ -287,14 +376,5 @@ knitr::include_graphics("../fig/bs_fs_lasso.png")
 {: .language-r}
 
 <img src="../fig/bs_fs_lasso.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
-
-
-> ## Selecting hyperparameters
-> 
->
-> To be really rigorous, we could even repeat this *cross-validation*
-> process a number of times! This is termed "repeated cross-validation".
-{: .callout}
-
 
 {% include links.md %}
