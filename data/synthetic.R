@@ -15,7 +15,7 @@ y <- ((x %*% beta) + noise)[, 1]
 y <- y - min(y) + 20
 y <- round(y)
 
-se <- SummarizedExperiment(
+se <- SummarizedExperiment::SummarizedExperiment(
     assays = list(methylation = t(x[, -1])),
     colData = data.frame(
         age = y
@@ -25,4 +25,4 @@ se <- SummarizedExperiment(
     )
 )
 
-saveRDS(se, here("data/synthetic.rds"))
+saveRDS(se, here::here("data/synthetic.rds"))

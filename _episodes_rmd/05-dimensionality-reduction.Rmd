@@ -272,8 +272,9 @@ We will now load the microarray breast cancer gene expression data
 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990).
 
 ```{r}
-mat <- readRDS(here("data/cancer_expression.rds"))
-metadata <- readRDS(here("data/cancer_metadata.rds"))
+cancer_data <- readRDS(here::here("data/cancer_expression.rds"))
+mat <- assay(cancer_data)
+metadata <- colData(cancer_data)
 
 head(mat)
 dim(mat)
