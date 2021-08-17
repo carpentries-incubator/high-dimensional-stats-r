@@ -17,6 +17,7 @@ RColorBrewer
 leaps
 lasso2
 SummarizedExperiment
+circlize
 stats
 PCAtools
 bluster
