@@ -5,7 +5,7 @@ title: "Regularised regression with many features"
 teaching: 0
 exercises: 0
 questions:
-- "Can we fit a model that accounts for and selects many features?"
+- "What is regularisation?"
 - "How does regularisation work?"
 - "What are some considerations for a regularised model?"
 objectives:
@@ -15,8 +15,11 @@ objectives:
 keypoints:
 - "Regularisation is a way to avoid the problems of stepwise
   or iterative model building processes."
-- "Modelling features together can help to identify a subset of features
-  that contribute to the outcome."
+- "Test and training splits, or cross-validation, are a useful way to select
+  models or hyperparameters."
+- "Regularisation can give us a better set of variables, and by restricting
+  the magnitude of coefficients, can give us a better (and more stable)
+  estimate."
 math: yes
 ---
 
@@ -80,35 +83,115 @@ BIC to show how well the model is learning the data used in fitting the model.
 However, this doesn't really tell us how well the model will perform on unseen
 data. This is especially important when our goal is prediction.
 
-<img src="../fig/validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
+<img src="../fig/validation.png" title="Title" alt="Alt" width="500px" style="display: block; margin: auto;" />
 
 One thing that happens a lot of the time in this context is that large 
 coefficient values minimise the training error, but they don't minimise the 
-test error on unseen data.
+test error on unseen data. First, we'll go through an example of what exactly 
+this means.
+
+
+For the next few exercises, we'll work with a signature for methyl age from
+Horvath.
+
+
+~~~
+coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
+methylation <- readRDS(here::here("data/methylation.rds"))
+library("SummarizedExperiment")
+age <- methylation$Age
+methyl_mat <- t(assay(methylation))
+
+coef_horvath <- coef_horvath[1:20, ]
+features <- coef_horvath$CpGmarker
+
+horvath_mat <- methyl_mat[, features]
+
+## Generate an index to split the data
+train_ind <- sample(nrow(methyl_mat), 25)
+~~~
+{: .language-r}
 
 > ## Exercise
-> Do test/training split on methylation data.
->
+> 
+> 1. Split the methylation data into training and test sets.
+> 2. Fit a model on the training data.
+> 
 > > ## Solution
 > >
+> > 1. Text.
+> >    
+> >    
+> >    ~~~
+> >    train_mat <- horvath_mat[train_ind, ]
+> >    train_age <- age[train_ind]
+> >    test_mat <- horvath_mat[-train_ind, ]
+> >    test_age <- age[-train_ind]
+> >    ~~~
+> >    {: .language-r}
+> > 
+> > 2. Some text.
+> >    
+> >    
+> >    ~~~
+> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
+> >    ~~~
+> >    {: .language-r}
+> >    
 > >
 > {: .solution}
 {: .challenge}
 
 
+With this model, now we can check how well it does. Here we use residual sum of
+squares on the test data.
+
+
+~~~
+rss <- function(true, prediction) {
+    sum((true - prediction)^2)
+}
+pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
+err_lm <- rss(test_age, pred_lm)
+err_lm
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 825.9211
+~~~
+{: .output}
+
+
+
+~~~
+par(mfrow = c(1, 1))
+plot(test_age, pred_lm, pch = 19)
+abline(coef = 0:1, lty = "dashed")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-04-test-plot-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
 # Ridge regression
 
 One way to tackle these many correlated variables with lots of noise is
-*regularisation*
-The idea of regularisation is to add another condition to this to control
-the size of the coefficients that come out. 
+*regularisation*.
+The idea of regularisation is to add another condition to the problem we're
+solving with linear regression. This condition controls the total size of the 
+coefficients that come out. 
 For example, we might say that the point representing the slope and intercept
-must fall within a certain distance of the origin, $(0, 0)$.
-
+must fall within a certain distance of the origin, $(0, 0)$. Note that
+we are still trying to solve for the line that minimises the square of the
+residuals; we are just adding this extra constraint to our solution.
 
 <img src="../fig/rmd-04-ridgeplot-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
 
-One idea is to control the squared sum of the coefficients, $\beta$.
+There are multiple ways to define the distance that our solution must fall in,
+though. The one we've plotted above controls the squared sum of the 
+coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
 $$
@@ -121,51 +204,40 @@ we try to minimise a function that includes our $L^2$ norm scaled by a
 factor that is usually written $\lambda$.
 
 $$
-    \sum_{i=1}^N y_i - X\beta + \lambda|\beta|_2
+    \sum_{i=1}^N y_i - X\beta + \lambda \left\lVert \beta \right\lVert^2
 $$
 
 # Why ridge?
 
-Can give better accuracy aside from the whole singularity issue.
+Can give better accuracy aside from the whole singularity issue. To show this,
+we'll fit a model using the Horvath methylation predictors, using both
+penalised and ordinary least squares.
 
 
 ~~~
-coef <- readRDS(here::here("data/coefHorvath.rds"))
-methylation <- readRDS(here::here("data/methylation.rds"))
-library("SummarizedExperiment")
-age <- methylation$Age
-methyl_mat <- t(assay(methylation))
-
-coef <- coef[-1, ]
-rcoef <- coef[order(coef$CoefficientTrainingShrunk, decreasing = TRUE), ]
-rcoef <- rcoef[1:20, ]
-features <- rcoef$CpGmarker
-
-train_ind <- sample(nrow(methyl_mat), 25)
-train_mat <- methyl_mat[train_ind, features]
-train_age <- age[train_ind]
-test_mat <- methyl_mat[-train_ind, features]
-test_age <- age[-train_ind]
-
 lm_fit <- lm(train_age ~ ., data = as.data.frame(train_mat))
 
 library("glmnet")
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
-plot(ridge_fit)
+plot(ridge_fit, xvar = "lambda")
 ~~~
 {: .language-r}
 
 <img src="../fig/rmd-04-plot-ridge-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-Some text.
+This plot shows how the coefficients change as we increase the penalty. That is,
+as we decrease the size of the region that solutions can fall into, the values
+of the coefficients that we get back tend to decrease. In this case,
+coefficients trend towards zero but generally don't reach it until the penalty
+gets very large.
+
+Since we split the data into test and training data, we can prove that ridge
+regression gives us a better prediction in this case:
 
 
 ~~~
-pred_lm <- predict(lm_fit, newdata = as.data.frame(test_mat))
-err_lm <- sum((test_age - pred_lm)^2)
-
 pred_ridge <- predict(ridge_fit, newx = test_mat)
-err_ridge <- apply(pred_ridge, 2, function(col) sum((test_age - col)^2))
+err_ridge <- apply(pred_ridge, 2, function(col) rss(test_age, col))
 min(err_ridge)
 ~~~
 {: .language-r}
@@ -194,45 +266,119 @@ err_lm
 
 
 ~~~
-par(mfrow = 1:2)
-plot(test_age, pred_lm,
-    pch = 19
-)
-abline(coef = 0:1, lty = "dashed")
-plot(test_age, pred_ridge[, which.min(err_ridge)],
-    pch = 19
-)
-abline(coef = 0:1, lty = "dashed")
+min_ridge <- pred_ridge[, which.min(err_ridge)]
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-pred-ridge-lm-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
-
-
-~~~
-par(mfrow = c(1, 1))
-plot(coef(lm_fit), coef(ridge_fit, s = which.min(err_ridge)),
-    pch = 19
-)
-abline(coef = 0:1, lty = "dashed")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-04-coef-ridge-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
-
-More text.
 
 > ## Exercise
 > 
-> Run `shinystats::ridgeApp()` and play with the parameters
-> 
-> Questions:
+> 1. Which performs better, ridge or OLS?
+> 2. How do the predictions look for both methods? Why might ridge be 
+>    performing better?
+> 3. Compare the coefficients of the ridge model to the OLS model. Why might
+>    the differences drive the differences in prediction that you see?
 > 
 > > ## Solution
 > > 
+> > 1. Ridge.
+> >    
+> >    ~~~
+> >    min_ridge
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    201868500150_R07C01 201868590193_R03C01 201868590193_R06C01 201868590206_R02C01 
+> >               43.31002            17.97813            28.48804            37.86167 
+> >    201868590206_R05C01 201868590206_R06C01 201868590206_R08C01 201868590243_R04C01 
+> >               34.62555            27.91707            18.17361            39.76428 
+> >    201868590243_R06C01 201868590243_R08C01 201869680030_R02C01 201870610056_R07C01 
+> >               32.27380            32.05321            60.00983            32.34975 
+> >    ~~~
+> >    {: .output}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    err_lm
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 825.9211
+> >    ~~~
+> >    {: .output}
+> > 2. The ridge ones are less extreme.
+> >    
+> >    ~~~
+> >    all <- c(pred_lm, test_age, min_ridge)
+> >    lims <- range(all)
+> >    par(mfrow = 1:2)
+> >    plot(test_age, pred_lm,
+> >        xlim = lims, ylim = lims,
+> >        pch = 19
+> >    )
+> >    abline(coef = 0:1, lty = "dashed")
+> >    plot(test_age, pred_ridge[, which.min(err_ridge)],
+> >        xlim = lims, ylim = lims,
+> >        pch = 19
+> >    )
+> >    abline(coef = 0:1, lty = "dashed")
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-04-plot-ridge-prediction-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > 3. They're generally smaller.
+> >    
+> >    ~~~
+> >    par(mfrow = c(1, 1))
+> >    plot(coef(lm_fit), coef(ridge_fit, s = which.min(err_ridge)),
+> >        pch = 19
+> >    )
+> >    abline(coef = 0:1, lty = "dashed")
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-04-coef-ridge-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
+We can see that ridge regression tends to produce smaller coefficients.
+
+
+> ## Ridge regression through a Bayesian lens
+>
+> Bayesian statistics is another way of modelling data, in contrast to the
+> frequentist methods we're using at the moment.
+> 
+> Under a Bayesian lens, we consider the likelihood just as we modelled earlier.
+> For linear regression, this is the density of the data under the normal
+> distribution specified by our model parameters (slope and intercept, 
+> for example).
+> 
+> In Bayesian linear regression, we also place a *prior* distribution on our 
+> coefficients, $\beta$. A common distribution that we use here is a normal 
+> distribution. This means that we imagine our coefficients are likely to
+> be close to zero.
+> This tends to *shrink* the coefficients towards zero, with the strength
+> of the shrinkage controlled by the variance of the normal distribution.
+> 
+> The density of a normally distributed variable $x \sim N(\mu, \sigma^2)$ is
+> defined
+> 
+> $$
+>   \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+> $$
+> 
+> If we centre our distribution at zero, we can see that the numerator of the
+> exponent is $x^2$. In fact, these are mathematically equivalent.
+> 
+{: .callout}
 
 # LASSO regression
 
@@ -240,27 +386,47 @@ LASSO is another type of regularisation. In this case we use the $L^1$ norm,
 or the sum of the absolute values of the coefficients.
 
 $$
-    |\beta|_1 = \sqrt{\sum_{j=1}^p \beta_j}
+    \left\lVert \beta \right\lVert^1 = \sqrt{\sum_{j=1}^p \beta_j}
 $$
 
-This tends to produce
+This tends to produce sparse models; that is to say, it tends to remove features
+from the model that aren't necessary to produce accurate predictions. This
+is because the region we're restricting the coefficients to has sharp edges.
+So, when we increase the penalty (reduce the norm), it's more likely that
+the best solution that falls in this region will be at the corner of this
+diagonal (ie, one or more coefficient is exactly zero).
 
-<img src="../fig/rmd-04-unnamed-chunk-3-1.png" title="Title" alt="Alt" width="720" style="display: block; margin: auto;" />
-
-
-
-~~~
-lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
-~~~
-{: .language-r}
+<img src="../fig/rmd-04-unnamed-chunk-7-1.png" title="Title" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 
-~~~
-## Challenge 5:
-## one of these...? probably lasso
-elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
-~~~
-{: .language-r}
+> ## Exercise
+> 
+> 1. Use `glmnet` to fit a LASSO model (`alpha = 1`).
+> 2. Plot the model object.
+> 3. How do the coefficient paths differ to the ridge case?
+> 
+> > ## Solution
+> > 
+> > 1. .
+> >    
+> >    ~~~
+> >    fit_lasso <- glmnet(x = methyl_mat, y = age, alpha = 1)
+> >    ~~~
+> >    {: .language-r}
+> > 2. .
+> >    
+> >    ~~~
+> >    par(mfrow = c(1, 1))
+> >    plot(fit_lasso)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-04-unnamed-chunk-9-1.png" title="LASSO" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > 3. The paths tend to go to exactly zero much more!.
+> > 
+> {: .solution}
+{: .challenge}
+
 
 
 # Cross-validation
@@ -270,9 +436,68 @@ value for $\lambda$. One idea is to split
 the data into $K$ chunks. We then use $K-1$ of
 these as the training set, and the remaining $1$ chunk
 as the test set. Repeating this process for each of the
-$K$ chunks produces more variability.
+$K$ chunks gives us a better estimate of how well the model would
+perform in unseen data.
 
 <img src="../fig/cross_validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
+
+We can use this new idea to pick a lambda value.
+
+
+~~~
+lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
+plot(lasso)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-04-unnamed-chunk-11-1.png" title="Lasso" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+~~~
+coefl <- coef(lasso, lasso$lambda.1se)
+selected_coefs <- as.matrix(coefl)[coefl[, 1] != 0, 1]
+## We select some of the same features! Hooray
+intersect(names(selected_coefs), coef_horvath$CpGmarker)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] "cg22736354"
+~~~
+{: .output}
+
+<img src="../fig/rmd-04-unnamed-chunk-12-1.png" title="Heatmap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+
+> ## Bias-variance tradeoff and the elastic net
+> 
+> When making predictive models, we have to consider bias and variance.
+> 
+> Elastic net is good.
+> 
+> 
+> ~~~
+> elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
+> ~~~
+> {: .language-r}
+{: .callout}
+
+# Why is regularisation useful?
+
+- Speed
+- Flexibility (model selection, elastic net)
+- May be better independent of variable selection
+
+Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
+
+
+~~~
+knitr::include_graphics("../fig/bs_fs_lasso.png")
+~~~
+{: .language-r}
+
+<img src="../fig/bs_fs_lasso.png" title="Title" alt="Alt" width="600px" style="display: block; margin: auto;" />
 
 
 > ## Other types of outcomes
@@ -280,47 +505,47 @@ $K$ chunks produces more variability.
 > You may have noticed that `glmnet` is written as `glm`, not `lm`.
 > This means we can actually model a variety of different outcomes
 > using this regularisation approach. For example, we can model binary
-> variables using logistic regression, as shown below.
+> variables using logistic regression, as shown below. The type of outcome
+> can be specified using the `family` argument, which specifies the family
+> of the outcome variable.
 > 
 > In fact, `glmnet` is somewhat cheeky as it also allows you to model
 > survival using Cox proportional hazards models, which aren't GLMs, strictly
 > speaking.
 > 
+> For example, in the current dataset we can model smoking status as a binary
+> variable in logistic regression by setting `family = "binomial"`.
+>
+> The [package documentation](https://glmnet.stanford.edu/articles/glmnet.html)
+> explains this in more detail.
+> 
 > 
 > ~~~
 > smoking <- as.numeric(factor(methylation$smoker)) - 1
 > # binary outcome
-> smoking
+> table(smoking)
 > ~~~
 > {: .language-r}
 > 
 > 
 > 
 > ~~~
->  [1] 0 0 0 0 0 0 1 0 1 0 0 0 1 0 0 0 0 0 1 1 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0
+> smoking
+>  0  1 
+> 30  7 
 > ~~~
 > {: .output}
 > 
 > 
 > 
 > ~~~
-> fit <- cv.glmnet(x = methyl_mat, y = smoking, family = "binomial")
+> fit <- cv.glmnet(x = methyl_mat, nfolds = 5, y = smoking, family = "binomial")
 > ~~~
 > {: .language-r}
 > 
 > 
 > 
 > ~~~
-> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-> multinomial or binomial class has fewer than 8 observations; dangerous ground
-> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-> multinomial or binomial class has fewer than 8 observations; dangerous ground
-> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-> multinomial or binomial class has fewer than 8 observations; dangerous ground
-> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-> multinomial or binomial class has fewer than 8 observations; dangerous ground
-> Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
-> multinomial or binomial class has fewer than 8 observations; dangerous ground
 > Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
 > multinomial or binomial class has fewer than 8 observations; dangerous ground
 > Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
@@ -339,7 +564,8 @@ $K$ chunks produces more variability.
 > 
 > 
 > ~~~
-> coef <- coef(fit, s = fit$lambda.1se)
+> coef <- coef(fit, s = fit$lambda.min)
+> coef <- as.matrix(coef)
 > coef[coef[, 1] != 0, 1]
 > ~~~
 > {: .language-r}
@@ -354,27 +580,13 @@ $K$ chunks produces more variability.
 > 
 > 
 > ~~~
-> plot(smoking, methyl_mat[, names(which.max(coef[-1]))])
+> plot(fit)
 > ~~~
 > {: .language-r}
 > 
-> 
-> 
-> ~~~
-> Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-> ~~~
-> {: .error}
+> <img src="../fig/rmd-04-unnamed-chunk-15-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+> In this case, the results aren't very interesting! We select an intercept-only
+> model.
 {: .callout}
-
-
-Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
-
-
-~~~
-knitr::include_graphics("../fig/bs_fs_lasso.png")
-~~~
-{: .language-r}
-
-<img src="../fig/bs_fs_lasso.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
 
 {% include links.md %}

@@ -3,7 +3,6 @@ library("glue")
 args <- commandArgs(trailingOnly = TRUE)
 
 infile <- args[[1]]
-print(infile)
 
 lines <- readLines(infile)
 images <- grep("<img .*/>", lines, value = TRUE)
@@ -15,8 +14,6 @@ alts <- gsub(".*alt=\"(.*)\" width.*", "\\1", images)
 title <- grep("title: ", lines, value = TRUE)[[1]]
 title <- gsub("title:\\s+(.*)", "\\1", title)
 outfile <- args[[2]]
-print(outfile)
-print(title)
 
 header <- glue("
     ---
