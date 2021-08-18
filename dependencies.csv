@@ -16,8 +16,8 @@ ComplexHeatmap
 RColorBrewer
 leaps
 lasso2
-SummarizedExperiment
 circlize
+SummarizedExperiment
 stats
 PCAtools
 bluster
