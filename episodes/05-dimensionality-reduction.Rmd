@@ -265,6 +265,7 @@ library("here")
 library("hgu133a.db")
 library("Biobase")
 library("GEOquery")
+library("SummarizedExperiment")
 ```
 
 We will now load the microarray breast cancer gene expression data
