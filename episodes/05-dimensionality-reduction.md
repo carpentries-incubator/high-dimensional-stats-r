@@ -249,7 +249,7 @@ plot(varDF, ylab = "Percentage of variance explained", xlab = "Principal compone
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-8-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-8-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The screeplot shows that the first principal component explains most of the
 variance in the data (>60%) and each subsequent principal component explains
@@ -272,7 +272,7 @@ stats::biplot(pcaUS)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-9-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-9-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
 This biplot shows the position of each state on a 2-dimensional plot where
 weight of loadings can be observed via the red arrows associated with each
 of the variables. The scale = 0 included as an argument in biplot function

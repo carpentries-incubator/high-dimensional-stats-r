@@ -5,21 +5,21 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-# Alt
+# Title
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
 knitr::include_graphics(here("fig/rmd-06-kmeans-1.png"))
 ```
 
 \newpage
-# Alt
+# Title
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
 knitr::include_graphics(here("fig/rmd-06-mixture-1.png"))
 ```
 
 \newpage
-# Alt
+# Title
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
 knitr::include_graphics(here("fig/rmd-06-graph-1.png"))

@@ -24,7 +24,7 @@ keypoints:
   with the same basic 'engine'
 - Regularisation can be *very* fast! 
   Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
-  <img src="../fig/bs_fs_lasso.png" title="Alt" alt="Alt" width="600px" />
+  <img src="../fig/bs_fs_lasso.png" title="Title" alt="Alt" width="600px" />
 
 math: yes
 ---
@@ -46,7 +46,7 @@ each feature in the prostate dataset seen earlier,
 we can see that in the prostate data, the few variables we have are generally
 pretty independent. 
 
-<img src="../fig/rmd-04-corr-mat-prostate-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-corr-mat-prostate-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The stepwise selection methods we used in the previous episode work really 
 well for data like these, because the features are generally pretty distinct.
@@ -56,7 +56,7 @@ Stepwise selection can struggle in cases like this, because which of the
 correlated features we select at each stage can have a big impact on the 
 downstream models.
 
-<img src="../fig/rmd-04-corr-mat-meth-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-corr-mat-meth-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 For technical reasons, this correlation can be problematic, and if it's 
 very severe it may even make it impossible to fit a model! Furthermore,
@@ -103,7 +103,7 @@ that represents this line in terms of its slope and intercept among many
 different possible models, where the background colour represents how well
 different combinations of slope and intercept accomplish this objective.
 
-<img src="../fig/rmd-04-regplot-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-regplot-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 Mathematically, we can write that as
 
@@ -160,7 +160,7 @@ This is especially important when our goal is prediction --
 it's not much good if we can only predict well for samples where
 the outcome is already known, after all!
 
-<img src="../fig/validation.png" title="Alt" alt="Alt" width="500px" style="display: block; margin: auto;" />
+<img src="../fig/validation.png" title="Title" alt="Alt" width="500px" style="display: block; margin: auto;" />
 
 One thing that happens a lot of the time in this context is that large 
 coefficient values minimise the training error, but they don't minimise the 
@@ -272,7 +272,7 @@ abline(coef = 0:1, lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-test-plot-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-test-plot-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 # Ridge regression
 
@@ -293,7 +293,7 @@ residuals) that also falls within a circle of a given radius
 (in this case, 2).
 
 
-<img src="../fig/rmd-04-ridgeplot-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-ridgeplot-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 There are multiple ways to define the distance that our solution must fall in,
 though. The one we've plotted above controls the squared sum of the 
@@ -332,7 +332,7 @@ abline(h = 0, lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-plot-ridge-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-plot-ridge-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 This plot shows how the coefficients change as we increase the penalty. That is,
 as we decrease the size of the region that solutions can fall into, the values
@@ -400,7 +400,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -461,7 +461,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-plot-ridge-prediction-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-plot-ridge-prediction-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 3. They're generally smaller.
 > >    
 > >    ~~~
@@ -473,7 +473,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-coef-ridge-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-coef-ridge-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -523,7 +523,7 @@ So, when we increase the penalty (reduce the norm), it's more likely that
 the best solution that falls in this region will be at the corner of this
 diagonal (ie, one or more coefficient is exactly zero).
 
-<img src="../fig/rmd-04-unnamed-chunk-10-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-10-1.png" title="Title" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -550,14 +550,14 @@ diagonal (ie, one or more coefficient is exactly zero).
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-13-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-unnamed-chunk-13-1.png" title="LASSO lambda" alt="Alt" width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    plot(fit_lasso)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-14-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-unnamed-chunk-14-1.png" title="LASSO L1" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 3. The paths tend to go to exactly zero much more.
 > > 
 > {: .solution}
@@ -577,7 +577,7 @@ data. Doing this repeated test/train split gives us a better estimate
 of how generalisable our model is. Cross-validation is a really deep topic that
 we're not going to cover in more detail today, though!
 
-<img src="../fig/cross_validation.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
+<img src="../fig/cross_validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
 
 We can use this new idea to pick a lambda value.
 
@@ -588,7 +588,7 @@ plot(lasso)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-16-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-16-1.png" title="Lasso" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 ~~~
 coefl <- coef(lasso, lasso$lambda.min)
@@ -610,7 +610,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ~~~
 {: .output}
 
-<img src="../fig/rmd-04-unnamed-chunk-17-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-17-1.png" title="Heatmap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 # Blending ridge regression and the LASSO
 
@@ -625,6 +625,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 >    coefficients with the LASSO model.
 > 3. Discuss: how could we pick an alpha in the range (0, 1)? Could we justify
 >    choosing one *a priori*?
+> 
 > > ## Solution
 > > 1. Fitting an elastic net model is just like 
 > >    
@@ -636,7 +637,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-18-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-unnamed-chunk-18-1.png" title="Elastic" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 2. 
 > >    
 > >    ~~~
@@ -645,7 +646,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-19-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-unnamed-chunk-19-1.png" title="LASSO-Elastic" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -749,7 +750,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-04-unnamed-chunk-21-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-04-unnamed-chunk-21-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
 > In this case, the results aren't very interesting! We select an intercept-only
 > model.
 {: .callout}
