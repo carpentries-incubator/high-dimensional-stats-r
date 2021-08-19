@@ -65,7 +65,7 @@ plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-kmeans-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-kmeans-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 ~~~
@@ -78,7 +78,7 @@ plotReducedDim(zd, "TSNE", colour_by = "mixture")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-mixture-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-mixture-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 ~~~
@@ -91,7 +91,7 @@ plotReducedDim(zd, colour_by = "label", dimred = "force")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-graph-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-graph-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 
