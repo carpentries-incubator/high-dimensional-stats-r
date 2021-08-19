@@ -5,14 +5,14 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-# Title
+# Alt
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
 knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-8-1.png"))
 ```
 
 \newpage
-# Title
+# Alt
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
 knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-9-1.png"))

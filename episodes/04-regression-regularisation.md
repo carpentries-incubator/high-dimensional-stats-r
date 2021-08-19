@@ -7,7 +7,7 @@ exercises: 0
 questions:
 - "What is regularisation?"
 - "How does regularisation work?"
-- "What are some considerations for a regularised model?"
+- "How can we select the level of regularisation for a model?"
 objectives:
 - "Understand the benefits of regularised models."
 - "Understand how different types of regularisation work."
@@ -24,7 +24,7 @@ keypoints:
   with the same basic 'engine'
 - Regularisation can be *very* fast! 
   Figure taken from [Hastie et al. (2020)](https://doi.org/10.1214/19-STS733).
-  <img src="../fig/bs_fs_lasso.png" title="Title" alt="Alt" width="600px" />
+  <img src="../fig/bs_fs_lasso.png" title="Alt" alt="Alt" width="600px" />
 
 math: yes
 ---
@@ -46,7 +46,7 @@ each feature in the prostate dataset seen earlier,
 we can see that in the prostate data, the few variables we have are generally
 pretty independent. 
 
-<img src="../fig/rmd-04-corr-mat-prostate-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-corr-mat-prostate-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The stepwise selection methods we used in the previous episode work really 
 well for data like these, because the features are generally pretty distinct.
@@ -56,7 +56,7 @@ Stepwise selection can struggle in cases like this, because which of the
 correlated features we select at each stage can have a big impact on the 
 downstream models.
 
-<img src="../fig/rmd-04-corr-mat-meth-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-corr-mat-meth-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 For technical reasons, this correlation can be problematic, and if it's 
 very severe it may even make it impossible to fit a model! Furthermore,
@@ -64,11 +64,34 @@ if we have many correlated features, it's likely that one of these will
 be retained and all others dropped; this can make it more difficult to
 infer the mechanisms behind an association.
 
-> ## Collinearity
+
+
+> ## Exercise
 > 
-> TODO: a technical note about why multicollinearity is a 
-> problem.
-{: .callout}
+> Discuss in  groups:
+> 
+> 1. Why would we observed correlated features in high-dimensional biological
+>    data?
+> 1. Why might correlated features be a problem when fitting linear models?
+> 1. What issue might correlated feature present for stepwise selection?
+> 
+> > ## Solution
+> >
+> > 1. Many of the features in biological data represent very similar 
+> >    information biologically. For example, sets of genes that form complexes
+> >    are often expressed in very similar quantities. Similarly, methylation
+> >    levels at nearby sites are often very highly correlated.
+> > 1. Correlated features can make inference unstable or even impossible
+> >    mathematically.
+> > 1. When performing stepwise selection, we want to pick the most predictive
+> >    feature at each step. When a lot of features are very similar but encode
+> >    slightly different information, which of the correlated features we 
+> >    select can have a huge impact in the later stages of model selection!
+> > 
+> {: .solution}
+{: .challenge}
+
+# The objective of a linear model
 
 When we fit a linear model, we're finding the line through our data that 
 minimises the residual sum of squares.
@@ -80,16 +103,16 @@ that represents this line in terms of its slope and intercept among many
 different possible models, where the background colour represents how well
 different combinations of slope and intercept accomplish this objective.
 
-<img src="../fig/rmd-04-regplot-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-regplot-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 Mathematically, we can write that as
 
 $$
-    \sum_{i=1}^N \hat{y}_i - X_i\beta
+    \sum_{i=1}^N \hat{y}_i - y_i
 $$
 
 where $\hat{y}_i$ is the predicted y value for each input data
-point $X_i$.
+point $X_i$, and $y_i$ is the true observed value.
 This line is the line of best fit through our data when considering this
 goal of minimising the sum of squared error. However, it is not the only 
 possible line we could use! For example, we might want to err on the side of
@@ -100,14 +123,24 @@ models.
 
 > ## Exercise
 > 
-> 1. Why might correlated features be a problem?
-> 2. What are we minimising when we fit a linear model?
+> Discuss in groups:
+> 
+> 1. What are we minimising when we fit a linear model?
+> 2. Why are we minimising this objective? What assumptions are we making
+>    about our data when we do so?
 > 
 > > ## Solution
 > >
-> > 1. Text.
-> > 
-> > 2. Some text.
+> > 1. When we fit a linear model we are minimising the squared error.
+> >    In fact, the standard linear model estimator is often known as
+> >    "ordinary least squares". The "ordinary" really means "original" here,
+> >    to distinguish between this method, which dates back to ~1800, and some
+> >    more "recent" (think 1940s...) methods.
+> > 2. Least squares assumes that, when we account for the change in the mean of
+> >    the outcome based on changes in the income, the data are normally
+> >    distributed. That is, the *residuals* of the model, or the error 
+> >    left over after we account for any linear relationships in the data,
+> >    are normally distributed, and have a fixed variance.
 > >    
 > >
 > {: .solution}
@@ -127,7 +160,7 @@ This is especially important when our goal is prediction --
 it's not much good if we can only predict well for samples where
 the outcome is already known, after all!
 
-<img src="../fig/validation.png" title="Title" alt="Alt" width="500px" style="display: block; margin: auto;" />
+<img src="../fig/validation.png" title="Alt" alt="Alt" width="500px" style="display: block; margin: auto;" />
 
 One thing that happens a lot of the time in this context is that large 
 coefficient values minimise the training error, but they don't minimise the 
@@ -147,7 +180,6 @@ methyl_mat <- t(assay(methylation))
 
 coef_horvath <- coef_horvath[1:20, ]
 features <- coef_horvath$CpGmarker
-
 horvath_mat <- methyl_mat[, features]
 
 ## Generate an index to split the data
@@ -162,11 +194,13 @@ train_ind <- sample(nrow(methyl_mat), 25)
 >    into training and test sets.
 > 2. Fit a model on the training data matrix and training age 
 >    vector.
-> 3. Check the residual sum of squares on this model.
+> 3. Check the mean squared error on this model.
 > 
 > > ## Solution
 > >
-> > 1. Text.
+> > 1. Splitting the data involves using our index to split up the matrix and
+> >    the age vector into two each. We can use a negative subscript to create
+> >    the test data.
 > >    
 > >    
 > >    ~~~
@@ -177,7 +211,8 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    ~~~
 > >    {: .language-r}
 > > 
-> > 2. Some text.
+> > 2. Fitting a model to the training data is similar to what we did in the
+> >    previous episode.
 > >    
 > >    
 > >    ~~~
@@ -185,17 +220,19 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    ~~~
 > >    {: .language-r}
 > > 
-> > 3. 
+> > 3. The mean squared error of the model is the mean of the square of the
+> >    residuals. This seems very low here -- on average we're only off by 
+> >    about a year!
 > >    
 > >    ~~~
-> >    sum(residuals(fit_horvath))
+> >    mean(residuals(fit_horvath)^2)
 > >    ~~~
 > >    {: .language-r}
 > >    
 > >    
 > >    
 > >    ~~~
-> >    [1] -1.124101e-15
+> >    [1] 1.319628
 > >    ~~~
 > >    {: .output}
 > >
@@ -203,16 +240,18 @@ train_ind <- sample(nrow(methyl_mat), 25)
 {: .challenge}
 
 
-With this model, now we can check how well it does. Here we use residual sum of
-squares on the test data.
+With this model, now we can check how well it does. Here we use the mean of
+the squared difference between our predictions and the true ages for the test
+data, or "mean squared error" (MSE). Unfortunately, it seems like this is a lot
+higher than the error on the training data!
 
 
 ~~~
-rss <- function(true, prediction) {
-    sum((true - prediction)^2)
+mse <- function(true, prediction) {
+    mean((true - prediction)^2)
 }
 pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
-err_lm <- rss(test_age, pred_lm)
+err_lm <- mse(test_age, pred_lm)
 err_lm
 ~~~
 {: .language-r}
@@ -220,7 +259,7 @@ err_lm
 
 
 ~~~
-[1] 2680.285
+[1] 223.3571
 ~~~
 {: .output}
 
@@ -233,7 +272,7 @@ abline(coef = 0:1, lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-test-plot-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-test-plot-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 # Ridge regression
 
@@ -254,7 +293,7 @@ residuals) that also falls within a circle of a given radius
 (in this case, 2).
 
 
-<img src="../fig/rmd-04-ridgeplot-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-ridgeplot-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 There are multiple ways to define the distance that our solution must fall in,
 though. The one we've plotted above controls the squared sum of the 
@@ -286,8 +325,6 @@ penalised and ordinary least squares.
 
 
 ~~~
-lm_fit <- lm(train_age ~ ., data = as.data.frame(train_mat))
-
 library("glmnet")
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
 plot(ridge_fit, xvar = "lambda")
@@ -295,7 +332,7 @@ abline(h = 0, lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-plot-ridge-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-plot-ridge-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 This plot shows how the coefficients change as we increase the penalty. That is,
 as we decrease the size of the region that solutions can fall into, the values
@@ -316,7 +353,7 @@ regression gives us a better prediction in this case:
 
 ~~~
 pred_ridge <- predict(ridge_fit, newx = test_mat)
-err_ridge <- apply(pred_ridge, 2, function(col) rss(test_age, col))
+err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col))
 min(err_ridge)
 ~~~
 {: .language-r}
@@ -324,7 +361,7 @@ min(err_ridge)
 
 
 ~~~
-[1] 561.2162
+[1] 46.76802
 ~~~
 {: .output}
 
@@ -338,15 +375,16 @@ err_lm
 
 
 ~~~
-[1] 2680.285
+[1] 223.3571
 ~~~
 {: .output}
 
 
 
 ~~~
-minimum_error <- which.min(err_ridge)
-min_ridge <- pred_ridge[, minimum_error]
+which_min_err <- which.min(err_ridge)
+min_err_ridge <- min(err_ridge)
+pred_min_ridge <- pred_ridge[, which_min_err]
 ~~~
 {: .language-r}
 
@@ -362,7 +400,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -376,22 +414,18 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > 
 > > ## Solution
 > > 
-> > 1. Ridge.
+> > 1. Ridge regression performs significantly better on unseen data, despite
+> >    being "worse" on the training data.
 > >    
 > >    ~~~
-> >    min_ridge
+> >    min_err_ridge
 > >    ~~~
 > >    {: .language-r}
 > >    
 > >    
 > >    
 > >    ~~~
-> >    201868500150_R03C01 201868590193_R02C01 201868590193_R06C01 201868590206_R05C01 
-> >               38.62158            20.86270            32.09608            30.90888 
-> >    201868590206_R06C01 201868590243_R06C01 201868590267_R06C01 201869680009_R07C01 
-> >               26.07445            32.94718            18.34171            27.46892 
-> >    201870610056_R02C01 201870610056_R04C01 201870610111_R04C01 201870610111_R06C01 
-> >               20.37880            35.71221            43.11620            30.49198 
+> >    [1] 46.76802
 > >    ~~~
 > >    {: .output}
 > >    
@@ -405,13 +439,13 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    
 > >    
 > >    ~~~
-> >    [1] 2680.285
+> >    [1] 223.3571
 > >    ~~~
 > >    {: .output}
 > > 2. The ridge ones are less extreme.
 > >    
 > >    ~~~
-> >    all <- c(pred_lm, test_age, min_ridge)
+> >    all <- c(pred_lm, test_age, pred_min_ridge)
 > >    lims <- range(all)
 > >    par(mfrow = 1:2)
 > >    plot(test_age, pred_lm,
@@ -419,7 +453,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >        pch = 19
 > >    )
 > >    abline(coef = 0:1, lty = "dashed")
-> >    plot(test_age, pred_ridge[, which.min(err_ridge)],
+> >    plot(test_age, pred_min_ridge,
 > >        xlim = lims, ylim = lims,
 > >        pch = 19
 > >    )
@@ -427,19 +461,19 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-plot-ridge-prediction-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-plot-ridge-prediction-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 3. They're generally smaller.
 > >    
 > >    ~~~
 > >    par(mfrow = c(1, 1))
-> >    plot(coef(lm_fit), coef(ridge_fit, s = which.min(err_ridge)),
+> >    plot(coef(fit_horvath), coef(ridge_fit, s = which_min_err),
 > >        pch = 19
 > >    )
 > >    abline(coef = 0:1, lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-coef-ridge-lm-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-coef-ridge-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -489,7 +523,7 @@ So, when we increase the penalty (reduce the norm), it's more likely that
 the best solution that falls in this region will be at the corner of this
 diagonal (ie, one or more coefficient is exactly zero).
 
-<img src="../fig/rmd-04-unnamed-chunk-10-1.png" title="Title" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-10-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -516,14 +550,14 @@ diagonal (ie, one or more coefficient is exactly zero).
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-13-1.png" title="LASSO lambda" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-unnamed-chunk-13-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    plot(fit_lasso)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-14-1.png" title="LASSO L1" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-unnamed-chunk-14-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 3. The paths tend to go to exactly zero much more.
 > > 
 > {: .solution}
@@ -537,11 +571,13 @@ There are various methods to select the "best"
 value for $\lambda$. One idea is to split
 the data into $K$ chunks. We then use $K-1$ of
 these as the training set, and the remaining $1$ chunk
-as the test set. Repeating this process for each of the
-$K$ chunks gives us a better estimate of how well the model would
-perform in unseen data.
+as the test set. We can repeat this until we've rotated through all $K$ chunks,
+giving us a good estimate of how well each of the lambda values work in our
+data. Doing this repeated test/train split gives us a better estimate
+of how generalisable our model is. Cross-validation is a really deep topic that
+we're not going to cover in more detail today, though!
 
-<img src="../fig/cross_validation.png" title="Title" alt="Alt" style="display: block; margin: auto;" />
+<img src="../fig/cross_validation.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
 We can use this new idea to pick a lambda value.
 
@@ -552,11 +588,14 @@ plot(lasso)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-16-1.png" title="Lasso" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-16-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 ~~~
-coefl <- coef(lasso, lasso$lambda.1se)
+coefl <- coef(lasso, lasso$lambda.min)
 selected_coefs <- as.matrix(coefl)[coefl[, 1] != 0, 1]
+
+## load the horvath signature to compare features
+coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 ## We select some of the same features! Hooray
 intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ~~~
@@ -565,18 +604,57 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 
 
 ~~~
-[1] "cg22736354"
+ [1] "cg12373771" "cg16547529" "cg17655614" "cg20692569" "cg21801378"
+ [6] "cg22449114" "cg22736354" "cg09809672" "cg11299964" "cg19761273"
+[11] "cg22613010"
 ~~~
 {: .output}
 
-<img src="../fig/rmd-04-unnamed-chunk-17-1.png" title="Heatmap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-17-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+# Blending ridge regression and the LASSO
 
 
-> ## Bias-variance tradeoff and the elastic net
+
+> ## Exercise
+> 
+> 1. Fit an elastic net model (hint: alpha = 0.5) and plot the error. Compare
+>    with LASSO.
+> 2. select the lambda within one standard error of 
+>    the minimum cross-validation error (hint: `lambda.1se`). Compare the
+>    coefficients with the LASSO model.
+> 3. Discuss: how could we pick an alpha in the range (0, 1)? Could we justify
+>    choosing one *a priori*?
+> > ## Solution
+> > 1. Fitting an elastic net model is just like 
+> >    
+> >    ~~~
+> >    elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
+> >    par(mfrow = c(1, 2))
+> >    plot(elastic)
+> >    plot(lasso)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-04-unnamed-chunk-18-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > 2. 
+> >    
+> >    ~~~
+> >    coefe <- coef(elastic, elastic$lambda.1se)
+> >    plot(coefl[, 1], coefe[, 1])
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-04-unnamed-chunk-19-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> {: .solution}
+{: .challenge}
+
+
+> ## The bias-variance tradeoff
 > 
 > When making predictive models, we have to consider bias and variance.
 > 
-> Elastic net is good.
+> TODO: brief technical explanation of bias and variance
 > 
 > 
 > ~~~
@@ -671,7 +749,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-04-unnamed-chunk-19-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-04-unnamed-chunk-21-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > In this case, the results aren't very interesting! We select an intercept-only
 > model.
 {: .callout}

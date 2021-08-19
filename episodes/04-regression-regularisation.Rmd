@@ -5,7 +5,7 @@ exercises: 0
 questions:
 - "What is regularisation?"
 - "How does regularisation work?"
-- "What are some considerations for a regularised model?"
+- "How can we select the level of regularisation for a model?"
 objectives:
 - "Understand the benefits of regularised models."
 - "Understand how different types of regularisation work."
@@ -105,11 +105,34 @@ if we have many correlated features, it's likely that one of these will
 be retained and all others dropped; this can make it more difficult to
 infer the mechanisms behind an association.
 
-> ## Collinearity
+
+
+> ## Exercise
 > 
-> TODO: a technical note about why multicollinearity is a 
-> problem.
-{: .callout}
+> Discuss in  groups:
+> 
+> 1. Why would we observed correlated features in high-dimensional biological
+>    data?
+> 1. Why might correlated features be a problem when fitting linear models?
+> 1. What issue might correlated feature present for stepwise selection?
+> 
+> > ## Solution
+> >
+> > 1. Many of the features in biological data represent very similar 
+> >    information biologically. For example, sets of genes that form complexes
+> >    are often expressed in very similar quantities. Similarly, methylation
+> >    levels at nearby sites are often very highly correlated.
+> > 1. Correlated features can make inference unstable or even impossible
+> >    mathematically.
+> > 1. When performing stepwise selection, we want to pick the most predictive
+> >    feature at each step. When a lot of features are very similar but encode
+> >    slightly different information, which of the correlated features we 
+> >    select can have a huge impact in the later stages of model selection!
+> > 
+> {: .solution}
+{: .challenge}
+
+# The objective of a linear model
 
 When we fit a linear model, we're finding the line through our data that 
 minimises the residual sum of squares.
@@ -193,11 +216,11 @@ points(
 Mathematically, we can write that as
 
 $$
-    \sum_{i=1}^N \hat{y}_i - X_i\beta
+    \sum_{i=1}^N \hat{y}_i - y_i
 $$
 
 where $\hat{y}_i$ is the predicted y value for each input data
-point $X_i$.
+point $X_i$, and $y_i$ is the true observed value.
 This line is the line of best fit through our data when considering this
 goal of minimising the sum of squared error. However, it is not the only 
 possible line we could use! For example, we might want to err on the side of
@@ -208,14 +231,24 @@ models.
 
 > ## Exercise
 > 
-> 1. Why might correlated features be a problem?
-> 2. What are we minimising when we fit a linear model?
+> Discuss in groups:
+> 
+> 1. What are we minimising when we fit a linear model?
+> 2. Why are we minimising this objective? What assumptions are we making
+>    about our data when we do so?
 > 
 > > ## Solution
 > >
-> > 1. Text.
-> > 
-> > 2. Some text.
+> > 1. When we fit a linear model we are minimising the squared error.
+> >    In fact, the standard linear model estimator is often known as
+> >    "ordinary least squares". The "ordinary" really means "original" here,
+> >    to distinguish between this method, which dates back to ~1800, and some
+> >    more "recent" (think 1940s...) methods.
+> > 2. Least squares assumes that, when we account for the change in the mean of
+> >    the outcome based on changes in the income, the data are normally
+> >    distributed. That is, the *residuals* of the model, or the error 
+> >    left over after we account for any linear relationships in the data,
+> >    are normally distributed, and have a fixed variance.
 > >    
 > >
 > {: .solution}
@@ -256,7 +289,6 @@ methyl_mat <- t(assay(methylation))
 
 coef_horvath <- coef_horvath[1:20, ]
 features <- coef_horvath$CpGmarker
-
 horvath_mat <- methyl_mat[, features]
 
 ## Generate an index to split the data
@@ -274,7 +306,9 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > 
 > > ## Solution
 > >
-> > 1. Text.
+> > 1. Splitting the data involves using our index to split up the matrix and
+> >    the age vector into two each. We can use a negative subscript to create
+> >    the test data.
 > >    
 > >    ```{r}    
 > >    train_mat <- horvath_mat[train_ind, ]
@@ -283,13 +317,16 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    test_age <- age[-train_ind]
 > >    ```
 > > 
-> > 2. Some text.
+> > 2. Fitting a model to the training data is similar to what we did in the
+> >    previous episode.
 > >    
 > >    ```{r}
 > >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 > >    ```
 > > 
-> > 3. 
+> > 3. The mean squared error of the model is the mean of the square of the
+> >    residuals. This seems very low here -- on average we're only off by 
+> >    about a year!
 > >    ```{r}
 > >    mean(residuals(fit_horvath)^2)
 > >    ```
@@ -298,15 +335,17 @@ train_ind <- sample(nrow(methyl_mat), 25)
 {: .challenge}
 
 
-With this model, now we can check how well it does. Here we use residual sum of
-squares on the test data.
+With this model, now we can check how well it does. Here we use the mean of
+the squared difference between our predictions and the true ages for the test
+data, or "mean squared error" (MSE). Unfortunately, it seems like this is a lot
+higher than the error on the training data!
 
 ```{r test-plot-lm, fig.cap="Cap", fig.alt="Alt"}
 mse <- function(true, prediction) {
     mean((true - prediction)^2)
 }
 pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
-err_lm <- rss(test_age, pred_lm)
+err_lm <- mse(test_age, pred_lm)
 err_lm
 par(mfrow = c(1, 1))
 plot(test_age, pred_lm, pch = 19)
@@ -364,6 +403,7 @@ points(
     coef[ind_ple[[1]]], coef[ind_ple[[2]]],
     pch = 19, cex = 2, col = "dodgerblue"
 )
+par(mfrow = c(1, 1))
 ```
 
 There are multiple ways to define the distance that our solution must fall in,
@@ -419,12 +459,13 @@ regression gives us a better prediction in this case:
 
 ```{r pred-ridge-lm, fig.width = 10, fig.cap="Cap", fig.alt="Alt"}
 pred_ridge <- predict(ridge_fit, newx = test_mat)
-err_ridge <- apply(pred_ridge, 2, function(col) rss(test_age, col))
+err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col))
 min(err_ridge)
 err_lm
 
-minimum_error <- which.min(err_ridge)
-min_ridge <- pred_ridge[, minimum_error]
+which_min_err <- which.min(err_ridge)
+min_err_ridge <- min(err_ridge)
+pred_min_ridge <- pred_ridge[, which_min_err]
 ```
 
 We can see where on the continuum of lambdas we've picked a model by plotting
@@ -449,14 +490,15 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > 
 > > ## Solution
 > > 
-> > 1. Ridge.
+> > 1. Ridge regression performs significantly better on unseen data, despite
+> >    being "worse" on the training data.
 > >    ```{r}
-> >    min_ridge
+> >    min_err_ridge
 > >    err_lm
 > >    ```
 > > 2. The ridge ones are less extreme.
 > >    ```{r plot-ridge-prediction, fig.cap="Cap", fig.alt="Alt"}
-> >    all <- c(pred_lm, test_age, min_ridge)
+> >    all <- c(pred_lm, test_age, pred_min_ridge)
 > >    lims <- range(all)
 > >    par(mfrow = 1:2)
 > >    plot(test_age, pred_lm,
@@ -464,7 +506,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >        pch = 19
 > >    )
 > >    abline(coef = 0:1, lty = "dashed")
-> >    plot(test_age, pred_ridge[, which.min(err_ridge)],
+> >    plot(test_age, pred_min_ridge,
 > >        xlim = lims, ylim = lims,
 > >        pch = 19
 > >    )
@@ -473,7 +515,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > > 3. They're generally smaller.
 > >    ```{r coef-ridge-lm, fig.cap="Cap", fig.alt="Alt"}
 > >    par(mfrow = c(1, 1))
-> >    plot(coef(lm_fit), coef(ridge_fit, s = which.min(err_ridge)),
+> >    plot(coef(fit_horvath), coef(ridge_fit, s = which_min_err),
 > >        pch = 19
 > >    )
 > >    abline(coef = 0:1, lty = "dashed")
@@ -638,9 +680,11 @@ There are various methods to select the "best"
 value for $\lambda$. One idea is to split
 the data into $K$ chunks. We then use $K-1$ of
 these as the training set, and the remaining $1$ chunk
-as the test set. Repeating this process for each of the
-$K$ chunks gives us a better estimate of how well the model would
-perform in unseen data.
+as the test set. We can repeat this until we've rotated through all $K$ chunks,
+giving us a good estimate of how well each of the lambda values work in our
+data. Doing this repeated test/train split gives us a better estimate
+of how generalisable our model is. Cross-validation is a really deep topic that
+we're not going to cover in more detail today, though!
 
 ```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
 knitr::include_graphics("../fig/cross_validation.png")
@@ -653,6 +697,9 @@ lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 plot(lasso)
 coefl <- coef(lasso, lasso$lambda.min)
 selected_coefs <- as.matrix(coefl)[coefl[, 1] != 0, 1]
+
+## load the horvath signature to compare features
+coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 ## We select some of the same features! Hooray
 intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ```
@@ -681,12 +728,42 @@ Heatmap(
 )
 ```
 
+# Blending ridge regression and the LASSO
 
-> ## Bias-variance tradeoff and the elastic net
+
+
+> ## Exercise
+> 
+> 1. Fit an elastic net model (hint: alpha = 0.5) and plot the error. Compare
+>    with LASSO.
+> 2. select the lambda within one standard error of 
+>    the minimum cross-validation error (hint: `lambda.1se`). Compare the
+>    coefficients with the LASSO model.
+> 3. Discuss: how could we pick an alpha in the range (0, 1)? Could we justify
+>    choosing one *a priori*?
+> 
+> > ## Solution
+> > 1. Fitting an elastic net model is just like 
+> >    ```{r, fig.cap="Elastic", fig.alt="Alt"}
+> >    elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
+> >    par(mfrow = c(1, 2))
+> >    plot(elastic)
+> >    plot(lasso)
+> >    ```
+> > 2. 
+> >    ```{r fig.cap="LASSO-Elastic", fig.alt="Alt"}
+> >    coefe <- coef(elastic, elastic$lambda.1se)
+> >    plot(coefl[, 1], coefe[, 1])
+> >    ```
+> {: .solution}
+{: .challenge}
+
+
+> ## The bias-variance tradeoff
 > 
 > When making predictive models, we have to consider bias and variance.
 > 
-> Elastic net is good.
+> TODO: brief technical explanation of bias and variance
 > 
 > ```{r}
 > elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
