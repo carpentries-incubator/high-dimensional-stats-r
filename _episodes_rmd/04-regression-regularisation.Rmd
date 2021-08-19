@@ -270,7 +270,7 @@ train_ind <- sample(nrow(methyl_mat), 25)
 >    into training and test sets.
 > 2. Fit a model on the training data matrix and training age 
 >    vector.
-> 3. Check the residual sum of squares on this model.
+> 3. Check the mean squared error on this model.
 > 
 > > ## Solution
 > >
@@ -291,7 +291,7 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > > 
 > > 3. 
 > >    ```{r}
-> >    sum(residuals(fit_horvath))
+> >    mean(residuals(fit_horvath)^2)
 > >    ```
 > >
 > {: .solution}
@@ -302,8 +302,8 @@ With this model, now we can check how well it does. Here we use residual sum of
 squares on the test data.
 
 ```{r test-plot-lm, fig.cap="Cap", fig.alt="Alt"}
-rss <- function(true, prediction) {
-    sum((true - prediction)^2)
+mse <- function(true, prediction) {
+    mean((true - prediction)^2)
 }
 pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
 err_lm <- rss(test_age, pred_lm)
@@ -395,8 +395,6 @@ we'll fit a model using the Horvath methylation predictors, using both
 penalised and ordinary least squares.
 
 ```{r plot-ridge, fig.cap="Cap", fig.alt="Alt"}
-lm_fit <- lm(train_age ~ ., data = as.data.frame(train_mat))
-
 library("glmnet")
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
 plot(ridge_fit, xvar = "lambda")
@@ -653,7 +651,7 @@ We can use this new idea to pick a lambda value.
 ```{r, fig.cap="Lasso", fig.alt="Alt"}
 lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 plot(lasso)
-coefl <- coef(lasso, lasso$lambda.1se)
+coefl <- coef(lasso, lasso$lambda.min)
 selected_coefs <- as.matrix(coefl)[coefl[, 1] != 0, 1]
 ## We select some of the same features! Hooray
 intersect(names(selected_coefs), coef_horvath$CpGmarker)
