@@ -5,27 +5,22 @@ exercises: 15
 questions:
 - "Why would we want to find a subset of features
   that are associated with an outcome?"
+- "How should we *not* select features?"
 - "How can we iteratively find a good subset of our features
   variables to use for regression?"
 - "What are some risks and downsides of iterative feature
   selection?"
 objectives:
-- "Understand feature selection for multiple regression in a 
-  biomedical context."
+- "Understand multiple regression in a biomedical context."
 - "Understand how to fit a stepwise regression model."
 keypoints:
-- "Feature selection can help us to understand the mechanisms behind
-  an outcome, or to predict an outcome from some easy-to-gather 
-  features (or both)."
 - "Sets of features can be more predictive and provide
   a better explanation than a single feature alone."
-- "Best subset selection is a powerful but expensive way to select 
-  features."
-- "Forward stepwise regression allows us to find a set of features that
-  are associated with an outcome (eg, cancer volume)."
-- "Reverse stepwise regression allows us to take a predictive set of 
-  features and remove those that are less strongly predictive."
-- "Stepwise regression may not be very efficient."
+- "Stepwise regression allows us to find a set of features that
+  are associated with an outcome (eg, age)."
+- "Stepwise regression is not very efficient."
+# - "Stepwise regression will tend to retain only one
+#   feature out of many that are correlated."
 math: yes
 ---
 
@@ -114,7 +109,7 @@ coefs_bs
 ## a full model
 fit_bs <- lm(
   age ~ .,
-  data = as.data.frame(small_methyl[, names(coefs_bs[-1])])
+  data = as.data.frame(small_methyl[, names(coefs_bs[-1])]
 )
 summary(fit_bs)
 ```
@@ -144,7 +139,7 @@ This is a general problem with best subset selection (here termed
 BS). Forward stepwise selection (FS) is an alternative that is a bit more
 manageable.
 
-```{r bstab, echo = FALSE, out.width="500px", fig.cap="Cap", fig.alt = "Alt"}
+```{r bstab, echo = FALSE, out.width="500px"}
 knitr::include_graphics("../fig/bs_fs.png")
 ```
 
@@ -228,7 +223,7 @@ prostate_scaled <- scale(prostate_mat)
 > 
 > > ## Solution
 > > 1. 
-> >    ```{r fit-scale, fig.cap="Cap", fig.alt = "Alt"}
+> >    ```{r fit-scale}
 > >    fit_prostate_scaled <- lm(cancer_volume ~ prostate_scaled)
 > >    summ_scaled <- summary(fit_prostate_scaled)
 > >    summ_scaled
@@ -282,12 +277,13 @@ This is the sum of the square of the length of the dashed lines in the plot
 below. A low RSS value means that our predictions are very close to the 
 values we really observe.
 
-```{r, echo = FALSE, fig.cap="Cap", fig.alt = "Alt"}
+```{r, echo = FALSE}
 set.seed(66)
 n <- 25
 x <- rnorm(n)
 y <- x * 2 + 1 + rnorm(n)
 fit <- lm(y ~ x)
+ord <- order(y)
 plot(x, y, pch = 19)
 abline(fit)
 for (i in seq_along(x)) {
@@ -390,7 +386,7 @@ and AIC (Akaike information criterion).
 > tool for thinking about data and models, and is a foundation of many more
 > advanced topics in statistics.
 > 
-> ```{r likelihood, echo = FALSE, fig.width = 10, fig.cap="Cap", fig.alt = "Alt"}
+> ```{r likelihood, echo = FALSE, fig.width = 10}
 > library("viridis")
 > set.seed(42)
 > noise_sd <- 1
