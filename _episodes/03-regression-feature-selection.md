@@ -7,27 +7,22 @@ exercises: 15
 questions:
 - "Why would we want to find a subset of features
   that are associated with an outcome?"
+- "How should we *not* select features?"
 - "How can we iteratively find a good subset of our features
   variables to use for regression?"
 - "What are some risks and downsides of iterative feature
   selection?"
 objectives:
-- "Understand feature selection for multiple regression in a 
-  biomedical context."
+- "Understand multiple regression in a biomedical context."
 - "Understand how to fit a stepwise regression model."
 keypoints:
-- "Feature selection can help us to understand the mechanisms behind
-  an outcome, or to predict an outcome from some easy-to-gather 
-  features (or both)."
 - "Sets of features can be more predictive and provide
   a better explanation than a single feature alone."
-- "Best subset selection is a powerful but expensive way to select 
-  features."
-- "Forward stepwise regression allows us to find a set of features that
-  are associated with an outcome (eg, cancer volume)."
-- "Reverse stepwise regression allows us to take a predictive set of 
-  features and remove those that are less strongly predictive."
-- "Stepwise regression may not be very efficient."
+- "Stepwise regression allows us to find a set of features that
+  are associated with an outcome (eg, age)."
+- "Stepwise regression is not very efficient."
+# - "Stepwise regression will tend to retain only one
+#   feature out of many that are correlated."
 math: yes
 ---
 
@@ -122,9 +117,9 @@ to do it. They term it "exhaustive search" because we are exhausting every
 possible combination of features to find the best one.
 
 
+
 ~~~
 library("leaps")
-## Take a small number of features
 small_methyl <- methyl_mat[, 1:10]
 fit_bs <- regsubsets(
   x = small_methyl,
@@ -132,10 +127,7 @@ fit_bs <- regsubsets(
   method = "exhaustive"
 )
 summ <- summary(fit_bs)
-## We need to select which features we want. Here we use RSS
-## (residual sum of squares) to choose
-coefs_bs <- coef(fit_bs, id = which.min(summ$rss))
-coefs_bs
+coef(fit_bs, which.min(summ$rss))
 ~~~
 {: .language-r}
 
@@ -146,52 +138,6 @@ coefs_bs
  145.118554    1.073187   13.767298   22.683667    9.489186  -14.784050 
  cg01644850  cg01656216  cg01873645 
    4.853302    7.915842   -9.715682 
-~~~
-{: .output}
-
-
-
-~~~
-## regsubsets doesn't fit the full model for each combination
-## to save time.
-## To get a model summary, we could use the features identified to fit
-## a full model
-fit_bs <- lm(
-  age ~ .,
-  data = as.data.frame(small_methyl[, names(coefs_bs[-1])])
-)
-summary(fit_bs)
-~~~
-{: .language-r}
-
-
-
-~~~
-
-Call:
-lm(formula = age ~ ., data = as.data.frame(small_methyl[, names(coefs_bs[-1])]))
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--14.198  -4.929  -1.763   4.634  16.277 
-
-Coefficients:
-            Estimate Std. Error t value Pr(>|t|)  
-(Intercept)  145.119     62.221   2.332   0.0271 *
-cg00374717     1.073      2.229   0.481   0.6339  
-cg00864867    13.767      6.970   1.975   0.0582 .
-cg01027739    22.684     10.431   2.175   0.0383 *
-cg01353448     9.489      3.869   2.453   0.0207 *
-cg01584473   -14.784     10.321  -1.432   0.1631  
-cg01644850     4.853      8.430   0.576   0.5694  
-cg01656216     7.916      3.932   2.013   0.0538 .
-cg01873645    -9.716      7.260  -1.338   0.1916  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 9.134 on 28 degrees of freedom
-Multiple R-squared:  0.4523,	Adjusted R-squared:  0.2958 
-F-statistic:  2.89 on 8 and 28 DF,  p-value: 0.01762
 ~~~
 {: .output}
 
@@ -226,7 +172,7 @@ Error in leaps.exhaustive(a, really.big = really.big): Exhaustive search will be
 The function in this case refuses to proceed unless we are sure we want
 to wait around for a long time. It's worth noting this may not even finish
 at all, as the process is likely to run out of memory given for 5000
-features it needs to try $2^{4999}$ models (this number is too big to be 
+features it needs to try $2^{4999}$ models (this number is to big to be 
 represented as a floating point number in R!).
 
 
@@ -246,7 +192,7 @@ This is a general problem with best subset selection (here termed
 BS). Forward stepwise selection (FS) is an alternative that is a bit more
 manageable.
 
-<img src="../fig/bs_fs.png" title="Cap" alt="Alt" width="500px" style="display: block; margin: auto;" />
+<img src="../fig/bs_fs.png" width="500px" style="display: block; margin: auto;" />
 
 Figure taken from [Hastie et al. (2020)](https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf),
 published [here](https://doi.org/10.1214/19-STS733).
@@ -257,16 +203,11 @@ published [here](https://doi.org/10.1214/19-STS733).
 Since we have many more features than observations in this 
 methylation data, we'll work with the `Prostate` dataset
 that's available in the `lasso2` package for this model selection lesson.
-Further, this data is actually better suited to this statistical approach than the methylation data.
-Generally, best subset selection and similar approaches work really well 
-when you have a relatively low number of features with relatively strong 
-impact on the outcome, which is commonly not the case with methylation 
-data.
 
 
 ~~~
 library("lasso2")
-data("Prostate")
+data(Prostate)
 ~~~
 {: .language-r}
 
@@ -351,9 +292,7 @@ the relative impact of different features.
 Scaling features to have mean zero and standard deviation of one
 means that a coefficient value of 1 means that the outcome changes by one
 unit for every standard deviation of the input feature. You may not always
-want to do this - unscaled features can be easier to understand at times, 
-because coefficients then measure the unit change in the outcome variable
-in response to unit changes in the input features.
+want to do this
 
 To scale our data, we can use the `scale` function.
 
@@ -376,57 +315,27 @@ prostate_scaled <- scale(prostate_mat)
 > >    fit_prostate_scaled <- lm(cancer_volume ~ prostate_scaled)
 > >    summ_scaled <- summary(fit_prostate_scaled)
 > >    summ_scaled
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    
-> >    Call:
-> >    lm(formula = cancer_volume ~ prostate_scaled)
-> >    
-> >    Residuals:
-> >         Min       1Q   Median       3Q      Max 
-> >    -1.88603 -0.47346 -0.03987  0.55719  1.86870 
-> >    
-> >    Coefficients:
-> >                           Estimate Std. Error t value Pr(>|t|)    
-> >    (Intercept)             1.35001    0.07105  19.000  < 2e-16 ***
-> >    prostate_scaledlweight -0.03634    0.08664  -0.419    0.676    
-> >    prostate_scaledage      0.16927    0.08163   2.074    0.041 *  
-> >    prostate_scaledlbph    -0.12687    0.08427  -1.506    0.136    
-> >    prostate_scaledsvi     -0.06359    0.10513  -0.605    0.547    
-> >    prostate_scaledlcp      0.51358    0.11422   4.496 2.10e-05 ***
-> >    prostate_scaledgleason  0.13775    0.11141   1.236    0.220    
-> >    prostate_scaledpgg45   -0.20187    0.12202  -1.654    0.102    
-> >    prostate_scaledlpsa     0.66120    0.09903   6.677 2.11e-09 ***
-> >    ---
-> >    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-> >    
-> >    Residual standard error: 0.6998 on 88 degrees of freedom
-> >    Multiple R-squared:  0.6769,	Adjusted R-squared:  0.6475 
-> >    F-statistic: 23.04 on 8 and 88 DF,  p-value: < 2.2e-16
-> >    ~~~
-> >    {: .output}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    plot(summ_prostate$coef[, "Pr(>|t|)"], summ_scaled$coef[, "Pr(>|t|)"],
 > >      xlab = "Coefficients without scaling",
 > >      ylab = "Coefficients with scaling"
 > >    )
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-03-fit-scale-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
-> > 2. The intercept is different, because the mean and scale of the input
+> >     2. The intercept is different, because the mean and scale of the input
 > >    features have changed! If we were to scale the output, that would also
 > >    change the intercept. The intercept quantifies the difference in means
 > >    independent of changes in the features.
-> > 
-> > ```
+> >     
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error: <text>:8:5: unexpected symbol
+> >    7: )
+> >    8:  2. The
+> >           ^
+> >    ~~~
+> >    {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -466,7 +375,7 @@ This is the sum of the square of the length of the dashed lines in the plot
 below. A low RSS value means that our predictions are very close to the 
 values we really observe.
 
-<img src="../fig/rmd-03-unnamed-chunk-2-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-unnamed-chunk-2-1.png" width="432" style="display: block; margin: auto;" />
 
 > ## Exercise 
 > 
@@ -625,7 +534,7 @@ and AIC (Akaike information criterion).
 > tool for thinking about data and models, and is a foundation of many more
 > advanced topics in statistics.
 > 
-> <img src="../fig/rmd-03-likelihood-1.png" title="Cap" alt="Alt" width="720" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-03-likelihood-1.png" width="720" style="display: block; margin: auto;" />
 {: .callout}
 
 
@@ -686,13 +595,13 @@ and AIC (Akaike information criterion).
 > the model. This may reduce the amount of data we have available to fit the 
 > model, but it means we can be more confident about the performance of the
 > model afterwards.
+> 
 > This is especially important when our goal is prediction. Predictive 
 > performance in the data used to train the model is typically very good,
 > even when predictive performance on new, unseen data is very poor.
 > 
 > Predictive performance on unseen data can be thought of a measure of how
-> well our findings *generalise*. This very important topic is 
-> addressed in much more detail in the Carpentries machine learning course.
+> well our findings *generalise*.
 > 
 {: .callout}
 

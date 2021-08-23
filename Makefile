@@ -41,15 +41,15 @@ endif
 ## =================================================
 
 ## * serve            : render website and run a local server
-serve: lesson-md slides
+serve : lesson-md slides
 	${JEKYLL} serve
 
 ## * site             : build website but do not run a server
-site: data fig lesson-md slides
+site : lesson-md slides
 	${JEKYLL} build
 
 ## * docker-serve     : use Docker to serve the site
-docker-serve:
+docker-serve :
 	docker pull carpentries/lesson-docker:latest
 	docker run --rm -it \
 		-v $${PWD}:/home/rstudio \
@@ -60,11 +60,11 @@ docker-serve:
 		carpentries/lesson-docker:latest
 
 ## * repo-check       : check repository settings
-repo-check:
+repo-check :
 	@${PYTHON} bin/repo_check.py -s .
 
 ## * clean            : clean up junk files
-clean:
+clean :
 	@rm -rf ${DST}
 	@rm -rf .sass-cache
 	@rm -rf bin/__pycache__
@@ -73,7 +73,7 @@ clean:
 	@find . -name '*.pyc' -exec rm {} \;
 
 ## * clean-rmd        : clean intermediate R files (that need to be committed to the repo)
-clean-rmd:
+clean-rmd :
 	@rm -rf ${RMD_DST}
 	@rm -rf fig/rmd-*
 
@@ -85,7 +85,7 @@ clean-rmd:
 .PHONY : workshop-check
 
 ## * workshop-check   : check workshop homepage
-workshop-check:
+workshop-check :
 	@${PYTHON} bin/workshop_check.py .
 
 
@@ -93,19 +93,14 @@ workshop-check:
 ## III. Commands specific to lesson websites
 ## =================================================
 
-.PHONY: lesson-check lesson-md lesson-files lesson-fixme slides figure clean-fig data
+.PHONY : lesson-check lesson-md lesson-files lesson-fixme slides
 
 # RMarkdown files
 RMD_SRC = $(wildcard _episodes_rmd/??-*.Rmd)
 RMD_DST = $(patsubst _episodes_rmd/%.Rmd,_episodes/%.md,$(RMD_SRC))
-SLI_DST = $(patsubst _episodes/%.md,_slides/%.Rmd,$(RMD_DST))
-SLI_PDF = $(patsubst _slides/%.Rmd,_slides/%.pdf,$(SLI_DST))
-FIG_TEX = $(wildcard fig/*.tex)
-FIG_PDF = $(patsubst fig/%.tex,fig/%.pdf,$(FIG_TEX))
-FIG_PNG = $(patsubst fig/%.pdf,fig/%.png,$(FIG_PDF))
+SLI_SRC = $(patsubst _episodes/%.md,slides/%.Rmd,$(RMD_DST))
+SLI_DST = $(patsubst _episodes/%.md,slides/%.Rmd,$(SLI_SRC))
 
-DATA_SRC = $(wildcard data/*.R)
-DATA_DST = $(patsubst data/%.R,data/%.rds,$(DATA_SRC))
 
 # Lesson source files in the order they appear in the navigation menu.
 MARKDOWN_SRC = \
@@ -133,63 +128,43 @@ dependencies.csv: _episodes_rmd/*.Rmd
 	@${SHELL} bin/list_r_deps.sh
 
 .installed: dependencies.csv
-	@${SHELL} bin/install_r_deps.sh
+	@${SHELL} bin/install_r_deps.sh \
 	@touch .installed
 
 ## * lesson-md        : convert Rmarkdown files to markdown
-lesson-md: ${RMD_DST} figure
+lesson-md : ${RMD_DST}
 
 _episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
-_slides/%.Rmd: _episodes/%.md
-	Rscript bin/slider.R $< $@
+slides-md: ${SLI_DST}
+	Rscript "bin/slider.R"
 
-_slides/%.pdf: _slides/%.Rmd
-	Rscript -e 'rmarkdown::render("$<")'
-
-slides: ${SLI_DST} ${SLI_PDF}
-
-figure: ${FIG_PNG} clean-fig
-
-fig/%.pdf: fig/%.tex
-	rubber --inplace -d $<
-
-fig/%.png: fig/%.pdf
-	convert -density 300 $< $@
-
-data: ${DATA_DST}
-
-data/%.rds: data/%.R
-	Rscript $<
-
-data/coefHorvath.rds: data/methylation.rds
-
-clean-fig:
-	find fig/ -regextype egrep -regex ".*\.(aux|dvi|fdb_latexmk|fls|log)" | xargs -r rm
+slides-pdf: _slides/%.pdf
+    Rscript -e 'rmarkdown::render("$@", output_file = "$@")'
 
 ## * lesson-check     : validate lesson Markdown
-lesson-check: lesson-fixme
+lesson-check : lesson-fixme
 	@${PYTHON} bin/lesson_check.py -s . -p ${PARSER} -r _includes/links.md
 
 ## * lesson-check-all : validate lesson Markdown, checking line lengths and trailing whitespace
-lesson-check-all:
+lesson-check-all :
 	@${PYTHON} bin/lesson_check.py -s . -p ${PARSER} -r _includes/links.md -l -w --permissive
 
 ## * unittest         : run unit tests on checking tools
-unittest:
+unittest :
 	@${PYTHON} bin/test_lesson_check.py
 
 ## * lesson-files     : show expected names of generated files for debugging
-lesson-files:
+lesson-files :
 	@echo 'RMD_SRC:' ${RMD_SRC}
 	@echo 'RMD_DST:' ${RMD_DST}
 	@echo 'MARKDOWN_SRC:' ${MARKDOWN_SRC}
 	@echo 'HTML_DST:' ${HTML_DST}
 
 ## * lesson-fixme     : show FIXME markers embedded in source files
-lesson-fixme:
+lesson-fixme :
 	@grep --fixed-strings --word-regexp --line-number --no-messages FIXME ${MARKDOWN_SRC} || true
 
 ##
@@ -197,5 +172,5 @@ lesson-fixme:
 ## =================================================
 
 ## * commands         : show all commands.
-commands:
+commands :
 	@sed -n -e '/^##/s|^##[[:space:]]*||p' $(MAKEFILE_LIST)

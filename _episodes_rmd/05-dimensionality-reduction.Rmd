@@ -182,7 +182,7 @@ varDF = data.frame(Dimensions=1:length(varExp), varExp=varExp)
 #create new dataframe with four rows, one for each principal component
 ```
 
-```{r, fig.cap = "Title", fig.alt = "Alt"}
+```{r}
 plot(varDF, ylab = "Percentage of variance explained", xlab = "Principal components")
 ```
 
@@ -201,7 +201,7 @@ of the principal component scores can be observed by plotting arrows
 representing the loadings onto the graph. A biplot of the first two principal 
 components can be created as follows:
 
-```{r, fig.cap = "Title", fig.alt = "Alt"}
+```{r}
 stats::biplot(pcaUS)
 ```
 This biplot shows the position of each state on a 2-dimensional plot where
@@ -265,7 +265,6 @@ library("here")
 library("hgu133a.db")
 library("Biobase")
 library("GEOquery")
-library("SummarizedExperiment")
 ```
 
 We will now load the microarray breast cancer gene expression data
@@ -273,9 +272,8 @@ We will now load the microarray breast cancer gene expression data
 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990).
 
 ```{r}
-cancer_data <- readRDS(here::here("data/cancer_expression.rds"))
-mat <- assay(cancer_data)
-metadata <- colData(cancer_data)
+mat <- readRDS(here("data/cancer_expression.rds"))
+metadata <- readRDS(here("data/cancer_metadata.rds"))
 
 head(mat)
 dim(mat)
@@ -401,7 +399,7 @@ variation. The proportion of variance explained should sum to one.
 > {: .solution}
 {: .challenge}
 
-```{r, fig.cap = "Title", fig.alt = "Alt"}
+```{r}
 screeplot(pc, axisLabSize = 5, titleLabSize = 8)
 ```
 
@@ -446,7 +444,7 @@ the PCA.
 > 
 > > ## Solution
 > > 
-> > ```{r, fig.cap = "Title", fig.alt = "Alt"}
+> > ```{r}
 > > biplot(pc, lab = NULL)
 > > #Find genes associated with probe labels on loadings
 > > #This may be included as part of the challenge?
@@ -464,7 +462,7 @@ PC) can be added to the plot. Labels for each sample are added by default, by
 can be removed if there is too much overlap in names. Sizes of labels, points
 and axes can be changed (see help file).
 
-```{r, fig.cap = "Title", fig.alt = "Alt"}
+```{r}
 biplot(pc, lab = rownames(pc$metadata), pointSize=1, labSize=1)
 ```
 
@@ -485,7 +483,7 @@ PC axes.
 > 
 > > ## Solution
 > > 
-> > ```{r, fig.cap = "Title", fig.alt = "Alt"}
+> > ```{r}
 > >   biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
@@ -502,7 +500,7 @@ So far we have only looked at a biplot of PC1 versus PC2 which only gives part
 of the picture. The pairplots function in PCAtools can be used to create
 multiple biplots including different principal components.
 
-```{r, fig.cap = "Title", fig.alt = "Alt"}
+```{r}
 pairsplot(pc)
 ```
 
