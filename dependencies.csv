@@ -30,6 +30,7 @@ scater
 scran
 scRNAseq
 scuttle
+SingleCellExperiment
 stringr
 BiocManager
 desc
