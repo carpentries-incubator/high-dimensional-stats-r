@@ -10,8 +10,8 @@ questions:
 - "How can we cluster data without a model?"
 - "How can we check if clusters are robust?"
 objectives:
-- "Perform clustering with K-means and mixture models."
-- "Assess clustering performance with silhouette score and bootstrapping."
+- "Perform clustering with K-means, mixture models, and hierarchical clustering."
+- "Assess clustering performance with silhouette score and bootstrapping/consensus clustering."
 keypoints:
 - "KP1"
 math: yes
@@ -21,39 +21,72 @@ math: yes
 
 
 
+# Introduction
+
+
+
 ~~~
-## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("mixtools")
-    library("irlba")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("Rtsne")
-    library("mclust")
-    library("igraph")
-    library("bluster")
-    library("here")
-})
+library("SingleCellExperiment")
+zd <- readRDS(here("data/scrnaseq.rds"))
 set.seed(42)
 ~~~
 {: .language-r}
 
-
-~~~
-zd <- readRDS(here("data/scrnaseq.rds"))
-~~~
-{: .language-r}
+# Mixture model introduction
 
 
 ~~~
+Warning: Removed 2 rows containing missing values (geom_bar).
+~~~
+{: .warning}
+
+<img src="../fig/rmd-06-mixture-animation-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+~~~
+Warning: Removed 2 rows containing missing values (geom_bar).
+~~~
+{: .warning}
+
+<img src="../fig/rmd-06-mixture-animation-2.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+
+# Mixture models proper (multi-dimensional)
+
+https://web.stanford.edu/class/bios221/book/Chap-Mixtures.html
+
+
+~~~
+library("scater")
 zd <- runPCA(zd, ncomponents = 15)
-zd <- runTSNE(zd)
+zd <- runTSNE(zd, dimred = "PCA")
 ~~~
 {: .language-r}
 
-## k-means
+<img src="../fig/rmd-06-mixture-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-06-mixture-2.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+
+# K-means
+
+Generalisation of mixture models to have arbitrary density, just using distance.
+
+
+~~~
+Warning: Removed 4 rows containing missing values (geom_bar).
+~~~
+{: .warning}
+
+<img src="../fig/rmd-06-kmeans-animation-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+~~~
+Warning: Removed 4 rows containing missing values (geom_bar).
+~~~
+{: .warning}
+
+<img src="../fig/rmd-06-kmeans-animation-2.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+
+
+https://web.stanford.edu/class/bios221/book/Chap-Clustering.html
 
 
 ~~~
@@ -67,41 +100,109 @@ plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 
 <img src="../fig/rmd-06-kmeans-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
 
+> ## k-medioids (PAM)
+> 
+> This is like k-means but 
+>
+> 
+{: .callout}
+
+
+# Choosing K
+
+We can't use measures like sum of squares, because then we get $K=N$. As with
+regression, if we keep adding parameters (in this case, clusters)
+the fit will always get better. In fact, it has to! We will get a perfect
+fit (zero error) when each point is its own "cluster".
+
+Therefore we again need to use 
+
+
+# Hierarchical clustering
+
+Recall the heatmap I showed in regression lesson.
+If we do this without hierarchical clustering, it's very noisy.
 
 ~~~
-## model-based
-clust <- mclustBIC(reducedDim(zd), modelNames = "VVV")
-opt_clust <- which.max(clust)
-zd$mixture <- as.character(opt_clust)
+library("minfi")
+library("here")
+library("ComplexHeatmap")
 
-plotReducedDim(zd, "TSNE", colour_by = "mixture")
+methylation <- readRDS(here("data/methylation.rds"))
+
+age <- methylation$Age
+methyl_mat <- t(assay(methylation))
+small <- methyl_mat[, 1:500]
+cor_mat <- cor(small)
+col <- circlize::colorRamp2(
+    breaks = seq(-1, 1, length.out = 9),
+    colors = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))
+)
+Heatmap(cor_mat,
+    column_title = "Feature-feature correlation in methylation data",
+    name = "Pearson correlation",
+    col = col,
+    cluster_rows = FALSE, cluster_columns = FALSE,
+    show_row_dend = FALSE, show_column_dend = FALSE,
+    show_row_names = FALSE, show_column_names = FALSE
+)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-mixture-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-1-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+
+
+With clustering you can see some nice groupings.
 
 
 ~~~
-## graph-based
-g <- buildSNNGraph(zd, k = 10, use.dimred = "PCA")
-clust <- igraph::cluster_walktrap(g)$membership
-reducedDim(zd, "force") <- igraph::layout_with_fr(g)
-colLabels(zd) <- factor(clust)
-plotReducedDim(zd, colour_by = "label", dimred = "force")
+Heatmap(cor_mat,
+    column_title = "Feature-feature correlation in methylation data",
+    name = "Pearson correlation",
+    col = col,
+    row_dend_width = unit(0.2, "npc"),
+    column_dend_height = unit(0.2, "npc"),
+    show_row_names = FALSE, show_column_names = FALSE
+)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-06-unnamed-chunk-2-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+# Distance functions
+
+# Linkage methods
+
+Complete linkage (the default) uses the maximum distance between clusters as
+the distance when merging them.
+
+
+~~~
+distmat <- dist(cor_mat)
+clust <- hclust(distmat, method = "complete")
+plot(clust)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-graph-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-3-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
+Ward’s method says that the distance between two clusters, A and B, is how much
+the sum of squares will increase when we merge them.
+
+Details: https://jbhender.github.io/Stats506/F18/GP/Group10.html
 
 
 ~~~
-# bluster::clusterRows - maybe?
-
-## measures: silhouette, bootstrap
-## approx silhouette? purity?
+clust <- hclust(distmat, method = "ward.D")
+plot(clust)
 ~~~
 {: .language-r}
+
+<img src="../fig/rmd-06-unnamed-chunk-4-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+
+
 
 
 {% include links.md %}

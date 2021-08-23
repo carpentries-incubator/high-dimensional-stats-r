@@ -5,6 +5,41 @@ output: beamer_presentation
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-06-mixture-animation-1.png"))
+```
+
+\newpage
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-06-mixture-animation-2.png"))
+```
+
+\newpage
+# Title
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-06-mixture-2.png"))
+```
+
+\newpage
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-06-kmeans-animation-1.png"))
+```
+
+\newpage
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-06-kmeans-animation-2.png"))
+```
+
+\newpage
 # Title
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
@@ -12,17 +47,31 @@ knitr::include_graphics(here("fig/rmd-06-kmeans-1.png"))
 ```
 
 \newpage
-# Title
+# Cap
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
-knitr::include_graphics(here("fig/rmd-06-mixture-1.png"))
+knitr::include_graphics(here("fig/rmd-06-unnamed-chunk-1-1.png"))
 ```
 
 \newpage
-# Title
+# Cap
 ```{r, out.width="0.5\\textwidth", echo=FALSE}
 # , fig.cap='Alt
-knitr::include_graphics(here("fig/rmd-06-graph-1.png"))
+knitr::include_graphics(here("fig/rmd-06-unnamed-chunk-2-1.png"))
+```
+
+\newpage
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-06-unnamed-chunk-3-1.png"))
+```
+
+\newpage
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-06-unnamed-chunk-4-1.png"))
 ```
 
 \newpage
