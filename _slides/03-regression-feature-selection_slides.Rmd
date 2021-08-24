@@ -12,6 +12,13 @@ knitr::include_graphics(<img src="here("fig/bs_fs.png" width="500px" style="disp
 ```
 
 \newpage
+# > >    <img src="../fig/rmd-03-fit-scale-1.png" width="432" style="display: block; margin: auto;" />
+```{r, out.width="0.5\\textwidth", echo=FALSE'}
+# , fig.cap='> >    <img src="../fig/rmd-03-fit-scale-1.png" width="432" style="display: block; margin: auto;" />
+knitr::include_graphics(> >    <img src="here("fig/rmd-03-fit-scale-1.png" width="432" style="display: block; margin: auto;" />"))
+```
+
+\newpage
 # <img src="../fig/rmd-03-unnamed-chunk-2-1.png" width="432" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
 # , fig.cap='<img src="../fig/rmd-03-unnamed-chunk-2-1.png" width="432" style="display: block; margin: auto;" />
@@ -19,10 +26,10 @@ knitr::include_graphics(<img src="here("fig/rmd-03-unnamed-chunk-2-1.png" width=
 ```
 
 \newpage
-# > <img src="../fig/rmd-03-likelihood-1.png" width="432" style="display: block; margin: auto;" />
+# > <img src="../fig/rmd-03-likelihood-1.png" width="720" style="display: block; margin: auto;" />
 ```{r, out.width="0.5\\textwidth", echo=FALSE'}
-# , fig.cap='> <img src="../fig/rmd-03-likelihood-1.png" width="432" style="display: block; margin: auto;" />
-knitr::include_graphics(> <img src="here("fig/rmd-03-likelihood-1.png" width="432" style="display: block; margin: auto;" />"))
+# , fig.cap='> <img src="../fig/rmd-03-likelihood-1.png" width="720" style="display: block; margin: auto;" />
+knitr::include_graphics(> <img src="here("fig/rmd-03-likelihood-1.png" width="720" style="display: block; margin: auto;" />"))
 ```
 
 \newpage

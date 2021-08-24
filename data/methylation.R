@@ -3,6 +3,7 @@ suppressPackageStartupMessages({
     library("ExperimentHub")
     library("here")
 })
+Sys.setenv(VROOM_CONNECTION_SIZE = 500072)
 
 hub <- ExperimentHub()
 query(hub, "FlowSorted.Blood.EPIC")

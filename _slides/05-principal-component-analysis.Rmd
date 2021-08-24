@@ -1,0 +1,91 @@
+---
+title: "Principle component analysis"
+output: beamer_presentation
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='<img src="../fig/bio_index_vs_percentage_fallow.png" title="Cap" alt="Alt" style="display: block; margin: auto;" />
+knitr::include_graphics(here("fig/bio_index_vs_percentage_fallow.png"))
+```
+
+\newpage
+# Cap
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='<img src="../fig/pendulum.gif" title="Cap" alt="Alt" style="display: block; margin: auto;" />
+knitr::include_graphics(here("fig/pendulum.gif"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-6
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-6-1.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-6
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-6-2.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-10
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-10-1.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-11
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-11-1.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-15
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-15-1.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-16
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-16-1.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-17
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-17-1.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-17
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-17-2.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-18
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-18-1.png"))
+```
+
+\newpage
+# Alt
+```{r, out.width="0.5\\textwidth", echo=FALSE}
+# , fig.cap='plot of chunk unnamed-chunk-19
+knitr::include_graphics(here("fig/rmd-05-unnamed-chunk-19-1.png"))
+```
+
+\newpage

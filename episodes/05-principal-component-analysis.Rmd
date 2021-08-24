@@ -90,15 +90,23 @@ A PCA is carried out by calculating a matrix of Pearson's correlations from the 
 
 The first principal component is the direction of the data along which the observations vary the most. The second principal component is the direction of the data along which the observations show the next highest amount of variation. For example, Figure 1 shows biodiversity index versus percentage area left fallow for 50 farms in southern England. The red line represents the first principal component direction of the data, which is the direction along which there is greatest variability in the data. Projecting points onto this line (i.e. by finding the location on the line closest to the point) would give a vector of points with the greatest possible variance. The next highest amount of variability in the data is represented by the line perpendicular to first regression line which represents the second principal component (green line).
 
-![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
+```{r, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
+# ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
+knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
+```
 
 The principal component score for the first principal component is calculated using the equation:
 $$Z_{i1} = a_1 \times (fallow_i - \overline{fallow}) + a_2 \times (bio index_i - \overline{bio index})$$
 
-$a_1$ and $a_2$ represent principal component loadings in this equation.A loading can be thought of as the 'weight' each variable has on the calculation of the principal component. 
+$a_1$ and $a_2$ represent principal component loadings in this equation. A loading can be thought of as the 'weight' each variable has on the calculation of the principal component. 
 
 The second principal component is a linear combination of the variables that is uncorrelated with the first principal component. There are as many principal components as there are variables in your dataset, but as we'll see, some are more useful at explaining your data than others. By definition, the first principal component explains more variation than other principal components.
 
+In the animation below, you can imagine that the black line is a rod and each red dashed line is a spring. The energy of the spring is proportional to its squared length. The direction of the first principal component is the one that minimises the total energy of all of the springs, as the animation below shows.
+
+```{r, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
+knitr::include_graphics("../fig/pendulum.gif")
+```
 
 > ## Challenge 2
 > 
@@ -135,7 +143,7 @@ Here we will calculate principal component scores for each of the rows in this d
 First, we will examine the prostate dataset which can be downloaded as part of the lasso2 package
 
 
-```{r, echo=TRUE}
+```{r}
 library(lasso2)
 data(Prostate)
 View(Prostate)
@@ -148,14 +156,14 @@ Note that each row of the dataset represents a single patient.
 
 We will create a subset of the data including only clinical variables we want to use in the PCA.
 
-```{r, echo=TRUE}
+```{r}
 pros2 <- Prostate[, c(1, 2, 4, 6, 9)]
 head(pros2)
 ```
 
 Compare the variances between variables in the dataset.
 
-```{r, echo=TRUE}
+```{r, fig.cap="Caption", fig.cap="Alt"}
 apply(pros2, 2, var)
 
 hist(pros2$lweight)
@@ -166,7 +174,7 @@ Note that variance is greatest for lbph and lowest for lweight. It is clear from
 
 Next we will carry out a PCA using the `prcomp` function in base R. Note that the scale = TRUE argument is used to standardise the variables to have a mean 0 and standard deviation of 1.
 
-```{r, echo=TRUE}
+```{r}
 pca.pros <- prcomp(pros2, scale = TRUE, center = TRUE)
 
 sum(pca.pros$rotation[, 1]^2)
@@ -176,7 +184,7 @@ The output from the PCA returns:
 * Standard deviations of each principal component (i.e. the square roots of the eigenvalues of the covariance/correlation matrix as stated in the `prcomp` helpfile). In this example there are 5 principal components (one for each variable in the dataset).
 * The matrix of principal component loadings in which the columns show the principal component loading vectors. Note that the square of values in each column sums to 1 as each loading is scaled so as to prevent a blow up in variance. Larger values in the columns suggest a greater contribution of that variable to the principal component.
 
-```{r, echo=TRUE}
+```{r}
 summary(pca.pros)
 ```
 
@@ -185,7 +193,7 @@ This returns the proportion of variance in the data explained by each of the (p 
 We can use a screeplot to see how much variation in the data is explained by each principal component.
 
 
-```{r, echo=TRUE}
+```{r}
 #variance explained
 varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 #calculate percentage variance explained using output from the PCA
@@ -193,7 +201,7 @@ varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 #create new dataframe with five rows, one for each principal component
 ```
 
-```{r, echo=TRUE}
+```{r, fig.cap="Caption", fig.cap="Alt"}
 plot(varDF)
 ```
 
@@ -202,7 +210,7 @@ The screeplot shows that the first principal component explains most of the vari
 We can better understand what the principal components represent in terms of the original variables by plotting the first two principal components against each other and labelling points by patient number. Clusters of points which have similar principal component scores can be observed using a biplot and the strength and direction of influence different variables have on the calculation of the principal component scores can be observed by plotting arrows representing the loadings onto the graph.
 A biplot of the first two principal components can be created as follows:
 
-```{r, echo=TRUE}
+```{r, fig.cap="Caption", fig.cap="Alt"}
 stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ```
 This biplot shows the position of each patient on a 2-dimensional plot where weight of loadings can be observed via the red arrows associated with each of the variables. The variables lpsa, lcavol and lcp are associated with positive values on PC1 while positive values on PC2 are associated with the variables lbph and lweight. The length of the arrows indicates how much each variable contributes to the calculation of each principal component.   
@@ -224,25 +232,16 @@ The dataset we will be analysing in this lesson includes two subsets of data:
 * a matrix of gene expression data showing microarray results for different probes used to examine gene expression profiles in 91 different breast cancer patient samples.
 * metadata associated with the gene expression results detailing information from patients from whom samples were taken.
 
-To start our analysis we will download the BiocManager and PCAtools packages from BioConductor. The BiocManager package is used to install packages from Bioconductor and PCAtools provides functions that can be used to explore data via PCA and produce useful figures and analysis tools.
+To start our analysis we will load the PCAtools package from BioConductor. PCAtools provides functions that can be used to explore data via PCA and produce useful figures and analysis tools.
 
-```{r, echo=TRUE}
-if (!requireNamespace('BiocManager', quietly = TRUE))  
-  install.packages('BiocManager')  #install BiocManager if not already installed
-
-BiocManager::install('PCAtools')    #install PCAtools if not already installed
-
-#BiocManager::install('hgu133a.db') 
-
-BiocManager::install('PCAtools')    #install PCAtools if not already installed
-
-#Load package into R session
+```{r}
 library("PCAtools")
 ```
 
 We will now load the microarray breast cancer gene expression data (and associated metadata) downloaded from the Gene Expression Omnibus (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990).
 
-```{r, echo=TRUE}
+```{r}
+library("SummarizedExperiment")
 cancer <- readRDS(here::here("data/cancer_expression.rds"))
 mat <- assay(cancer)
 metadata <- colData(cancer)
@@ -308,7 +307,7 @@ As in the example using the prostate dataset we can use a screeplot to compare t
 > 
 > > ## Solution
 > > 
-> > ```{r, echo=TRUE}
+> > ```{r, fig.cap="Caption", fig.cap="Alt"}
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
 > > ```
 > {: .solution}
@@ -330,7 +329,7 @@ We can use these plots, called biplots, to look for patterns in the output from 
 > 
 > > ## Solution
 > > 
-> > ```{r, echo=TRUE}
+> > ```{r, fig.cap="Caption", fig.cap="Alt"}
 > > PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 > > #Find genes associated with probe labels on loadings
 > > #This may be included as part of the challenge?
@@ -342,7 +341,7 @@ The biplot shows the position of patient samples relative to PC1 and PC2 in 2-di
 
 Note that PCAtools does not scale biplot in the same way as biplot using the stats package.
 
-```{r, echo=TRUE}
+```{r, fig.cap="Caption", fig.cap="Alt"}
 PCAtools::biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
 
 plotloadings(pc, labSize = 3)
@@ -360,7 +359,7 @@ Plotting the loadings shows the magnitude and direction of loadings for each pro
 > 
 > > ## Solution
 > > 
-> > ```{r, echo=TRUE}
+> > ```{r, fig.cap="Caption", fig.cap="Alt"}
 > >   PCAtools::biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
@@ -374,7 +373,7 @@ It appears that one cluster has more ER+ samples than the other group.
 
 So far we have only looked at a biplot of PC1 versus PC2 which only gives part of the picture. The pairplots function in PCAtools can be used to create multiple biplots including different principal components.
 
-```{r, echo=TRUE}
+```{r, fig.cap="Caption", fig.cap="Alt"}
 pairsplot(pc)
 ```
 
