@@ -16,6 +16,8 @@ ComplexHeatmap
 RColorBrewer
 leaps
 lasso2
+circlize
+SummarizedExperiment
 stats
 PCAtools
 bluster
@@ -28,6 +30,7 @@ scater
 scran
 scRNAseq
 scuttle
+SingleCellExperiment
 stringr
 BiocManager
 desc

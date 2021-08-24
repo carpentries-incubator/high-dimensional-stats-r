@@ -10,32 +10,6 @@
 #Microbiome dataset from BioConductor
 
 
-##PCA using PCAtools##
-
-#See tutorial at https://bioconductor.org/packages/release/bioc/vignettes/PCAtools/inst/doc/PCAtools.html
-#Prep data in same way so that datasets are comparable and participants can follow rest of code online
-#Use PCAtools as way of preparing the dataset, carrying out basic PCA and creating useful plots
-#For different tools may need to use different packages using same dataset
-
-
-#Install package from GitHub
-
-# if (!requireNamespace("devtools", quietly = TRUE))
-#   install.packages("devtools")
-
-# devtools::install_github("kevinblighe/PCAtools")
-
-
-#Download package from BioConductor
-
-#if (!requireNamespace("BiocManager", quietly = TRUE))
-#install.packages("BiocManager")
-
-#BiocManager::install("PCAtools")
-
-
-#Load package into R session
-
 library("PCAtools")
 
 
