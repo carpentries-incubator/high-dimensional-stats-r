@@ -97,7 +97,7 @@ $a_1$ and $a_2$ represent principal component loadings in this equation. A loadi
 
 The second principal component is a linear combination of the variables that is uncorrelated with the first principal component. There are as many principal components as there are variables in your dataset, but as we'll see, some are more useful at explaining your data than others. By definition, the first principal component explains more variation than other principal components.
 
-In the animation below, you can imagine that the black line is a rod and each red dashed line is a spring. The energy of the spring is proportional to its squared length. The direction of the first principal component is the one that minimises the total energy of all of the springs, as the animation below shows. We then use the length of the "springs" as the first principal component.
+In the animation below, you can imagine that the long black line is a rod and each red dashed line is a spring. The energy of the spring is proportional to its squared length. The direction of the first principal component is the one that minimises the total energy of all of the springs, as the animation below shows. We then use the length of the "springs" as the first principal component.
 
 <img src="../fig/pendulum.gif" title="Cap" alt="Alt" style="display: block; margin: auto;" />
 

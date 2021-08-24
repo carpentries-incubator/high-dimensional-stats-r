@@ -95,7 +95,7 @@ for (t in 1:300) {
     lines(
         -(w[2] * 2 %*% matrix(c(-1, 1), ncol = 2)),
         (w[1] * 2 %*% matrix(c(-1, 1), ncol = 2)),
-        col = "grey60"
+        col = "grey80"
     )
 }
 dev.off()
