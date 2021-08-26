@@ -1,5 +1,5 @@
 ---
-title: "Regularised regression with many features"
+title: "Regularised regression"
 teaching: 0
 exercises: 0
 questions:
@@ -25,7 +25,6 @@ keypoints:
   ```{r, out.width = "600px", fig.cap = "Title", fig.alt = "Alt", echo=FALSE}
   knitr::include_graphics("../fig/bs_fs_lasso.png")
   ```
-
 math: yes
 ---
 
