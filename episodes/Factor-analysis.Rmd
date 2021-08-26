@@ -46,21 +46,22 @@ FA is designed to identify certain unobservable factors from observable variable
 
 #Example using data (Code along 20 mins)
 
-The prostate dataset represents data from 97 men who have prostate cancer. The data come from a study which examined the correlation between the level of prostate specific antigen and a number of clinical measures in men who were about to receive a radical prostatectomy. The data have 97 rows and 10 columns.
+The prostate dataset represents data from 97 men who have prostate cancer. The data come from a study which examined the correlation between the level of prostate specific antigen and a number of clinical measures in men who were about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 
 Columns include lcavol (log-transformed cancer volume), lweight (log-transformed prostate weight), lbph (log-transformed amount of benign prostate enlargement), svi (seminal vesicle invasion), lcp (log capsular penetration; amount of spread of cancer in outer walls of prostate), gleason (Gleason score; grade of cancer cells), pgg45 (percentage Gleason scores 4 or 5), lpsa (log prostate specific antigen; level of PSA in blood). Patient age (in years) is also available in this dataset. 
 
 In this example we use the clinical variables to identify factors representing various clinical variables from prostate cancer patients. Two principal componenets have already been identified as explaining a large proportion of variance in the data when these data were analysed in the PCA episode. We may expect a similar number of factors to exist in the data.
 
 ```{r, echo=TRUE}
-setwd("D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials")
-pros<-read.csv("prostate data.csv",header=T)
+library(lasso2)
+data(Prostate)
+View(Prostate)
 
-nrow(pros)
-head(pros)
+nrow(Prostate)
+head(Prostate)
 
 #select clinical variables for further analysis
-pros2<-pros[,c(2,3,5,7,10)]
+pros2<-Prostate[,c(1,2,4,6,9)]
 head(pros2)
 ```
 
