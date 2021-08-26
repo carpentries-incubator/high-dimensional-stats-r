@@ -28,10 +28,7 @@ math: yes
 
 
 
-# Principal component analysis
-
-
-# Problem statement
+# Introduction
 
 Often researchers want to reduce dimensionality in high-dimensional datasets to look for relationships among variables, identify clusters among subgroups of data points and summarise the dataset using a smaller number of representative variables.
 
