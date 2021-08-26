@@ -79,6 +79,7 @@ Most statistical problems fall into one of two categories: supervised or unsuper
 > D. All of the above
 > 
 > > ## Solution
+> > 
 > > C
 > {: .solution}
 {: .challenge}
@@ -97,7 +98,9 @@ $a_1$ and $a_2$ represent principal component loadings in this equation. A loadi
 
 The second principal component is a linear combination of the variables that is uncorrelated with the first principal component. There are as many principal components as there are variables in your dataset, but as we'll see, some are more useful at explaining your data than others. By definition, the first principal component explains more variation than other principal components.
 
-In the animation below, you can imagine that the long black line is a rod and each red dashed line is a spring. The energy of the spring is proportional to its squared length. The direction of the first principal component is the one that minimises the total energy of all of the springs, as the animation below shows. We then use the length of the "springs" as the first principal component.
+If it helps, you can imagine that the long black line is a rod and each red dashed line is a spring. The energy of each spring is proportional to its squared length. The direction of the first principal component is the one that minimises the total energy of all of the springs. In the animation below,
+the springs pull the rod, finding the direction of the first principal component when they reach equilibrium. We then use the length of the springs from the rod as the first principal component.
+This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
 <img src="../fig/pendulum.gif" title="Cap" alt="Alt" style="display: block; margin: auto;" />
 
@@ -114,6 +117,7 @@ In the animation below, you can imagine that the long black line is a rod and ea
 > E. All of the above
 > 
 > > ## Solution
+> > 
 > > B
 > {: .solution}
 {: .challenge}
@@ -381,6 +385,7 @@ Using the Bioconductor package PCAtools we will apply a PCA to the cancer gene e
 > Apply a PCA to the cancer gene expression data using the `pca` function from PCAtools.  You can use the help files in PCAtools to find out about the `pca` function (type `?pca` in R). Remove the lower 20% of principal components from your PCA using the `removeVar` argument in the `pca` function. As in the example using prostate data above, examine the first 5 rows and columns of rotated data and loadings from your PCA.
 > 
 > > ## Solution
+> > 
 > > 
 > > ~~~
 > >                PC1        PC2        PC3        PC4        PC5

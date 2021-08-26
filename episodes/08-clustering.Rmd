@@ -4,11 +4,12 @@ teaching: 0
 exercises: 0
 questions:
 - "What does clustering mean?"
+- "Why would we want to find clusters in data?"
 - "How can we cluster data with a model?"
 - "How can we cluster data without a model?"
 - "How can we check if clusters are robust?"
 objectives:
-- "Perform clustering with K-means, mixture models, and hierarchical clustering."
+- "Understand and perform clustering with K-means, mixture models, and hierarchical clustering."
 - "Assess clustering performance with silhouette score and bootstrapping/consensus clustering."
 keypoints:
 - "KP1"
@@ -23,6 +24,7 @@ if (!file.exists(here::here("data/scrnaseq.rds"))) {
     source(here::here("data/scrnaseq.R"))
 }
 ```
+
 ```{r pkgs, echo=FALSE}
 ## preamble
 suppressPackageStartupMessages({
@@ -42,6 +44,11 @@ suppressPackageStartupMessages({
 
 # Introduction
 
+High-dimensional data, especially in biological settings, commonly has
+many sources of heterogeneity. Some of these are stochastic variation
+arising from measurement error or random differences between organisms. In
+some cases, this heterogeneity arises from the presence of subgroups in the
+data.
 
 ```{r data}
 library("SingleCellExperiment")
