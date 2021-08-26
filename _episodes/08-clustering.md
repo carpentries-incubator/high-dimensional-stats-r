@@ -47,14 +47,14 @@ Warning: Removed 2 rows containing missing values (geom_bar).
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-06-mixture-animation-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-mixture-animation-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 ~~~
 Warning: Removed 2 rows containing missing values (geom_bar).
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-06-mixture-animation-2.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-mixture-animation-2.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 # Mixture models proper (multi-dimensional)
@@ -69,7 +69,7 @@ zd <- runTSNE(zd, dimred = "PCA")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-mixture-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-06-mixture-2.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-mixture-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-08-mixture-2.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 # K-means
@@ -82,14 +82,14 @@ Warning: Removed 4 rows containing missing values (geom_bar).
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-06-kmeans-animation-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-kmeans-animation-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 ~~~
 Warning: Removed 4 rows containing missing values (geom_bar).
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-06-kmeans-animation-2.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-kmeans-animation-2.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -105,7 +105,7 @@ plotReducedDim(zd, "TSNE", colour_by = "kmeans")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-kmeans-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-kmeans-1.png" title="Title" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 > ## k-medioids (PAM)
 > 
@@ -156,7 +156,7 @@ Heatmap(cor_mat,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-1-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-1-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -175,7 +175,7 @@ Heatmap(cor_mat,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-2-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-2-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 # Distance functions
 
@@ -192,7 +192,7 @@ plot(clust)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-3-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-3-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 Ward’s method says that the distance between two clusters, A and B, is how much
 the sum of squares will increase when we merge them.
@@ -206,7 +206,7 @@ plot(clust)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-4-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-4-1.png" title="Cap" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 
