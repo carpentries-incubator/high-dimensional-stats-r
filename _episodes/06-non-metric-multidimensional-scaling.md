@@ -32,7 +32,7 @@ keypoints:
 
 Researchers often aim to reduce dimensionality in high-dimensional datasets that describe communities of species, microbes or genes in different sites, patients or samples. Such datasets may include different types of data describing the site or patient including both continuous and categorical data. For example, a researcher might be interested in understanding how communities of bacteria in the gut vary among site (see Figure 1) or how genetic composition varies among people.
 
-<img src="../fig/microbiome_schematic.png" style="display: block; margin: auto;" />
+<img src="../fig/microbiome_schematic.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
 **Non-metric multidimensional scaling (NMDS)** is a popular approach for graphically representing relationships between objects (e.g. plots or samples) in multidimensional space. The goal of NMDS is to reduce information contained within multiple dimensions (e.g. communities, patients, study sites) into a smaller number of dimensions, allowing for easier visualisation and interpretation. NMDS attempts to represent the pairwise dissimilarity between objects in as low-dimensional a space as possible. Because NMDS ranks data points based on their relative similarities (or dissimilarities), this makes it an extremely flexible technique that can incorporate various different types of data.
 
@@ -43,8 +43,8 @@ In other ordination methods, many axes (or in the case of PCA principal componen
 The abundance of communities of species can be plotted on a single axis (Figure 2). We can add a second axis showing the abundance of communities of a second species (Figure 3). We can then add a third axis representing abundance of communities of a third species. Imagine we have data for abundance of communities of lots of different species. Each requires a separate axis. This becomes impossible to visualise!
 NMDS is used to represent abundances of different communities in multidimensional space using a reduced number of dimensions (or axes).
 
-<img src="../fig/one_dimension_species_vs_site.png" style="display: block; margin: auto;" />
-<img src="../fig/two_dimension_species_vs_site.png" style="display: block; margin: auto;" />
+<img src="../fig/one_dimension_species_vs_site.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
+<img src="../fig/two_dimension_species_vs_site.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
 
 
 To carry out NMDS, first map the relative positions of sites in multidimensional space (in rank orders). The user then chooses the number of dimensions/axes they would like to use to display the data (more than 3 is difficult to visualise). Next, calculate differences in species abundance between sites and rank on the number of dimensions/axes specified by the user. This configuration of species abundance among sites in reduced dimensions/axes is compared with the true observed distances between sites. The disagreement between ranks of sites according to these two configurations is measured as stress, an index between 0 and 1 in which large disagreements correspond to large stress values.
@@ -489,7 +489,7 @@ stressplot(ord)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-7-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="432" style="display: block; margin: auto;" />
 
 This stressplot suggests that the NMDS fitted on two dimensions fits the original data well.
 
@@ -674,7 +674,7 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-06-unnamed-chunk-8-1.png" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-06-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > ## 3 dimensions is easier to visualise than 4 dimensions and gives good enough fit
@@ -742,7 +742,7 @@ plot_ordination(ds.core, ord, color = "group") +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-11-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
 
 
 Given that this NMDS solution has 3 dimensions, plot other dimensions. Plot group on each point according to the metadata. Group refers to study group each participant belonged to (3 different home environments thought to affect diet).
@@ -754,7 +754,7 @@ plot_ordination(ds.core, ord, color = "group",axes=c(1,3)) +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-12-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 
 
 ~~~
@@ -763,7 +763,7 @@ plot_ordination(ds.core, ord, color = "group",axes=c(2,3)) +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-13-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="432" style="display: block; margin: auto;" />
 
 
 > ## Challenge 3 (3 mins)
@@ -780,7 +780,7 @@ plot_ordination(ds.core, ord, color = "group",axes=c(2,3)) +
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-06-unnamed-chunk-14-1.png" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-06-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > plot_ordination(ds.core, ord, color = "sex") +
@@ -788,7 +788,7 @@ plot_ordination(ds.core, ord, color = "group",axes=c(2,3)) +
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-06-unnamed-chunk-14-2.png" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-06-unnamed-chunk-14-2.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > plot_ordination(ds.core, ord, color = "nationality") +
@@ -796,7 +796,7 @@ plot_ordination(ds.core, ord, color = "group",axes=c(2,3)) +
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-06-unnamed-chunk-14-3.png" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-06-unnamed-chunk-14-3.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > plot_ordination(ds.core, ord, color = "nationality", axes=c(1,3)) +
@@ -804,7 +804,7 @@ plot_ordination(ds.core, ord, color = "group",axes=c(2,3)) +
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-06-unnamed-chunk-14-4.png" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-06-unnamed-chunk-14-4.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -828,7 +828,7 @@ p + ggtitle("NMDS on dissimilarity matrix")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-15-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="432" style="display: block; margin: auto;" />
 
 ~~~
 p <- plot_ordination(ds.core, ord, color="nationality", shape="sex", axes=c(1,3))
@@ -838,7 +838,7 @@ p + ggtitle("NMDS on dissimilarity matrix")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-15-2.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-15-2.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="432" style="display: block; margin: auto;" />
 
 ~~~
 p <- plot_ordination(ds.core, ord, color="nationality", shape="sex", axes=c(2,3))
@@ -848,7 +848,7 @@ p + ggtitle("NMDS on dissimilarity matrix")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-15-3.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-15-3.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="432" style="display: block; margin: auto;" />
 
 Reading NMDS plots is quite straightforward: objects that are ordinated closer to one another are likely to be more similar than those further apart. However, the scale of the axes and the ordination of the plot do not tell us much in terms of the original data. 
 
@@ -863,7 +863,7 @@ ordiplot3d(ord, col = meta(ds.core)$nationality, angle = 30)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-unnamed-chunk-16-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="432" style="display: block; margin: auto;" />
 
 We can see from this plot that it is much easier to visualise the three NMDS dimensions using a 3D scatterplot than it is using a series of three 2D scatterplots. The disadvantage is that the current 3D scatterplot can only be observed from one angle making it difficult to observe some data points. The user can change the angle that the scatterplot is viewed from using the `angle` argument in `ordiplot3d`. 
 

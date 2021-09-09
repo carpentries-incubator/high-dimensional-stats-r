@@ -1,0 +1,81 @@
+---
+title: "Hierarchical clustering"
+teaching: 0
+exercises: 0
+questions:
+- "What does clustering mean?"
+- "Why would we want to find clusters in data?"
+- "How can we cluster data with a model?"
+- "How can we cluster data without a model?"
+- "How can we check if clusters are robust?"
+objectives:
+- "Understand and perform clustering with K-means, mixture models, and hierarchical clustering."
+- "Assess clustering performance with silhouette score and bootstrapping/consensus clustering."
+keypoints:
+- "KP1"
+math: yes
+---
+
+
+
+# Hierarchical clustering
+
+Recall the heatmap I showed in regression lesson.
+If we do this without hierarchical clustering, it's very noisy.
+```{r, fig.cap="Cap", fig.alt="Alt"}
+library("minfi")
+library("here")
+library("ComplexHeatmap")
+
+methylation <- readRDS(here("data/methylation.rds"))
+
+age <- methylation$Age
+methyl_mat <- t(assay(methylation))
+small <- methyl_mat[, 1:500]
+cor_mat <- cor(small)
+col <- circlize::colorRamp2(
+    breaks = seq(-1, 1, length.out = 9),
+    colors = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))
+)
+Heatmap(cor_mat,
+    column_title = "Feature-feature correlation in methylation data",
+    name = "Pearson correlation",
+    col = col,
+    cluster_rows = FALSE, cluster_columns = FALSE,
+    show_row_dend = FALSE, show_column_dend = FALSE,
+    show_row_names = FALSE, show_column_names = FALSE
+)
+```
+
+
+
+With clustering you can see some nice groupings.
+
+```{r, fig.cap="Cap", fig.alt="Alt"}
+Heatmap(cor_mat,
+    column_title = "Feature-feature correlation in methylation data",
+    name = "Pearson correlation",
+    col = col,
+    row_dend_width = unit(0.2, "npc"),
+    column_dend_height = unit(0.2, "npc"),
+    show_row_names = FALSE, show_column_names = FALSE
+)
+```
+
+# Distance functions
+
+# Linkage methods
+
+Complete linkage (the default) uses the maximum distance between clusters as
+the distance when merging them.
+
+```{r, fig.cap="Cap", fig.alt="Alt"}
+distmat <- dist(cor_mat)
+clust <- hclust(distmat, method = "complete")
+plot(clust)
+```
+
+Ward’s method says that the distance between two clusters, A and B, is how much
+the sum of squares will increase when we merge them.
+
+Details: https://jbhender.github.io/Stats506/F18/GP/Group10.html

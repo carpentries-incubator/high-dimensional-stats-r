@@ -147,8 +147,13 @@ First, we will examine the prostate dataset which can be downloaded as part of t
 ```{r}
 library(lasso2)
 data(Prostate)
-View(Prostate)
+```
 
+```{r, eval=FALSE}
+View(Prostate)
+```
+
+```{r}
 nrow(Prostate)
 head(Prostate)
 ```
@@ -246,11 +251,19 @@ library("SummarizedExperiment")
 cancer <- readRDS(here::here("data/cancer_expression.rds"))
 mat <- assay(cancer)
 metadata <- colData(cancer)
+```
 
+```{r, eval=FALSE}
 View(mat)
 #nrow=22215 probes
 #ncol=91 samples
+```
+
+```{r, eval=FALSE}
 View(metadata)
+```
+
+```{r}
 #nrow=91
 #ncol=8
 all(colnames(mat) == rownames(metadata))

@@ -58,8 +58,13 @@ In this example we use the clinical variables to identify factors representing v
 ```{r}
 library(lasso2)
 data(Prostate)
-View(Prostate)
+```
 
+```{r, eval=FALSE}
+View(Prostate)
+```
+
+```{r}
 nrow(Prostate)
 head(Prostate)
 
