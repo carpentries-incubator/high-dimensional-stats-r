@@ -86,7 +86,7 @@ A PCA is carried out by calculating a matrix of Pearson's correlations from the 
 
 The first principal component is the direction of the data along which the observations vary the most. The second principal component is the direction of the data along which the observations show the next highest amount of variation. For example, Figure 1 shows biodiversity index versus percentage area left fallow for 50 farms in southern England. The red line represents the first principal component direction of the data, which is the direction along which there is greatest variability in the data. Projecting points onto this line (i.e. by finding the location on the line closest to the point) would give a vector of points with the greatest possible variance. The next highest amount of variability in the data is represented by the line perpendicular to first regression line which represents the second principal component (green line).
 
-<img src="../fig/bio_index_vs_percentage_fallow.png" title="Cap" alt="Alt" style="display: block; margin: auto;" />
+<img src="../fig/bio_index_vs_percentage_fallow.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
 The principal component score for the first principal component is calculated using the equation:
 $$Z_{i1} = a_1 \times (fallow_i - \overline{fallow}) + a_2 \times (bio index_i - \overline{bio index})$$
@@ -99,7 +99,7 @@ If it helps, you can imagine that the long black line is a rod and each red dash
 the springs pull the rod, finding the direction of the first principal component when they reach equilibrium. We then use the length of the springs from the rod as the first principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
-<img src="../fig/pendulum.gif" title="Cap" alt="Alt" style="display: block; margin: auto;" />
+<img src="../fig/pendulum.gif" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
 > ## Challenge 2
 > 
@@ -141,8 +141,17 @@ First, we will examine the prostate dataset which can be downloaded as part of t
 ~~~
 library(lasso2)
 data(Prostate)
-View(Prostate)
+~~~
+{: .language-r}
 
+
+~~~
+View(Prostate)
+~~~
+{: .language-r}
+
+
+~~~
 nrow(Prostate)
 ~~~
 {: .language-r}
@@ -221,14 +230,14 @@ hist(pros2$lweight)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-6-1.png" title="Alt" alt="plot of chunk unnamed-chunk-6" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-8-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 ~~~
 hist(pros2$lbph)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-6-2.png" title="Alt" alt="plot of chunk unnamed-chunk-6" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-8-2.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 Note that variance is greatest for lbph and lowest for lweight. It is clear from this output that we need to scale each of these variables before including them in a PCA analysis to ensure that differences in variances between variables do not drive the calculation of principal components. In this example we standardise all five variables to have a mean of 0 and a standard deviation of 1. We can do this inside the `prcomp` function in R, which carries out a PCA with centred (around mean = 0) and standardised variables (with a standard deviation of 1). The `prcomp` function carries out a PCA on the input dataset (where the input data are in the form of a matrix).
 
@@ -291,7 +300,7 @@ plot(varDF)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-10-1.png" title="Alt" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-12-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The screeplot shows that the first principal component explains most of the variance in the data (>50%) and each subsequent principal component explains less and less of the total variance. The first two principal components explain >70% of variance in the data. But what do these two principal components mean?
 
@@ -304,7 +313,7 @@ stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-11-1.png" title="Alt" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-13-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 This biplot shows the position of each patient on a 2-dimensional plot where weight of loadings can be observed via the red arrows associated with each of the variables. The variables lpsa, lcavol and lcp are associated with positive values on PC1 while positive values on PC2 are associated with the variables lbph and lweight. The length of the arrows indicates how much each variable contributes to the calculation of each principal component.   
 
 The left and bottom axes show normalised principal component scores. The axes on the top and right of the plot are used to interpret the loadings, where loadings are scaled by the standard deviation of the principal components (`pca.pros$sdev`) times square root the number of observations. 
@@ -340,11 +349,25 @@ library("SummarizedExperiment")
 cancer <- readRDS(here::here("data/cancer_expression.rds"))
 mat <- assay(cancer)
 metadata <- colData(cancer)
+~~~
+{: .language-r}
 
+
+~~~
 View(mat)
 #nrow=22215 probes
 #ncol=91 samples
+~~~
+{: .language-r}
+
+
+~~~
 View(metadata)
+~~~
+{: .language-r}
+
+
+~~~
 #nrow=91
 #ncol=8
 all(colnames(mat) == rownames(metadata))
@@ -530,7 +553,7 @@ As in the example using the prostate dataset we can use a screeplot to compare t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-unnamed-chunk-15-1.png" title="Alt" alt="plot of chunk unnamed-chunk-15" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-unnamed-chunk-20-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -556,7 +579,7 @@ We can use these plots, called biplots, to look for patterns in the output from 
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-unnamed-chunk-16-1.png" title="Alt" alt="plot of chunk unnamed-chunk-16" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-unnamed-chunk-21-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > #Find genes associated with probe labels on loadings
@@ -584,7 +607,7 @@ increasing max.overlaps
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-05-unnamed-chunk-17-1.png" title="Alt" alt="plot of chunk unnamed-chunk-17" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-22-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 ~~~
 plotloadings(pc, labSize = 3)
@@ -599,7 +622,7 @@ increasing max.overlaps
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-05-unnamed-chunk-17-2.png" title="Alt" alt="plot of chunk unnamed-chunk-17" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-22-2.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 We can see from this plot that there appear to be two separate groups of points that separate on the PC1 axis, but that no other grouping is apparent on other PC axes.
 
@@ -631,7 +654,7 @@ Plotting the loadings shows the magnitude and direction of loadings for each pro
 > > ~~~
 > > {: .warning}
 > > 
-> > <img src="../fig/rmd-05-unnamed-chunk-18-1.png" title="Alt" alt="plot of chunk unnamed-chunk-18" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-unnamed-chunk-23-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -645,7 +668,7 @@ pairsplot(pc)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-19-1.png" title="Alt" alt="plot of chunk unnamed-chunk-19" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-unnamed-chunk-24-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 Use the components argument in pairsplot to define which principal components will be included in the plot. Default is 5 principal components.
 

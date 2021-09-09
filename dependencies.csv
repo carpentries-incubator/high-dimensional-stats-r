@@ -34,7 +34,10 @@ scater
 scran
 scRNAseq
 scuttle
+MASS
 SingleCellExperiment
+ConsensusClusterPlus
+diceR
 stringr
 BiocManager
 desc

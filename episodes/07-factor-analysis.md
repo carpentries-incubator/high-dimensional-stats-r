@@ -36,7 +36,7 @@ Unlike PCA, researchers carrying out FA can specify the number of latent variabl
 Examples of datasets and research questions for which FA may be appropriate include: assessing two factors 'writing ability' and 'mathematical ability' using students' examination scores including sections with multiple questions on writing and mathematics. FA could be used to give each student a score for 'writing ability' and 'mathematical ability' based on responses to a larger selection of examination questions (Figure 1). FA may be more appropriate than PCA in this example as researchers know in advance of analysis how many factors (or features) the data have and this knowledge can be included in analysis. Another example of how FA can be used is creating new factors based on a researcher's knowledge of how genes group into clusters.
 
 
-<img src="../fig/table_for_fa.png" style="display: block; margin: auto;" />
+<img src="../fig/table_for_fa.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
 
 FA is designed to identify certain unobservable factors from observable variables included in the original dataset. This is slightly different from PCA which does not directly do this; instead PCA creates as many features as there are variables in the dataset which represent different combinations of variables.
@@ -54,8 +54,17 @@ In this example we use the clinical variables to identify factors representing v
 ~~~
 library(lasso2)
 data(Prostate)
-View(Prostate)
+~~~
+{: .language-r}
 
+
+~~~
+View(Prostate)
+~~~
+{: .language-r}
+
+
+~~~
 nrow(Prostate)
 ~~~
 {: .language-r}
@@ -328,7 +337,7 @@ text(pros.fa$loadings[,1]-0.08,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-07-unnamed-chunk-5-1.png" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-07-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="432" style="display: block; margin: auto;" />
 
 
 > ## Challenge 2 (3 mins)
