@@ -190,7 +190,7 @@ plotReducedDim(scrnaseq, "TSNE", colour_by = "kmeans")
 > 
 {: .callout}
 
-# Cluster robustness
+# Cluster robustness (silhouette)
 
 We want to be sure that
 
@@ -198,37 +198,24 @@ We want to be sure that
 
 ```{r}
 library("scater")
-
-library("diceR")
-library("ComplexHeatmap")
+library("pheatmap")
+library("bluster")
 library("viridis")
 
-pc <- reducedDim(scrnaseq)[sample(ncol(scrnaseq), 1000), ]
-ccp <- consensus_cluster(pc, reps = 10, nk = 2:10, algorithms = "km")
-cm <- consensus_matrix(ccp)
-# Heatmap(cm, cluster_rows = FALSE, cluster_columns = FALSE, col = viridis(100))
-Heatmap(cm, cluster_rows = TRUE, cluster_columns = TRUE, col = viridis(100))
+
+pc <- reducedDim(scrnaseq)
+km_fun <- function(x) {
+    kmeans(x, 5)$cluster
+}
+originals <- km_fun(pc)
+ratios <- bootstrapStability(pc, FUN = km_fun, clusters = originals)
+pheatmap(ratios,
+    cluster_row = FALSE, cluster_col = FALSE,
+    color = viridis::magma(100),
+    breaks = seq(-1, 1, length.out = 101)
+)
 ```
 
-```{r metrics, echo = FALSE, eval = FALSE, fig.cap = "Title", fig.alt = "Alt"}
-
-# Graph-based clustering (maybe)
-
-# ```{r graph, fig.cap = "Title", fig.alt = "Alt"}
-## graph-based
-g <- buildSNNGraph(scrnaseq, k = 10, use.dimred = "PCA")
-clust <- igraph::cluster_walktrap(g)$membership
-reducedDim(scrnaseq, "force") <- igraph::layout_with_fr(g)
-colLabels(scrnaseq) <- factor(clust)
-plotReducedDim(scrnaseq, colour_by = "label", dimred = "force")
-# ```
-
-
-# bluster::clusterRows - maybe?
-
-## measures: silhouette, bootstrap
-## approx silhouette? purity?
-```
 
 ## Further reading
 
