@@ -96,9 +96,9 @@ We want to be sure that
 
 ~~~
 library("scater")
-library("ConsensusClusterPlus")
 
 library("diceR")
+library("ComplexHeatmap")
 library("viridis")
 
 pc <- reducedDim(scrnaseq)[sample(ncol(scrnaseq), 1000), ]
@@ -109,12 +109,7 @@ Heatmap(cm, cluster_rows = TRUE, cluster_columns = TRUE, col = viridis(100))
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in Heatmap(cm, cluster_rows = TRUE, cluster_columns = TRUE, col = viridis(100)): could not find function "Heatmap"
-~~~
-{: .error}
+<img src="../fig/rmd-09-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="432" style="display: block; margin: auto;" />
 
 
 

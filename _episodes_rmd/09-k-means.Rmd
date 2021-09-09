@@ -198,9 +198,9 @@ We want to be sure that
 
 ```{r}
 library("scater")
-library("ConsensusClusterPlus")
 
 library("diceR")
+library("ComplexHeatmap")
 library("viridis")
 
 pc <- reducedDim(scrnaseq)[sample(ncol(scrnaseq), 1000), ]
