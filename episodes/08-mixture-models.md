@@ -47,6 +47,19 @@ the causes for the same types of cancer in older people.
 
 An example of a *multi-modal* distribution like this is shown below:
 
+
+~~~
+set.seed(66)
+true_means <- c(-1, 4)
+true_sds <- c(2, 1)
+aggressiveness <- c(
+    rnorm(30, mean = true_means[[1]], sd = true_sds[[1]]),
+    rnorm(50, mean = true_means[[2]], sd = true_sds[[1]])
+)
+hist(aggressiveness, breaks = "FD")
+~~~
+{: .language-r}
+
 <img src="../fig/rmd-08-mixture-data-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 These data seem to arise from two different groupings, or two different 
@@ -54,23 +67,26 @@ distributions. We can imagine modelling this by fitting two distributions, and
 labelling each point as belonging to one or the other distribution.
 How can we do that? Well, it might help to think about how
 we'd fit a distribution to unimodal data first. It's not uncommon to see data
-that's roughly normally distributed: 
+that's roughly normally distributed. For example, cancer volume in a clinical
+trial might be normally distributed:
 
 
 ~~~
-Warning: Removed 2 rows containing missing values (geom_bar).
+set.seed(66)
+volume <- rnorm(200)
+hist(volume, breaks = "FD")
 ~~~
-{: .warning}
+{: .language-r}
 
 <img src="../fig/rmd-08-unimodal-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 For data like these, we could
-use the empirical standard deviation and mean. However, we might not always
+simply measure the mean and standard deviation of the data using `mean` and
+`sd`. However, we might not always
 see data that looks exactly normal; we might want to fit a different type of
 distribution where the parameters can't be estimated quite so simply.
 We can use the concept of likelihood to optimise the parameters of any
 distribution.
-Mathematically, we are trying to find that 
 Specifically, we find the set of parameters (in this case, mean and standard
 deviation) that best fit the data.
 
@@ -79,17 +95,13 @@ deviation) that best fit the data.
 set.seed(66)
 univar <- rnorm(200)
 library("MASS")
-opt <- fitdistr(x = univar, densfun = dnorm, start = list(mean = 10, sd = 10))
+opt <- fitdistr(x = univar, densfun = dnorm, start = list(mean = 1, sd = 1))
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
@@ -99,24 +111,25 @@ Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 
 
 ~~~
-library("ggplot2")
-ggplot(data.frame(x = univar)) +
-    aes(x) +
-    geom_histogram(aes(y = ..density..)) +
-    geom_function(
-        fun = dnorm,
-        args = list(mean = opt$estimate["mean"], sd = opt$estimate["sd"]),
-        aes(colour = "Fitted distribution")
-    ) +
-    scale_colour_discrete(name = NULL)
+fitted_mean <- opt$estimate[["mean"]]
+fitted_sd <- opt$estimate[["sd"]]
+hist(univar, freq = FALSE, breaks = "FD")
+curve(
+    dnorm(x, mean = fitted_mean, sd = fitted_sd),
+    from = min(univar),
+    to = max(univar),
+    add = TRUE
+)
 ~~~
 {: .language-r}
 
 <img src="../fig/rmd-08-fit-univar-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
+
+
 > ## Exercise
 > 
-> 1. What are the empirical estimates of mean and standard deviation for these
+> 1. What are the `mean` and `sd` for these
 >    data? Are they different to the estimates from `fitdistr`?
 > 2. Transform the data using `exp` and fit a log-normal distribution to the 
 >    data. Compare these with the 
@@ -135,8 +148,8 @@ ggplot(data.frame(x = univar)) +
 > >    
 > >    ~~~
 > >          mean          sd    
-> >      0.03862538   0.92078309 
-> >     (0.06510920) (0.04604348)
+> >      0.03869677   0.92072029 
+> >     (0.06510476) (0.04603563)
 > >    ~~~
 > >    {: .output}
 > >    
@@ -171,17 +184,13 @@ ggplot(data.frame(x = univar)) +
 > >    
 > >    ~~~
 > >    univar_exp <- exp(univar)
-> >    opt_log <- fitdistr(x = univar_exp, densfun = dlnorm, start = list(meanlog = 10, sdlog = 10))
+> >    opt_exp <- fitdistr(x = univar_exp, densfun = dlnorm, start = list(meanlog = 1, sdlog = 1))
 > >    ~~~
 > >    {: .language-r}
 > >    
 > >    
 > >    
 > >    ~~~
-> >    Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-> >    Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-> >    Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
-> >    Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 > >    Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 > >    Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 > >    Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
@@ -191,7 +200,7 @@ ggplot(data.frame(x = univar)) +
 > >    
 > >    
 > >    ~~~
-> >    opt_log
+> >    opt_exp
 > >    ~~~
 > >    {: .language-r}
 > >    
@@ -199,8 +208,8 @@ ggplot(data.frame(x = univar)) +
 > >    
 > >    ~~~
 > >        meanlog       sdlog   
-> >      0.03862538   0.92078309 
-> >     (0.06510920) (0.04604348)
+> >      0.03869677   0.92072029 
+> >     (0.06510476) (0.04603563)
 > >    ~~~
 > >    {: .output}
 > >    
@@ -235,19 +244,30 @@ ggplot(data.frame(x = univar)) +
 > >    
 > >    
 > >    ~~~
-> >    ggplot(data.frame(x = univar_exp)) +
-> >        aes(x) +
-> >        geom_histogram(aes(y = ..density..)) +
-> >        geom_function(
-> >            fun = dlnorm,
-> >            args = list(meanlog = opt$estimate["mean"], sdlog = opt$estimate["sd"]),
-> >            aes(colour = "Fitted distribution")
-> >        ) +
-> >        scale_colour_discrete(name = NULL)
+> >    fitted_mean_log <- opt_exp$estimate[["meanlog"]]
+> >    fitted_sd_exp <- opt_exp$estimate[["sdlog"]]
+> >    hist(univar_exp, freq = FALSE, breaks = "FD")
 > >    ~~~
 > >    {: .language-r}
 > >    
 > >    <img src="../fig/rmd-08-fit-dlnorm-1.png" title="plot of chunk fit-dlnorm" alt="plot of chunk fit-dlnorm" width="432" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    curve(
+> >        dnorm(x, mean = fitted_mean_exp, sd = fitted_sd_exp),
+> >        from = min(univar_exp),
+> >        to = max(univar_exp),
+> >        add = TRUE
+> >    )
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error in dnorm(x, mean = fitted_mean_exp, sd = fitted_sd_exp): object 'fitted_mean_exp' not found
+> >    ~~~
+> >    {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -266,7 +286,7 @@ values here, though it may help. You can see that below our initial starting
 
 
 ~~~
-Warning: Removed 2 rows containing missing values (geom_bar).
+Warning: Removed 4 rows containing missing values (geom_bar).
 ~~~
 {: .warning}
 
@@ -274,15 +294,15 @@ Warning: Removed 2 rows containing missing values (geom_bar).
 
 We then assign each data point to the component that fits them better (this is
 the "expectation" step). Then, we maximise the likelihood of the data under
-each distribution. That is, we optimise the parameters of the distributions
-for each of the $k$ components. We continue this two-step process until the
-algorithm converges - that is, the components don't change from iteration to
-iteration. In this simple example, the algorithm converges after one iteration,
-but this won't usually be the case!
+each distribution. That is, we find the best-fitting parameters of the 
+distributions for each of the $k$ components. We continue this two-step process
+until the algorithm converges -- meaning that the components don't change from 
+iteration to iteration. In this simple example, the algorithm converges after 
+one iteration, but this won't usually be the case!
 
 
 ~~~
-Warning: Removed 2 rows containing missing values (geom_bar).
+Warning: Removed 4 rows containing missing values (geom_bar).
 ~~~
 {: .warning}
 
@@ -298,17 +318,14 @@ models. Here's one example:
 set.seed(66)
 true_means <- c(-1, 4)
 true_sds <- c(2, 1)
-df <- data.frame(
-    x = c(
-        rnorm(30, mean = true_means[[1]], sd = true_sds[[1]]),
-        rnorm(50, mean = true_means[[2]], sd = true_sds[[1]])
-    ),
-    cluster = c(rep("a", 30), rep("b", 50))
+aggressiveness <- c(
+    rnorm(30, mean = true_means[[1]], sd = true_sds[[1]]),
+    rnorm(50, mean = true_means[[2]], sd = true_sds[[1]])
 )
 
 library("mixtools")
 mix <- normalmixEM2comp(
-    df$x,
+    aggressiveness,
     lambda = c(0.5, 0.5),
     mu = c(0, 0.1),
     sigsqrd = c(1, 1)
@@ -323,11 +340,149 @@ number of iterations= 177
 ~~~
 {: .output}
 
+
+
+~~~
+plot(mix, whichplots = 2)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-08-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="432" style="display: block; margin: auto;" />
+
+We can also see that the model recovers mean and sd values pretty close to the ground truth:
+
+
+~~~
+mix$mu
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] -1.700932  3.783077
+~~~
+{: .output}
+
+
+
+~~~
+true_means
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] -1  4
+~~~
+{: .output}
+
+
+
+~~~
+mix$sigma
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 1.283686 2.176896
+~~~
+{: .output}
+
+
+
+~~~
+true_sds
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 2 1
+~~~
+{: .output}
+
 > ## Exercise
 >
-> Try changing the `true_means` and `true_sds` parameters to different values.
+> Try changing the `true_means` and `true_sds` parameters to different values
+> and fitting a mixture model to the data.
+> 
 > How do the results change? At what point is it hard to reliably separate the
 > two distributions?
+> 
+> > ## Solution
+> > 
+> > If we keep the `true_sds` the same and change the means to be `c(-1, 1)`,
+> > a mixture model can't reliably recover the input.
+> > 
+> > That's because the left, broader distribution centred at `-1` "bleeds into"
+> > the right distribution.
+> >
+> > 
+> > ~~~
+> > set.seed(66)
+> > true_means <- c(-1, 1)
+> > true_sds <- c(2, 1)
+> > aggressiveness <- c(
+> >     rnorm(30, mean = true_means[[1]], sd = true_sds[[1]]),
+> >     rnorm(50, mean = true_means[[2]], sd = true_sds[[1]])
+> > )
+> > 
+> > mix <- normalmixEM2comp(
+> >     aggressiveness,
+> >     lambda = c(0.5, 0.5),
+> >     mu = c(0, 0.1),
+> >     sigsqrd = c(1, 1)
+> > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > number of iterations= 152 
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > plot(mix, whichplots = 2)
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/rmd-08-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="432" style="display: block; margin: auto;" />
+> > 
+> > ~~~
+> > mix$mu
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] -0.506124  3.926377
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > true_means
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] -1  1
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 
@@ -336,8 +491,8 @@ number of iterations= 177
 Of course, biological data is not usually so one-dimensional! In fact, for
 these clustering exercises, we're doing to work with single-cell RNAseq data,
 which is often *very* high-dimensional. Commonly, experiments profile the expression
-level of 10,000+ genes in thousands of cells. Even after filtering lowly 
-expressed genes and low quality cells, the dataset we're using in this episode
+level of 10,000+ genes in thousands of cells. Even after filtering the 
+data to remove low quality observations, the dataset we're using in this episode
 contains measurements for over 9,000 genes in over 3,000 cells.
 
 
@@ -378,7 +533,9 @@ plotReducedDim(scrnaseq, "PCA")
 
 <img src="../fig/rmd-08-tsne-1.png" title="plot of chunk tsne" alt="plot of chunk tsne" width="432" style="display: block; margin: auto;" />
 
-For now, we'll work with just the first two principal components, since we can
+You can see from the axis labels that the first two principal components
+capture almost 50% of the variation within the data.
+For now, we'll work with just these two principal components, since we can
 visualise those easily, and they're a quantitative
 representation of the underlying data, representing the two largest axes of
 variation. For speed, we'll take a random subset of 1/5 of the data.
@@ -388,20 +545,51 @@ variation. For speed, we'll take a random subset of 1/5 of the data.
 set.seed(42)
 random_ind <- sample(ncol(scrnaseq), ceiling(ncol(scrnaseq) / 5))
 pcs <- reducedDim(scrnaseq, "PCA")[random_ind, 1:2]
+plot(pcs)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-08-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="432" style="display: block; margin: auto;" />
+
+# Multivariate distributions (distributions of more than one variable)
+
+To fit a mixture model to these first two principal components, we're going
+to fit a mixture of multivariate normal distributions. These multivariate
+distributions are very similar to a number of univariate normal distributions
+combined. For example, if we generate two sets of normally distributed variables
+and plot them against each other, we get a "cloud" of points that's roughly 
+round with most of the points in the centre:
+
+<img src="../fig/rmd-08-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="432" style="display: block; margin: auto;" />
+
+A multivariate normal distribution can be similar to this, but it models
+both variables at once. In fact, in some cases it can basically be identical:
+
+<img src="../fig/rmd-08-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="432" style="display: block; margin: auto;" />
+
+However, it also allows us to model sets of variables that aren't *independent*:
+
+<img src="../fig/rmd-08-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="432" style="display: block; margin: auto;" />
+
+This is useful in a mixture model, because there's no reason to think that
+clusters of data will always be best modelled by a ball-shaped distribution.
+
+To fit a 2D mixture model, we can again use the `mixtools` package.
+This time, we want the function `mvnormalmixEM`. This is short for 
+"multivariate normal mixture model fit with Expectation Maximisation".
+We can fit this model to our principal components and see what the model
+looks like. We'll set $k=2$ as a starting point.
+
+
+~~~
+mix_sc2 <- mvnormalmixEM(pcs, k = 2)
 ~~~
 {: .language-r}
 
 
-~~~
-library("mixtools")
-mix_sc2 <- mvnormalmixEM(pcs)
-~~~
-{: .language-r}
-
-
 
 ~~~
-number of iterations= 33 
+number of iterations= 22 
 ~~~
 {: .output}
 
@@ -412,16 +600,19 @@ plot(mix_sc2, 2, pch = 19, cex = 0.5)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
 
-
+Hmm. Our model has fit the data, but are these the clusters you expected
+it to find?
 
 > ## Exercise
 >
-> Fit the same type of model with k=3. How different are the results?
-> Which do you think is better? Remember to set the random seed first!
+> Using the same seed (42), fit the same type of model with $k=3$. How different 
+> are the results?
+> Which do you think is better? Be sure to set the random seed before running
+> the model!
 >
-> Try again with k=3 without setting the seed. Is this better or worse?
+> Try again with k=3 without resetting the seed. Is this model better or worse?
 > Do you think k should be increased more?
 > 
 > > ## Solution
@@ -447,7 +638,7 @@ plot(mix_sc2, 2, pch = 19, cex = 0.5)
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-08-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > mix_sc3_2 <- mvnormalmixEM(pcs, k = 3)
@@ -468,129 +659,67 @@ plot(mix_sc2, 2, pch = 19, cex = 0.5)
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-08-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
 You can hopefully see that with real data, clustering can be a bit of a tricky 
 business! In fact, even in two dimensions it's not entirely clear what the 
-correct clustering is, nor the true number of clusters.
-
-# Choosing K, and choosing the type of mixture
-
-As we looked at while choosing regression models, we need to look at measures
-of goodness of fit that account for model complexity. One great choice is BIC.
-In the case of a mixture model just as in a 
-regression model, BIC measures how well the model fits the data while
-accounting for how many parameters it has. If we had a model with as many
-components as we have data points, we would have a perfect fit, but that's
-not very useful.
-
-The R package [`mclust`](https://mclust-org.github.io/mclust/articles/mclust.html)
-offers a lot of really useful and easy-to-use functionality for selecting a model
-based on BIC.
-
-One problem with mixture models with more than one variable is that multivariate
-distributions can be computationally difficult to estimate. 
-To combat this, there's a number of simplifying assumptions we can make.
-For example, if our variables were totally uncorrelared, we might think that 
-all our clusters were normally distributed without any correlation. 
-In our case,
-this clearly isn't true: there's a lot of differng shapes. 
-Alternatively, we could allow the shape to vary, but assume that all clusters
-have the same shape.
-We could also assume that all clusters have the same amount of within-cluster
-variability (meaning they are the same volume).
-
-In this case, we're going to avoid any of these assumptions to be as flexible as
-possible. This means that we're allowing the normal distributions to have 
-varying shape, the shape to vary between clusters, and
-the clusters to each have varying amounts of within-cluster variability.
-This is encoded in the setting `modelNames = "VVV"`.
+correct clustering is, nor even the true number of clusters.
 
 
-~~~
-library("mclust")
-pcs_12 <- reducedDim(scrnaseq, "PCA")[, 1:2]
-clust <- mclustBIC(pcs_12, modelNames = "VVV")
-plot(clust)
-~~~
-{: .language-r}
 
-<img src="../fig/rmd-08-mixture-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-
-~~~
-model <- Mclust(pcs_12, x = clust)
-plot(model, what = "classification")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-08-mixture-2.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-
-
-You can probably also see that for 
-very high-dimensional data, the kind of assumption we made with our simulated 
-data (normal distribution) can be difficult to justify. The tails of the 
-clusters especially don't seem to fit a normal distribution very well, and it 
-seems like a distribution with a different shape might fit a bit better here.
-We'll address some of these issues in the next episode!
-
-
-> ## Exercise
+> ## Mixture shape
 > 
-> Run the mixture model again with all of the principal components rather
-> than just the first two. Is the run time different? What about the clusters
-> that come out?
+> One problem with mixture models with more than one variable is that multivariate
+> distributions can be computationally difficult to estimate. 
+> To combat this, there's a number of simplifying assumptions we can make.
+> For example, if our variables were totally uncorrelared, we might think that 
+> all our clusters were normally distributed without any correlation. 
+> In our case,
+> this clearly isn't true: there's a lot of differng shapes. 
+> Alternatively, we could allow the shape to vary, but assume that all clusters
+> have the same shape.
+> We could also assume that all clusters have the same amount of within-cluster
+> variability (meaning they are the same volume).
 > 
-> *Hint: to plot the model,
-> set `scrnaseq$cluster <- as.character(model$classification)`
-> then plot with `plotReducedDim(scrnaseq, "PCA", colour_by = "cluster")`*
+> The R package [`mclust`](https://cran.r-project.org/web/packages/mclust/vignettes/mclust.html)
+> has a number of options to fit mixture models in a very efficient way, and
+> to test out different types of assumptions.
 > 
-> > ## Solution
-> > 
-> > ~~~
-> > pcs_all <- reducedDim(scrnaseq, "PCA")
-> > clust_all <- mclustBIC(pcs_all, modelNames = "VVV")
-> > plot(clust_all)
-> > ~~~
-> > {: .language-r}
-> > 
-> > <img src="../fig/rmd-08-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="432" style="display: block; margin: auto;" />
-> > 
-> > ~~~
-> > model_all <- Mclust(pcs_all, x = clust_all)
-> > scrnaseq$cluster <- as.character(model_all$classification)
-> > plotReducedDim(scrnaseq, "PCA", colour_by = "cluster")
-> > ~~~
-> > {: .language-r}
-> > 
-> > <img src="../fig/rmd-08-unnamed-chunk-7-2.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="432" style="display: block; margin: auto;" />
-> {: .solution}
-{: .challenge}
+> In this case, we're going to avoid any of these assumptions to be as flexible as
+> possible. This means that we're allowing the normal distributions to have 
+> varying shape, the shape to vary between clusters, and
+> the clusters to each have varying amounts of within-cluster variability.
+> This is encoded in the setting `modelNames = "VVV"`.
+> 
+> 
+> ~~~
+> library("mclust")
+> pcs_12 <- reducedDim(scrnaseq, "PCA")[, 1:2]
+> clust <- mclustBIC(pcs_12, modelNames = "VVV")
+> plot(clust)
+> ~~~
+> {: .language-r}
+> 
+> <img src="../fig/rmd-08-mixture-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> 
+> ~~~
+> model <- Mclust(pcs_12, x = clust)
+> plot(model, what = "classification")
+> ~~~
+> {: .language-r}
+> 
+> <img src="../fig/rmd-08-mixture-2.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> 
+> You can probably also see that for 
+> very high-dimensional data, the kind of assumption we made with our simulated 
+> data (normal distribution) can be difficult to justify. The tails of the 
+> clusters especially don't seem to fit a normal distribution very well, and it 
+> seems like a distribution with a different shape might fit a bit better here.
+> We'll address some of these issues in the next episode!
+{: .callout}
 
-# t-SNE
-
-t-SNE is something we've not covered in the course so far.
-A high-level overview of t-SNE is that it's a method which seeks to create
-a low-dimensional representation, ensuring
-that points which are neighbours (close to each other) in the original 
-high-dimensional data are also neighbours in the low-dimensional representation.
-Like MDS, it's a stochastic algorithm and isn't quantitative in the way
-that PCA is.
-
-In contrast to PCA which we've been looking at so far,
-t-SNE tends to separate the data into "blobs". This isn't 
-necessarily good, and it can be easy to deceive yourself into thinking that
-the blobs made in these plots have meaning that they don't really have.
-
-
-~~~
-scrnaseq <- runTSNE(scrnaseq, dimred = "PCA")
-plotReducedDim(scrnaseq, "TSNE")
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-08-pca-1.png" title="plot of chunk pca" alt="plot of chunk pca" width="432" style="display: block; margin: auto;" />
 
 
 

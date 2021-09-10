@@ -36,7 +36,7 @@ scRNAseq
 scuttle
 MASS
 SingleCellExperiment
-diceR
+pheatmap
 stringr
 BiocManager
 desc
