@@ -40,6 +40,7 @@ suppressPackageStartupMessages({
     library("bluster")
     library("here")
 })
+theme_set(theme_bw())
 ```
 
 # Introduction
@@ -96,82 +97,28 @@ ggplot(data, aes(x, y, colour = cluster)) +
 
 # K-means
 
-Generalisation of mixture models to have arbitrary density, just using distance.
+K-means is an iterative algorithm a bit like the EM algorithm we covered in
+the previous lesson. However, in K-means we're not concerned with fitting
+distributions to the data. We are only interested in distances.
+
+In K-means, we pick $k$ initial points as centres or "centroids" of our
+clusters. There are a few ways to choose these initial "centroids",
+but for simplicity let's imagine we just pick three random co-ordinates.
+We then check the distance between each centroid and
+
+
+Distance????
 
 ```{r kmeans-animation, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
-set.seed(66)
-true_means <- list(c(-1, 4), c(-2, -2), c(2, 2))
-true_sds <- c(0.5, 1, 0.12)
-n <- c(20, 40, 70)
-
-data <- list()
-for (i in 1:length(n)) {
-    data[[i]] <- mvrnorm(n[[i]], mu = true_means[[i]], Sigma = diag(2) * true_sds[[i]])
-}
-
-df <- do.call(rbind, data)
-df <- as.data.frame(df)
-colnames(df) <- c("x", "y")
-means <- list(c(1, 1), c(1.1, 1.1), c(1.2, 1.2))
-
-label_points_kmeans <- function(x, means) {
-    apply(x,
-        1,
-        function(i) {
-            which.min(
-                c(
-                    sapply(means, function(j) {
-                        dist(rbind(i, j))
-                    })
-                )
-            )
-        }
-    )
-}
-
-iterate_kmeans <- function(x, means, sds) {
-    means <- lapply(unique(components), function(i) colMeans(x[components == i, ]))
-    components <- label_points_kmeans(x, means)
-    list(components = components, means = means)
-}
-
-plot_kmeans <- function(x, means, components) {
-    # browser()
-    ggplot(x) +
-        geom_point(
-            aes(x, y, colour = factor(components, levels = 1:3))
-        ) +
-        lapply(
-            seq_along(means),
-            function(i) {
-                m <- means[[i]]
-                geom_point(
-                    x = m[[1]], y = m[[2]],
-                    aes(colour = factor(i, levels = 1:3)),
-                    shape = 13,
-                    size = 4
-                )
-            }
-        ) +
-        lapply(1:nrow(x), function(i) {
-            geom_segment(
-                x = means[[components[[i]]]][[1]],
-                xend = x[i, 1],
-                y = means[[components[[i]]]][[2]],
-                yend = x[i, 2],
-                alpha = 0.1,
-                size = 0.2,
-                aes(colour = factor(components[[i]], levels = 1:3)))
-        }) +
-        scale_colour_discrete(guide = "none") +
-        lims(x = range(x) * 1.5)
-}
-components <- label_points_kmeans(df, means)
-plot_kmeans(df, means, components)
-out <- iterate_kmeans(df, means)
-plot_kmeans(df, out$means, out$components)
+knitr::include_graphics("../fig/kmeans.gif")
 ```
 
+
+> ## Initialisation
+> 
+> Random initialisations can be bad.
+> 
+{: .callout}
 
 
 
@@ -192,16 +139,15 @@ plotReducedDim(scrnaseq, "TSNE", colour_by = "kmeans")
 
 # Cluster robustness (silhouette)
 
-We want to be sure that
+We want to be sure that 
 
-# Consensus clustering
+
 
 ```{r}
 library("scater")
 library("pheatmap")
 library("bluster")
 library("viridis")
-
 
 pc <- reducedDim(scrnaseq)
 km_fun <- function(x) {

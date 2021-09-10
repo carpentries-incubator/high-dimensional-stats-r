@@ -50,7 +50,9 @@ for (alpha in 1:179) {
     }
 }
 dev.off()
-system("convert gif/rotating*.png fig/rotating.gif")
+system("convert -delay 20 gif/rotating*.png fig/rotating.gif")
+cat("Created fig/rotating.gif!\n")
+
 system("rm gif/rotating*.png")
 
 alpha <- -45
@@ -100,7 +102,8 @@ for (t in 1:300) {
 }
 dev.off()
 
-system("convert gif/pendulum*.png -delay 20 fig/pendulum.gif")
+system("convert -delay 20 gif/pendulum*.png fig/pendulum.gif")
+cat("Created fig/pendulum.gif!\n")
 system("rm gif/pendulum*.png")
 
 unlink("gif", recursive = TRUE)

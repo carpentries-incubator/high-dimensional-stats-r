@@ -61,10 +61,26 @@ example, since there is genuinely no heterogeneity in the data, but
 
 # K-means
 
-Generalisation of mixture models to have arbitrary density, just using distance.
+K-means is an iterative algorithm a bit like the EM algorithm we covered in
+the previous lesson. However, in K-means we're not concerned with fitting
+distributions to the data. We are only interested in distances.
 
-<img src="../fig/rmd-09-kmeans-animation-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-09-kmeans-animation-2.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+In K-means, we pick $k$ initial points as centres or "centroids" of our
+clusters. There are a few ways to choose these initial "centroids",
+but for simplicity let's imagine we just pick three random co-ordinates.
+We then check the distance between each centroid and
 
+
+Distance????
+
+<img src="../fig/kmeans.gif" title="Alt" alt="Alt" style="display: block; margin: auto;" />
+
+
+> ## Initialisation
+> 
+> Random initialisations can be bad.
+> 
+{: .callout}
 
 
 
@@ -87,7 +103,7 @@ plotReducedDim(scrnaseq, "TSNE", colour_by = "kmeans")
 > 
 {: .callout}
 
-# Cluster robustness
+# Cluster robustness (silhouette)
 
 We want to be sure that
 
@@ -96,21 +112,26 @@ We want to be sure that
 
 ~~~
 library("scater")
-
-library("diceR")
-library("ComplexHeatmap")
+library("pheatmap")
+library("bluster")
 library("viridis")
 
-pc <- reducedDim(scrnaseq)[sample(ncol(scrnaseq), 1000), ]
-ccp <- consensus_cluster(pc, reps = 10, nk = 2:10, algorithms = "km")
-cm <- consensus_matrix(ccp)
-# Heatmap(cm, cluster_rows = FALSE, cluster_columns = FALSE, col = viridis(100))
-Heatmap(cm, cluster_rows = TRUE, cluster_columns = TRUE, col = viridis(100))
+
+pc <- reducedDim(scrnaseq)
+km_fun <- function(x) {
+    kmeans(x, 5)$cluster
+}
+originals <- km_fun(pc)
+ratios <- bootstrapStability(pc, FUN = km_fun, clusters = originals)
+pheatmap(ratios,
+    cluster_row = FALSE, cluster_col = FALSE,
+    color = viridis::magma(100),
+    breaks = seq(-1, 1, length.out = 101)
+)
 ~~~
 {: .language-r}
 
 <img src="../fig/rmd-09-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="432" style="display: block; margin: auto;" />
-
 
 
 ## Further reading
