@@ -105,9 +105,9 @@ plotReducedDim(scrnaseq, "TSNE", colour_by = "kmeans")
 
 # Cluster robustness (silhouette)
 
-We want to be sure that
+We want to be sure that 
 
-# Consensus clustering
+
 
 
 ~~~
@@ -115,7 +115,6 @@ library("scater")
 library("pheatmap")
 library("bluster")
 library("viridis")
-
 
 pc <- reducedDim(scrnaseq)
 km_fun <- function(x) {

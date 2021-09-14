@@ -171,6 +171,8 @@ data/%.rds: data/%.R
 
 data/coefHorvath.rds: data/methylation.rds
 
+data/small_methylation.rds: data/methylation.rds
+
 clean-fig:
 	find fig/ -regextype egrep -regex ".*\.(aux|dvi|fdb_latexmk|fls|log)" | xargs -r rm
 
