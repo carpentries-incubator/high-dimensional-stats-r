@@ -21,6 +21,16 @@ math: yes
 ---
 
 
+
+```{r settings, include=FALSE}
+source("../bin/chunk-options.R")
+knitr_fig_path("10-")
+if (!file.exists(here::here("data/scrnaseq.rds"))) {
+    source(here::here("data/scrnaseq.R"))
+}
+```
+
+
 # Problem Statement 
 
 When analysing high-dimensional data in the life sciences, it is often useful to identify groups of similar data points to understand more about relationships within the dataset. In **hierarchical clustering** an algorithm groups similar data points (or observations) into groups (or clusters). This results in a set of clusters, where each cluster is distinct, and the data points within each cluster have similar features. The clustering algorithm works by iteratively grouping data points so that different clusters may exist at different stages of the algorithm's progression.
