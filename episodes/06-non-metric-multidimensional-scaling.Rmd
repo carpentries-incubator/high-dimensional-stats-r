@@ -2,8 +2,8 @@
 title: "Non-metric multi-dimensional scaling"
 author: "GS Robertson"
 date: "27/07/2021"
-teaching: 45
-exercises: 15
+teaching: 50
+exercises: 20
 math: yes
 questions:
 -  What statistical methods are available to compare communities of species/genes/groups between sites?
@@ -43,7 +43,7 @@ knitr::include_graphics("../fig/microbiome_schematic.png")
 
 In other ordination methods, many axes (or in the case of PCA principal components) are calculated whereas in NMDS a number of axes are selected before analysis and the data are explored using these axes only. Rather than being calculated analytically, NMDS is calculated numerically that finds a solution iteratively, only stopping when an acceptable solution has been found or when a user-defined time or iteration level has been reached. Because of the way it is calculated, NMDS does not have a unique solution like other ordination methods and rerunning the analysis produces a slightly different solution. 
 
-# Carrying out NMDS (5 mins)
+# Carrying out NMDS 
 
 The abundance of communities of species can be plotted on a single axis (Figure 2). We can add a second axis showing the abundance of communities of a second species (Figure 3). We can then add a third axis representing abundance of communities of a third species. Imagine we have data for abundance of communities of lots of different species. Each requires a separate axis. This becomes impossible to visualise!
 NMDS is used to represent abundances of different communities in multidimensional space using a reduced number of dimensions (or axes).
@@ -57,11 +57,10 @@ knitr::include_graphics("../fig/two_dimension_species_vs_site.png")
 # ![Figure 3: Relative abundance of each species per site](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Two dimension species vs site.png)
 ```
 
-
 To carry out NMDS, first map the relative positions of sites in multidimensional space (in rank orders). The user then chooses the number of dimensions/axes they would like to use to display the data (more than 3 is difficult to visualise). Next, calculate differences in species abundance between sites and rank on the number of dimensions/axes specified by the user. This configuration of species abundance among sites in reduced dimensions/axes is compared with the true observed distances between sites. The disagreement between ranks of sites according to these two configurations is measured as stress, an index between 0 and 1 in which large disagreements correspond to large stress values.
 
 
-# Example using data (Code along 15 mins)
+# Example using data (Code along)
 
 In this example we will use the microbiome package from Bioconductor to carry out a NMDS analysis. The microbiome R package allows us to explore and analyse some microbiome profiling data collected from volunteers from different communities. The packages makes use of data from the phyloseq package which stores various datasets on phylogenetic sequencing data which has been organised into Operational Taxonomic Units (OTUs).
 
@@ -138,13 +137,14 @@ We have defined the number of axes (or dimensions) that we would like our data t
 We can use the stress value to find out how well our data can be summarised using only two dimensions. Stress is a measure of the disagreement between the data configuration created used two dimensions and predicted values from a regression between distances calculated using this configuration and observed distances of rank orders. As in life, low values of stress are preferred. Lower stress values indicate greater conformity and therefore are desirable. If stress is high, repositioning the points in two dimensions may help to reduce stress. In general, stress <0.1 is great, <0.2 is good and >0.3 provides a poor representation of the data in the number of dimensions selected.
 
 
-> ## Challenge 1 (2 mins)
+> ## Challenge 1 
 > 
 > What do you think we could do to reduce stress if the overall solution of the ordinate function had a stress solution greater than 0.3? Discuss in groups
 > 
-> > ## Solution
+> > Solution:
 > > 
-> > Increase number of dimensions (k). If the stress value is higher, it is advisable to include an additional dimension, but remember that human brains are not very well equipped to visualise objects in more than 2-dimensions.
+> > Increase number of dimensions (k). If the stress value is higher, it is advisable to include an additional dimension, but remember that human brains are not very well
+> > equipped to visualise objects in more than 2-dimensions.
 > {: .solution}
 {: .challenge}
 
@@ -158,11 +158,14 @@ stressplot(ord)
 This stressplot suggests that the NMDS fitted on two dimensions fits the original data well.
 
 
-> ## Challenge 2 (5 mins)
+> ## Challenge 2 
 > 
-> Identify the lowest value of k that gives the best stress value for NMDS using the microbiome data (ds.core). Think about getting a low stress value as well as creating results that can be easily visualised and interpreted. Use the function stressplot to examine how distribution around the regression line changes with increases in k. Use what you have learned to decide on best number of dimensions to include in NMDS analysis of the microbiome data. Use `set.seed(1000)` for k values greater than 2 to allow for convergence.
+> Identify the lowest value of k that gives the best stress value for NMDS using the microbiome data (ds.core). Think about getting a low stress value as well 
+> as creating results that can be easily visualised and interpreted. Use the function stressplot to examine how distribution around the regression line changes 
+> with increases in k. Use what you have learned to decide on best number of dimensions to include in NMDS analysis of the microbiome data. Use `set.seed(1000)` 
+> for k values greater than 2 to allow for convergence.
 > 
-> > ## Solution
+> > Solution:
 > > 
 > > ```{r}
 > > ## Ordinate the data
@@ -184,7 +187,7 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 {: .challenge}
 
 
-# Code along (5 mins)
+# Examining the output (code along) 
 
 NMDS analysis does two things:
 * creates a dissimilarity matrix (method specified by the user) that measures the similarity between every pair of samples (in this case, 222 samples of species abundance from the microbiome data)
@@ -209,7 +212,6 @@ plot_ordination(ds.core, ord, color = "group") +
   geom_point(size = 4)
 ```
 
-
 Given that this NMDS solution has 3 dimensions, plot other dimensions. Plot group on each point according to the metadata. Group refers to study group each participant belonged to (3 different home environments thought to affect diet).
 
 ```{r}
@@ -223,9 +225,10 @@ plot_ordination(ds.core, ord, color = "group",axes=c(2,3)) +
 ```
 
 
-> ## Challenge 3 (3 mins)
+> ## Challenge 3 
 > 
-> Use the `plot_ordination` function to look for clusters in points on the NMDS axes according to sex, bmi_group and other factors in the metadata. Do any of these factors appear to form clusters?
+> Use the `plot_ordination` function to look for clusters in points on the NMDS axes according to sex, bmi_group and other factors in the metadata. 
+> Do any of these factors appear to form clusters?
 > 
 > 
 > > ## Solution
@@ -247,7 +250,7 @@ plot_ordination(ds.core, ord, color = "group",axes=c(2,3)) +
 {: .challenge}
 
 
-# Code along (5 mins)
+# Plotting NMDS output (Code along)
 
 It appears that there are two clusters of points on NMDS axes that cluster according to participant nationality (AAM and AFR), which corresponds to African Americans (AAM) and AFR (rural Africans). This suggests that participants of the same nationality tended to have more similar taxa in their microbiome samples compared with partcipants from the different nationality.
 
@@ -290,17 +293,19 @@ We can see from this plot that it is much easier to visualise the three NMDS dim
 Visualising output of NMDS analysis can provide important information regarding relationships between samples and clusters according to metadata variables.
 
 
-> ## Challenge 4 (3 mins)
+> ## Challenge 4 
 > 
-> What conclusions can you draw from this NMDS analysis? Does there appear to be a difference in the microbiome communities of rural Africans and African Americans? What other factors may be important determinants in diversity of microbiome communities?
+> What conclusions can you draw from this NMDS analysis? Does there appear to be a difference in the microbiome communities of rural Africans and African Americans? 
+> What other factors may be important determinants in diversity of microbiome communities?
 > 
-> > ## Solution
+> > Solution:
 > > 
-> > NMDS analysis using phylogenetic data from the microbiome package shows that there are two clusters of samples with microbe abundances that are more similar within the cluster than they are to other samples in the dataset. No other group in the metadata form clusters as apparent as those of different nationalities.
+> > NMDS analysis using phylogenetic data from the microbiome package shows that there are two clusters of samples with microbe abundances that are more similar 
+> > within the cluster than they are to other samples in the dataset. No other group in the metadata form clusters as apparent as those of different nationalities.
 > {; .solution}
 {: .challenge}
 
-# Advantages and disadvantages of NMDS (5 mins)
+# Advantages and disadvantages of NMDS 
 
 NMDS has several advantages over other oridination methods, such as PCA and factor analysis.
 
