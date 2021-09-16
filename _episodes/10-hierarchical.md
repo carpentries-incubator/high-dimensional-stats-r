@@ -81,7 +81,7 @@ dist_m <- dist(example_data, method = "euclidean")
 > Use the `clust` function to implement hierarchical clustering using the distance matrix `dist_m` and 
 > the `complete` method and plot the results as a dendrogram using `plot`
 >
-> > Solution:
+> > ## Solution:
 > >
 > > 
 > > ~~~
@@ -174,7 +174,7 @@ Note that this cut produces 8 clusters (two before the cut and another six downs
 >
 > Identify the value of `k` in the `cutree` function that gives the same output as `h = 5`
 >
-> > Solution:
+> > ## Solution:
 > >
 > > 
 > > ~~~
@@ -256,9 +256,11 @@ Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a horizo
 
 The algorithm for hierarchical clustering is simple. First, we measure distance (or dissimilarity) between pairs of observations. Initially, and at the bottom of the dendrogram, each observation is considered to be in its own individual cluster. We start the clustering procedure by fusing the two observations that are most similar according to the distance matrix (e.g. that are closest together in *n*D space). Next, the next most similar observations are fused so that the total number of clusters is *number of observations* - 2 (see Figure 1a). Groups of observations may then be merged into a larger cluster (see Figure 1b) This process continues until all the observations are included in a single cluster (i.e. the top of the dendrogram).
 
-![Figure 1a: Example data showing two clusters of observation pairs](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1a hierarchical clustering.png)
+<img src="../fig/hierarchical_clustering_1.png" title="Figure 1a: Example data showing two clusters of observation pairs" alt="Figure 1a: Example data showing two clusters of observation pairs" width="500px" style="display: block; margin: auto;" />
 
-![Figure 1b: Example data showing fusing of one observation into larger cluster](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1b hierarchical clustering.png)
+
+<img src="../fig/hierarchical_clustering_2.png" title="Figure 1b: Example data showing fusing of one observation into larger cluster" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" style="display: block; margin: auto;" />
+
 
 There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix
@@ -283,80 +285,15 @@ The dataset we will be working with is a smaller version of the methylation data
 
 
 ~~~
-#Install packages from Bioconductor
-library(BiocManager)
-BiocManager::install("minfi")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: package(s) not installed when version(s) same as current; use `force = TRUE` to
-  re-install: 'minfi'
-~~~
-{: .warning}
-
-
-
-~~~
-BiocManager::install("ComplexHeatmap")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: package(s) not installed when version(s) same as current; use `force = TRUE` to
-  re-install: 'ComplexHeatmap'
-~~~
-{: .warning}
-
-
-
-~~~
 library("minfi")
 library("here")
-library("ComplexHeatmap")
 
 #Load small version of the methylation dataset
-small_methyl_mat <- readRDS("data/small_methylation.rds")   
-~~~
-{: .language-r}
+small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
 
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file 'data/
-small_methylation.rds', probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 #view the data
 View(small_methyl_mat)
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in as.data.frame(x): object 'small_methyl_mat' not found
-~~~
-{: .error}
-
-
-
-~~~
 #count the number of rows and columns
 #should be equal to 100
 ncol(small_methyl_mat)
@@ -366,9 +303,9 @@ ncol(small_methyl_mat)
 
 
 ~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'ncol': object 'small_methyl_mat' not found
+[1] 100
 ~~~
-{: .error}
+{: .output}
 
 
 
@@ -380,19 +317,18 @@ nrow(small_methyl_mat)
 
 
 ~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'nrow': object 'small_methyl_mat' not found
+[1] 100
 ~~~
-{: .error}
+{: .output}
 
 Recall the heatmap displayed in regression lesson. If we display the heatmap without hierarchical clustering, we can see that it’s very noisy and clusters of correlations between variables are difficult to see.
 
-
-![Figure 2a: Feature-feature correlation in methylation data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2a hierarchical clustering.png)
+<img src="../fig/rmd-10-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="432" style="display: block; margin: auto;" />
 
 We carry out hierarchical clustering on these data using the function `Heatmap` from the CompleHeatmap package. We use the correlation matrix (from the small_methylation) dataset as the input distance matrix. The `Heatmap` function groups features based on similarity of correlation values and creates a dendrogram showing clustering of features.
 
 
-![Figure 2b: Feature-feature correlation in methylation data with dendrogram](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2b hierarchical clustering.png)
+<img src="../fig/rmd-10-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="432" style="display: block; margin: auto;" />
 
 
 Note that the clusters shown in the dendrogram approximately match clusters that can be seen in the heatmap.
@@ -416,33 +352,7 @@ Here we carry out hierarchical clustering using `hclust` and the `complete` link
 
 ~~~
 distmat <- dist(small_methyl_mat)   #create a distance matrix using euclidean method
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in as.matrix(x): object 'small_methyl_mat' not found
-~~~
-{: .error}
-
-
-
-~~~
 clust <- hclust(distmat, method = "complete")   #hierarchical clustering using complete method
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in hclust(distmat, method = "complete"): object 'distmat' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(clust)    #plot resulting dendrogram
 
 rect.hclust(clust, k = 3, border = 2:6)    #draw border around three clusters
@@ -450,7 +360,7 @@ rect.hclust(clust, k = 2, border = 2:6)    #draw border around two clusters
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
 
 ~~~
 cut<-cutree(clust, h = 4)    #cut tree at height = 4
@@ -461,7 +371,7 @@ plot(color_branches(avg_dend_obj, h = 4))    #colour branches of dendrogram depe
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-6-2.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-10-2.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
 
 We can colour clusters downstream of a specified cut using the `color_branches` function from the dendextend package.
 
@@ -474,24 +384,11 @@ Next we use Ward's linkage method in hierarchical clustering of the methylation 
 
 ~~~
 clust <- hclust(distmat, method = "ward.D")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in hclust(distmat, method = "ward.D"): object 'distmat' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(clust)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
 
 We can see that the resulting dendrogram is different from that produced using the complete linkage method.
 
@@ -501,174 +398,56 @@ We can see that the resulting dendrogram is different from that produced using t
 > Do any of the methods produce similar dendrograms? Do some methods appear to produce more realistic dendrograms than others? Discuss in groups
 >
 >
-> > Solution:
+> > ## Solution:
 > >
 > > 
 > > ~~~
 > > clust1 <- hclust(distmat, method = "complete")  #distance matrix and cluster partitions 
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in hclust(distmat, method = "complete"): object 'distmat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(clust1)  #plot dendrogram
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'clust1' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
+> > <img src="../fig/rmd-10-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust2 <- hclust(distmat, method = "single")  #distance matrix and cluster partitions 
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in hclust(distmat, method = "single"): object 'distmat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(clust2)  #plot dendrogram
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'clust2' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
+> > <img src="../fig/rmd-10-unnamed-chunk-12-2.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust3 <- hclust(distmat, method = "average")  #distance matrix and cluster partitions 
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in hclust(distmat, method = "average"): object 'distmat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(clust3)  #plot dendrogram
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'clust3' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
+> > <img src="../fig/rmd-10-unnamed-chunk-12-3.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust4 <- hclust(distmat, method = "mcquitty")  #distance matrix and cluster partitions 
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in hclust(distmat, method = "mcquitty"): object 'distmat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(clust4)  #plot dendrogram
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'clust4' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
+> > <img src="../fig/rmd-10-unnamed-chunk-12-4.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust5 <- hclust(distmat, method = "median")  #distance matrix and cluster partitions 
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in hclust(distmat, method = "median"): object 'distmat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(clust5)  #plot dendrogram
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'clust5' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
+> > <img src="../fig/rmd-10-unnamed-chunk-12-5.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust6 <- hclust(distmat, method = "centroid")  #distance matrix and cluster partitions 
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in hclust(distmat, method = "centroid"): object 'distmat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(clust6)  #plot dendrogram
 > > ~~~
 > > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'clust6' not found
-> > ~~~
-> > {: .error}
+> > <img src="../fig/rmd-10-unnamed-chunk-12-6.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -690,38 +469,12 @@ Let's calculate the Dunn index for clustering carried out on small version of th
 #calculate dunn index (ratio of the smallest distance between obs not in the same cluster to the largest intra-cluster distance)
 library(clValid)
 distmat <- dist(small_methyl_mat)  #calculate euclidean distance between points 
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in as.matrix(x): object 'small_methyl_mat' not found
-~~~
-{: .error}
-
-
-
-~~~
 clust <- hclust(distmat, method = "complete")  #distance matrix and cluster partitions 
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in hclust(distmat, method = "complete"): object 'distmat' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(clust)  #plot dendrogram
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="432" style="display: block; margin: auto;" />
 
 ~~~
 cut<-cutree(clust, h = 5)   #select cluster partitions from dendrogram using h or K
@@ -733,9 +486,9 @@ dunn(distance = distmat, cut)   #use distance matrix and `cutree` output
 
 
 ~~~
-Error in dunn(distance = distmat, cut): object 'distmat' not found
+[1] 0.3740255
 ~~~
-{: .error}
+{: .output}
 
 
 
@@ -746,11 +499,11 @@ Error in dunn(distance = distmat, cut): object 'distmat' not found
 
 The value of the Dunn index has no meaning in itself, but is used to compare between clustering methods with larger values being preferred.
 
-> > ## Challenge 4
-> >
-> > Examine how changing the `h` or `k` arguments in the `hclust` function affects the value of the Dunn index
-> >
-> > Solution:
+> ## Challenge 4
+> 
+> Examine how changing the `h` or `k` arguments in the `hclust` function affects the value of the Dunn index
+>
+> > ## Solution:
 > >
 > > 
 > > ~~~
@@ -758,38 +511,12 @@ The value of the Dunn index has no meaning in itself, but is used to compare bet
 > > library(clValid)
 > > 
 > > distmat <- dist(small_methyl_mat)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in as.matrix(x): object 'small_methyl_mat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > clust <- hclust(distmat, method = "complete")
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in hclust(distmat, method = "complete"): object 'distmat' not found
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > plot(clust)
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > cut_h <- cutree(clust, h = 0.5)   #should be maximised
@@ -802,9 +529,9 @@ The value of the Dunn index has no meaning in itself, but is used to compare bet
 > > 
 > > 
 > > ~~~
-> > Error in dunn(distance = distmat, cut_h): object 'distmat' not found
+> > [1] 1.722725
 > > ~~~
-> > {: .error}
+> > {: .output}
 > > 
 > > 
 > > 
@@ -816,9 +543,9 @@ The value of the Dunn index has no meaning in itself, but is used to compare bet
 > > 
 > > 
 > > ~~~
-> > Error in dunn(distance = distmat, cut_k): object 'distmat' not found
+> > [1] 0.3550975
 > > ~~~
-> > {: .error}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
@@ -826,7 +553,7 @@ Note how making the values of `h` smaller and making the values of `k` bigger in
 
 Figure 3 shows how increasing the value of `k` and reducing the value of `h` using the `cutree` function results in higher values of the Dunn index.
 
-![Figure 3: Dunn index increases with increasing number of clusters](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 3 hierarchical clustering.png)
+<img src="../fig/hierarchical_clustering_3.png" title="Figure 3: Dunn index increases with increasing number of clusters" alt="Figure 3: Dunn index increases with increasing number of clusters" style="display: block; margin: auto;" />
 
 There have been criticisms of the use of the Dunn index in validating clustering results, due to its high sensitivity to noise in the dataset. Another methods of validating identified clusters is the Silhouette coefficiant which uses the average distance between clusters and the points within them.
 
@@ -835,12 +562,9 @@ Another more robust method of validating clusters identified using hierarchical 
 
 # Further reading 
 
-Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104
-
-Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145
-
-James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
-Section 10.3.2 (Hierarchical Clustering)
-
-Understanding the concept of Hierarchical clustering Technique. towards data science blog
-https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec
+- Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104
+- Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145
+- James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
+  Section 10.3.2 (Hierarchical Clustering)
+- [Understanding the concept of Hierarchical clustering Technique. towards data science blog](https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec)
+  

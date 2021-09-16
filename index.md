@@ -25,7 +25,8 @@ to learn even broader topics! Some of these are listed here:
 - [Modern statistics for modern biology](https://web.stanford.edu/class/bios221/book/introduction.html)
 - [Data analysis for the life sciences](https://leanpub.com/dataanalysisforthelifesciences)
 - [Orchestrating single cell analysis](https://bioconductor.org/books/release/OSCA/)
- 
+- [Introduction to statistical learning](https://www.statlearning.com/)
+- [Elements of statistical learning (advanced)](https://web.stanford.edu/~hastie/ElemStatLearn/)
 
 
 {% include links.md %}

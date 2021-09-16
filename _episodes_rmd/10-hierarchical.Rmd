@@ -75,7 +75,7 @@ dist_m <- dist(example_data, method = "euclidean")
 > Use the `clust` function to implement hierarchical clustering using the distance matrix `dist_m` and 
 > the `complete` method and plot the results as a dendrogram using `plot`
 >
-> > Solution:
+> > ## Solution:
 > >
 > > ```{r, echo=TRUE}
 > > clust <- hclust(dist_m, method = "complete")
@@ -114,7 +114,7 @@ Note that this cut produces 8 clusters (two before the cut and another six downs
 >
 > Identify the value of `k` in the `cutree` function that gives the same output as `h = 5`
 >
-> > Solution:
+> > ## Solution:
 > >
 > > ```{r, echo=TRUE}
 > > plot(clust)
@@ -143,9 +143,17 @@ Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a horizo
 
 The algorithm for hierarchical clustering is simple. First, we measure distance (or dissimilarity) between pairs of observations. Initially, and at the bottom of the dendrogram, each observation is considered to be in its own individual cluster. We start the clustering procedure by fusing the two observations that are most similar according to the distance matrix (e.g. that are closest together in *n*D space). Next, the next most similar observations are fused so that the total number of clusters is *number of observations* - 2 (see Figure 1a). Groups of observations may then be merged into a larger cluster (see Figure 1b) This process continues until all the observations are included in a single cluster (i.e. the top of the dendrogram).
 
-![Figure 1a: Example data showing two clusters of observation pairs](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1a hierarchical clustering.png)
+```{r, echo=FALSE, out.width="500px", fig.cap="Figure 1a: Example data showing two clusters of observation pairs"}
+knitr::include_graphics("../fig/hierarchical_clustering_1.png")
+# ![Figure 1a: Example data showing two clusters of observation pairs](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1a hierarchical clustering.png)
+```
 
-![Figure 1b: Example data showing fusing of one observation into larger cluster](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1b hierarchical clustering.png)
+
+```{r, echo=FALSE, out.width="500px", fig.cap="Figure 1b: Example data showing fusing of one observation into larger cluster"}
+knitr::include_graphics("../fig/hierarchical_clustering_2.png")
+# ![Figure 1b: Example data showing fusing of one observation into larger cluster](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1b hierarchical clustering.png)
+```
+
 
 There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix
@@ -169,17 +177,11 @@ Let's use a subset of the 'methylation' dataset to create a dendrogram via hiera
 The dataset we will be working with is a smaller version of the methylation dataset introduced in the regression lesson. The data are a subset of the original methylation dataset. The data display correlations between cells in the methylation matrix where the first 100 cells in the matrix are selected. Let's load the data and look at it.
 
 ```{r, echo=TRUE}
-#Install packages from Bioconductor
-library(BiocManager)
-BiocManager::install("minfi")
-BiocManager::install("ComplexHeatmap")
-
 library("minfi")
 library("here")
-library("ComplexHeatmap")
 
 #Load small version of the methylation dataset
-small_methyl_mat <- readRDS("data/small_methylation.rds")   
+small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
 
 #view the data
 View(small_methyl_mat)
@@ -198,6 +200,10 @@ library("here")
 library("ComplexHeatmap")
 
 cor_mat <- readRDS(here::here("data/small_methylation.rds"))
+col <- circlize::colorRamp2(
+    breaks = seq(-1, 1, length.out = 9),
+    colors = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))
+)
 Heatmap(cor_mat,
     column_title = "Feature-feature correlation in methylation data",
     name = "Pearson correlation",
@@ -283,7 +289,7 @@ We can see that the resulting dendrogram is different from that produced using t
 > Do any of the methods produce similar dendrograms? Do some methods appear to produce more realistic dendrograms than others? Discuss in groups
 >
 >
-> > Solution:
+> > ## Solution:
 > >
 > > ```{r, echo=TRUE}
 > > clust1 <- hclust(distmat, method = "complete")  #distance matrix and cluster partitions 
@@ -335,11 +341,11 @@ dunn(distance = distmat, cut)   #use distance matrix and `cutree` output
 
 The value of the Dunn index has no meaning in itself, but is used to compare between clustering methods with larger values being preferred.
 
-> > ## Challenge 4
-> >
-> > Examine how changing the `h` or `k` arguments in the `hclust` function affects the value of the Dunn index
-> >
-> > Solution:
+> ## Challenge 4
+> 
+> Examine how changing the `h` or `k` arguments in the `hclust` function affects the value of the Dunn index
+>
+> > ## Solution:
 > >
 > > ```{r, echo=TRUE}
 > > #dunn index (ratio of the smallest distance between obs not in the same cluster to the largest intra-cluster distance)
@@ -362,7 +368,10 @@ Note how making the values of `h` smaller and making the values of `k` bigger in
 
 Figure 3 shows how increasing the value of `k` and reducing the value of `h` using the `cutree` function results in higher values of the Dunn index.
 
-![Figure 3: Dunn index increases with increasing number of clusters](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 3 hierarchical clustering.png)
+```{r, echo=FALSE, fig.cap="Figure 3: Dunn index increases with increasing number of clusters"}
+knitr::include_graphics("../fig/hierarchical_clustering_3.png")
+# ![Figure 3: Dunn index increases with increasing number of clusters](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 3 hierarchical clustering.png)
+```
 
 There have been criticisms of the use of the Dunn index in validating clustering results, due to its high sensitivity to noise in the dataset. Another methods of validating identified clusters is the Silhouette coefficiant which uses the average distance between clusters and the points within them.
 
@@ -371,12 +380,9 @@ Another more robust method of validating clusters identified using hierarchical 
 
 # Further reading 
 
-Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104
-
-Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145
-
-James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
-Section 10.3.2 (Hierarchical Clustering)
-
-Understanding the concept of Hierarchical clustering Technique. towards data science blog
-https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec
+- Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104
+- Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145
+- James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
+  Section 10.3.2 (Hierarchical Clustering)
+- [Understanding the concept of Hierarchical clustering Technique. towards data science blog](https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec)
+  
