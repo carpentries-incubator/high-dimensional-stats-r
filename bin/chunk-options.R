@@ -31,6 +31,7 @@ opts_chunk$set(
   tidy = FALSE,
   results = "markup",
   comment = NA,
+  dev = "Cairo_png",
   fig.align = "center",
   fig.path = "fig/rmd-",
   fig.process = fix_fig_path,
