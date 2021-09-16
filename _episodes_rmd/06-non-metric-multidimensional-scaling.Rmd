@@ -2,8 +2,8 @@
 title: "Non-metric multi-dimensional scaling"
 author: "GS Robertson"
 date: "27/07/2021"
-teaching: 0
-exercises: 0
+teaching: 45
+exercises: 15
 math: yes
 questions:
 -  What statistical methods are available to compare communities of species/genes/groups between sites?

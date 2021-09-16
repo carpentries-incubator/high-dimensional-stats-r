@@ -153,7 +153,7 @@ _slides/%.pdf: _slides/%.Rmd
 
 slides: ${SLI_DST} ${SLI_PDF}
 
-figure: ${FIG_PNG} fig/pendulum.gif clean-fig
+figure: ${FIG_PNG} fig/pendulum.gif fig/kmeans.gif clean-fig
 
 fig/%.pdf: fig/%.tex
 	rubber --inplace -d $<
@@ -162,7 +162,10 @@ fig/%.png: fig/%.pdf
 	convert -density 300 $< $@
 
 fig/pendulum.gif: fig/animation.R
-	Rscript fig/animation.R
+	Rscript $<
+
+fig/kmeans.gif: fig/kmeans.R
+	Rscript $<
 
 data: ${DATA_DST}
 

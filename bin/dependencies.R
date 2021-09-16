@@ -44,7 +44,6 @@ create_description <- function(required_pkgs) {
 }
 
 install_dependencies <- function(required_pkgs, ...) {
-
   missing_pkgs <- setdiff(
     required_pkgs,
     rownames(installed.packages())
@@ -54,6 +53,7 @@ install_dependencies <- function(required_pkgs, ...) {
   # create_description(required_pkgs)
   # on.exit(file.remove("DESCRIPTION"))
   # remotes::install_deps(dependencies = TRUE, ...)
+  remotes::install_github("isglobal-brge/methylclock")
 
   if (require("knitr") && packageVersion("knitr") < '1.9.19') {
     stop("knitr must be version 1.9.20 or higher")

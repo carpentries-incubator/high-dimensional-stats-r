@@ -192,13 +192,41 @@ nrow(small_methyl_mat)
 
 Recall the heatmap displayed in regression lesson. If we display the heatmap without hierarchical clustering, we can see that it’s very noisy and clusters of correlations between variables are difficult to see.
 
+```{r, echo=FALSE}
+library("minfi")
+library("here")
+library("ComplexHeatmap")
 
-![Figure 2a: Feature-feature correlation in methylation data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2a hierarchical clustering.png)
+cor_mat <- readRDS(here::here("data/small_methylation.rds"))
+Heatmap(cor_mat,
+    column_title = "Feature-feature correlation in methylation data",
+    name = "Pearson correlation",
+    col = col,
+    cluster_rows = FALSE, cluster_columns = FALSE,
+    show_row_dend = FALSE, show_column_dend = FALSE,
+    show_row_names = FALSE, show_column_names = FALSE
+)
+# ![Figure 2a: Feature-feature correlation in methylation data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2a hierarchical clustering.png)
+```
 
 We carry out hierarchical clustering on these data using the function `Heatmap` from the CompleHeatmap package. We use the correlation matrix (from the small_methylation) dataset as the input distance matrix. The `Heatmap` function groups features based on similarity of correlation values and creates a dendrogram showing clustering of features.
 
 
-![Figure 2b: Feature-feature correlation in methylation data with dendrogram](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2b hierarchical clustering.png)
+```{r, echo=FALSE}
+library("minfi")
+library("here")
+library("ComplexHeatmap")
+
+cor_mat <- readRDS(here::here("data/small_methylation.rds"))
+Heatmap(cor_mat,
+    column_title = "Feature-feature correlation in methylation data",
+    name = "Pearson correlation",
+    col = col,
+    cluster_rows = TRUE, cluster_columns = TRUE,
+    show_row_names = FALSE, show_column_names = FALSE
+)
+# ![Figure 2b: Feature-feature correlation in methylation data with dendrogram](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2b hierarchical clustering.png)
+```
 
 
 Note that the clusters shown in the dendrogram approximately match clusters that can be seen in the heatmap.
