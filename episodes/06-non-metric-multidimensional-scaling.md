@@ -4,8 +4,8 @@
 title: "Non-metric multi-dimensional scaling"
 author: "GS Robertson"
 date: "27/07/2021"
-teaching: 0
-exercises: 0
+teaching: 45
+exercises: 15
 math: yes
 questions:
 -  What statistical methods are available to compare communities of species/genes/groups between sites?
@@ -515,16 +515,16 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > Run 1 stress 0.06958135 
 > > Run 2 stress 0.0689553 
 > > ... Procrustes: rmse 0.005872248  max resid 0.05843999 
-> > Run 3 stress 0.06957523 
-> > Run 4 stress 0.06994508 
+> > Run 3 stress 0.06958234 
+> > Run 4 stress 0.06998722 
 > > Run 5 stress 0.07180568 
-> > Run 6 stress 0.07033401 
+> > Run 6 stress 0.07039164 
 > > Run 7 stress 0.07085392 
 > > Run 8 stress 0.06895907 
 > > ... Procrustes: rmse 0.006904971  max resid 0.08102637 
 > > Run 9 stress 0.07078944 
 > > Run 10 stress 0.06956202 
-> > Run 11 stress 0.07405447 
+> > Run 11 stress 0.07382995 
 > > Run 12 stress 0.07324842 
 > > Run 13 stress 0.06962017 
 > > Run 14 stress 0.06889305 
@@ -535,13 +535,13 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > ... Procrustes: rmse 0.0004083019  max resid 0.002545549 
 > > ... Similar to previous best
 > > Run 17 stress 0.07046705 
-> > Run 18 stress 0.06956425 
+> > Run 18 stress 0.06956713 
 > > Run 19 stress 0.07053079 
-> > Run 20 stress 0.07194511 
+> > Run 20 stress 0.07194726 
 > > Run 21 stress 0.0702962 
 > > Run 22 stress 0.07231626 
 > > Run 23 stress 0.0696101 
-> > Run 24 stress 0.06974578 
+> > Run 24 stress 0.06970453 
 > > *** Solution reached
 > > ~~~
 > > {: .output}
@@ -563,9 +563,9 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > 
 > > ~~~
 > > Run 0 stress 0.09379872 
-> > Run 1 stress 0.1026697 
+> > Run 1 stress 0.1026698 
 > > Run 2 stress 0.1002676 
-> > Run 3 stress 0.1023264 
+> > Run 3 stress 0.1023272 
 > > Run 4 stress 0.09287257 
 > > ... New best solution
 > > ... Procrustes: rmse 0.01237011  max resid 0.1707368 
@@ -574,14 +574,14 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > Run 7 stress 0.1029276 
 > > Run 8 stress 0.1034482 
 > > Run 9 stress 0.09738996 
-> > Run 10 stress 0.1082286 
+> > Run 10 stress 0.1082283 
 > > Run 11 stress 0.1028023 
 > > Run 12 stress 0.1036501 
 > > Run 13 stress 0.09532804 
 > > Run 14 stress 0.102258 
 > > Run 15 stress 0.1024873 
 > > Run 16 stress 0.1013874 
-> > Run 17 stress 0.09505227 
+> > Run 17 stress 0.09505229 
 > > Run 18 stress 0.09796259 
 > > Run 19 stress 0.1068903 
 > > Run 20 stress 0.1066879 
@@ -590,17 +590,17 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > Run 23 stress 0.102715 
 > > Run 24 stress 0.1071413 
 > > Run 25 stress 0.1047762 
-> > Run 26 stress 0.09526087 
+> > Run 26 stress 0.09526129 
 > > Run 27 stress 0.09958195 
 > > Run 28 stress 0.09607154 
 > > Run 29 stress 0.1060663 
 > > Run 30 stress 0.1075293 
 > > Run 31 stress 0.09590724 
 > > Run 32 stress 0.09845323 
-> > Run 33 stress 0.1082489 
+> > Run 33 stress 0.1082491 
 > > Run 34 stress 0.09620151 
-> > Run 35 stress 0.1047374 
-> > Run 36 stress 0.0949569 
+> > Run 35 stress 0.1047376 
+> > Run 36 stress 0.09496087 
 > > Run 37 stress 0.09609119 
 > > Run 38 stress 0.1064076 
 > > Run 39 stress 0.105015 
@@ -621,7 +621,7 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > Run 54 stress 0.0977556 
 > > Run 55 stress 0.09406389 
 > > Run 56 stress 0.1041708 
-> > Run 57 stress 0.09631192 
+> > Run 57 stress 0.0963039 
 > > Run 58 stress 0.09624402 
 > > Run 59 stress 0.09865697 
 > > Run 60 stress 0.1061679 
@@ -640,7 +640,7 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > Run 73 stress 0.09539729 
 > > Run 74 stress 0.1070031 
 > > Run 75 stress 0.09957389 
-> > Run 76 stress 0.09495906 
+> > Run 76 stress 0.09495955 
 > > Run 77 stress 0.09773001 
 > > Run 78 stress 0.106397 
 > > Run 79 stress 0.1037537 
@@ -648,14 +648,14 @@ This stressplot suggests that the NMDS fitted on two dimensions fits the origina
 > > Run 81 stress 0.09479951 
 > > Run 82 stress 0.1040475 
 > > Run 83 stress 0.09430034 
-> > Run 84 stress 0.1064105 
+> > Run 84 stress 0.1064933 
 > > Run 85 stress 0.1005868 
-> > Run 86 stress 0.1061675 
+> > Run 86 stress 0.1061674 
 > > Run 87 stress 0.09729939 
 > > Run 88 stress 0.09810385 
 > > Run 89 stress 0.1051389 
-> > Run 90 stress 0.1032559 
-> > Run 91 stress 0.09523576 
+> > Run 90 stress 0.1032564 
+> > Run 91 stress 0.09523564 
 > > Run 92 stress 0.09795836 
 > > Run 93 stress 0.1012748 
 > > Run 94 stress 0.09966816 

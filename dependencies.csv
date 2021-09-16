@@ -36,10 +36,15 @@ scRNAseq
 scuttle
 MASS
 SingleCellExperiment
+cluster
 pheatmap
-stringr
+dplyr
 BiocManager
+dendextend
+clValid
+stringr
 desc
+remotes
 renv
 rprojroot
 glue

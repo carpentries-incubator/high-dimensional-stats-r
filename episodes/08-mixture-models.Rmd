@@ -1,7 +1,7 @@
 ---
 title: "Mixture models"
-teaching: 0
-exercises: 0
+teaching: 45
+exercises: 15
 questions:
 - "What is clustering?"
 - "Why would we want to find clusters in data?"
@@ -524,25 +524,7 @@ correct clustering is, nor even the true number of clusters.
 # > {: .solution}
 # {: .challenge}
 
-# t-SNE
 
-# t-SNE is something we've not covered in the course so far.
-# A high-level overview of t-SNE is that it's a method which seeks to create
-# a low-dimensional representation, ensuring
-# that points which are neighbours (close to each other) in the original 
-# high-dimensional data are also neighbours in the low-dimensional representation.
-# Like MDS, it's a stochastic algorithm and isn't quantitative in the way
-# that PCA is.
-
-# In contrast to PCA which we've been looking at so far,
-# t-SNE tends to separate the data into "blobs". This isn't 
-# necessarily good, and it can be easy to deceive yourself into thinking that
-# the blobs made in these plots have meaning that they don't really have.
-
-# ```{r pca}
-# scrnaseq <- runTSNE(scrnaseq, dimred = "PCA")
-# plotReducedDim(scrnaseq, "TSNE")
-# ```
 
 # ```{r metrics, echo = FALSE, eval = FALSE, fig.cap = "Title", fig.alt = "Alt"}
 # # bluster::clusterRows - maybe?
@@ -551,6 +533,32 @@ correct clustering is, nor even the true number of clusters.
 # ## approx silhouette? purity?
 # ```
 ```
+
+> ## t-SNE and UMAP
+> 
+> t-SNE and UMAP are dimensionality reduction methods which seek to create
+> a low-dimensional representation of high-dimensional data, ensuring
+> that points which are neighbours (close to each other) in the original
+> high-dimensional data are also neighbours in the low-dimensional 
+> representation.
+> 
+> Like MDS, they are stochastic algorithms and aren't quantitative in the way
+> that PCA is.
+> 
+> In contrast to PCA which we've been looking at so far,
+> t-SNE and UMAP tend to separate the data into "blobs". This isn't
+> necessarily good, and it can be easy to deceive yourself into thinking that
+> the blobs made in these plots have meaning that they don't really have.
+> 
+> While it can be a useful tool when performing clustering in more than two
+> dimensions, it's important to remember that the results from a robust 
+> cluster analysis may not match what we see in a t-SNE or UMAP plot.
+> 
+> ```{r pca}
+> scrnaseq <- runTSNE(scrnaseq, dimred = "PCA")
+> plotReducedDim(scrnaseq, "TSNE")
+> ```
+{: .callout}
 
 ## Further reading
 
