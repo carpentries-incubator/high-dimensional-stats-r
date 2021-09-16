@@ -118,7 +118,7 @@ curve(
 )
 ```
 
-```{r, echo=FALSE,eval=FALSE}
+```{r plot-univar, echo=FALSE,eval=FALSE}
 ggplot(data.frame(x = univar)) +
     aes(x) +
     geom_histogram(aes(y = ..density..)) +
@@ -141,7 +141,7 @@ ggplot(data.frame(x = univar)) +
 > 
 > > ## Solution
 > > 1. 
-> >    ```{r}
+> >    ```{r stats-univar}
 > >    opt
 > >    mean(univar)
 > >    sd(univar)
@@ -250,7 +250,7 @@ process. To fit a 2-D mixture model, it's usually not wise to code it yourself,
 because people have made very fast and easy-to-use packages to fit mixture 
 models. Here's one example:
 
-```{r}
+```{r fit-mixem}
 set.seed(66)
 true_means <- c(-1, 4)
 true_sds <- c(2, 1)
@@ -269,9 +269,10 @@ mix <- normalmixEM2comp(
 plot(mix, whichplots = 2)
 ```
 
-We can also see that the model recovers mean and sd values pretty close to the ground truth:
+We can also see that the model recovers mean and sd values pretty close to the
+ground truth:
 
-```{r}
+```{r stats}
 mix$mu
 true_means
 mix$sigma
@@ -294,7 +295,7 @@ true_sds
 > > That's because the left, broader distribution centred at `-1` "bleeds into"
 > > the right distribution.
 > >
-> > ```{r}
+> > ```{r mix-expt}
 > > set.seed(66)
 > > true_means <- c(-1, 1)
 > > true_sds <- c(2, 1)
@@ -345,7 +346,7 @@ dimensionality reduction for `SummarizedExperiment` objects.
 If we plot the first two principal components, we can see that the data points
 are spread out roughly continuously, with some clustering.
 
-```{r tsne}
+```{r reddim}
 library("scater")
 scrnaseq <- runPCA(scrnaseq, ncomponents = 15)
 plotReducedDim(scrnaseq, "PCA")
@@ -358,7 +359,7 @@ visualise those easily, and they're a quantitative
 representation of the underlying data, representing the two largest axes of
 variation. For speed, we'll take a random subset of 1/5 of the data.
 
-```{r}
+```{r pcs}
 set.seed(42)
 random_ind <- sample(ncol(scrnaseq), ceiling(ncol(scrnaseq) / 5))
 pcs <- reducedDim(scrnaseq, "PCA")[random_ind, 1:2]
@@ -374,7 +375,7 @@ combined. For example, if we generate two sets of normally distributed variables
 and plot them against each other, we get a "cloud" of points that's roughly 
 round with most of the points in the centre:
 
-```{r, echo=FALSE}
+```{r norms, echo=FALSE}
 x <- rnorm(1000)
 y <- rnorm(1000)
 plot(x, y)
@@ -383,14 +384,14 @@ plot(x, y)
 A multivariate normal distribution can be similar to this, but it models
 both variables at once. In fact, in some cases it can basically be identical:
 
-```{r, echo=FALSE}
+```{r mvnorm, echo=FALSE}
 xy <- mvrnorm(1000, mu  = c(0, 0), Sigma = diag(2))
 plot(xy)
 ```
 
 However, it also allows us to model sets of variables that aren't *independent*:
 
-```{r, echo=FALSE}
+```{r mvnormcor, echo=FALSE}
 xy <- mvrnorm(1000, mu = c(0, 0), Sigma = matrix(c(1, 0.8, 10, 1), nrow = 2, ncol = 2))
 plot(xy)
 ```
@@ -404,7 +405,7 @@ This time, we want the function `mvnormalmixEM`. This is short for
 We can fit this model to our principal components and see what the model
 looks like. We'll set $k=2$ as a starting point.
 
-```{r}
+```{r mix2}
 mix_sc2 <- mvnormalmixEM(pcs, k = 2)
 plot(mix_sc2, 2, pch = 19, cex = 0.5)
 ```
@@ -424,12 +425,12 @@ it to find?
 > 
 > > ## Solution
 > > 
-> > ```{r}
+> > ```{r mix3}
 > > set.seed(42)
 > > mix_sc3 <- mvnormalmixEM(pcs, k = 3)
 > > plot(mix_sc3, 2, pch = 19, cex = 0.5)
 > > ```
-> > ```{r}
+> > ```{r mix3_2}
 > > mix_sc3_2 <- mvnormalmixEM(pcs, k = 3)
 > > plot(mix_sc3_2, 2, pch = 19, cex = 0.5)
 > > ```
@@ -554,7 +555,7 @@ correct clustering is, nor even the true number of clusters.
 > dimensions, it's important to remember that the results from a robust 
 > cluster analysis may not match what we see in a t-SNE or UMAP plot.
 > 
-> ```{r pca}
+> ```{r tsne}
 > scrnaseq <- runTSNE(scrnaseq, dimred = "PCA")
 > plotReducedDim(scrnaseq, "TSNE")
 > ```

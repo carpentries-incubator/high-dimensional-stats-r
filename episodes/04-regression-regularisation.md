@@ -399,7 +399,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-chooselambda-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -522,7 +522,7 @@ So, when we increase the penalty (reduce the norm), it's more likely that
 the best solution that falls in this region will be at the corner of this
 diagonal (ie, one or more coefficient is exactly zero).
 
-<img src="../fig/rmd-04-unnamed-chunk-10-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-shrink-lasso-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -549,14 +549,14 @@ diagonal (ie, one or more coefficient is exactly zero).
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-13-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-plotlas1-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > >    
 > >    ~~~
 > >    plot(fit_lasso)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-14-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-plotlas2-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 3. The paths tend to go to exactly zero much more.
 > > 
 > {: .solution}
@@ -587,7 +587,7 @@ plot(lasso)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-16-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-lasso-cv-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 ~~~
 coefl <- coef(lasso, lasso$lambda.min)
@@ -609,7 +609,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ~~~
 {: .output}
 
-<img src="../fig/rmd-04-unnamed-chunk-17-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-heamtap-lasso-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 # Blending ridge regression and the LASSO
 
@@ -636,7 +636,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-18-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-elastic-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > 2. 
 > >    
 > >    ~~~
@@ -645,7 +645,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-04-unnamed-chunk-19-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-04-elastic-plot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -656,11 +656,6 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > 
 > TODO: brief technical explanation of bias and variance
 > 
-> 
-> ~~~
-> elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
-> ~~~
-> {: .language-r}
 {: .callout}
 
 
@@ -749,7 +744,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-04-unnamed-chunk-21-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-04-unnamed-chunk-3-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > In this case, the results aren't very interesting! We select an intercept-only
 > model.
 {: .callout}

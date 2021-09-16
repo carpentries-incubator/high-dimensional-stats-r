@@ -29,7 +29,7 @@ math: yes
 ---
 
 
-```{r, include=FALSE}
+```{r settings, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
 knitr_fig_path("04-")
@@ -143,7 +143,7 @@ that represents this line in terms of its slope and intercept among many
 different possible models, where the background colour represents how well
 different combinations of slope and intercept accomplish this objective.
 
-```{r, regplot, echo = FALSE, fig.cap="Cap", fig.alt="Alt", fig.width=10}
+```{r regplot, echo = FALSE, fig.cap="Cap", fig.alt="Alt", fig.width=10}
 library("viridis")
 set.seed(42)
 noise_sd <- 1
@@ -279,7 +279,7 @@ this means.
 For the next few exercises, we'll work with a set of features
 known to be associated with age from Horvath.
 
-```{r}
+```{r coefhorvath}
 coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 methylation <- readRDS(here::here("data/methylation.rds"))
 library("SummarizedExperiment")
@@ -309,7 +309,7 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    the age vector into two each. We can use a negative subscript to create
 > >    the test data.
 > >    
-> >    ```{r}    
+> >    ```{r testsplit} 
 > >    train_mat <- horvath_mat[train_ind, ]
 > >    train_age <- age[train_ind]
 > >    test_mat <- horvath_mat[-train_ind, ]
@@ -319,14 +319,14 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > > 2. Fitting a model to the training data is similar to what we did in the
 > >    previous episode.
 > >    
-> >    ```{r}
+> >    ```{r trainfit}
 > >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 > >    ```
 > > 
 > > 3. The mean squared error of the model is the mean of the square of the
 > >    residuals. This seems very low here -- on average we're only off by 
 > >    about a year!
-> >    ```{r}
+> >    ```{r testerror}
 > >    mean(residuals(fit_horvath)^2)
 > >    ```
 > >
@@ -370,7 +370,7 @@ residuals) that also falls within a circle of a given radius
 (in this case, `r l2`).
 
 
-```{r, ridgeplot, echo = FALSE, fig.cap = "Cap", fig.alt = "Alt", fig.width = 10}
+```{r ridgeplot, echo = FALSE, fig.cap = "Cap", fig.alt = "Alt", fig.width = 10}
 set.seed(42)
 par(mfrow = 1:2)
 plot(x, y, pch = 19)
@@ -471,7 +471,7 @@ We can see where on the continuum of lambdas we've picked a model by plotting
 the coefficient paths again. In this case, we've picked a model with fairly
 modest shrinkage.
 
-```{r fig.cap="Cap", fig.alt="Alt"}
+```{r chooselambda, fig.cap="Cap", fig.alt="Alt"}
 chosen_lambda <- ridge_fit$lambda[which.min(err_ridge)]
 plot(ridge_fit, xvar = "lambda")
 abline(v = log(chosen_lambda), lty = "dashed")
@@ -491,7 +491,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > > 
 > > 1. Ridge regression performs significantly better on unseen data, despite
 > >    being "worse" on the training data.
-> >    ```{r}
+> >    ```{r err-lm-ridge}
 > >    min_err_ridge
 > >    err_lm
 > >    ```
@@ -568,7 +568,7 @@ So, when we increase the penalty (reduce the norm), it's more likely that
 the best solution that falls in this region will be at the corner of this
 diagonal (ie, one or more coefficient is exactly zero).
 
-```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt", fig.width=10}
+```{r shrink-lasso, echo = FALSE, fig.cap = "Title", fig.alt = "Alt", fig.width=10}
 loglik <- function(slope, intercept, x, y, noise_sd) {
     sum(dnorm(y, mean = (slope * x) + intercept, sd = noise_sd, log = TRUE))
 }
@@ -653,17 +653,17 @@ drawplot()
 > > ## Solution
 > > 
 > > 1. .
-> >    ```{r}
+> >    ```{r fitlas}
 > >    fit_lasso <- glmnet(x = methyl_mat, y = age, alpha = 1)
 > >    ```
 > > 2. .
-> >    ```{r, echo=FALSE}
+> >    ```{r plotlas, echo=FALSE}
 > >    par(mfrow = c(1, 1))
 > >    ```
-> >    ```{r, fig.cap="LASSO lambda", fig.alt="Alt"}
+> >    ```{r plotlas1, fig.cap="LASSO lambda", fig.alt="Alt"}
 > >    plot(fit_lasso, xvar = "lambda")
 > >    ```
-> >    ```{r, fig.cap="LASSO L1", fig.alt="Alt"}
+> >    ```{r plotlas2, fig.cap="LASSO L1", fig.alt="Alt"}
 > >    plot(fit_lasso)
 > >    ```
 > > 3. The paths tend to go to exactly zero much more.
@@ -685,13 +685,13 @@ data. Doing this repeated test/train split gives us a better estimate
 of how generalisable our model is. Cross-validation is a really deep topic that
 we're not going to cover in more detail today, though!
 
-```{r, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
+```{r cvfig, echo = FALSE, fig.cap = "Title", fig.alt = "Alt"}
 knitr::include_graphics("../fig/cross_validation.png")
 ```
 
 We can use this new idea to pick a lambda value.
 
-```{r, fig.cap="Lasso", fig.alt="Alt"}
+```{r lasso-cv, fig.cap="Lasso", fig.alt="Alt"}
 lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 plot(lasso)
 coefl <- coef(lasso, lasso$lambda.min)
@@ -703,7 +703,7 @@ coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ```
 
-```{r, echo = FALSE, fig.cap="Heatmap", fig.alt="Alt"}
+```{r heamtap-lasso, echo = FALSE, fig.cap="Heatmap", fig.alt="Alt"}
 hmat <- t(scale(methyl_mat[, names(selected_coefs)[-1]]))
 ord <- order(age)
 hmat_ord <- hmat[, ord]
@@ -743,14 +743,14 @@ Heatmap(
 > 
 > > ## Solution
 > > 1. Fitting an elastic net model is just like 
-> >    ```{r, fig.cap="Elastic", fig.alt="Alt"}
+> >    ```{r elastic, fig.cap="Elastic", fig.alt="Alt"}
 > >    elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
 > >    par(mfrow = c(1, 2))
 > >    plot(elastic)
 > >    plot(lasso)
 > >    ```
 > > 2. 
-> >    ```{r fig.cap="LASSO-Elastic", fig.alt="Alt"}
+> >    ```{r elastic-plot, fig.cap="LASSO-Elastic", fig.alt="Alt"}
 > >    coefe <- coef(elastic, elastic$lambda.1se)
 > >    plot(coefl[, 1], coefe[, 1])
 > >    ```
@@ -764,9 +764,6 @@ Heatmap(
 > 
 > TODO: brief technical explanation of bias and variance
 > 
-> ```{r}
-> elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5, intercept = FALSE)
-> ```
 {: .callout}
 
 

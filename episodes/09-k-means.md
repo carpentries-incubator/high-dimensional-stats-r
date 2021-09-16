@@ -30,11 +30,6 @@ math: yes
 
 # Introduction
 
-High-dimensional data, especially in biological settings, commonly has
-many sources of heterogeneity. Some of these are stochastic variation
-arising from measurement error or random differences between organisms. In
-some cases, this heterogeneity arises from the presence of subgroups in the
-data.
 
 # Believing in clusters
 
@@ -47,15 +42,23 @@ example, since there is genuinely no heterogeneity in the data, but it does
 reflect what can happen if you allow yourself to read too much into faint
 signals.
 
-<img src="../fig/rmd-09-unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-09-fake-cluster-1.png" title="plot of chunk fake-cluster" alt="plot of chunk fake-cluster" width="432" style="display: block; margin: auto;" />
 
+> ## Exercise
+> 
+> 
+> 
+> > ## Solution
+> > 
+> > 
+> {: .solution}
+{: .challenge}
 
 # K-means
 
 K-means is an iterative algorithm a bit like the EM algorithm we covered in
 the previous lesson. However, in K-means we're not concerned with fitting
 distributions to the data. We are only interested in distances.
-
 In K-means, we pick $k$ initial points as centres or "centroids" of our
 clusters. There are a few ways to choose these initial "centroids",
 but for simplicity let's imagine we just pick three random co-ordinates.
@@ -66,13 +69,12 @@ We then follow these two steps until convergence:
 
 We can see this process in action in this animation:
 
-
+<img src="../fig/kmeans.gif" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
 > ## Initialisation
 > 
 > We saw in the previous episode that choosing random initialisations
 > can be very problematic for EM algorithms like K-means.
->
 > Some initialisation strategies are:
 > 
 > - Choose $K$ points at random from the data as the cluster centroids.
@@ -102,6 +104,7 @@ pcs <- reducedDim(scrnaseq)[, 1:2]
 We can then run K-means on the PCs of the scRNAseq data.
 
 ~~~
+set.seed(42)
 cluster <- kmeans(pcs, centers = 4)
 scrnaseq$kmeans <- as.character(cluster$cluster)
 plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans")
@@ -110,15 +113,39 @@ plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans")
 
 <img src="../fig/rmd-09-kmeans-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
+We can see that this produces a sensible-looking partition of the data. 
+However, is it totally clear whether there might be more or fewer clusters
+here?
+
+> ## Exercise
+> 
+> Cluster the data using a K of 5, and plot it with `plotReducedDim`.
+> Save this with a variable name that's different to what we just used,
+> because we'll use this again later.
+> 
+> > ## Solution
+> > 
+> > 
+> > ~~~
+> > set.seed(42)
+> > cluster5 <- kmeans(pcs, centers = 5)
+> > scrnaseq$kmeans5 <- as.character(cluster5$cluster)
+> > plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans5")
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/rmd-09-kmeans-ex-1.png" title="plot of chunk kmeans-ex" alt="plot of chunk kmeans-ex" width="432" style="display: block; margin: auto;" />
+> > 
+> {: .solution}
+{: .challenge}
+
 > ## K-medioids (PAM)
 > 
 > One problem with K-means is that using the mean to define cluster centroids
 > means that clusters can be very sensitive to outlying observations.
->
 > K-medioids, also known as "partitioning around medioids" is similar to 
 > K-means, but uses the median rather than the mean as the method for defining
-> cluster centroids.
-> 
+> cluster centroids. 
 > It has had popular application in genomics, for example the well-known
 > PAM50 gene set in breast cancer, which has seen some prognostic application.
 > 
@@ -133,16 +160,15 @@ plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans")
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-09-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-09-unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="432" style="display: block; margin: auto;" />
 > 
 {: .callout}
 
 
-# Cluster separation (silhouette width)
+# Cluster separation
 
 When performing clustering, it's important for us to be able to measure how
-well our clusters are separated.
-
+well our clusters are separated. One measure to test this is *silhouette width*.
 For each data point, the silhouette width is the average distance
 between this point and all other points in its cluster, relative to
 the average distance of that point to the next closest cluster.
@@ -162,7 +188,7 @@ plot(sil)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-09-silhouette-1.png" title="plot of chunk silhouette" alt="plot of chunk silhouette" width="432" style="display: block; margin: auto;" />
 
 
 
@@ -171,7 +197,20 @@ pc <- as.data.frame(pcs)
 colnames(pc) <- c("x", "y")
 pc$sil <- sil[, "sil_width"]
 pc$clust <- factor(cluster$cluster)
+mean(sil[, "sil_width"])
+~~~
+{: .language-r}
 
+
+
+~~~
+[1] 0.7065662
+~~~
+{: .output}
+
+
+
+~~~
 ggplot(pc) +
     aes(x, y, shape = clust, colour = sil) +
     geom_point() +
@@ -184,17 +223,59 @@ ggplot(pc) +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-09-plot-silhouette-1.png" title="plot of chunk plot-silhouette" alt="plot of chunk plot-silhouette" width="432" style="display: block; margin: auto;" />
 
-~~~
-# mean(sil[, "sil_width"])
-~~~
-{: .language-r}
+
+> ## Exercise
+> 
+> Calculate the silhouette width for the K of 5 clustering we did earlier.
+> Is it better or worse than before?
+>
+> Can you identify where the differences lie?
+> 
+> > ## Solution
+> > 
+> > 
+> > ~~~
+> > sil5 <- silhouette(cluster5$cluster, dist = dist_mat)
+> > scrnaseq$kmeans5 <- as.character(cluster5$cluster)
+> > plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans5")
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/rmd-09-silhouette-ex-1.png" title="plot of chunk silhouette-ex" alt="plot of chunk silhouette-ex" width="432" style="display: block; margin: auto;" />
+> > 
+> > ~~~
+> > mean(sil5[, "sil_width"])
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 0.5849979
+> > ~~~
+> > {: .output}
+> > The average silhouette width is lower when k=5.
+> > 
+> > 
+> > ~~~
+> > plot(sil5)
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/silhouette5.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+> > This seems to be because some observations in clusters 3 and 5 seem to be
+> > more similar to other clusters than the one they have been assigned to.
+> > This may indicate that K is too high.
+> {: .solution}
+{: .challenge}
+
 
 
 > ## Gap statistic
 > 
-> Another measure of how good our clusterign is is the "gap statistic".
+> Another measure of how good our clustering is is the "gap statistic".
 > This compares the observed squared distance between observations in a cluster
 > and the centre of the cluster to an "expected" squared distances.
 > The expected distances are calculated by randomly distributing cells within
@@ -213,7 +294,6 @@ ggplot(pc) +
 > ~~~
 > {: .language-r}
 {: .callout}
-
 
 
 # Cluster robustness
@@ -245,7 +325,7 @@ sample(data, 5)
 
 
 ~~~
-[1] 1 4 3 5 2
+[1] 4 1 3 5 2
 ~~~
 {: .output}
 
@@ -262,11 +342,11 @@ replicate(10, sample(data, 5))
 
 ~~~
      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-[1,]    2    4    3    1    3    3    1    3    4     5
-[2,]    5    5    2    4    5    2    3    5    1     3
-[3,]    3    2    1    5    1    4    2    1    2     1
-[4,]    1    1    5    3    4    1    4    2    5     2
-[5,]    4    3    4    2    2    5    5    4    3     4
+[1,]    5    2    5    2    3    1    3    5    5     3
+[2,]    4    5    4    5    4    4    1    3    1     2
+[3,]    2    1    1    3    2    5    2    2    3     4
+[4,]    1    4    2    1    5    3    5    1    2     5
+[5,]    3    3    3    4    1    2    4    4    4     1
 ~~~
 {: .output}
 
@@ -283,11 +363,11 @@ replicate(10, sample(data, 5, replace = TRUE))
 
 ~~~
      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-[1,]    5    1    1    1    3    3    1    3    3     2
-[2,]    5    4    2    3    2    1    5    4    4     3
-[3,]    2    4    2    2    5    3    2    3    1     3
-[4,]    1    4    1    2    4    5    4    1    5     5
-[5,]    2    4    5    5    1    3    1    4    1     1
+[1,]    3    1    2    2    1    3    3    2    4     2
+[2,]    1    3    2    4    2    5    2    1    2     5
+[3,]    5    5    4    4    2    2    1    1    1     3
+[4,]    1    1    4    2    1    4    4    5    5     4
+[5,]    3    1    2    1    4    2    5    3    3     2
 ~~~
 {: .output}
 
@@ -314,12 +394,27 @@ replicate(10, sample(data, 5, replace = TRUE))
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-09-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-09-boots-1.png" title="plot of chunk boots" alt="plot of chunk boots" width="432" style="display: block; margin: auto;" />
 > 
 > In this case, the example is simple, but it's possible to
 > devise more complex statistical tests using this kind of approach.
 > 
+> The bootstrap, along with permutation testing, can be a very flexible and 
+> general solution to many statistical problems.
+> 
 {: .callout}
+
+In applying the bootstrap to clustering, we want to see two things:
+1. Will observations within a cluster will consistently cluster together in
+   different bootstrap replicates?
+2. Will observations frequently swap between clusters?
+
+In the plot below, the diagonal of the plot shows how often the clusters
+are reproduced in boostrap replicates. High scores on
+the diagonal mean that the clusters are consistently reproduced in each 
+boostrap replicate. Similarly, the off-diagonal elements represent how often
+observations swap between clusters in bootstrap replicates. High scores 
+indicate that observations rarely swap between clusters.
 
 
 ~~~
@@ -328,19 +423,52 @@ library("bluster")
 library("viridis")
 
 km_fun <- function(x) {
-    kmeans(x, 4)$cluster
+    kmeans(x, centers = 4)$cluster
 }
-originals <- km_fun(pc)
-ratios <- bootstrapStability(pc, FUN = km_fun, clusters = originals)
+ratios <- bootstrapStability(pcs, FUN = km_fun, clusters = cluster$cluster)
 pheatmap(ratios,
-    cluster_row = FALSE, cluster_col = FALSE,
-    color = viridis::magma(100),
-    breaks = seq(-1, 1, length.out = 101)
+    cluster_rows = FALSE, cluster_cols = FALSE,
+    col = viridis(10),
+    breaks = seq(0, 1, length.out = 10)
 )
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-09-bs-heatmap-1.png" title="plot of chunk bs-heatmap" alt="plot of chunk bs-heatmap" width="432" style="display: block; margin: auto;" />
+
+> ## Exercise
+>
+> Repeat the bootstrapping process with K=5. Are the results better or worse?
+> Can you identify where the differences occur on the `plotReducedDim`?
+> 
+> > ## Solution
+> > 
+> > 
+> > ~~~
+> > km_fun5 <- function(x) {
+> >     kmeans(x, centers = 5)$cluster
+> > }
+> > set.seed(42)
+> > ratios5 <- bootstrapStability(pcs, FUN = km_fun5, clusters = cluster5$cluster)
+> > pheatmap(ratios5,
+> >     cluster_rows = FALSE, cluster_cols = FALSE,
+> >     col = viridis(10),
+> >     breaks = seq(0, 1, length.out = 10)
+> > )
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/rmd-09-bs-ex-1.png" title="plot of chunk bs-ex" alt="plot of chunk bs-ex" width="432" style="display: block; margin: auto;" />
+> > When K=5, we can see that the values on the diagonal of the matrix are 
+> > smaller, indicating that the clusters aren't exactly reproducible in the
+> > bootstrap samples. 
+> > 
+> > Similarly, the off-diagonal elements are considerably lower for some
+> > elements.
+> > This indicates that observations are "swapping" between these clusters
+> > in bootstrap replicates.
+> {: .solution}
+{: .challenge}
 
 
 > ## Consensus clustering
@@ -349,11 +477,15 @@ pheatmap(ratios,
 > This method can use k-means, mixture models, or other methods.
 > 
 > The idea behind this is to bootstrap the data repeatedly, and cluster
-> it each time. If a pair of data points always end up in the same cluster,
+> it each time, perhaps using different numbers of clusters.
+> If a pair of data points always end up in the same cluster,
 > it's likely that they really belong to the same underlying cluster.
 > 
+> This is really computationally demanding but has been shown to perform very
+> well in some situations. It also allows you to visualise how cluster
+> membership changes over different values of K.
+> 
 {: .callout}
-
 
 
 > ## Speed
