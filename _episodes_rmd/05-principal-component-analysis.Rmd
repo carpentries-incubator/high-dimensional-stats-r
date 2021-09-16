@@ -1,7 +1,7 @@
 ---
 title: "Principle component analysis"
 author: "GS Robertson"
-teaching: 60
+teaching: 90
 exercises: 30
 questions:
 - What is principal component analysis and when can it be used?
@@ -63,12 +63,20 @@ PCA does have some limitations:
 * It can be difficult to interpret the meaning of the principal components, especially when including them in further analysis (e.g. inclusion in a linear regression).
 
 
-(Pinned: Supervised vs unsupervised learning)
-Most statistical problems fall into one of two categories: supervised or unsupervised learning. Examples of supervised learning problems include linear regression and include analyses in which each observation has both at least one independent variables ($x$) as well as a dependent variable ($y$). In supervised learning problems the aim is to predict the value of the response given future observations or to understand the relationship between the dependent variable and the predictors. In unsupervised learning for each observation there is no dependent variable ($y$), but only a series of independent variables. In this situation there is no need for prediction, as there is no dependent variable to predict (hence the analysis can be thought as being unsupervised by the dependent variable). Instead statistical analysis can be used to understand relationships between the independent variables or between observations themselves. Unsupervised learning problems often occur when analysing high-dimensional datasets in which there is no obvious dependent variable to be predicted, but the analyst would like to understand more about patterns between groups of observations or reduce dimensionality so that a supervised learning process may be used.
+> ## Supervised vs unsupervised learning
+> Most statistical problems fall into one of two categories: supervised or unsupervised learning. 
+> Examples of supervised learning problems include linear regression and include analyses in which each observation has both at least one independent variables ($x$) 
+> as well as a dependent variable ($y$). In supervised learning problems the aim is to predict the value of the response given future observations or to understand 
+> the relationship between the dependent variable and the predictors. In unsupervised learning for each observation there is no dependent variable ($y$), but only 
+> a series of independent variables. In this situation there is no need for prediction, as there is no dependent variable to predict (hence the analysis can be thought 
+> as being unsupervised by the dependent variable). Instead statistical analysis can be used to understand relationships between the independent variables or between
+> observations themselves. Unsupervised learning problems often occur when analysing high-dimensional datasets in which there is no obvious dependent variable to be
+> predicted, but the analyst would like to understand more about patterns between groups of observations or reduce dimensionality so that a supervised learning process 
+> may be used.
+{: .callout}
 
 
 > ## Challenge 1 
-> (5 mins)
 > 
 > Descriptions of three datasets and research questions are given below. For which of these might PCA be considered a useful tool for analysing data so that the research questions may be addressed?
 > 
@@ -77,7 +85,7 @@ Most statistical problems fall into one of two categories: supervised or unsuper
 > C. A scientist has assayed gene expression levels in 1000 cancer patients and has data from probes targeting different genes in tumour samples from patients. She would like to create new variables representing relative abundance of different groups of genes to i) find out if genes form subgroups based on biological function and ii) use these new variables in a linear regression examining how gene expression varies with disease severity.
 > D. All of the above
 > 
-> > ## Solution
+> > Solution:
 > > 
 > > C
 > {: .solution}
@@ -110,9 +118,9 @@ knitr::include_graphics("../fig/pendulum.gif")
 
 > ## Challenge 2
 > 
-> (5 mins)
 > 
 > Why might it be necessary to standardise variables before performing a PCA?  
+> Can you think of datasets where it might not be necessary to standardise variables? Discuss.
 > 
 > A. To make the results of the PCA interesting
 > B. To ensure that variables with different ranges of values contributes equally to analysis
@@ -120,21 +128,16 @@ knitr::include_graphics("../fig/pendulum.gif")
 > D. To allow both continuous and categorical variables to be included in the PCA
 > E. All of the above
 > 
-> > ## Solution
+> > Solution
 > > 
 > > B
+> > Datasets which contain continuous variables all measured on the same scale (e.g. gene expression data or RNA sequencing data). 
 > {: .solution}
 {: .challenge}
 
 
-Can you think of datasets where it might not be necessary to standardise variables? Discuss.
-
-Answer: Datasets which contain continuous variables all measured on the same scale (e.g. gene expression data or RNA sequencing data). 
-
 
 # Example of PCA using data
-
-(code along episode 15 mins)
 
 The prostate dataset is freely available online and represents data from 97 men who have prostate cancer. The data come from a study which examined the correlation between the level of prostate specific antigen and a number of clinical measures in men who were about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 
@@ -226,8 +229,6 @@ The left and bottom axes show normalised principal component scores. The axes on
 
 # Making use of different PCA packages for analysing biological data
 
-(code along episode 10 mins)
-
 We will now examine a more complex high-dimensional dataset using the Bioconductor package PCAtools.
 
 PCAtools provides functions for data exploration using PCA and allows the user to produce high quality figures. Functions to apply different methods for choosing appropriate numbers of principal components are available. This PCA package is designed specifically for the analysis of high-dimensional biological data.
@@ -280,13 +281,13 @@ If researchers hypothesise that groups of genes may be associated with different
 Using the Bioconductor package PCAtools we will apply a PCA to the cancer gene expression data, plot the amount of variation in the data explained by each principal component and plot the most important principal components against each other as well as understanding what each principal component represents.
 
 
-> # Challenge 3
+> ## Challenge 3
 > 
-> (5 mins)
+> Apply a PCA to the cancer gene expression data using the `pca` function from PCAtools. You can use the help files in PCAtools to find out about the `pca` function 
+> (type `?pca` in R). Remove the lower 20% of principal components from your PCA using the `removeVar` argument in the `pca` function. 
+> As in the example using prostate data above, examine the first 5 rows and columns of rotated data and loadings from your PCA.
 > 
-> Apply a PCA to the cancer gene expression data using the `pca` function from PCAtools.  You can use the help files in PCAtools to find out about the `pca` function (type `?pca` in R). Remove the lower 20% of principal components from your PCA using the `removeVar` argument in the `pca` function. As in the example using prostate data above, examine the first 5 rows and columns of rotated data and loadings from your PCA.
-> 
-> > ## Solution
+> > Solution:
 > > 
 > > ```{r, echo=FALSE}
 > > pc <- pca(mat, metadata = metadata)
@@ -316,11 +317,10 @@ As in the example using the prostate dataset we can use a screeplot to compare t
 
 > ## Challenge 4
 > 
-> (5 mins)
 > 
 > Using the screeplot function in PCAtools, create a screeplot to show proportion of variance explained by each principal component. Explain the output of the screeplot in terms of proportion of variance in data explained by each principal component.
 > 
-> > ## Solution
+> > Solution:
 > > 
 > > ```{r, fig.cap="Caption", fig.cap="Alt"}
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
@@ -338,11 +338,11 @@ We can use these plots, called biplots, to look for patterns in the output from 
 
 
 > ## Challenge 5
-> (5 mins)
 > 
-> Create a biplot of the first two principal components from your PCA (using `biplot` function in PCAtools - see helpfile for arguments) and determine whether samples cluster based on variables in metadata. Explain you results.
+> Create a biplot of the first two principal components from your PCA (using `biplot` function in PCAtools - see helpfile for arguments) 
+> and determine whether samples cluster based on variables in metadata. Explain you results.
 > 
-> > ## Solution
+> > Solution:
 > > 
 > > ```{r, fig.cap="Caption", fig.cap="Alt"}
 > > PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
@@ -366,13 +366,12 @@ We can see from this plot that there appear to be two separate groups of points 
 
 Plotting the loadings shows the magnitude and direction of loadings for each probe on each principal component.
 
-> # Challenge 6:
+> ## Challenge 6
 > 
-> (5 mins)
 > 
 > Use `colby` and `lab` arguments in biplot to explore whether these two groups may cluster by Age or by whether or not the sample expresses the Estrogen Receptor gene (ER+ or ER-).
 > 
-> > ## Solution
+> > Solution:
 > > 
 > > ```{r, fig.cap="Caption", fig.cap="Alt"}
 > >   PCAtools::biplot(pc,
@@ -402,14 +401,19 @@ The plots show two apparent clusters involving the first principal component onl
 The output of PCA can be used to interpret data or can be used in further analyses. For example, the PCA outputs new variables (principal components) which represent several variables in the original dataset. These new variables are useful for further exploring data, for example comparing prinicpal component scores between groups or including the new variables in linear regressions. Because the principal components are uncorrelated (and independent) they can be included together in a single linear regression. 
 
 
-(Pinned: Principal component regression)
-
-PCA is often used to reduce large numbers of correlated variables into fewer uncorrelated variables that can then be included in linear regression or other models. This technique allows researchers to examine the effect of several correlated explanatory variables on a single response variable in cases where a high degree of correlation initially prevents them from being included in the same model. This is called principal componenet regression (PCR) and is just one example of how principal components can be used in further analysis of data. When carrying out PCR, the variable of interest (response/dependent variable) is regressed against the principal components calculated using PCA, rather than against each individual explanatory variable from the original dataset. As there as many principal components created from PCA as there are variables in the dataset, we must select which principal components to include in PCR. This can be done by examining the amount of variation in the data explained by each principal component (see above).
-
+> ## Principal component regression
+> 
+> PCA is often used to reduce large numbers of correlated variables into fewer uncorrelated variables that can then be included in linear regression or other models. 
+> This technique allows researchers to examine the effect of several correlated explanatory variables on a single response variable in cases where a high degree of
+> correlation initially prevents them from being included in the same model. This is called principal componenet regression (PCR) and is just one example of how 
+> principal components can be used in further analysis of data. When carrying out PCR, the variable of interest (response/dependent variable) is regressed against 
+> the principal components calculated using PCA, rather than against each individual explanatory variable from the original dataset. As there as many principal 
+> components created from PCA as there are variables in the dataset, we must select which principal components to include in PCR. This can be done by examining 
+> the amount of variation in the data explained by each principal component (see above).
+{: .callout}
 
 
 # Further reading
-
 
 James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
 Chapter 6.3 (Dimension Reduction Methods), Chapter 10 (Unsupervised Learning)
