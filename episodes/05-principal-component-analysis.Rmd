@@ -1,5 +1,5 @@
 ---
-title: "Principle component analysis"
+title: "Principal component analysis"
 author: "GS Robertson"
 teaching: 90
 exercises: 30

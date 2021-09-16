@@ -39,10 +39,10 @@ SingleCellExperiment
 cluster
 pheatmap
 dplyr
-BiocManager
 dendextend
 clValid
 stringr
+BiocManager
 desc
 remotes
 renv
