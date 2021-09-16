@@ -347,9 +347,10 @@ plot(mix, whichplots = 2)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-fit-mixem-1.png" title="plot of chunk fit-mixem" alt="plot of chunk fit-mixem" width="432" style="display: block; margin: auto;" />
 
-We can also see that the model recovers mean and sd values pretty close to the ground truth:
+We can also see that the model recovers mean and sd values pretty close to the
+ground truth:
 
 
 ~~~
@@ -455,7 +456,7 @@ true_sds
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-08-mix-expt-1.png" title="plot of chunk mix-expt" alt="plot of chunk mix-expt" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > mix$mu
@@ -531,7 +532,7 @@ plotReducedDim(scrnaseq, "PCA")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-tsne-1.png" title="plot of chunk tsne" alt="plot of chunk tsne" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-reddim-1.png" title="plot of chunk reddim" alt="plot of chunk reddim" width="432" style="display: block; margin: auto;" />
 
 You can see from the axis labels that the first two principal components
 capture almost 50% of the variation within the data.
@@ -549,7 +550,7 @@ plot(pcs)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-pcs-1.png" title="plot of chunk pcs" alt="plot of chunk pcs" width="432" style="display: block; margin: auto;" />
 
 # Multivariate distributions (distributions of more than one variable)
 
@@ -560,16 +561,16 @@ combined. For example, if we generate two sets of normally distributed variables
 and plot them against each other, we get a "cloud" of points that's roughly 
 round with most of the points in the centre:
 
-<img src="../fig/rmd-08-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-norms-1.png" title="plot of chunk norms" alt="plot of chunk norms" width="432" style="display: block; margin: auto;" />
 
 A multivariate normal distribution can be similar to this, but it models
 both variables at once. In fact, in some cases it can basically be identical:
 
-<img src="../fig/rmd-08-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-mvnorm-1.png" title="plot of chunk mvnorm" alt="plot of chunk mvnorm" width="432" style="display: block; margin: auto;" />
 
 However, it also allows us to model sets of variables that aren't *independent*:
 
-<img src="../fig/rmd-08-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-mvnormcor-1.png" title="plot of chunk mvnormcor" alt="plot of chunk mvnormcor" width="432" style="display: block; margin: auto;" />
 
 This is useful in a mixture model, because there's no reason to think that
 clusters of data will always be best modelled by a ball-shaped distribution.
@@ -600,7 +601,7 @@ plot(mix_sc2, 2, pch = 19, cex = 0.5)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-mix2-1.png" title="plot of chunk mix2" alt="plot of chunk mix2" width="432" style="display: block; margin: auto;" />
 
 Hmm. Our model has fit the data, but are these the clusters you expected
 it to find?
@@ -638,7 +639,7 @@ it to find?
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-08-mix3-1.png" title="plot of chunk mix3" alt="plot of chunk mix3" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > mix_sc3_2 <- mvnormalmixEM(pcs, k = 3)
@@ -659,7 +660,7 @@ it to find?
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-08-mix3_2-1.png" title="plot of chunk mix3_2" alt="plot of chunk mix3_2" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -750,7 +751,7 @@ correct clustering is, nor even the true number of clusters.
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-08-pca-1.png" title="plot of chunk pca" alt="plot of chunk pca" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-08-tsne-1.png" title="plot of chunk tsne" alt="plot of chunk tsne" width="432" style="display: block; margin: auto;" />
 {: .callout}
 
 ## Further reading

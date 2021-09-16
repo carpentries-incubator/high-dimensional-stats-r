@@ -742,7 +742,7 @@ the experiment over and over.
 > >        geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
 > >        labs(x = "Raw p-value", y = "Benjamini-Hochberg p-value")
 > >    ```
-> >    ```{r, echo=FALSE, eval=FALSE}
+> >    ```{r plot-fdr-fwer, echo=FALSE, eval=FALSE}
 > >    ggplot() +
 > >        aes(p_fdr, p_fwer) +
 > >        geom_point() +
@@ -798,7 +798,7 @@ plot(toptab_age$logFC, -log10(toptab_age$P.Value),
 )
 ```
 
-```{r echo = FALSE, eval=FALSE}
+```{r qval, echo = FALSE, eval=FALSE}
 q <- qvalue(toptab_age$P.Value)
 hist(q)
 ```
@@ -830,7 +830,7 @@ hist(q)
 > >    )
 > >    ```
 > > 2. We can use `all.equal` to compare vectors:
-> >    ```{r}
+> >    ```{r fdr-limma}
 > >    all.equal(p.adjust(toptab_smoke$P.Value, method = "BH"), toptab_smoke$adj.P.Val)
 > >    ```
 > {: .solution}

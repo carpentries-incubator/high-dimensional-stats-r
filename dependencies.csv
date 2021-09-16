@@ -41,6 +41,8 @@ pheatmap
 dplyr
 dendextend
 clValid
+cairoDevice
+Cairo
 stringr
 BiocManager
 desc

@@ -29,6 +29,7 @@ identify_dependencies <- function() {
   required_pkgs <- unique(c(
     ## Packages for episodes
     renv::dependencies(file.path(root, "_episodes_rmd"), progress = FALSE, error = "ignore")$Package,
+    renv::dependencies(file.path(root, "fig"), progress = FALSE, error = "ignore")$Package,
     ## Packages for tools
     renv::dependencies(file.path(root, "bin"), progress = FALSE, error = "ignore")$Package
   ))

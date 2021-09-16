@@ -18,7 +18,6 @@ keypoints:
 - PCA is a useful dimensionality reduction technique used in the analysis of complex biological datasets (e.g. high throughput data or genetics data)
 - The first principal component represents the dimension along which there is maximum variation in the data. Subsequent principal components represent dimensions with progressively less variation.  
 - Screeplots and biplots may be used to show i) how much variation in the data is explained by each principal component and ii) how data points cluster according to principal component scores and which variables are associated with these scores
-
 math: yes
 ---
 

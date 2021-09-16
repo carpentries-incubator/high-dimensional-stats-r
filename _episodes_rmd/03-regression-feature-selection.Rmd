@@ -216,7 +216,7 @@ in response to unit changes in the input features.
 
 To scale our data, we can use the `scale` function.
 
-```{r}
+```{r scale-prostate}
 prostate_scaled <- scale(prostate_mat)
 ```
 
@@ -242,7 +242,6 @@ prostate_scaled <- scale(prostate_mat)
 > >    change the intercept. The intercept quantifies the difference in means
 > >    independent of changes in the features.
 > > 
-> > ```
 > {: .solution}
 {: .challenge}
 
@@ -282,7 +281,7 @@ This is the sum of the square of the length of the dashed lines in the plot
 below. A low RSS value means that our predictions are very close to the 
 values we really observe.
 
-```{r, echo = FALSE, fig.cap="Cap", fig.alt = "Alt"}
+```{r residuals, echo = FALSE, fig.cap="Cap", fig.alt = "Alt"}
 set.seed(66)
 n <- 25
 x <- rnorm(n)

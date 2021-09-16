@@ -426,7 +426,6 @@ prostate_scaled <- scale(prostate_mat)
 > >    change the intercept. The intercept quantifies the difference in means
 > >    independent of changes in the features.
 > > 
-> > ```
 > {: .solution}
 {: .challenge}
 
@@ -466,7 +465,7 @@ This is the sum of the square of the length of the dashed lines in the plot
 below. A low RSS value means that our predictions are very close to the 
 values we really observe.
 
-<img src="../fig/rmd-03-unnamed-chunk-2-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-residuals-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 > ## Exercise 
 > 

@@ -91,7 +91,7 @@ means <- list(c(1, 1), c(1.1, 1.1), c(1.2, 1.2))
 names(means) <- paste(1:3)
 no_components <- rep(NA, nrow(df))
 components <- no_components
-Cairo::CairoPNG(file = "gif/kmeans_%04d.png", width = 500, height = 500)
+png(file = "gif/kmeans_%04d.png", width = 500, height = 500)
 plot_kmeans(df, means, components) + ggtitle("Initialise centroids")
 components <- label_points(df, means)
 plot_kmeans(df, means, components) + ggtitle("Assign points")
