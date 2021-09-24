@@ -1,0 +1,277 @@
+---
+title: "Introduction to high-dimensional data"
+author: "GS Robertson"
+date: "05/08/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1) What are high-dimensional data? (examples in biosciences)  
+2) What statistical methods are necessary to analyse high-dimensional data and why?
+3) What do high-dimensional data in biosciences look like?
+4) Assays/general data descriptions
+5) How to load Bioconductor objects - load some large dataset and look at how hard it is to plot variables
+
+
+- What is high dimensional data?
+- Why are high dimensional statistics needed to analyse these data?
+- How can we work with high dimensional data?
+- (mention sparcity of datasets i.e. in RNA dataset)
+
+
+# What are high-dimensional data? (10 mins)
+
+*High-dimensional data* are defined as data in which the number of features in the data, $p$, are equal or larger than the number of observations (or data points), $n$. Unlike *low-dimensional data* in which the number of observations, $n$, far outnumbers the number of features, $p$, in the dataset, high-dimensional data require consideration of potential problems that comes from having a large number of features, which we discuss below.
+
+High-dimensional data has become more common in many scientific fields as new automated data collection techniques have been developed. More and more datsets have a large number of variables/features and some have as many variables as there are rows in the dataset. Datasets in which $p$>=$n$ are becoming more common. Such datasets pose a challenge for data analysis as standard methods of analysis, such as linear regression, are no longer appropriate.
+
+High-dimensional datasets are common in the biological sciences. Subjects like genomics and medical sciences often use both large (in terms of $n$) and wide (in terms of $p$) datasets that can be difficult to analyse or visualise using standard statistical tools. An example of high-dimensional data in biological sciences may include data collected from hospital patients on symptoms, blood test results, behaviours, and general health, resulting in datasets with large numbers of features. Researchers may want to relate these features to specific patient outcomes (e.g. survival, length of time spent in hospital). 
+
+![Figure 1: Example of high-dimensional medical data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for Intro.png)
+
+
+# Challenge 1
+
+Descriptions of three research questions and their datasets are given below. Which of these are considered to have high-dimensional data?
+
+A. Predicting patient blood pressure using cholesterol level in blood, age, and BMI measurements collected from 100 patients
+B. Predicting patient blood pressure using cholesterol level in blood, age, and BMI as well as information from 200,000 single nucleotide polymorphisms from 100 patients 
+C. Predicting length of time patients spend in hospital with pneumonia infection using measurements on age, BMI, length of time with symptoms, number of symptoms, and percentage of neutrophils in blood using data from 200 patients
+D. Predicting probability of a patient's cancer progressing using gene expression data as well as data associated with general patient health (age, weight, BMI, blood pressure) and cancer growth (tumour size, localised spread, blood test results)
+
+Solution: B and D
+
+
+Now that we have an idea of what high-dimensional data look like we can think about the challenges we face in analysing them.
+
+
+
+# Challenges in dealing with high-dimensional data (10 mins)
+
+
+Most classical statistical methods are set up for use on *low-dimensional* data (i.e. data where the number of observations $n$ is much larger than the number of features $p$). This is because low-dimensional data were much more common in the past when data collection was more difficult and time consuming. In recent years advances in information technology have allowed large amounts of data to be collected and stored with relative ease. This has allowed large numbers of features to be collected, meaning that datasets in which $p$ matches or exceeds $n$ are common (collecting observations is often more difficult or expensive than collecting many features from a single observation).
+
+Datasets with large numbers of features are difficult to visualise. When exploring low-dimensional datasets, it is possible to plot the response variable against each of the limited number of explanatory variables to get an idea which of these are important predictors of the response. With high-dimensional data the large number of explanatory variables makes doing this difficult. In some high-dimensional datasets it can also be difficult to identify a single response variable, making standard data exploration and analysis techniques less useful.
+
+Let's have a look at a simple dataset with lots of features to understand some of the challenges we are facing when working with high-dimensional data.
+
+
+# Challenge 2
+
+Load the 'Prostate' dataset from the 'lasso2' package and examine the column names. 
+
+Examine the dataset (in which each row represents a single patient) and plot relationships between the variables using the `pairs` function. Why does it become more difficult to plot relationships between pairs of variables with increasing numbers of variables? Discuss in groups.
+
+Solution:
+
+```{r, echo=TRUE}
+library(lasso2)  #load lasso2 package
+data(Prostate)   #load the Prostate dataset
+View(Prostate)   #view the dataset
+names(Prostate)  #examine column names
+
+pairs(Prostate)  #plot each pair of variables against each other
+```
+
+The `pairs` function plots relationships between each of the variables in the 'Prostate' dataset. This is possible for datasets with smaller numbers of variables, but for datasets in which $p$ is larger it becomes difficult (and time consuming) to visualise relationships between all variables in the dataset. Even where visualisation is possible, fitting models to datasets with large numbers of variables is difficult due to the potential for overfitting and difficulties in identifying a response variable.
+
+Imagine we are carrying out least squares regression on a dataset with 25 observations. Fitting a best fit line through these data produces a figure like this:
+
+
+
+However, imagine a situation in which the ratio of observations to features in a dataset is almost equal. In that situation the effective number of observations per features is low. The result of fitting a best fit line through few observations can be seen in the figure below:
+
+
+This suggests that carrying out least sqaures regression on a dataset with few data points per feature would result in overfitting and difficulties in applying the resulting model to further datsets.
+
+
+# Challenge 3
+
+Use the `cor` function to examine correlations between all variables in the Prostate dataset. Are some variables highly correlated (i.e. correlation coefficiants >0.6)? Carry out a linear regression predicting patient age using all variables in the Prostate dataset. 
+
+Solution:
+
+```{r, echo=TRUE}
+#create a correlation matrix of all variables in the Prostate dataset
+cor(Prostate)
+
+#correlation matrix for variables describing cancer/clinical variables
+cor(Prostate[,c(1,2,4,6,9)])
+
+#use linear regression to predict patient age from cancer progression variables
+model<-lm(age~lcavol+lweight+lbph+lcp+lpsa+svi+gleason+pgg45,data=Prostate)
+summary(model)
+
+#examine model residuals
+plot(model)
+```
+
+The correlation matrix showing Pearson's correlations between each variable in the dataset shows high correlation between some pairs of variables (e.g. between lcavol and lpsa and between gleason and pgg45). Including correlated variables in the same regression model may lead to problems in fitting a regression and interpreting the output. Some clinical variables (i.e. lcavol, lweight, lbph, lcp, lpsa) show high amount of correlation between pairs of variables (e.g. between lcavol and lpsa). To allow variables to be included in the same model despite high levels of correlation we can use dimensionality reduction methods to collapse multiple variables into a single new variable (we will explore this dataset further in the dimensionality reduction lesson).
+
+
+# What statistical methods are used for high-dimensional data? (10 mins)
+
+As we show in the above challenge, carrying out linear regression on datasets with large numbers of features $p$ is difficult due to: large amount of correlation between variables; difficulty in identifying clear response variable; risk of overfitting. This problem is common to many high-dimensional datasets, for example, those using genomics data with multiple genes, or species composition data in an environment where relative abundance of different species within a community is of interest. For such datasets, other statistical methods may be used to examine whether groups of observations show similar features and whether these groups may relate to other features in the data (e.g. phenotype in genetics data). While straight-forward linear regression cannot be used in datasets with many features, high-dimensional regression methods are available allowing....
+
+In situations where the response variable is difficult to identify or where explanatory variables are highly correlated, dimensionality reduction may be used to create fewer variables that can then be included in linear regression. Various dimensionality reduction methods are available that can be used to do this, including principal component analysis (PCA), factor analysis, and multidimensional scaling, which are used to analyse different types of questions and datasets. Dimensionality reduction methods such as PCA can be used to visualise data in fewer number of dimensions, making patterns and clusters within the data easier to visualise. Exploring data via clustering is a useful way of better understanding relationships within observations in complex datasets. 
+
+Statistical methods (such as hierarchical clustering and k-means clustering) are often used to identify clusters within complex datasets. However, simply identifying clusters visually may not be enough - we also need to determine whether such clusters are 'real' or simply apparent interpretations of noise within the data.
+
+Let's create some random data and show how we can make these cluster by changing parameters.
+
+```{r, echo=TRUE}
+set.seed(80)     
+
+x <- matrix(rnorm(200, mean = 0, sd = 1), 100, 2)  #create random data from a normal distribution
+
+plot(x, pch = 19)   #plot x
+
+selected <- sample(1:3, 100, replace = TRUE)    #create three groups for each row of x
+
+plot(x, col = selected, pch = 19)    #plot x and colour by selected
+#note there are no apparent clusters in these data
+
+xsel <- matrix(rnorm(6, mean = 0, sd = 1), 3, 2)   #create random data representing mean of each of the three groups
+#Note how increasing the value of sd makes clusters clearer
+
+xgroups <- x + xsel[selected,]   #add values of x to xsel for each of three defined groups
+plot(xgroups, col = selected, pch = 19)  #plot xgroups and colour by each of the three groups
+```
+
+When `sd = 1` in above example clusters in randomly generated data are not obvious. Increasing the value of `sd` makes clusters clearer. Sometimes it is possible to convince ourselves that there are clusters in the data just by colouring the data points by their respective groups! Formal cluster analysis and validation is necessary to determine whether visual clusters in data are 'real'.
+
+
+
+# How high-dimensional data are created (15 mins)
+
+
+Throughout this workshop we will be looking at datasets created using *assays*, *microarrays* and *genomics* data. We include some brief information about these methods here and more inforamtion on specific datasets are given in later lessons.
+
+In biology, an assay is used to assess the presence of a specific target substance in a cell or tissue sample. Assays can be used to....Modern gene expression assays allow the expression of the entire genome in a specific cell or tissue sample to be examined at once. To carry out gene expression assays, *microarrays* are used to detect the expression of thousands of genes in the sample at the same time. Microarrays are microscope slides printed with multiple tiny wells with each well containing a known DNA molecule which acts as a probe to detect that gene. These arrays can be used to test for specific genes within a sample. Data generated from microarray studies tend to be high-dimensional due to the number of features (i.e. genes tested for) in the dataset.
+
+Genomics involves the characterisation and analysis of all the genes found within an organism, in contrast to the field of genetics which studies individual genes within a genome. Advancements in molecular and computer science in genomics have lead to the production of large high-dimensional datasets with features from many genes found in samples as well as associated metadata on patients/individuals from whom samples were taken.
+
+**Add picture of microarray**
+
+In this workshop we will look at statistical methods that can be used to visualise and analyse high-dimensional biological data using packages available from Bioconductor, open source software for analysing high throughput genomic data. Bioconductor contains useful packages and example datasets as shown on the website https://www.bioconductor.org/. 
+
+Bioconductor packages can be installed and used in `R` using the `BiocManager` package. Let's install the `minfi` package from Bioconductor (a package for analysing Illumina Infinium DNA methylation arrays).
+
+```{r, echo=TRUE}
+#Install packages from Bioconductor
+library(BiocManager)
+BiocManager::install("minfi")
+
+library(minfi)
+#check that installation has been successful
+```
+
+
+
+
+
+
+Here we load the `methylation` dataset which represents.....
+
+```{r, echo=TRUE}
+library("minfi")
+library("here")
+library("ComplexHeatmap")
+
+#methylation <- readRDS("data/methylation.rds")
+
+methylation <- readRDS("methylation.rds")   #load the data
+matrix <- assay(methylation)        #set up data to fit the experimental design
+metadata <- colData(methylation)    #the metadata is equal to columns in the methylation dataset
+
+age <- methylation$Age
+methyl_mat <- t(assay(methylation))    #transpose matrix
+cor_mat <- cor(methyl_mat)    #calculate correlations between cells in matrix
+```
+
+
+# Challenge 5
+
+Load the small version of the methylation dataset (`small_methylation`) and count the number of rows and columns. Discuss how you could examine relationships between variables in this dataset
+
+Solution:
+
+```{r, echo=TRUE}
+library("here")
+library("minfi")
+
+#Load small version of the methylation dataset
+small_methyl_mat <- readRDS("data/small_methylation.rds")   #load the data
+
+View(small_methyl_mat)
+
+nrow(small_methyl_mat)
+ncol(small_methyl_mat)
+```
+
+The `methylation` dataset contains too many features to examine using standard visualisation tools. As these data represent an assay, we can calculate correlations between each of the cells and plot the results. Later in this workshop we will explore ways of examining clusters of features in this dataset and how we can carry out regression identifying which features are associated with a particular outcome of interest.
+
+
+Other datasets we will use in later episodes were created from experiments involving microarrays (e.g. the cancer expresson dataset we will explore in the PCA episode). These are created by.... 
+
+# Challenge 4
+
+Use the BiocManager package to install the packages 'GenomicRanges' and 'GenomicAlignments' and examine the package vignettes (see `browseVignettes` function).
+
+```{r, echo=TRUE}
+if (!requireNamespace('BiocManager', quietly = TRUE))  
+  install.packages('BiocManager')  #install BiocManager if not already installed
+
+BiocManager::install(c("GenomicRanges", "GenomicAlignments"))    #use the 'c' function to install two packages 
+
+#Load package into R session
+library(GenomicRanges)
+library(GenomicAlignments)
+
+#examine package vignettes
+browseVignettes("GenomicRanges")
+browseVignettes("GenomicAlignments")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+This `methylation` object is a `GenomicRatioSet`, a Bioconductor data object
+derived from the `SummarizedExperiment` class.
+These `SummarizedExperiment` objects contain `assay`s, in this case methylation
+levels, and optional sample-level `colData` and feature-level `metadata`.
+These objects are very convenient to contain all of the information about 
+a dataset in a high-throughput context and may be covered in more
+detail in other Carpentries lessons.
+
+To extract the matrix of methylation values, we use the `assay` function.
+One thing to bear in mind with these objects (and data 
+structures for computational biology in R generally) is that
+in the matrix of methylation data, samples or observations
+are stored as columns, while features (in this case, CpG sites)
+are stored as rows. This is in contrast to usual tabular data,
+where features or variables are stored as columns and 
+observations are stored as rows.
+
+The `small_methylation` dataset is a subset of the `methylation` dataset that will be used in the high-dimensional regression and hierarchical clustering lessons. These data display degree of correlation between each cell in the methylation matrix (in this smaller subset, the first 100 cells are selected).
+
+
+
+
+
+Ordination is a statistical method to order objects that are characterized by values on multiple variables so that similar objects are near each other and dissimilar objects are farther from each other. Such relationships between the objects, on each of several axes (one for each variable), are then characterized numerically and/or graphically. Principal component analysis is an ordination method, as is multidimensional scaling, correspondence analysis and its derivatives. Multidimensional scaling (MDS) is a useful method for visualising and measuring the level of similarity between data points in a multivariate dataset. MD calculates distances between data points and creates a map displaying the relative positions of these data points in multiple dimensions. MDS attempts to reproduce actual distances between points while non-metric multidimensional scaling (NMDS) uses only the ranks of these distances so that a map of data points is created which shows ranks of distances between points. Because it uses ranks, NMDS is more flexible than NMDS in type of data that can be included.   
+
+Many ordination techniques are available that can be used to reduce dimensionality in high-dimensional datasets. Many of these (such as PCA) have a single unique solution that is calculated analytically from a given dataset. NMDS is an ordination technique that differs in several ways from other ordination methods such as PCA. 
+
