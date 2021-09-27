@@ -4,15 +4,15 @@ author: "GS Robertson"
 teaching: 90
 exercises: 30
 questions:
-- What is principal component analysis and when can it be used?
+- What is principal component analysis (PCA) and when can it be used?
 - How can we perform a PCA in R?
 - How many principal components are needed to explain a significant amount of variation in the data?
-- How to interpret output of PCA using loadings and principal components?
+- How to interpret the output of PCA using loadings and principal components?
 objectives:
 - Identify situations where PCA can be used to answer research questions using high-dimensional data  
 - Perform a PCA on high-dimensional data
-- Select appropriate number of principal components
-- Interpret output of PCA
+- Select the appropriate number of principal components
+- Interpret the output of PCA
 keypoints:
 - A principal component analysis is a statistical approach used to reduce dimensionality in high-dimensional datasets (i.e. where *p* is equal or greater than *n*) 
 - PCA may be used to create a low-dimensional set of features from a larger set of variables. Examples of when a PCA may be useful include reducing high-dimensional datasets to fewer variables for use in a linear regression and for identifying  groups with similar features
@@ -32,21 +32,19 @@ knitr_fig_path("05-")
 
 # Introduction
 
-Often researchers want to reduce dimensionality in high-dimensional datasets to look for relationships among variables, identify clusters among subgroups of data points and summarise the dataset using a smaller number of representative variables.
-
-Imagine a dataset which contains many variables (*p*), close to the total number of rows in the dataset (*n*). Some of these variables are highly correlated and several form groups which you might expect to represent the same overall effect. Such datasets are challenging to analyse for several reasons, with the main problem being how to reduce dimensionality in the dataset while retaining the important features. 
+Imagine a dataset which contains many variables (*p*), close to or greater than the total number of rows in the dataset (*n*). Some of these variables are highly correlated and several form groups which you might expect to represent the same overall signal. Often researchers want to reduce the dimensionality of high-dimensional datasets like this one, to look for relationships among variables, identify clusters among subgroups of data points and summarise the dataset using a smaller number of representative variables. Such datasets are challenging to analyse for several reasons, with the main problem being how to reduce dimensionality in the dataset while retaining the important features. 
 
 In this episode we will explore **principal component analysis (PCA)** as a popular method of analysing high-dimensional data. PCA is an unsupervised statistical method which allows large datasets of correlated variables to be summarised into smaller numbers of uncorrelated principal components that explain most of the variability in the original dataset. This is useful, for example, during initial data exploration as it allows correlations among data points to be observed and principal components to be calculated for inclusion in further analysis (e.g. linear regression). An example of PCA might be reducing several variables representing aspects of patient health (blood pressure, heart rate, respiratory rate) into a single feature.
 
-The principal components are single variables which are calculated using a linear combination of several variables from the original dataset (e.g. the clinical variables mentioned in the above example). Many principal components are calculated, each representing different combinations of variables from the original dataset. Principal component scores for each principal component are calculated for each data point in the original dataset. The contribution original variables make to the calculation of principal components is represented in *principal component loadings*.  
+The principal components are single variables which are calculated using a linear combination of the variables from the original dataset (e.g. the clinical variables mentioned in the above example). Many principal components are calculated, each representing different combinations of variables from the original dataset. Principal component scores for each principal component are calculated for each data point in the original dataset. The contribution that original variables make to the calculation of principal components is represented in *principal component loadings*.  
 
-PCA is a useful exploratory analysis tool. While plotting each variable against the other may help when exploring correlations between variables, when *p* is large the number of plots needed to examine the data this way quickly become unfeasible, and the amount of total variation in the data represented in each plot is small. PCA allows us to reduce a large number of variables into a few features which represent most of the variation in the original variables. This makes exploration of the original variables easier, although results of PCA require some interpretation first. Graphical tools are available which help us to understand the output of the PCA. 
+PCA is a useful exploratory analysis tool. While plotting each variable against the other may help when exploring correlations between variables, when *p* is large the number of plots needed to examine the data in this way quickly become unfeasible, and the amount of total variation in the data represented in each plot is small. PCA allows us to reduce a large number of variables into a few features which represent most of the variation in the original variables. This makes exploration of the original variables easier, although results of PCA require some interpretation first. Graphical tools are available which help us to understand the output of the PCA. 
 
 
 # Advantages and disadvantages of PCA
 
 Advantages:
-* It is a relatively easy to use and population method. 
+* It is a relatively easy to use and popular method. 
 * Various software/packages are available to run a PCA.
 * The calculations used in a PCA are easy to understand for statisticians and non-statisticians alike.
 
@@ -55,17 +53,17 @@ $$Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p$$
 
 $X_1...X_p$ represents variables in the original dataset and $a_{11}...a_p$ represent principal component loadings, which can be thought of as the degree to which each variable contributes to the calculation of the principal component.
 
-PCA does have some limitations: 
+Disadvantages: 
 * It assumes that variables in a dataset are correlated 
-* It is sensitive to the scale at which input variables are measured (hence the need for standardisation). If input variables a measured at different scales, loadings will be largest for variables with greatest variance which is related to scales of measurement 
+* It is sensitive to the scale at which input variables are measured. If input variables are measured at different scales, loadings will be largest for the variables with the greatest variance related to the scale of measurement and not necessarily to importance.
 * It is not robust against outliers, meaning that very large or small data points can have a large effect on the output of the PCA 
 * PCA assumes a linear relationship between variables which is not always a realistic assumption
-* It can be difficult to interpret the meaning of the principal components, especially when including them in further analysis (e.g. inclusion in a linear regression).
+* It can be difficult to interpret the meaning of the principal components, especially when including them in further analyses (e.g. inclusion in a linear regression).
 
 
 > ## Supervised vs unsupervised learning
 > Most statistical problems fall into one of two categories: supervised or unsupervised learning. 
-> Examples of supervised learning problems include linear regression and include analyses in which each observation has both at least one independent variables ($x$) 
+> Examples of supervised learning problems include linear regression and include analyses in which each observation has both at least one independent variable ($x$) 
 > as well as a dependent variable ($y$). In supervised learning problems the aim is to predict the value of the response given future observations or to understand 
 > the relationship between the dependent variable and the predictors. In unsupervised learning for each observation there is no dependent variable ($y$), but only 
 > a series of independent variables. In this situation there is no need for prediction, as there is no dependent variable to predict (hence the analysis can be thought 
