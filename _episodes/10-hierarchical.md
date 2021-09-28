@@ -290,10 +290,18 @@ library("here")
 
 #Load small version of the methylation dataset
 small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
+~~~
+{: .language-r}
 
+
+~~~
 #view the data
 View(small_methyl_mat)
+~~~
+{: .language-r}
 
+
+~~~
 #count the number of rows and columns
 #should be equal to 100
 ncol(small_methyl_mat)
@@ -323,12 +331,12 @@ nrow(small_methyl_mat)
 
 Recall the heatmap displayed in regression lesson. If we display the heatmap without hierarchical clustering, we can see that it’s very noisy and clusters of correlations between variables are difficult to see.
 
-<img src="../fig/rmd-10-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
 
 We carry out hierarchical clustering on these data using the function `Heatmap` from the CompleHeatmap package. We use the correlation matrix (from the small_methylation) dataset as the input distance matrix. The `Heatmap` function groups features based on similarity of correlation values and creates a dendrogram showing clustering of features.
 
 
-<img src="../fig/rmd-10-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
 
 
 Note that the clusters shown in the dendrogram approximately match clusters that can be seen in the heatmap.
@@ -360,7 +368,7 @@ rect.hclust(clust, k = 2, border = 2:6)    #draw border around two clusters
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 
 ~~~
 cut<-cutree(clust, h = 4)    #cut tree at height = 4
@@ -371,7 +379,7 @@ plot(color_branches(avg_dend_obj, h = 4))    #colour branches of dendrogram depe
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-10-2.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-12-2.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
 
 We can colour clusters downstream of a specified cut using the `color_branches` function from the dendextend package.
 
@@ -388,7 +396,7 @@ plot(clust)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="432" style="display: block; margin: auto;" />
 
 We can see that the resulting dendrogram is different from that produced using the complete linkage method.
 
@@ -407,7 +415,7 @@ We can see that the resulting dendrogram is different from that produced using t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust2 <- hclust(distmat, method = "single")  #distance matrix and cluster partitions 
@@ -415,7 +423,7 @@ We can see that the resulting dendrogram is different from that produced using t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-12-2.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-14-2.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust3 <- hclust(distmat, method = "average")  #distance matrix and cluster partitions 
@@ -423,7 +431,7 @@ We can see that the resulting dendrogram is different from that produced using t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-12-3.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-14-3.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust4 <- hclust(distmat, method = "mcquitty")  #distance matrix and cluster partitions 
@@ -431,7 +439,7 @@ We can see that the resulting dendrogram is different from that produced using t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-12-4.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-14-4.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust5 <- hclust(distmat, method = "median")  #distance matrix and cluster partitions 
@@ -439,7 +447,7 @@ We can see that the resulting dendrogram is different from that produced using t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-12-5.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-14-5.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > clust6 <- hclust(distmat, method = "centroid")  #distance matrix and cluster partitions 
@@ -447,7 +455,7 @@ We can see that the resulting dendrogram is different from that produced using t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-12-6.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-14-6.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -474,7 +482,7 @@ plot(clust)  #plot dendrogram
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-10-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-10-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="432" style="display: block; margin: auto;" />
 
 ~~~
 cut<-cutree(clust, h = 5)   #select cluster partitions from dendrogram using h or K
@@ -516,7 +524,7 @@ The value of the Dunn index has no meaning in itself, but is used to compare bet
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-10-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
 > > cut_h <- cutree(clust, h = 0.5)   #should be maximised

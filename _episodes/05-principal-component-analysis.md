@@ -616,7 +616,7 @@ plotloadings(pc, labSize = 3)
 
 
 ~~~
-Warning: ggrepel: 41 unlabeled data points (too many overlaps). Consider
+Warning: ggrepel: 38 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps
 ~~~
 {: .warning}
@@ -647,7 +647,7 @@ Plotting the loadings shows the magnitude and direction of loadings for each pro
 > > 
 > > 
 > > ~~~
-> > Warning: ggrepel: 34 unlabeled data points (too many overlaps). Consider
+> > Warning: ggrepel: 35 unlabeled data points (too many overlaps). Consider
 > > increasing max.overlaps
 > > ~~~
 > > {: .warning}

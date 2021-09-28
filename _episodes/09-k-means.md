@@ -179,6 +179,7 @@ clusters are very fuzzy, and even if we are relatively sure about
 the existence of discrete groupings in the data, observations on the boundaries
 can be difficult to confidently place in either cluster.
 
+  
 
 ~~~
 library("cluster")

@@ -54,7 +54,7 @@ We can create and plot dendrograms in R using the `hclust` function which takes 
 In this code-along example, 20 data points are generated in 2D space. Each point belongs to a one of three classes. Suppose we did not know which class data points belonged to and we want to identify these via clustering analysis. Hierarchical clustering carried out on the data can be used to produce a dendrogram. But how do we interpret this dendrogram?
 
 
-```{r, echo=TRUE}
+```{r}
 #First, create some example data with two variables x1 and x2
 set.seed(450)
 example_data <- data.frame(x1 = rnorm(20,8,4.5),
@@ -77,7 +77,7 @@ dist_m <- dist(example_data, method = "euclidean")
 >
 > > ## Solution:
 > >
-> > ```{r, echo=TRUE}
+> > ```{r}
 > > clust <- hclust(dist_m, method = "complete")
 > > plot(clust)
 > > abline(h = 4, lty = 2)
@@ -91,7 +91,7 @@ How do we identify clusters based on the dendrogram? To do this we can make a ho
 
 We can cut the dendrogram to determine number of clusters at different heights using the function `cutree`. This function cuts a dendrogram into several groups (or clusters) where the number of desired groups is defined by the user (either by defining k (number of groups) or h (height at which tree is cut)).
 
-```{r, echo=TRUE}
+```{r}
 cutree(clust, k = 3)  #k is a user defined parameter determining the desired number of clusters at which to cut the treee
 cutree(clust, h = 10)  #h is a user defined parameter determining the numeric height at which to cut the tree
 #both give same results 
@@ -116,7 +116,7 @@ Note that this cut produces 8 clusters (two before the cut and another six downs
 >
 > > ## Solution:
 > >
-> > ```{r, echo=TRUE}
+> > ```{r}
 > > plot(clust)
 > > abline(h = 5,lty = 2)   #create horizontal line at height = 5
 > >
@@ -176,16 +176,20 @@ Let's use a subset of the 'methylation' dataset to create a dendrogram via hiera
 
 The dataset we will be working with is a smaller version of the methylation dataset introduced in the regression lesson. The data are a subset of the original methylation dataset. The data display correlations between cells in the methylation matrix where the first 100 cells in the matrix are selected. Let's load the data and look at it.
 
-```{r, echo=TRUE}
+```{r}
 library("minfi")
 library("here")
 
 #Load small version of the methylation dataset
 small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
+```
 
+```{r, eval=FALSE}
 #view the data
 View(small_methyl_mat)
+```
 
+```{r}
 #count the number of rows and columns
 #should be equal to 100
 ncol(small_methyl_mat)
@@ -253,7 +257,7 @@ Complete linkage (the default in `hclust`) works by computing all pairwise dissi
 
 Here we carry out hierarchical clustering using `hclust` and the `complete` linkage method. In this example, we calculate a distance matrix between correlations in the small_methyl_mat dataset. 
 
-```{r, echo=TRUE}
+```{r}
 distmat <- dist(small_methyl_mat)   #create a distance matrix using euclidean method
 clust <- hclust(distmat, method = "complete")   #hierarchical clustering using complete method
 plot(clust)    #plot resulting dendrogram
@@ -276,7 +280,7 @@ For example, Ward’s method uses increases in the error sum of squares to deter
 
 Next we use Ward's linkage method in hierarchical clustering of the methylation dataset.
 
-```{r, echo=TRUE}
+```{r}
 clust <- hclust(distmat, method = "ward.D")
 plot(clust)
 ```
@@ -291,7 +295,7 @@ We can see that the resulting dendrogram is different from that produced using t
 >
 > > ## Solution:
 > >
-> > ```{r, echo=TRUE}
+> > ```{r}
 > > clust1 <- hclust(distmat, method = "complete")  #distance matrix and cluster partitions 
 > > plot(clust1)  #plot dendrogram
 > >
@@ -326,7 +330,7 @@ The Dunn index is a ratio of the smallest distance between observations not loca
 
 Let's calculate the Dunn index for clustering carried out on small version of the methylation dataset.
 
-```{r, echo=TRUE}
+```{r}
 #calculate dunn index (ratio of the smallest distance between obs not in the same cluster to the largest intra-cluster distance)
 library(clValid)
 distmat <- dist(small_methyl_mat)  #calculate euclidean distance between points 
@@ -347,7 +351,7 @@ The value of the Dunn index has no meaning in itself, but is used to compare bet
 >
 > > ## Solution:
 > >
-> > ```{r, echo=TRUE}
+> > ```{r}
 > > #dunn index (ratio of the smallest distance between obs not in the same cluster to the largest intra-cluster distance)
 > > library(clValid)
 > >

@@ -14,10 +14,11 @@ qvalue
 knitr
 ComplexHeatmap
 RColorBrewer
-leaps
-lasso2
+jtools
 circlize
+lasso2
 SummarizedExperiment
+leaps
 stats
 PCAtools
 microbiome
@@ -41,10 +42,10 @@ pheatmap
 dplyr
 dendextend
 clValid
-cairoDevice
-Cairo
-stringr
 BiocManager
+GenomicAlignments
+GenomicRanges
+stringr
 desc
 remotes
 renv
