@@ -28,7 +28,7 @@ math: yes
 
 
 
-# Problem statement
+# Introduction
 
 In high-throughput studies, it's common to have one or more 
 phenotypes or groupings that we want to relate to features of 
@@ -74,192 +74,69 @@ prioritise genes for further analysis.
 # Linear regression (recap)
 
 Linear regression is a tool we can use to quantify the relationship
-between two variables. With one predictor variable $x$,
-it amounts to the following equation:
+between two variables. In linear regression we try to estimate the mean
+or expectation of our outcome variable $y$ based on the values of
+the input $x$. With one variable, that amount to the equation
 
 $$
-    y_i = \beta_0 + \beta_1 x_i + \epsilon_i
+    \mathbf{E}(y) = \beta_0 + \beta_1 x
 $$
 
-where $\epsilon_i$ is the *noise*, or the variation in $y$ that isn't explained
-by the relationship we're modelling. We assume this noise follows a normal
-distribution[^1], that is:
+where $\beta_0$ is the difference in mean between the two variables independent
+of the value of $x$, and $\beta_1$ is the change in the mean of $y$ for a unit
+change in $x$.
+
+However, around the mean for an individual point $y_i$, we expect some departure
+from the mean $\mathbf{E(y)}$. As explained in the
+[introduction to linear regression](https://carpentries-incubator.github.io/simple-linear-regression-public-health/05-fitAndAssumptionSLR/)
+lesson, the residual $y_i - \mathbf{E(y)}$ is assumed to be normally distributed
+in linear regression.[^1] Therefore for an individual data point, $y_i$, we
+could also write
+
+$$
+    y = \beta_0 + \beta_1 x + \epsilon_i
+$$
+
+where $\epsilon_i$ is the residual or *noise*. Another way of saying
+that this noise follows a normal distribution is to say that:
 
 $$
     \epsilon_i \sim N(0, \sigma^2)
 $$
 
-We can also write this using linear algebra (matrices and vectors) as follows: 
+Because we're modelling the *mean* of the response at a given value of
+the predictor features, we can also write
 
 $$
-    y = X\beta + \epsilon
+    y \sim N(\beta_0 + \beta_1 x, \sigma^2)
 $$
 
-Another way of saying this is that y follows a normal distribution with
 
-$$
-    y \sim N(X\beta, \sigma^2)
-$$
 
-Or, visually, that (for example) this is the distribution 
+Or, visually, that in an example linear regression, this is the distribution 
 of new points conditional on their $x$ values:
-
 <img src="../fig/rmd-02-conditionalprob-1.png" title="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." alt="The generative model of a simple linear regression with a fixed slope and intercept. Lightly shaded regions represent regions where observations are probable, and darker regions represent lower probability." width="432" style="display: block; margin: auto;" />
 
-In order to decide whether a result would be unlikely
-under the null hypothesis, we can calculate a test statistic.
-For coefficient $j$ in a linear model, the test statistic is
-a t-statistic given by:
-
-$$
-    t_{j} = \frac{\hat{\beta}_{j}}{SE\left(\hat{\beta}_{j}\right)}
-$$
-
-$SE\left(\hat{\beta}_{j}\right)$ measures the uncertainty we have in our effect
-size estimate.
-
-Knowing what distribution these t-values follow under the null
-hypothesis allows us to determine how unlikely it would be for
-us to observe what we have under those circumstances (the basis
-of null hypothesis significance testing).
-
-To demonstrate, we can manually demonstrate the relationship between these
-quantities (this is not important to remember).
-
-~~~
-x <- rnorm(100)
-y <- rnorm(100)
-fit <- lm(y ~ x)
-tab <- as.data.frame(summary(fit)$coef)
-tab
-~~~
-{: .language-r}
+In this example of a linear regression model, we're saying that for a new
+value of $x$, the corresponding value of $y$ is most likely to fall in the
+bright region. The probability of observing a given $y$ value falls off quickly
+towards the darker regions.
 
 
 
-~~~
-              Estimate Std. Error   t value  Pr(>|t|)
-(Intercept) 0.02791565  0.1008966 0.2766759 0.7826117
-x           0.11101669  0.1105607 1.0041247 0.3177914
-~~~
-{: .output}
-
-We can see that the t-statistic is just the ratio of the estimate to the 
-standard error:
-
-
-~~~
-tvals <- tab$Estimate / tab$Std
-all.equal(tvals, tab$t)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] TRUE
-~~~
-{: .output}
-
-Calculating the p-values is a bit more tricky.
-We want to do a 2-tail test, so we take the absolute value of the t-statistic,
-and look at the upper rather than lower tail. Because in a 2-tail test we're
-looking at "half" of the t-distribution, we also multiply the p-value by 2.
-
-
-~~~
-pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail = FALSE)
-all.equal(tab$Pr, pvals)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] TRUE
-~~~
-{: .output}
-
-This is much more easy to observe visually, by plotting the distribution:
-
-<img src="../fig/rmd-02-tdist-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" style="display: block; margin: auto;" />
-
-
-> ## Exercise
->
->
-> Launch `shinystats::regressionApp` and adjust the parameters.
-> 
-> 1. If the noise parameter is small (eg, 0.5), how small an effect is significant?
->    If the noise parameter is large (eg, 5), how big must an effect be?
-> 2. With a small number of observations (eg, 10), how strong does the relationship 
->    need to be (or how small the noise) before it is significant?
-> 3. With a large number of observations (eg, 1000), how weak of an effect can you 
->    detect? Is a really small effect (0.1 slope) really "significant" in the way 
->    you'd use that word conversationally?
->
-> > ## Solution
-> > 1. 
-> >    <img src="../fig/rmd-02-regex1-1.png" title="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    [1] 3.060592e-07
-> >    ~~~
-> >    {: .output}
-> >    
-> >    <img src="../fig/rmd-02-regex2-1.png" title="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    [1] 0.3804761
-> >    ~~~
-> >    {: .output}
-> > 2. 
-> >    <img src="../fig/rmd-02-regex3-1.png" title="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    [1] 0.009102573
-> >    ~~~
-> >    {: .output}
-> >    
-> >    <img src="../fig/rmd-02-regex4-1.png" title="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    [1] 0.02494196
-> >    ~~~
-> >    {: .output}
-> > 3. 
-> >    <img src="../fig/rmd-02-regex5-1.png" title="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    [1] 0.2960559
-> >    ~~~
-> >    {: .output}
-> >    
-> >    <img src="../fig/rmd-02-regex6-1.png" title="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    [1] 6.295652e-05
-> >    ~~~
-> >    {: .output}
-> {: .solution}
-{: .challenge}
-
-
-
-
-# Data
+# DNA methylation data
 
 For the following few episodes, we'll be working with human
 DNA methylation data from flow-sorted blood samples.
 DNA methylation assays measure, for many sites in the genome,
 the proportion of DNA that carries a methyl mark.
-
 In this case, the methylation data come in the form of a matrix
-of normalised methylation levels (M-values, for the technical among
-you). Along with this, we have a number of sample phenotypes
+of normalised methylation levels, where negative values correspond to
+unmethylated DNA and positive values correspond to methylated DNA.
+Along with this, we have a number of sample phenotypes
 (eg, age in years, BMI).
 
-The following code will read in the data for this episode.
+Let's read in the data for this episode:
 
 
 ~~~
@@ -330,7 +207,12 @@ hist(methyl_mat, breaks = "FD", xlab = "M-value")
 
 <img src="../fig/rmd-02-histx-1.png" title="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="432" style="display: block; margin: auto;" />
 
-In this case, the phenotypes and groupings in the `colData` 
+You can see that there are two peaks in this distribution, corresponding to
+features which are largely unmethylated and methylated, respectively.
+
+Similarly, we can examine the `colData`, which represents the sample-level
+metadata we have relating to these data.
+In this case, the metadata, phenotypes, and groupings in the `colData` 
 look like this for the first 6 samples:
 
 
@@ -392,30 +274,33 @@ contained over 800,000!
 >     M_i = \log_2\left(\frac{m_i}{u_i}\right)
 > $$
 > 
-> M-values are not bounded to an interval as Beta-values
-> are, and therefore may be less problematic for 
-> statistical treatment.
+> M-values are not bounded to an interval as Beta values
+> are, and therefore can be easier to work with in statistical models.
 {: .callout}
 
 
-# Running linear regression
+# Fitting a linear model
 
-We have a matrix of methylation values $X$ and a vector of ages, $y$.
-One way to model this is to see if we can "predict" methylation using age.
-Formally we'd describe that as:
+So, in the data we've read in, we have a matrix of methylation values $X$ and a
+vector of ages, $y$.
+One way to model this is to see if we can "predict" methylation at a given
+locus using age. Formally we'd describe that as:
 
 $$
-    X_{i,j} = \beta_0 + \beta_1 y_j + \epsilon_i
+    \mathbf{E}(\text{M}_{i,j}) = \beta_0 + \beta_1 \text{Age}_j
 $$
-where $y_j$ is the age of sample $j$.
 
+where $y_j$ is the age of sample $j$. In this model, $\beta_1$ represents
+the unit change in mean methylation level for each unit (year) change in age.
 You may remember how to fit this model from a previous lesson, and how to
 get more information from the model object:
 
 
 ~~~
+library("jtools")
+age <- methylation$Age
 fit <- lm(methyl_mat[1, ] ~ age)
-summary(fit)
+fit
 ~~~
 {: .language-r}
 
@@ -426,25 +311,41 @@ summary(fit)
 Call:
 lm(formula = methyl_mat[1, ] ~ age)
 
-Residuals:
-    Min      1Q  Median      3Q     Max 
--1.3160 -0.6139  0.1715  0.5105  1.1084 
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)  
-(Intercept) 0.902334   0.344298   2.621   0.0129 *
-age         0.008911   0.010033   0.888   0.3805  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.6552 on 35 degrees of freedom
-Multiple R-squared:  0.02204,	Adjusted R-squared:  -0.005901 
-F-statistic: 0.7888 on 1 and 35 DF,  p-value: 0.3805
+(Intercept)          age  
+   0.902334     0.008911  
 ~~~
 {: .output}
 
-We can also use `broom` to extract information about
-the coefficients in this model:
+We now have estimates for the overall difference in means between these
+two variables (the intercept) and the change in methylation level for
+a unit change in age (the slope). We could plot this linear model:
+
+
+~~~
+plot(age, methyl_mat[1, ], pch = 16)
+abline(fit)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="432" style="display: block; margin: auto;" />
+
+For this feature, we can see that there isn't a strong relationship between
+methylation and age. We could try to repeat this for every feature in our
+dataset; however, we have a lot of features! Repeating this 5,000 times would
+be very time-consuming. It might help if we had a statistical method to
+determine how much confidence we have that the relationship we've modelled
+really exists. 
+
+
+# Hypothesis testing in linear regression
+
+Once we get estimates of the parameters of a linear regression, we want to
+determine if the relationship we've fitted is interesting enough to warrant
+further investigation. For linear regression, we usually do this
+using null hypothesis significance testing.
+For this linear model, we can use `broom` to extract detailed information about
+the coefficients and the associated hypothesis tests in this model:
 
 
 ~~~
@@ -464,15 +365,92 @@ tidy(fit)
 ~~~
 {: .output}
 
-The first coefficient in this model is the intercept, measuring the overall 
-offset between age and methylation levels. In this instance, we're more 
+The standard errors (`std.error`) represent the uncertainty in our effect size
+estimate. The test statistics and p-values represent measures of how (un)likely
+it would be to observe results like this under the "null hypothesis".
+
+Null hypothesis significance testing generally compares our observed results
+with a set of hypothetical counter-examples of what we would expect to observe
+if we repeated the same experiment and analysis over and over again under
+the null hypothesis. In the case of linear regression, the null
+hypothesis is that there is absolutely no relationship between the predictor
+variable(s) and the outcome. This may not always be the most realistic or
+useful null hypothesis, but it's the one we have!
+
+> ## Exercise
+> 
+> Launch `shinystats::regressionApp` and adjust the parameters.
+> 
+> 1. If the noise parameter is small (eg, 0.5), how small an effect is significant?
+>    If the noise parameter is large (eg, 5), how big must an effect be?
+> 2. With a small number of observations (eg, 10), how strong does the relationship 
+>    need to be (or how small the noise) before it is significant?
+> 3. With a large number of observations (eg, 1000), how weak of an effect can you 
+>    detect? Is a really small effect (slope=0.1) really "significant" in the way 
+>    you'd use that word conversationally?
+>
+> > ## Solution
+> > 1. 
+> >    <img src="../fig/rmd-02-regex1-1.png" title="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 100 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 1.190653e-05
+> >    ~~~
+> >    {: .output}
+> >    
+> >    <img src="../fig/rmd-02-regex2-1.png" title="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 100 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 0.0002911055
+> >    ~~~
+> >    {: .output}
+> > 2. 
+> >    <img src="../fig/rmd-02-regex3-1.png" title="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." alt="An example of a linear relationship for 10 points with a large amount of noise and large effect sizes that is not statistically significant." width="432" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 0.00116021
+> >    ~~~
+> >    {: .output}
+> >    
+> >    <img src="../fig/rmd-02-regex4-1.png" title="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 10 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 1.347143e-05
+> >    ~~~
+> >    {: .output}
+> > 3. 
+> >    <img src="../fig/rmd-02-regex5-1.png" title="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a large amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 0.8089027
+> >    ~~~
+> >    {: .output}
+> >    
+> >    <img src="../fig/rmd-02-regex6-1.png" title="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." alt="An example of a linear relationship for 1,000 points with a small amount of noise and small effect sizes that is statistically significant." width="432" style="display: block; margin: auto;" />
+> >    
+> >    ~~~
+> >    [1] 0.0001118911
+> >    ~~~
+> >    {: .output}
+> {: .solution}
+{: .challenge}
+
+
+# Fitting a lot of linear models
+
+If we wanted to repeat this process for each feature in our data, we need
+to narrow our focus. In particular,
+The first coefficient in a linear model like this is the intercept,
+which measures the overall 
+offset between age and methylation levels. It's not really interesting
+if this is zero or non-zero, since we don't really expect age and 
+methylation level to have the same mean. We're more 
 interested if there is a relationship between increasing age and methylation
 levels. Therefore, we'll focus only on the second coefficient.
-We'll also convert these objects from a `tibble` to a normal `data.frame`.
 
 
 ~~~
-coef1 <- as.data.frame(tidy(fit)[2, ])
+coef1 <- tidy(fit)[2, ]
 coef1
 ~~~
 {: .language-r}
@@ -480,24 +458,27 @@ coef1
 
 
 ~~~
-  term    estimate  std.error statistic   p.value
-1  age 0.008910615 0.01003278 0.8881498 0.3805234
+# A tibble: 1 × 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00891    0.0100     0.888   0.381
 ~~~
 {: .output}
 
-We can write a function to fit this kind of model for any given row of the
-matrix, and then use it to fit a model to any feature we like:
+Instead of repeating this model fitting and extraction focus over and over, we
+can write a function to fit this kind of model for any given row of the
+matrix:
 
 
 ~~~
-lm_feature <- function(i) {
-    as.data.frame(tidy(lm(methyl_mat[i, ] ~ age))[2, ])
+lm_feature <- function(i, methyl_mat, age) {
+    tidy(lm(methyl_mat[i, ] ~ age))[2, ]
 }
-coef2 <- lm_feature(2)
-coef3 <- lm_feature(3)
+## fit a model to the 2nd and 3rd feature
+coef2 <- lm_feature(2, methyl_mat, age)
+coef3 <- lm_feature(3, methyl_mat, age)
 ~~~
 {: .language-r}
-
 
 We have a lot of features, though! Instead of looping through these values,
 we can `lapply` over the number of rows of the matrix to fit a model for each
@@ -505,8 +486,13 @@ feature.
 
 
 ~~~
-dfs <- lapply(seq_len(nrow(methyl_mat)), lm_feature)
-head(dfs)
+coefs <- lapply(
+    seq_len(nrow(methyl_mat)),
+    lm_feature,
+    age = age,
+    methyl_mat = methyl_mat
+)
+head(coefs)
 ~~~
 {: .language-r}
 
@@ -514,28 +500,40 @@ head(dfs)
 
 ~~~
 [[1]]
-  term    estimate  std.error statistic   p.value
-1  age 0.008910615 0.01003278 0.8881498 0.3805234
+# A tibble: 1 × 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00891    0.0100     0.888   0.381
 
 [[2]]
-  term    estimate  std.error statistic   p.value
-1  age -0.01981104 0.01452607 -1.363826 0.1813298
+# A tibble: 1 × 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    -0.0198    0.0145     -1.36   0.181
 
 [[3]]
-  term    estimate   std.error statistic   p.value
-1  age 0.005862342 0.004111883  1.425708 0.1628112
+# A tibble: 1 × 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00586   0.00411      1.43   0.163
 
 [[4]]
-  term    estimate   std.error statistic   p.value
-1  age 0.002169451 0.007657394 0.2833146 0.7786048
+# A tibble: 1 × 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00217   0.00766     0.283   0.779
 
 [[5]]
-  term    estimate   std.error statistic  p.value
-1  age 0.002570127 0.003054242 0.8414943 0.405784
+# A tibble: 1 × 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age    0.00257   0.00305     0.841   0.406
 
 [[6]]
-  term   estimate   std.error statistic    p.value
-1  age 0.01801176 0.006151426  2.928062 0.00596178
+# A tibble: 1 × 5
+  term  estimate std.error statistic p.value
+  <chr>    <dbl>     <dbl>     <dbl>   <dbl>
+1 age     0.0180   0.00615      2.93 0.00596
 ~~~
 {: .output}
 
@@ -544,29 +542,25 @@ for each of the rows of our matrix, we can `rbind` them together.
 To do this with each of the elements of our list, we can use `do.call`.
 This calls the function supplied as the first argument (here, `rbind`) using
 the second argument as a list of arguments to that function.
-Here, it's equivalent to writing `rbind(dfs[[1]], dfs[[2]], [etc])`.
+Here, it's equivalent to writing `rbind(coefs[[1]], coefs[[2]], [etc])`.
 
 
 ~~~
 ## bind together all of our small tables to make one big table
-df_all <- do.call(rbind, dfs)
-## set the rownames of the table to be the names of the features
-rownames(df_all) <- rownames(methyl_mat)
+coef_df <- do.call(rbind, coefs)
+## add a "feature name" column
+coef_df$feature <- rownames(methyl_mat)
 ~~~
 {: .language-r}
 
 We can then create a plot of effect size estimates (model coefficients) against
 p-values for each of these figures, to visualise the magnitude of effects.
-It's worth noting here that many p-values are very small (high on the y-axis)
-despite the small effect size estimates. This is because, as we noted above, 
-a p-value in this case is a function of both the effect size estimate and
-the associated uncertainty.
 These plots are often called "volcano plots", because they
 resemble an eruption.
 
 
 ~~~
-plot(df_all$estimate, -log10(df_all$p.value),
+plot(coef_df$estimate, -log10(coef_df$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
@@ -579,41 +573,85 @@ In this figure, every point represents a feature of interest. The x-axis
 represents the effect size observed for that feature in a linear model,
 while the y-axis is the $-\log_{10}(\text{p})$, where larger values
 indicate increasing statistical evidence of a non-zero effect size. 
+A positive effect size represents increasing methylation with increasing age,
+and a negative effect size represents decreasing methylation with increasing
+age. Points higher on the x-axis represent features for which we think the 
+results we observed would be very unlikely under the null hypothesis.
 
-Given that we often use procedures like this to identify differentially
-methylated features or differentially expressed genes, we can imagine that
+Since we want to identify feature that have different methylation levels in
+different age groups, 
 in an ideal case there would be clear separation between "null" and "non-null"
-features. However, usually we observe results as we did here: there is a continuum
-of effect sizes and p-values, with no clear. While statistical methods exist to
-derive insights from continuous measure like these, it is often convenient to obtain
-a list of features which we are confident have non-zero effect sizes.
+features. However, usually we observe results as we do here: there is a 
+continuum of effect sizes and p-values, with no clear separation between these 
+two classes of features. While statistical methods exist to
+derive insights from continuous measures like these, it is often convenient to
+obtain a list of features which we are confident have non-zero effect sizes.
 This is made more difficult by the number of tests we perform.
+
+
+> ## Exercise
+> 
+> The effect size estimates are very small, and yet many of the p-values are
+> well below a usual significance level of p < 0.05. Why is this?
+> 
+> > ## Solution
+> > 
+> > Because age has a much larger range than methylation levels, the unit change
+> > in methylation level even for a strong relationship is very small!
+> > 
+> > As we mentioned, the p-value is a function of both the effect size estimate
+> > and the uncertainty (standard error) of that estimate. Because the
+> > uncertainty in our estimates is much smaller than the estimates themselves,
+> > the p-values are also small.
+> > 
+> > If we predicted age using methylation level, it's likely we'd see much
+> > larger coefficients, though broadly similar p-values!
+> > 
+> {: .solution}
+{: .challenge}
 
 
 # The problem of multiple tests
 
-With such a large number of features, we often want some way
+With such a large number of features, it would be useful
 to decide which features are "interesting" or "significant"
 for further study. However, if we were to apply a normal significance threshold
-of 0.05, we might not end up 
-To demonstrate this, it's useful to consider what happens if
+of 0.05, it's likely that we'd end up with a lot of false positives. That's
+because a p-value threshold like this represents a $\frac{1}{20}$ chance that
+we'd observe results as extreme or more extreme under the null hypothesis
+(that there is no assocation between age and methylation level). If we do
+many more than 20 such tests, we can expect that for a lot of the tests, the
+null hypothesis is true, but we will still observe extreme results.
+To demonstrate this, it's useful to see what happens if
 we scramble age and run the same test again:
 
 
 ~~~
 age_perm <- age[sample(ncol(methyl_mat), ncol(methyl_mat))]
-dfs <- lapply(seq_len(nrow(methyl_mat)), lm_feature)
-df_all_perm <- do.call(rbind, dfs)
-plot(df_all_perm$estimate, -log10(df_all_perm$p.value),
+coefs_perm <- lapply(
+    seq_len(nrow(methyl_mat)),
+    lm_feature,
+    methyl_mat = methyl_mat,
+    age = age_perm
+)
+coef_df_perm <- do.call(rbind, coefs_perm)
+plot(coef_df_perm$estimate, -log10(coef_df_perm$p.value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
-abline(h = -log10(0.05), lty = "dashed")
+abline(h = -log10(0.05), lty = "dashed", col = "red")
 ~~~
 {: .language-r}
 
 <img src="../fig/rmd-02-volcplotfake-1.png" title="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="432" style="display: block; margin: auto;" />
 
+Since we've generated a random sequence of ages, we have no reason to suspect
+that there is a true association between methylation levels and this sequence
+of random numbers. However, you can see that the p-value for many features is
+still lower than a traditional significance level of $p=0.05$. If we were to
+use this in a real experiment, it's likely that we'd identify many features
+as associated with age, when the results we're observing are simply due to
+chance.
 
 > ## Exercise
 >
@@ -646,40 +684,46 @@ abline(h = -log10(0.05), lty = "dashed")
 {: .challenge}
 
 
-# Adjusting for multiple comparisons
+# Adjusting for multiple tests
 
 When performing many statistical tests to
 categorise features, we're effectively classifying
-features.
+features as "significant", meaning those for which we reject the null 
+hypothesis, and "non-significant". We also generally hope that there is a subset
+of features for which the null hypothesis is truly false, as well as many
+for which the null truly does hold. We hope that for all features that the null
+hypothesis is true, we accept it, and for all features that the null hypothesis
+is not true, we reject it. As we showed in the example with permuted
+age, with a large number of tests it's inevitable that we'll get some of these wrong.
 
 We can think of these features as being 
 "truly different" or "not truly different"[^2].
 Using this idea, we can see that each 
 categorisation we make falls into four categories:
 
-|              |Predicted true|Predicted false|
+|              |Reject null|Accept null|
 |-------------:|-------------:|--------------:|
-|Actually true |True positive |False negative |
-|Actually false|False positive|True negative  |
+|Null is true |True positive |False negative |
+|Null is false|False positive|True negative  |
 
-Under the null hypothesis, as we perform more and more
-tests we'll tend to correctly categorise most
+If the null hypothesis was true for every feature, then as we perform more and
+more tests we'd tend to correctly categorise most
 results as negative. However, since p-values
 are uniformly distributed under the null,
 at a significance level of 5%, 5% of all
 results will be "significant" even though
 these are results we expect under the null.
-These can be considered "false discoveries."
+These would fall under the label "false positives" in the table
+above, and are also termed "false discoveries."
 
 There are two common ways of controlling these
 false discoveries.
-
-The first is to say that
-we want to have the same certainty of making
-one false discovery with $n$ tests as we had with
-one. This is "Bonferroni" correction,[^3] which
+The first is to say, when we're doing $n$ tests,
+that we want to have the same certainty of making
+one false discovery with $n$ tests as we have if we're only doing
+one test. This is "Bonferroni" correction,[^3] which
 divides the significance level by the number of
-tests performed. Equivalently, we can use the
+tests performed, $n$. Equivalently, we can use the
 non-transformed p-value threshold but multiply
 our p-values by the number of tests.
 This is often very conservative, especially
@@ -687,7 +731,7 @@ with a lot of features!
 
 
 ~~~
-p_raw <- df_all$p.value
+p_raw <- coef_df$p.value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
 library("ggplot2")
 ggplot() +
@@ -695,18 +739,21 @@ ggplot() +
     geom_point() +
     scale_x_log10() + scale_y_log10() +
     geom_abline(slope = 1, linetype = "dashed") +
-    geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
-    geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+    geom_hline(yintercept = 0.05, linetype = "dashed", col = "red") +
+    geom_vline(xintercept = 0.05, linetype = "dashed", col = "red") +
     labs(x = "Raw p-value", y = "Bonferroni p-value")
 ~~~
 {: .language-r}
 
 <img src="../fig/rmd-02-p-fwer-1.png" title="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 
+You can see that the p-values are exactly one for the vast majority of tests
+we performed! This is not ideal sometimes, because unfortunately we usually
+don't have very large sample sizes in health sciences.
 
 The second main way of controlling for multiple tests
 is to control the *false discovery rate*.[^4]
-This is the proportion of false discoveries
+This is the proportion of false positives, or false discoveries,
 we'd expect to get each time if we repeated
 the experiment over and over.
 
@@ -723,10 +770,10 @@ the experiment over and over.
 
 
 |FWER|FDR|
-|-------------:|--------------:|
+|:-------------|:--------------|
 |+ Controls probability of identifying a false positive|+ Controls rate of false discoveries|
 |+ Strict error rate control |+ Allows error control with less stringency|
-|- Often results in no significant results |- Does not control probability of making errors|
+|- Very conservative |- Does not control probability of making errors|
 |- Requires larger statistical power|- May result in false discoveries|
 
 > ## Exercise
@@ -766,8 +813,8 @@ the experiment over and over.
 > >        geom_point() +
 > >        scale_x_log10() + scale_y_log10() +
 > >        geom_abline(slope = 1, linetype = "dashed") +
-> >        geom_hline(yintercept = 0.05, lty = "dashed", col = "red") +
-> >        geom_vline(xintercept = 0.05, lty = "dashed", col = "red") +
+> >        geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
+> >        geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
 > >        labs(x = "Raw p-value", y = "Benjamini-Hochberg p-value")
 > >    ~~~
 > >    {: .language-r}
@@ -777,19 +824,142 @@ the experiment over and over.
 > {: .solution}
 {: .challenge}
 
+# How does hypothesis testing for a linear model work?
+
+In order to decide whether a result would be unlikely
+under the null hypothesis, we can calculate a test statistic.
+For coefficient $j$ in a linear model (in our case, it would be the slope),
+the test statistic is a t-statistic given by:
+
+$$
+    t_{j} = \frac{\hat{\beta}_{j}}{SE\left(\hat{\beta}_{j}\right)}
+$$
+
+$SE\left(\hat{\beta}_{j}\right)$ measures the uncertainty we have in our effect
+size estimate.
+
+Knowing what distribution these t-values follow under the null
+hypothesis allows us to determine how unlikely it would be for
+us to observe what we have under those circumstances, if we repeated the
+experiment and analysis over and over again.
+
+To demonstrate, we can manually demonstrate the relationship between these
+quantities (this is not important to remember).
+
+
+~~~
+x <- rnorm(100)
+y <- rnorm(100)
+fit <- lm(y ~ x)
+tab <- tidy(fit)
+tab
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 2 × 5
+  term        estimate std.error statistic p.value
+  <chr>          <dbl>     <dbl>     <dbl>   <dbl>
+1 (Intercept)  -0.0321    0.0967    -0.332   0.741
+2 x            -0.0871    0.102     -0.856   0.394
+~~~
+{: .output}
+
+We can see that the t-statistic is just the ratio of the estimate to the 
+standard error:
+
+
+~~~
+tvals <- tab$estimate / tab$std.error
+all.equal(tvals, tab$statistic)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] TRUE
+~~~
+{: .output}
+
+Calculating the p-values is a bit more tricky. Specifically, it's the proportion
+of the distribution of the test statistic under the null hypothesis that is 
+*as extreme or more extreme* than the observed value of the test statistic.
+This is easy to observe visually, by plotting the distribution:
+
+<img src="../fig/rmd-02-tdist-1.png" title="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" style="display: block; margin: auto;" />
+
+The red-ish shaded region represents the portion of the distribution of the test
+statistic under the null hypothesis for the intercept term. This shaded region
+comprises most of the total area of the distribution; therefore, the p-value is
+large ($p=0.741$).
+The blue-ish shaded region represents the same measure for the slope 
+term; this is smaller relative to the total area of the distribution, therefore
+the p-value is smaller than the intercept term
+($p=0.394$).
+You can see that the p-value is a function of the size of the effect we're 
+estimating and the uncertainty we have in that effect. A large effect with
+large uncertainty may not lead to a small p-value, and a small effect with small
+uncertainty may lead to a small p-value.
+
+
+> ## Calculating p-values from a linear model
+> 
+> Manually calculating the p-value for a linear model is a little bit more 
+> complex than calculating the t-statistic. The intuition posted above is
+> definitely sufficient for most cases, but for completeness, here is how
+> we do it:
+> 
+> Since the statistic in a linear model is a t-statistic, it follows a student
+> t distribution under the null hypothesis. We want to know what portion of
+> the distribution function of the test statistic is as extreme as, or more 
+> extreme than, the value we observed. The function `pt` (similar to `pnorm`, 
+> etc) can give us this information.
+> 
+> Since we're not sure if the coefficient will be larger or smaller than zero,
+> we want to do a 2-tail test. Therefore we take the absolute value of the
+> t-statistic, and look at the upper rather than lower tail.
+> Because in a 2-tail test we're looking at "half" of the t-distribution,
+> we also multiply the p-value by 2.
+> 
+> Combining all of this gives us:
+>
+> 
+> ~~~
+> pvals <- 2 * pt(abs(tvals), df = fit$df, lower.tail = FALSE)
+> all.equal(tab$p.value, pvals)
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> [1] TRUE
+> ~~~
+> {: .output}
+{: .callout}
+
 
 # Sharing information
 
 One idea is to take advantage of the fact that we're doing all these tests 
 at once. We can leverage this fact to *share information* between model
 parameters. 
+The insight that we use to perform *information pooling* like this is derived
+from our knowledge about the structure of the data. For example, in a
+high-throughput experiment like a DNA methylation assay, we know that all of
+the features were measured simultaneously, using the same technique. This means
+that generally, we expect the base-level variability for each feature to be
+broadly similar.
 
-The insight that we use to perform *information pooling* like this is that variance parameters
-like these are probably similar between genes within the same experiment. This
-enables us to share information between genes to get more robust
+This can enable us to get a better estimate of the uncertainty of model 
+parameters than we could get if we consider each feature in isolation.
+This enables us to share information between genes to get more robust
 estimators.
 
-Specifically, recall that the t-statistic for feature $i$, coefficient $j$ $\beta$ 
+Remember that the t-statistic for feature $i$, coefficient $j$ $\beta$ 
 in a linear model is as follows:
 
 $$
@@ -800,12 +970,24 @@ It's clear that large effect sizes will likely lead to small p-values,
 as long as the standard error for the coefficent is not large.
 However, the standard error is affected by the strength of noise, 
 as we saw earlier.
-With small numbers of replicates, it's common for the noise for some features to
-be extremely small simply by chance, leading to an inflated level of significance.
-The authors of `limma` made some assumptions about the distributions that these
-follow, and pool information across genes to get a better estimate of the uncertainty
-in effect size estimates.
+If we have a small number of observations, it's common for the noise for some
+features to be extremely small simply by chance. This will lead to a very small
+p-value, which may give us unwarranted confidence in the level of certainty
+we have in the results.
 
+There are many statistical methods in genomics that use this type of approach
+to get better estimates by pooling information between features that were
+measured simultaneously using the same techniques.
+Here we will focus on the package `limma`, which is a quite old software package
+used to fit linear models, originally for the gene expression micro-arrays 
+that were common in the 2000s, but which is still in use in RNAseq experiments,
+among others.
+The authors of `limma` made some assumptions about the distributions that these
+follow, and pool information across genes to get a better estimate of the 
+uncertainty in effect size estimates.
+
+The process of running a model in `limma` is a bit different (and simpler)
+than the process we went through before to fit a linear model for each feature:
 
 
 ~~~
@@ -824,7 +1006,37 @@ plot(toptab_age$logFC, -log10(toptab_age$P.Value),
 
 <img src="../fig/rmd-02-limmavolc1-1.png" title="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." width="432" style="display: block; margin: auto;" />
 
+Since we now have p-values from linear models with and without this shrinkage,
+we can compare these:
 
+~~~
+plot(
+    toptab_age[coef_df$feature, "P.Value"],
+    coef_df$p.value,
+    pch = 16, log = "xy"
+)
+abline(0:1, lty = "dashed")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="432" style="display: block; margin: auto;" />
+
+
+
+
+You can see that the effect of pooling is to shrink large 
+estimates downwards and small estimates upwards, all towards
+a common value. The degree of shrinkage generally depends on 
+the amount of pooled information and the strength of the 
+evidence independent of pooling.
+
+Similarly, DESeq2 shares information between genes
+to *shrink* estimates of a noise parameter, in that case to model counts.
+
+Shrinkage methods can be complex to implement and understand,
+but it's good to understand why these approaches may be more precise 
+and sensitive than the naive approach of fitting a model to each feature
+separately.
 
 
 > ## Exercise
@@ -832,12 +1044,14 @@ plot(toptab_age$logFC, -log10(toptab_age$P.Value),
 > 1. Try to run the same kind of linear model with smoking 
 >    status as covariate instead of age, and making a volcano
 >    plot.
+>    *Note: smoking status is stored as `methylation$smoker`.*
 > 2. Notice that `limma` creates an `adj.P.Val` column in the output you just 
 >    created. What
 >    kind of p-value adjustment is it doing? Bonferroni,
 >    Benjamini-Hochberg, or something else?
+> 3. You can see in the example in the lesson that this information sharing
+>    leads to generally large p-values. Why might this be preferable?
 > 
-> Note: smoking status is stored as `methylation$smoker`.
 >
 > > ## Solution
 > > 
@@ -869,48 +1083,16 @@ plot(toptab_age$logFC, -log10(toptab_age$P.Value),
 > >    [1] TRUE
 > >    ~~~
 > >    {: .output}
+> > 3. Being a bit more conservative when identifying features can help to avoid
+> >    false discoveries. Furthermore, when rejecting the null hypothesis is
+> >    based more on a small standard error resulting from abnormally low levels
+> >    of variability for a given feature, we might want to be a bit more
+> >    conservative in our expectations.
 > {: .solution}
 {: .challenge}
 
 
-You can see that the effect of pooling is to shrink large 
-estimates downwards and small estimates upwards, all towards
-a common value. The degree of shrinkage generally depends on 
-the amount of pooled information and the strength of the 
-evidence independent of pooling.
 
-Similarly, DESeq2 shares information between genes
-to *shrink* estimates of a noise parameter, in that case to model counts.
-
-Shrinkage methods can be complex to implement and understand,
-but it's good to understand why these approaches may be more precise 
-and sensitive than the naive approach of fitting a model to each feature
-separately.
-
-> ## Exercise
-> 
-> Launch `shinystats::limmaApp` and adjust the parameters. 
-> 
-> Discuss the output in groups. Consider the following questions:
-> 
-> 1. How does the number of features affect the relationship between these two 
->    similar methods?
-> 2. What about the number of samples?
-> 3. When ranking genes, why would we want to downrank the most significant and
->    uprank some with more moderate changes?
-> 
-> > ## Solution
-> > 
-> > 1. With more features, the amount of shrinkage increases.
-> > 2. With more samples, the shrinkage is weaker and the difference between the
-> >    methods is smaller.
-> > 3. Because the p-value relies on the effect size estimate *and* its standard
-> >    error, a very small standard error by chance (with few replicates) can
-> >    lead to a very small p-value. "Moderating" or shrinking the standard errors
-> >    brings these more in line with features that have a similar effect size 
-> >    but larger standard error.
-> {: .solution}
-{: .challenge}
 
 > ## Shrinkage
 > 
@@ -957,13 +1139,15 @@ separately.
 
 # Screening
 
-What people sometimes do is to select variables based on correlation with
-the outcome, or using a univariate modelling approach like we used in the 
-previous lesson.
-The p-values we get out of this kind of approach
-model are meaningless because we're basically doing a 2-stage model and only
-reporting one set of p-values (ignoring all the non-significant ones) and
-not correctly adjusting for the true number of tests we're performing.
+To get around the problem of multiple testing, people sometimes reduce the 
+number of variables as input. There are some valid and many invalid ways of
+doing this. One (invalid) method is to select variables based on correlation 
+with the outcome. The p-values we get out of this kind of approach
+model are basically meaningless, because we're doing a 2-stage model and only
+reporting one set of p-values (ignoring all the non-significant ones). This 
+means that we are biasing the results towards significance, and further that
+we are not correctly adjusting for the true number of tests we're
+performing.
 
 
 ~~~
