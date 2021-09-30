@@ -18,11 +18,9 @@ math: yes
 
 
 ```{r settings, include=FALSE}
-source("../bin/chunk-options.R")
+library("here")
+source(here("bin/chunk-options.R"))
 knitr_fig_path("08-")
-if (!file.exists(here::here("data/scrnaseq.rds"))) {
-    source(here::here("data/scrnaseq.R"))
-}
 ```
 
 ```{r pkgs, echo=FALSE}
