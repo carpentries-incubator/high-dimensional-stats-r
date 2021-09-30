@@ -69,9 +69,6 @@ There are various ways to look for clusters of observations in a dataset using d
 within a cluster and maximise distance between proposed clusters. Clusters can be updated in an 
 iterative process so that over time we can become more confident in size and shape of clusters.
 
-We will create some example data that form three clusters ('a', 'b', 'c'). We plot these clusters 
-and place ellipses around each group using the `stat_ellipse` function in `ggplot`.
-
 
 # Believing in clusters
 
@@ -85,8 +82,9 @@ reflect what can happen if you allow yourself to read too much into faint
 signals.
 
 Let's explore this further using an example. We create two columns of data ('x' and 'y')
-and partition these data into three groups according to data values. We then plot these 
-data and their allocated clusters and put ellipses around the clusters.
+and partition these data into three groups ('a', 'b', 'c') according to data values. We then plot these 
+data and their allocated clusters and put ellipses around the clusters using the `stat_ellipse` function
+in `ggplot`.
 
 ```{r fake-cluster, echo = FALSE}
 set.seed(11)
@@ -109,6 +107,10 @@ ggplot(data, aes(x, y, colour = cluster)) +
     geom_point() +
     stat_ellipse()
 ```
+The randomly created data used here appear to form three clusters when we plot the data. Putting 
+ellipses around the clusters can further convince us that the clusters are 'real'. 
+But how do we tell if clusters identified visually are 'real'?
+
 
 > ## Exercise
 > 
@@ -121,7 +123,7 @@ ggplot(data, aes(x, y, colour = cluster)) +
 {: .challenge}
 
 
-# K-means
+# K-means clustering
 
 **K-means clustering** is a clustering method which groups data points into a 
 user-defined number of distinct non-overlapping clusters. In K-means clustering 
@@ -129,6 +131,8 @@ we're not concerned with fitting distributions to the data. Instead we are only
 interested in minimising the *within-cluster variation*. This is the amount which 
 data points within a cluster differ from each other. In K-means clustering, distance 
 between data points within a cluster is used as a measure of within-cluster variation.
+Using a specified clustering algorithm like K-means clustering increases our confidence
+that our data can be partitioned into groups.
 
 To carry out K-means clustering, we first pick $k$ initial points as centres or 
 "centroids" of our clusters. There are a few ways to choose these initial "centroids",
@@ -143,6 +147,10 @@ We can see this process in action in this animation:
 ```{r kmeans-animation, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
 knitr::include_graphics("../fig/kmeans.gif")
 ```
+While K-means has some advantages over other clustering methods (easy to implement and
+to understand), it does have some disadvantages, namely difficulties in identifying 
+initial clusters which observations belong to and the need for the user to specifiy the
+number of clusters that the data should be partitioned into.
 
 > ## Initialisation
 >
@@ -150,10 +158,10 @@ knitr::include_graphics("../fig/kmeans.gif")
 > so that results of clustering are dependent on the initial cluster that each observation 
 > is randomly assigned to. This initial configuration can have a significant effect on the 
 > final configuration of the clusters, so dealing with this limitation is an important part 
-> of clustering. Some strategies to deal with this problem are:
+> of K-means clustering. Some strategies to deal with this problem are:
  > - Choose $K$ points at random from the data as the cluster centroids.
  > - Randomly split the data into $K$ groups, and then average these groups.
- > - Using the K-means++ algorithm to choose initial values.
+ > - Use the K-means++ algorithm to choose initial values.
 > These each have advantages and disadvantages. In general, it's good to be aware of this 
 > limitation of K-means clustering and that this limitation can be addressed by choosing a 
 > good initialisation method, initialising clusters manually, or running the algorithm from 
@@ -192,7 +200,8 @@ For now, we'll work with just these two principal components, since we can
 visualise those easily, and they're a quantitative representation of the underlying data, 
 representing the two largest axes of variation. 
 
-We can now run K-means clustering on the first and second principal components of the `scRNAseq` data.
+We can now run K-means clustering on the first and second principal components of the `scRNAseq` data
+using the `kmeans` function.
 
 ```{r kmeans, fig.cap = "Title", fig.alt = "Alt"}
 set.seed(42)
@@ -262,13 +271,16 @@ clusters are very fuzzy, and even if we are relatively sure about
 the existence of discrete groupings in the data, observations on the boundaries
 can be difficult to confidently place in either cluster.
 
+Here we use the `silhouette` function from the `cluster` package to calculate the
+silhouette width of our K-means cluster using a distance matrix of distances between points 
+in the cluster.
+
 ```{r silhouette}
 library("cluster")
 dist_mat <- dist(pcs)
 sil <- silhouette(cluster$cluster, dist = dist_mat)
 plot(sil)
 ```
-
 
 ```{r plot-silhouette}
 pc <- as.data.frame(pcs)
@@ -288,6 +300,7 @@ ggplot(pc) +
     )
 ```
 
+This plot shows.... 
 
 > ## Exercise
 > 
@@ -334,7 +347,7 @@ ggplot(pc) +
 > The expected distances are calculated by randomly distributing cells within
 > the range of the original data. Larger values represent lower
 > squared distances within clusters, and thus better clustering.
-> 
+> We can see how this is calculated in the following example.
 > 
 > ```{r clusgap-call, eval = FALSE}
 > library("cluster")
@@ -350,7 +363,7 @@ ggplot(pc) +
 # Cluster robustness
 
 When we cluster data, we want to be sure that the clusters we identify are
-not a result of the exact properties fo the input data. That is, if the
+not a result of the exact properties of the input data. That is, if the
 data we observed were slightly different, the clusters we would identify
 in this different data would be very similar. This makes it more
 likely that these can be reproduced.
@@ -365,12 +378,14 @@ data <- 1:5
 ```
 
 Then, we can take a sample from this data without replacement:
+
 ```{r bs-sample}
 sample(data, 5)
 ```
 
 This sample is a subset of the original data, and points are only present once.
 This is the case every time even if we do it many times:
+
 ```{r bs-sample-rep}
 ## Each column is a sample
 replicate(10, sample(data, 5))
@@ -413,7 +428,7 @@ replicate(10, sample(data, 5, replace = TRUE))
 {: .callout}
 
 In applying the bootstrap to clustering, we want to see two things:
-1. Will observations within a cluster will consistently cluster together in
+1. Will observations within a cluster consistently cluster together in
    different bootstrap replicates?
 2. Will observations frequently swap between clusters?
 
@@ -500,11 +515,11 @@ pheatmap(ratios,
 > As a result, there are a lot of approximate methods for finding clusters
 > in the data. For example, the
 > [mbkmeans](http://www.bioconductor.org/packages/3.13/bioc/html/mbkmeans.html)
-> package includes a for extremely large data. The idea behind this algorithm
+> package includes an algorithm for clustering extremely large data. The idea behind this algorithm
 > is that if the clusters we find are robust, we don't need to look at all of
 > the data every time. This is very helpful because it reduces the amount of
 > data that needs to be held in memory at once, but also because the 
-> computational cost of .
+> computational cost of.
 > 
 > Similarly, approximate nearest neighbour methods like 
 > [Annoy](https://pypi.org/project/annoy/) can be used to identify what the
