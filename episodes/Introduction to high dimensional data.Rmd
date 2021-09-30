@@ -7,7 +7,7 @@ questions:
 - What are high-dimensional data and what do these data look like in the biosciences?
 - What are the challenges when analysing high-dimensional data?
 - What statistical methods are suitable for analysing these data?
-- How are high-dimensional data created in the biosciences?
+- How can Bioconductor be used to explore high-dimensional data in the biosciences?
 objectives:
 - Explore examples of high-dimensional data in the biosciences
 - Appreciate challenges involved in analysing high-dimensional data 
@@ -127,7 +127,7 @@ The correlation matrix shows high correlation between some pairs of variables (e
 
 # What statistical methods are used to analyse high-dimensional data? 
 
-As we found out in the above challenges, carrying out linear regression on datasets with large numbers of features is difficult due to: high correlation between variables; difficulty in identifying clear a response variable; risk of overfitting. These problems are common to many high-dimensional datasets, for example, those using genomics data with multiple genes, or species composition data in an environment where relative abundance of different species within a community is of interest. For such datasets, other statistical methods may be used to examine whether groups of observations show similar features and whether these groups may relate to other features in the data (e.g. phenotype in genetics data). While straight-forward linear regression cannot be used in datasets with many features, high-dimensional regression methods are available with methods to deal with overfitting.
+As we found out in the above challenges, carrying out linear regression on datasets with large numbers of features is difficult due to: high correlation between variables; difficulty in identifying clear a response variable; risk of overfitting. These problems are common to many high-dimensional datasets, for example, those using genomics data with multiple genes, or species composition data in an environment where relative abundance of different species within a community is of interest. For such datasets, other statistical methods may be used to examine whether groups of observations show similar features and whether these groups may relate to other features in the data (e.g. phenotype in genetics data). While straight-forward linear regression cannot be used in datasets with many features, high-dimensional regression methods are available with methods to deal with overfitting and fitting models including many explanatory variables.
 
 In situations where the response variable is difficult to identify or where explanatory variables are highly correlated, dimensionality reduction may be used to create fewer variables that represent variation in the original dataset. Various dimensionality reduction methods are available, including principal component analysis (PCA), factor analysis, and multidimensional scaling, which are used to address different types of research questions. Dimensionality reduction methods such as PCA can also be used to visualise data in fewer number of dimensions, making patterns and clusters within the data easier to visualise. Exploring data via clustering is a good way of understanding relationships within observations in complex datasets. 
 
@@ -200,7 +200,7 @@ cor_mat <- cor(methyl_mat)    #calculate correlations between cells in matrix
 View(cor_mat[1:100,])         #examine first 100 cells
 ```
 
-The `assay` function creates a matrix-like object where rows represent probes for genes and columns represent samples. We calculate correlation between features in the `methylation` dataset and examine the first 100 cells of this matrix. The size of the dataset makes it difficult to examine in full, a common challenge in analysing high-dimensional genomics data. 
+The `assay` function creates a matrix-like object where rows represent probes for genes and columns represent samples. We calculate correlations between features in the `methylation` dataset and examine the first 100 cells of this matrix. The size of the dataset makes it difficult to examine in full, a common challenge in analysing high-dimensional genomics data. 
 
 
 # Further reading
