@@ -37,7 +37,10 @@ High-dimensional data have become more common in many scientific fields as new a
 
 High-dimensional datasets are common in the biological sciences. Subjects like genomics and medical sciences often use both large (in terms of $n$) and wide (in terms of $p$) datasets that can be difficult to analyse or visualise using standard statistical tools. An example of high-dimensional data in biological sciences may include data collected from hospital patients recording symptoms, blood test results, behaviours, and general health, resulting in datasets with large numbers of features. Researchers often want to relate these features to specific patient outcomes (e.g. survival, length of time spent in hospital). An example of what high-dimensional data might look like in a biomedical study is shown in Figure 1. 
 
-![Figure 1: Example of high-dimensional biomedical data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for Intro.png)
+```{r, echo=FALSE, out.width="500px", fig.cap="Figure 1: Example of high-dimensional biomedical data"}
+knitr::include_graphics("../fig/Table for Intro.png")
+# ![Figure 1: Example of high-dimensional biomedical data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for Intro.png)
+```
 
 
 > ## Challenge 1 
@@ -92,7 +95,10 @@ Imagine we are carrying out least squares regression on a dataset with 25 observ
 
 However, imagine a situation in which the ratio of observations to features in a dataset is almost equal. In that situation the effective number of observations per features is low. The result of fitting a best fit line through few observations can be seen in Figure 2b.
 
-![Figure 2: Least squares regression using a) low-dimensional data and b) low ratio of observations per feature](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2 for Intro.png)
+```{r, echo=FALSE, out.width="500px", fig.cap="Figure 2: Least squares regression using a) low-dimensional data and b) low ratio of observations per feature"}
+knitr::include_graphics("../fig/Figure 2 for Intro.png")
+# ![Figure 2: Least squares regression using a) low-dimensional data and b) low ratio of observations per feature](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2 for Intro.png)
+```
 
 In the first situation, the least squares regression lines does not fit the data perfectly and there is some error around the regression line. But when there are only two observations the regression line will fit through the points exactly, resulting in overfitting of the data. This suggests that carrying out least sqaures regression on a dataset with few data points per feature would result in difficulties in applying the resulting model to further datsets. This is a common problem when using regression on high-dimensional datasets.
 
