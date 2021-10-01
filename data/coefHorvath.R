@@ -1,5 +1,5 @@
 if (!"methylclock" %in% rownames(installed.packages())) {
-    remotes::install_github("isglobal-brge/methylclock")
+    remotes::install_github("isglobal-brge/methylclock", upgrade = "never")
 }
 
 coef <- methylclock::coefHorvath
