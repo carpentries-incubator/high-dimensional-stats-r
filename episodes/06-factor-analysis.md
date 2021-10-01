@@ -3,7 +3,6 @@
 # Instead, please edit 06-factor-analysis.md in _episodes_rmd/
 title: "Factor analysis"
 author: "GS Robertson"
-date: "11/08/2021"
 teaching: 25
 exercises: 10
 questions:
@@ -373,8 +372,8 @@ Disadvantages:
 
 # Further reading 
 
-- Gundogdu et al. (2019) Comparison of performances of Principal Component Analysis (PCA) and Factor Analysis (FA) methods on the identification of cancerous and healthy colon tissues. International Journal of Mass Spectrometry 445:116204
-- Kustra et al. (2006) A factor analysis model for functional genomics. BMC Bioinformatics 7: doi:10.1186/1471-2105-7-21
-- Yong, A.G. & Pearce, S. (2013) A beginner's guide to factor analysis: focusing on exploratory factor analysis. Turotials in Quantitative Methods for Psychology 9(2):79-94
+- Gundogdu et al. (2019) Comparison of performances of Principal Component Analysis (PCA) and Factor Analysis (FA) methods on the identification of cancerous and healthy colon tissues. International Journal of Mass Spectrometry 445:116204.
+- Kustra et al. (2006) A factor analysis model for functional genomics. BMC Bioinformatics 7: doi:10.1186/1471-2105-7-21.
+- Yong, A.G. & Pearce, S. (2013) A beginner's guide to factor analysis: focusing on exploratory factor analysis. Turotials in Quantitative Methods for Psychology 9(2):79-94.
 
 {% include links.md %}

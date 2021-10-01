@@ -3,7 +3,6 @@
 # Instead, please edit 07-non-metric-multidimensional-scaling.md in _episodes_rmd/
 title: "Non-metric multi-dimensional scaling"
 author: "GS Robertson"
-date: "27/07/2021"
 teaching: 50
 exercises: 20
 math: yes
@@ -1070,12 +1069,10 @@ However, there are various disadvantges to using NMDS:
 
 # Further reading 
 
-- Holland, S.M. (2008) Non-metric Multidimensional Scaling (MDS).
-https://strata.uga.edu/software/pdf/mdsTutorial.pdf
-- Lahti, L, Sudarshan, S. et al. Introduction to the microbiome R package. https://microbiome.github.io/tutorials/ 
-- Marco-Ramell, A. et al. (2018) Evaluation and comparison of bioinformatic tools for the enrichment analysis of metabolomics data. BMC Bioinformatics 19:1. DOI:10.1186/s12859-017-2006-0 
-- O'Keefe, S.J.D. et al. (2015) Fat, fibre and cancer risk in African Americans and rural Africans. Nature Communications 6:6342. DOI:10.1038/ncomms7342 
-- Oksanen, J. (2005) Multivariate analysis of Ecological Communities in R.
-http://www.pelagicos.net/MARS6910_spring2015/manuals/R_vegan_multivariate.pdf
+- [Holland, S.M. (2008) Non-metric Multidimensional Scaling (MDS).](https://strata.uga.edu/software/pdf/mdsTutorial.pdf).
+- [Lahti, L, Sudarshan, S. et al. Introduction to the microbiome R package.](https://microbiome.github.io/tutorials/).
+- Marco-Ramell, A. et al. (2018) Evaluation and comparison of bioinformatic tools for the enrichment analysis of metabolomics data. BMC Bioinformatics 19:1. DOI:10.1186/s12859-017-2006-0.
+- O'Keefe, S.J.D. et al. (2015) Fat, fibre and cancer risk in African Americans and rural Africans. Nature Communications 6:6342. DOI:10.1038/ncomms7342.
+- [Oksanen, J. (2005) Multivariate analysis of Ecological Communities in R.](http://www.pelagicos.net/MARS6910_spring2015/manuals/R_vegan_multivariate.pdf).
 
 {% include links.md %}

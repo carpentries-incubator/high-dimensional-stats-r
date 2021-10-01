@@ -562,6 +562,6 @@ correct clustering is, nor even the true number of clusters.
 
 ## Further reading
 
-- https://web.stanford.edu/class/bios221/book/Chap-Mixtures.html
+- [Modern statistics for modern biology; Susan Holmes and Wolfgang Huber (Chapter 4)](https://web.stanford.edu/class/bios221/book/Chap-Mixtures.html).
 
 {% include links.md %}

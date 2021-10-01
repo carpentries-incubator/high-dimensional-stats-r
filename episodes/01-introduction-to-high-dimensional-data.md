@@ -467,28 +467,7 @@ library("minfi")
 library("here")
 library("ComplexHeatmap")
 
-methylation <- readRDS("data/methylation.rds")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file 'data/
-methylation.rds', probable reason 'No such file or directory'
-~~~
-{: .warning}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
+methylation <- readRDS(here("data/methylation.rds"))
 head(colData(methylation))
 ~~~
 {: .language-r}
@@ -496,51 +475,48 @@ head(colData(methylation))
 
 
 ~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': error in evaluating the argument 'x' in selecting a method for function 'colData': object 'methylation' not found
+DataFrame with 6 rows and 14 columns
+                    Sample_Well Sample_Name    purity         Sex       Age
+                    <character> <character> <integer> <character> <integer>
+201868500150_R01C01         A07     PCA0612        94           M        39
+201868500150_R03C01         C07   NKpan2510        95           M        49
+201868500150_R05C01         E07      WB1148        95           M        20
+201868500150_R07C01         G07       B0044        97           M        49
+201868500150_R08C01         H07   NKpan1869        95           F        33
+201868590193_R02C01         B03   NKpan1850        93           F        21
+                    weight_kg  height_m       bmi    bmi_clas Ethnicity_wide
+                    <numeric> <numeric> <numeric> <character>    <character>
+201868500150_R01C01   88.4505    1.8542   25.7269  Overweight          Mixed
+201868500150_R03C01   81.1930    1.6764   28.8911  Overweight  Indo-European
+201868500150_R05C01   80.2858    1.7526   26.1381  Overweight  Indo-European
+201868500150_R07C01   82.5538    1.7272   27.6727  Overweight  Indo-European
+201868500150_R08C01   87.5433    1.7272   29.3452  Overweight  Indo-European
+201868590193_R02C01   87.5433    1.6764   31.1507       Obese          Mixed
+                       Ethnic_self      smoker       Array       Slide
+                       <character> <character> <character>   <numeric>
+201868500150_R01C01       Hispanic          No      R01C01 2.01869e+11
+201868500150_R03C01      Caucasian          No      R03C01 2.01869e+11
+201868500150_R05C01        Persian          No      R05C01 2.01869e+11
+201868500150_R07C01      Caucasian          No      R07C01 2.01869e+11
+201868500150_R08C01      Caucasian          No      R08C01 2.01869e+11
+201868590193_R02C01 Finnish/Creole          No      R02C01 2.01869e+11
 ~~~
-{: .error}
+{: .output}
 
 
 
 ~~~
 methyl_mat <- t(assay(methylation))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': error in evaluating the argument 'x' in selecting a method for function 'assay': object 'methylation' not found
-~~~
-{: .error}
-
-
-
-~~~
 ## calculate correlations between cells in matrix
 cor_mat <- cor(methyl_mat)
 ~~~
 {: .language-r}
 
 
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'cor': object 'methyl_mat' not found
-~~~
-{: .error}
-
-
 ~~~
 View(cor_mat[1:100,])
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error in as.data.frame(x): object 'cor_mat' not found
-~~~
-{: .error}
 
 The `assay` function creates a matrix-like object where rows represent probes
 for genes and columns represent samples. We calculate correlations between
@@ -552,8 +528,8 @@ common challenge in analysing high-dimensional genomics data.
 # Further reading
 
 - Buhlman, P. & van de Geer, S. (2011) Statistics for High-Dimensional Data. Springer, London.
-- Buhlman, P., Kalisch, M. & Meier, L. (2014) High-dimensional statistics with a view toward applications in biology. Annual Review of Statistics and Its Application [doi](https://doi.org/10.1146/annurev-statistics-022513-115545)
+- [Buhlman, P., Kalisch, M. & Meier, L. (2014) High-dimensional statistics with a view toward applications in biology. Annual Review of Statistics and Its Application](https://doi.org/10.1146/annurev-statistics-022513-115545).
 - Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Philosophical Transactions of the Royal Society A 367:4237-4253.
-- [Bioconductor ethylation array analysis vignette](https://www.bioconductor.org/packages/release/workflows/vignettes/methylationArrayAnalysis/inst/doc/methylationArrayAnalysis.html)
+- [Bioconductor ethylation array analysis vignette](https://www.bioconductor.org/packages/release/workflows/vignettes/methylationArrayAnalysis/inst/doc/methylationArrayAnalysis.html).
 
 {% include links.md %}

@@ -1184,11 +1184,17 @@ the experiment over and over.
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-02-screening-var-1.png" title="Alt-text" alt="Alt-text" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-02-screening-var-1.png" title="Alt-text" alt="Alt-text" width="720" style="display: block; margin: auto;" />
 > 
 {: .callout}
 
 
+## Further reading
+
+- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
+
+
+## Footnotes
 
 [^1]: It's not hugely problematic if the assumption of normal residuals is violated. It mainly affects our ability to accurately predict responses for new, unseen observations.
 
@@ -1202,8 +1208,5 @@ the experiment over and over.
 
 
 
-## Further reading
-
-- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
 
 {% include links.md %}

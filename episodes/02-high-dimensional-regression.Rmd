@@ -1158,7 +1158,7 @@ the experiment over and over.
 > are not correlated under the null hypothesis, but are correlated under
 > the alternative.
 > 
-> ```{r screening-var, fig.cap="Screening", fig.alt="Alt-text"}
+> ```{r screening-var, fig.width=10, fig.cap="Screening", fig.alt="Alt-text"}
 > ## calculate variance of each feature independent of the outcome
 > vars <- apply(methyl_mat, 1, var)
 > ## select the top 50% variable features
@@ -1195,6 +1195,12 @@ the experiment over and over.
 {: .callout}
 
 
+## Further reading
+
+- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
+
+
+## Footnotes
 
 [^1]: It's not hugely problematic if the assumption of normal residuals is violated. It mainly affects our ability to accurately predict responses for new, unseen observations.
 
@@ -1208,8 +1214,5 @@ the experiment over and over.
 
 
 
-## Further reading
-
-- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
 
 {% include links.md %}

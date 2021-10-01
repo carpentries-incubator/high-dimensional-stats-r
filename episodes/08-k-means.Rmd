@@ -542,8 +542,8 @@ pheatmap(ratios,
 
 ## Further reading
 
-- Wu, J. (2012) Cluster analysis and K-means clustering: An Introduction. In: Advances in K-means Clustering. Springer Berlin, Heidelberg. https://doi.org/10.1007/978-3-642-29807-3_1 
-- https://web.stanford.edu/class/bios221/book/Chap-Clustering.html
-- https://towardsdatascience.com/understanding-k-means-clustering-in-machine-learning-6a6e67336aa1
+- [Wu, J. (2012) Cluster analysis and K-means clustering: An Introduction. In: Advances in K-means Clustering. Springer Berlin, Heidelberg.](https://doi.org/10.1007/978-3-642-29807-3_1).
+- [Modern statistics for modern biology, Susan Holmes and Wolfgang Huber (Chapter 5)](https://web.stanford.edu/class/bios221/book/Chap-Clustering.html).
+- [Understanding K-means clustering in machine learning, Towards Data Science](https://towardsdatascience.com/understanding-k-means-clustering-in-machine-learning-6a6e67336aa1).
 
 {% include links.md %}

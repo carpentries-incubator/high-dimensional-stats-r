@@ -1083,9 +1083,9 @@ like for different values of `alpha`.
 
 # Further reading
 
-- [An introduction to statistical learning](https://www.statlearning.com/)
-- [Elements of statistical learning](https://web.stanford.edu/~hastie/ElemStatLearn/)
-- [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html)
-- [tidymodels](https://www.tidymodels.org/)
+- [An introduction to statistical learning](https://www.statlearning.com/).
+- [Elements of statistical learning](https://web.stanford.edu/~hastie/ElemStatLearn/).
+- [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html).
+- [tidymodels](https://www.tidymodels.org/).
 
 {% include links.md %}

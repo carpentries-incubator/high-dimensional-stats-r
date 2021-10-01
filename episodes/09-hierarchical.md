@@ -10,8 +10,9 @@ questions:
 - What distance matrix and linkage methods should we use?
 - How can we validate identified clusters?
 objectives:
-- Perform hierarchical clustering on high-dimensional data.
-- Evaluate dendrograms produced by hierarchical clustering.
+- Understand when to use hierarchical clustering on high-dimensional data.
+- Perform hierarchical clustering on high-dimensional data and evaluate
+  dendrograms.
 - Explore different distance matrix and linkage methods.
 - Use the Dunn index to validate clustering methods.
 keypoints:
@@ -44,7 +45,7 @@ grouping data points so that different clusters may exist at different stages
 of the algorithm's progression.
 
 Unlike K-means clustering, **hierarchical clustering** does not require the
-number of clusters k to be specified by the user before analysis is carried
+number of clusters $k$ to be specified by the user before analysis is carried
 out. Hierarchical clustering also provides an attractive *dendrogram*, a
 tree-like diagram showing degree of similarity between clusters. 
 
@@ -60,7 +61,7 @@ clustering (see box) in this episode.
 
 > ## Agglomerative and Divisive hierarchical clustering)
 > 
-> There are two main methods of carring out heriarchical clustering:
+> There are two main methods of carrying out heriarchical clustering:
 > agglomerative clustering and divisive clustering. 
 > The latter is a 'bottom-up' approach to clustering whereby the clustering
 > approach begins with each data point (or observation) 
@@ -82,7 +83,8 @@ In this code-along example, 20 data points are generated in 2D space. Each
 point belongs to a one of three classes. Suppose we did not know which class
 data points belonged to and we want to identify these via clustering analysis.
 Hierarchical clustering carried out on the data can be used to produce a
-dendrogram. But how do we interpret this dendrogram?
+dendrogram showing how the data is partitioned into clusters. But how do we
+interpret this dendrogram? Let's explore this using example data.
 
 
 
@@ -152,8 +154,9 @@ height 4 produces six downstream clusters.
 
 We can cut the dendrogram to determine number of clusters at different heights
 using the function `cutree`. This function cuts a dendrogram into several
-groups (or clusters) where the number of desired groups is defined by the user
-(either by defining k (number of groups) or h (height at which tree is cut)).
+groups (or clusters) where the number of desired groups is controlled by the
+user, by defining either `k` (number of groups) or `h` (height at which tree is
+cut).
 
 
 ~~~
@@ -468,7 +471,7 @@ with smallest value of $d$ are fused.
 
 Here we carry out hierarchical clustering using `hclust` and the `complete`
 linkage method. In this example, we calculate a distance matrix between
-correlations in the small_methyl_mat dataset. 
+correlations in the `small_methyl_mat` dataset. 
 
 
 ~~~
@@ -492,7 +495,7 @@ rect.hclust(clust, k = 2, border = 2:6)
 ## cut tree at height = 4
 cut<-cutree(clust, h = 4)
 
-library(dendextend)
+library("dendextend")
 avg_dend_obj <- as.dendrogram(clust)      
 ## colour branches of dendrogram depending on clusters
 plot(color_branches(avg_dend_obj, h = 4))
@@ -502,14 +505,14 @@ plot(color_branches(avg_dend_obj, h = 4))
 <img src="../fig/rmd-09-plot-clust-method-2.png" title="plot of chunk plot-clust-method" alt="plot of chunk plot-clust-method" width="432" style="display: block; margin: auto;" />
 
 We can colour clusters downstream of a specified cut using the `color_branches`
-function from the dendextend package.
+function from the `dendextend` package.
 
 Other methods use different metrics to decide which clusters should be fused
 and when.
 For example, Ward’s method uses increases in the error sum of squares to
 determine which clusters should be fused. 
-Next we use Ward's linkage method in hierarchical clustering of the methylation
-dataset.
+Next we use Ward's linkage method in hierarchical clustering of the
+`small_methyl_mat` dataset.
 
 
 ~~~
@@ -525,9 +528,11 @@ using the complete linkage method.
 
 > ## Challenge 3
 >
-> Carry out hierarchical clustering on the small version of the methylation
-> dataset using different linkage methods and compare resulting dendrograms.
-> Do any of the methods produce similar dendrograms? Do some methods appear to
+> Carry out hierarchical clustering on the small version of the
+> `small_methyl_mat` dataset using different linkage methods and compare
+> resulting dendrograms.
+> Do any of the methods produce similar dendrograms?
+> Do some methods appear to
 > produce more realistic dendrograms than others? Discuss in groups
 >
 > > ## Solution:
@@ -580,12 +585,13 @@ using the complete linkage method.
 > > {: .language-r}
 > > 
 > > <img src="../fig/rmd-09-plot-clust-centroid-1.png" title="plot of chunk plot-clust-centroid" alt="plot of chunk plot-clust-centroid" width="432" style="display: block; margin: auto;" />
+> > 
+> > The linkage methods `average` and `mcquitty` produce apparently similar
+> > dendrograms. The methods `single`, `median` and `centroid` produce unusual
+> > looking dendrograms. The 'complete' method is most commonly used in practice.
+> > 
 > {: .solution}
 {: .challenge}
-
-The linkage methods `average` and `mcquitty` produce apparently similar
-dendrograms. The methods `single`, `median` and `centroid` produce unusual
-looking dendrograms. The 'complete' method is most commonly used in practice.
 
 
 # Validating clusters
@@ -612,8 +618,8 @@ that penalises clusters that have larger intra-cluster variance and smaller
 inter-cluster variance. The higher the Dunn index, the better defined the
 clusters.
 
-Let's calculate the Dunn index for clustering carried out on small version of
-the methylation dataset.
+Let's calculate the Dunn index for clustering carried out on the
+`small_methyl_mat` dataset using the `clValid` package.
 
 
 ~~~
@@ -710,7 +716,8 @@ using the `cutree` function results in higher values of the Dunn index.
 There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
 Another method of validating identified clusters is the Silhouette coefficient
-which uses the average distance between clusters and the points within them.
+which uses the average distance between clusters and the points within them
+(see the K-means clustering episode for more information).
 
 Another more robust method of validating clusters identified using hierarchical
 clustering is splitting the data into test and training datasets and comparing
@@ -720,10 +727,10 @@ clusters identified using hierarchical clustering.
 
 # Further reading 
 
-- Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104
-- Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145
+- Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104.
+- Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145.
 - James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
-  Section 10.3.2 (Hierarchical Clustering)
-- [Understanding the concept of Hierarchical clustering Technique. towards data science blog](https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec)
+  Section 10.3.2 (Hierarchical Clustering).
+- [Understanding the concept of Hierarchical clustering Technique. towards data science blog](https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec).
   
 {% include links.md %}
