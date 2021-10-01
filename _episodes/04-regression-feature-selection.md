@@ -34,13 +34,11 @@ math: yes
 
 
 
-# Introduction
+# Best subset selection
 
 In the previous lesson, we covered a method of feature selection
-using...
-
-
-# Best subset selection
+using regularisation. Here, we'll explore some alternative ways of selecting
+features for a regression model, instead using iterative changes to our model.
 
 Best subset selection is one way of finding a subset of features
 that can predict an outcome. This works by trying every possible subset
@@ -637,7 +635,7 @@ and AIC (Akaike information criterion).
 > 
 > Predictive performance on unseen data can be thought of a measure of how
 > well our findings *generalise*. This very important topic is 
-> addressed in much more detail in the Carpentries machine learning course.
+> addressed in much more detail in the Ed-DaSH machine learning course.
 > 
 {: .callout}
 

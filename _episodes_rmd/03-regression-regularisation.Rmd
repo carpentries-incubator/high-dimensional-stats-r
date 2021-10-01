@@ -24,7 +24,6 @@ keypoints:
 math: yes
 ---
 
-
 ```{r settings, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
@@ -117,7 +116,7 @@ way.
 > In this case, the matrix is of rank 37. We may encounter *rank-deficient*
 > matrices if there is multi-collinearity in the data, too.
 > 
-> ```{r, rankmatrix, eval = FALSE}
+> ```{r rankmatrix, eval = FALSE}
 > ## Beware: this takes a long time to run
 > library("Matrix")
 > rankMatrix(xtx)
@@ -1045,7 +1044,7 @@ plot_elastic(0.75)
 > The [package documentation](https://glmnet.stanford.edu/articles/glmnet.html)
 > explains this in more detail.
 > 
-> ```{r, fig.cap = "Title", fig.alt = "Alt"}
+> ```{r binomial, fig.cap = "Title", fig.alt = "Alt"}
 > smoking <- as.numeric(factor(methylation$smoker)) - 1
 > # binary outcome
 > table(smoking)
