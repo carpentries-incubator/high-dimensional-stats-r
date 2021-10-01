@@ -338,7 +338,7 @@ We now have estimates for the overall difference in means between these
 two variables (the intercept) and the change in methylation level for
 a unit change in age (the slope). We could plot this linear model:
 
-```{r}
+```{r plot-lm-methyl1}
 plot(age, methyl_mat[1, ], xlab = "Age", ylab = "Methylation level", pch = 16)
 abline(lm_age_methyl1)
 ```
@@ -613,7 +613,7 @@ have seen when running linear models. Here, we define a *model matrix* or
 fit in each linear model. These are used in similar ways in a lot of different
 modelling libraries.
 
-```{r design}
+```{r design-age}
 library("limma")
 design_age <- model.matrix(~age)
 dim(design_age)
@@ -634,7 +634,7 @@ in an efficient way. The function `eBayes`, when applied to the output of
 `lmFit`, performs the pooled estimation of standard errors that results
 in the moderated t-statistics and resulting p-values.
 
-```{r lmfit}
+```{r lmfit-age}
 fit_age <- lmFit(methyl_mat, design = design_age)
 fit_age <- eBayes(fit_age)
 ```
@@ -695,8 +695,6 @@ two classes of features. While statistical methods exist to
 derive insights from continuous measures like these, it is often convenient to
 obtain a list of features which we are confident have non-zero effect sizes.
 This is made more difficult by the number of tests we perform.
-
-
 
 
 > ## Exercise
@@ -811,7 +809,7 @@ separately.
 {: .challenge}
 
 
-```{r, echo = FALSE, eval = FALSE}
+```{r limma-app-ex, echo = FALSE, eval = FALSE}
 > ## Exercise
 > 
 > Launch `shinystats::limmaApp` and adjust the parameters. 
