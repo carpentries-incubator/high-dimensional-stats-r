@@ -38,7 +38,7 @@ Unlike PCA, researchers carrying out FA can specify the number of latent variabl
 Examples of datasets and research questions for which FA may be appropriate include: assessing two factors 'writing ability' and 'mathematical ability' using students' examination scores including sections with multiple questions on writing and mathematics. FA could be used to give each student a score for 'writing ability' and 'mathematical ability' based on responses to a larger selection of examination questions (Figure 1). FA may be more appropriate than PCA in this example as researchers know in advance of analysis how many factors (or features) the data have and this knowledge can be included in analysis. Another example of how FA can be used is creating new factors based on a researcher's knowledge of how genes group into clusters.
 
 
-```{r, echo = FALSE}
+```{r table, echo = FALSE}
 knitr::include_graphics("../fig/table_for_fa.png")
 # ![Figure 1: Student exam scores per subject. Subjects can be split into two factors representing mathematical ability and writing ability](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for FA.png)
 ```
@@ -55,16 +55,16 @@ Columns include lcavol (log-transformed cancer volume), lweight (log-transformed
 
 In this example we use the clinical variables to identify factors representing various clinical variables from prostate cancer patients. Two principal componenets have already been identified as explaining a large proportion of variance in the data when these data were analysed in the PCA episode. We may expect a similar number of factors to exist in the data.
 
-```{r}
+```{r lasso2}
 library(lasso2)
 data(Prostate)
 ```
 
-```{r, eval=FALSE}
+```{r view, eval=FALSE}
 View(Prostate)
 ```
 
-```{r}
+```{r dims}
 nrow(Prostate)
 head(Prostate)
 
@@ -82,7 +82,7 @@ Factor analysis may be implemented in R using the `factanal()` function from the
 > 
 > > ## Solution
 > > 
-> > ```{r}
+> > ```{r ex1}
 > > #Include one factor only
 > > pros.fa <- factanal(pros2, factors = 1)
 > > pros.fa
@@ -112,7 +112,7 @@ Like PCA, the fewer factors that can explain most of the variation in the datase
 
 We will now explore two other parts of the `factanal` output: communality and uniqueness.
 
-```{r}
+```{r common-unique}
 apply(pros.fa$loadings^2, 1, sum)  #communality
 1 - apply(pros.fa$loadings^2, 1, sum)  #uniqueness
 ```
@@ -123,7 +123,7 @@ Communality represents the degree to which variables explain the same variation 
 
 We can plot the loadings in a biplot and label points by variable names showing the contribution of each variable to the factors.
 
-```{r}
+```{r biplot}
 #First, carry out factor analysis using two factors
 pros.fa <- factanal(pros2, factors = 2)
 
@@ -174,7 +174,7 @@ Disadvantages:
 
 * Any analysis method is only as good as the data. FA cannot be used when factors are not clearly defined by the user. Justifying the choice of number of factors to use is difficult if little is known about the structure of the data before analysis is carried out.
 * Sometime it can be difficult to interpret what factors mean after analysis has been completed. 
-*FA is not a commonly used method in some areas of biology (including genomics), although this is changing.
+* FA is not a commonly used method in some areas of biology (including genomics), although this is changing.
 * Like PCA, standard methods of carrying out FA assume that input variables are continuous, although extensions to FA allow ordinal and binary variables to be included (after transforming the input matrix).
 
 # Further reading 

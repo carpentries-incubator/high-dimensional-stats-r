@@ -298,6 +298,8 @@ methylation <- readRDS(here::here("data/methylation.rds"))
 library("SummarizedExperiment")
 age <- methylation$Age
 methyl_mat <- t(assay(methylation))
+## centre and scale the data
+methyl_mat <- scale(methyl_mat, center = TRUE, scale = TRUE)
 
 coef_horvath <- coef_horvath[1:20, ]
 features <- coef_horvath$CpGmarker
@@ -360,7 +362,6 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > {: .solution}
 {: .challenge}
 
-
 With this model, now we can check how well it does. Here we use the mean of
 the squared difference between our predictions and the true ages for the test
 data, or "mean squared error" (MSE). Unfortunately, it seems like this is a lot
@@ -413,7 +414,6 @@ want to find the "best" solution (in terms of minimising the
 residuals) that also falls within a circle of a given radius 
 (in this case, 2).
 
-
 <img src="../fig/rmd-03-ridgeplot-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 There are multiple ways to define the distance that our solution must fall in,
@@ -422,7 +422,7 @@ coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
 $$
-    \left\lVert \beta\right\lVert^2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+    \left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
 $$
 
 To control this, we specify that the solution for the equation above
@@ -431,7 +431,7 @@ we try to minimise a function that includes our $L^2$ norm scaled by a
 factor that is usually written $\lambda$.
 
 $$
-    \left(\sum_{i=1}^N y_i - X_i\beta\right) + \lambda \left\lVert \beta \right\lVert^2
+    \left(\sum_{i=1}^N y_i - X_i\beta\right) + \lambda \left\lVert \beta \right\lVert_2
 $$
 
 # Why would we want to restrict our model?
@@ -582,7 +582,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-03-plot-ridge-prediction-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <img src="../fig/rmd-03-plot-ridge-prediction-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 > > 3. They're generally smaller.
 > >    
 > >    ~~~
@@ -634,7 +634,7 @@ LASSO is another type of regularisation. In this case we use the $L^1$ norm,
 or the sum of the absolute values of the coefficients.
 
 $$
-    \left\lVert \beta \right\lVert^1 = \sqrt{\sum_{j=1}^p \beta_j}
+    \left\lVert \beta \right\lVert_1 = \sqrt{\sum_{j=1}^p \beta_j}
 $$
 
 This tends to produce sparse models; that is to say, it tends to remove features
@@ -657,33 +657,23 @@ diagonal (ie, one or more coefficient is exactly zero).
 > 
 > > ## Solution
 > > 
-> > 1. .
+> > 1. Fitting a LASSO model is very similar to a ridge model, we just need
+> >    to change the `alpha` setting.
 > >    
 > >    ~~~
 > >    fit_lasso <- glmnet(x = methyl_mat, y = age, alpha = 1)
 > >    ~~~
 > >    {: .language-r}
-> > 2. .
-> >    
-> >    
-> >    ~~~
-> >    plot(fit_lasso, xvar = "lambda")
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-03-plotlas1-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
-> >    plot(fit_lasso)
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-03-plotlas2-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > 2. When `xvar = "lambda", the x-axis represents increasing model sparsity
+> >    from left to right, because increasing lambda increases the penalty added
+> >    to the coefficients. When we instead plot the L1 norm on the x-axis,
+> >    the x-axis, because increasing L1 norm means that we are allowing our
+> >    coefficients to take on increasingly large values.
+> >    <img src="../fig/rmd-03-plotlas-1.png" title="plot of chunk plotlas" alt="plot of chunk plotlas" width="720" style="display: block; margin: auto;" />
 > > 3. The paths tend to go to exactly zero much more.
 > > 
 > {: .solution}
 {: .challenge}
-
 
 
 # Cross-validation
@@ -700,7 +690,27 @@ we're not going to cover in more detail today, though!
 
 <img src="../fig/cross_validation.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
-We can use this new idea to pick a lambda value.
+> ## Centering and scaling in cross-validation
+> 
+> Earlier, we performed centering and scaling so that the input data have
+> mean of zero and standard deviation of one. This is important for some of
+> the statistical properties of regularised models to hold. However, when we
+> perform test and training splits, it's important that our testing and training
+> data are treated completely independently.
+> 
+> *Normalisation* steps like centering and scaling can cause information leakage
+> between the test and training steps. Therefore it's generally recommended that
+> these are performed separately on each dataset, without sharing parameters or
+> information between the two.
+>
+> For the sake of time we won't cover this today. However, we do recommend
+> that you use a modelling framework like `tidymodels` if you are applying
+> predictive models with cross-validation, because they can make this process
+> much easier.
+{: .callout}
+
+We can use this new idea to pick a lambda value, by finding the lambda
+that minimises the error across each of the test and training splits.
 
 
 ~~~
@@ -713,7 +723,7 @@ plot(lasso)
 
 ~~~
 coefl <- coef(lasso, lasso$lambda.min)
-selected_coefs <- as.matrix(coefl)[coefl[, 1] != 0, 1]
+selected_coefs <- as.matrix(coefl)[which(coefl != 0), 1]
 
 ## load the horvath signature to compare features
 coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
@@ -731,52 +741,169 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ~~~
 {: .output}
 
-<img src="../fig/rmd-03-heamtap-lasso-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-03-heatmap-lasso-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 # Blending ridge regression and the LASSO
 
+So far, we've used ridge regression, where `alpha = 0`, and LASSO regression,
+where `alpha = 1`. What if `alpha` is set to a value between zero and one?
+Well, this actually lets us blend the properties of ridge and LASSO
+regression. This allows us to have the nice properties of the LASSO, where
+uninformative variables are dropped automatically, and the nice properties
+of ridge regression, where our coefficient estimates are a bit more
+conservative, and as a result our predictions are a bit better.
 
+Formally, the objective function of elastic net regression is to optimise the
+following function:
+
+$$
+    \left(\sum_{i=1}^N y_i - X_i\beta\right)
+        + \lambda \left(
+            \alpha \left\lVert \beta \right\lVert_1 +
+            (1-\alpha)  \left\lVert \beta \right\lVert_2
+        \right)
+$$
+
+You can see that if `alpha = 1`, then the L1 norm term is multiplied by one,
+and the L2 norm is multiplied by zero. This means we have pure LASSO regression.
+Conversely, if `alpha = 0`, the L2 norm term is multiplied by one, and the L1
+norm is multiplied by zero, meaning we have pure ridge regression. Anything
+in between gives us something in between.
+
+The contour plots we looked at previously to visualise what this penalty looks
+like for different values of `alpha`.
+
+<img src="../fig/rmd-03-elastic-contour-1.png" title="plot of chunk elastic-contour" alt="plot of chunk elastic-contour" width="1152" style="display: block; margin: auto;" />
 
 > ## Exercise
 > 
-> 1. Fit an elastic net model (hint: alpha = 0.5) and plot the error. Compare
+> 1. Fit an elastic net model (hint: alpha = 0.5) without and plot the model
+>    object.
+> 2. Fit an elastic net model with cross-validation and plot the error. Compare
 >    with LASSO.
-> 2. select the lambda within one standard error of 
+> 3. Select the lambda within one standard error of 
 >    the minimum cross-validation error (hint: `lambda.1se`). Compare the
 >    coefficients with the LASSO model.
-> 3. Discuss: how could we pick an alpha in the range (0, 1)? Could we justify
+> 4. Discuss: how could we pick an `alpha` in the range (0, 1)? Could we justify
 >    choosing one *a priori*?
 > 
 > > ## Solution
-> > 1. Fitting an elastic net model is just like 
+> > 1. Fitting an elastic net model is just like fitting a LASSO model.
+> >    You can see that coefficients tend to go exactly to zero,
+> >    but the paths are a bit less
+> >    extreme than with pure LASSO; similar to ridge.
 > >    
 > >    ~~~
-> >    elastic <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
-> >    par(mfrow = c(1, 2))
+> >    elastic <- glmnet(methyl_mat[, -1], age, alpha = 0.5)
 > >    plot(elastic)
-> >    plot(lasso)
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-03-elastic-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-> > 2. 
+> >    <img src="../fig/rmd-03-elastic-1.png" title="plot of chunk elastic" alt="plot of chunk elastic" width="432" style="display: block; margin: auto;" />
+> > 2. The process of model selection is similar for elastic net models as for
+> >    LASSO models.
 > >    
 > >    ~~~
-> >    coefe <- coef(elastic, elastic$lambda.1se)
-> >    plot(coefl[, 1], coefe[, 1])
+> >    elastic_cv <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
+> >    plot(elastic_cv)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-03-elastic-cv-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > 3. You can see that the coefficients from these two methods are broadly
+> >    similar, but the elastic net coefficients are a bit more conservative.
+> >    Further, more coefficients are exactly zero in the LASSO model.
+> >    
+> >    ~~~
+> >    coefe <- coef(elastic_cv, elastic_cv$lambda.1se)
+> >    sum(coefe[, 1] == 0)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 4963
+> >    ~~~
+> >    {: .output}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    sum(coefl[, 1] == 0)
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    [1] 4961
+> >    ~~~
+> >    {: .output}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    plot(
+> >        coefl[, 1], coefe[, 1],
+> >        pch = 16,
+> >        xlab = "LASSO coefficients",
+> >        ylab = "Elastic net coefficients"
+> >    )
+> >    abline(0:1, lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
 > >    <img src="../fig/rmd-03-elastic-plot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > 4. You could pick an arbitrary value of `alpha`, because arguably pure ridge
+> >    regression or pure LASSO regression are also arbitrary model choices.
+> >    To be rigorous and to get the best-performing model and the best 
+> >    inference about predictors, it's usually best to find the best
+> >    combination of `alpha` and `lambda` using a grid search approach
+> >    in cross-validation. However, this can be very computationally demanding.
 > {: .solution}
 {: .challenge}
 
 
 > ## The bias-variance tradeoff
 > 
-> When making predictive models, we have to consider bias and variance.
+> When we make predictions in statistics, there are two sources of error
+> that primarily influence the (in)accuracy of our predictions. these are *bias*
+> and *variance*. 
 > 
-> TODO: brief technical explanation of bias and variance
+> The total expected error in our predictions is given by the following
+> equation:
+> 
+> $$
+>   E(y - \hat{y}) = \text{Bias}^2 + \text{Variance} + \sigma^2
+> $$
+> 
+> Here, $\sigma^2$ represents the irreducible error, that we can never overcome.
+> Bias results from erroneous assumptions in the model used for predictions.
+> Fundamentally, bias means that our model is mis-specified in some way,
+> and fails to capture some components of the data-generating process 
+> (which is true of all models). If we have failed to account for a confounding
+> factor that leads to very inaccurate predictions in a subgroup of our
+> population, then our model has high bias.
+> 
+> Variance results from sensitivity to particular properties of the input data.
+> For example, if a tiny change to the input data would result in a huge change
+> to our predictions, then our model has high variance.
+> 
+> Linear regression is an unbiased model under certain conditions.
+> In fact, the [Gauss-Markov theorem](https://en.wikipedia.org/wiki/Gauss%E2%80%93Markov_theorem)
+> shows that under the right conditions, OLS is the best possible type of
+> unbiased linear model.
+> 
+> Introducing penalties to means that our model is no longer unbiased, meaning
+> that the coefficients estimated from our data will systematically deviate
+> from the ground truth. Why would we do this? As we saw, the total error is
+> a function of bias and variance. By accepting a small amount of bias, it's
+> possible to achieve huge reductions in the total expected error.
+> 
+> This bias-variance tradeoff is also why people often favour elastic net
+> regression over pure LASSO regression.
+> 
 > 
 {: .callout}
 
@@ -848,7 +975,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > ~~~
 > coef <- coef(fit, s = fit$lambda.min)
 > coef <- as.matrix(coef)
-> coef[coef[, 1] != 0, 1]
+> coef[which(coef != 0), 1]
 > ~~~
 > {: .language-r}
 > 
@@ -866,7 +993,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-03-unnamed-chunk-2-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-03-unnamed-chunk-1-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > In this case, the results aren't very interesting! We select an intercept-only
 > model.
 {: .callout}

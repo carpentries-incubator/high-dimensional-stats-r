@@ -1,7 +1,12 @@
 rmarkdown
 here
-ggplot2
+minfi
+knitr
+circlize
+ComplexHeatmap
+RColorBrewer
 viridis
+ggplot2
 broom
 ExperimentHub
 FlowSorted.Blood.EPIC
@@ -9,13 +14,7 @@ glmnet
 IlluminaHumanMethylationEPICanno.ilm10b4.hg19
 IlluminaHumanMethylationEPICmanifest
 limma
-minfi
 qvalue
-knitr
-ComplexHeatmap
-RColorBrewer
-jtools
-circlize
 lasso2
 SummarizedExperiment
 leaps
@@ -43,8 +42,6 @@ dplyr
 dendextend
 clValid
 BiocManager
-GenomicAlignments
-GenomicRanges
 stringr
 desc
 remotes
