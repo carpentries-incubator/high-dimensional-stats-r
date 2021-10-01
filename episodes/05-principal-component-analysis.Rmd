@@ -28,10 +28,10 @@ keypoints:
 - The first principal component represents the dimension along which there is
   maximum variation in the data. Subsequent principal components represent
   dimensions with progressively less variation.
-- Screeplots and biplots may be used to show:  
+- "Screeplots and biplots may be used to show:  
   1. how much variation in the data is explained by each principal component and
   2. how data points cluster according to principal component scores and which
-  variables are associated with these scores.
+  variables are associated with these scores."
 math: yes
 ---
 
@@ -198,7 +198,7 @@ components as there are variables in your dataset, but as we'll see, some are
 more useful at explaining your data than others. By definition, the first
 principal component explains more variation than other principal components.
 
- ```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
+```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
 # ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
 knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
 ```
@@ -558,16 +558,26 @@ amount of the variation. The proportion of variance explained should sum to one.
 > {: .solution}
 {: .challenge}
 
-There are no clear guidelines on how many principal components should be included in PCA: your choice depends on the total variability of the data and the size of the dataset. We often look at the 'elbow’ on the screeplot as an indicator that the addition of principal components does not drastically contribute to explain the remaining variance or choose an arbitory cut off for proportion of variance explained.
+There are no clear guidelines on how many principal components should be
+included in PCA: your choice depends on the total variability of the data and
+the size of the dataset. We often look at the 'elbow’ on the screeplot as an
+indicator that the addition of principal components does not drastically
+contribute to explain the remaining variance or choose an arbitory cut off for
+proportion of variance explained.
 
-Once the most important principal components have been identified using the screeplot, these can be explored in more detail by plotting principal components against each other and highlighting points based on variables in the metadata. This will allow any potential clustering of points according to demographic or phenotypic variables to be seen.
+Once the most important principal components have been identified using the
+screeplot, these can be explored in more detail by plotting principal components
+against each other and highlighting points based on variables in the metadata.
+This will allow any potential clustering of points according to demographic or
+phenotypic variables to be seen.
 
 We can use biplots to look for patterns in the output from the PCA. 
 
 
 > ## Challenge 5
 > 
-> Create a biplot of the first two principal components from your PCA (using `biplot` function in PCAtools - see helpfile for arguments) 
+> Create a biplot of the first two principal components from your PCA
+> (using `biplot` function in PCAtools - see helpfile for arguments) 
 > and examine whether the data appear to form clusters.
 > 
 > > ## Solution
@@ -575,7 +585,13 @@ We can use biplots to look for patterns in the output from the PCA.
 > > ```{r biplot-ex, fig.cap="Caption", fig.cap="Alt"}
 > > PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 > > ```
-> > The biplot shows the position of patient samples relative to PC1 and PC2 in 2-dimensional plot. Note that two groups are apparent along the PC1 axis according to expressions of different genes while no separation can be seem along the PC2 axis. Labels of patient samples are automatically added in the biplot. Labels for each sample are added by default, but can be removed if there is too much overlap in names. Note that `PCAtools` does not scale biplot in the same way as biplot using the stats package.
+> > The biplot shows the position of patient samples relative to PC1 and PC2
+> > in 2-dimensional plot. Note that two groups are apparent along the PC1 axis
+> > according to expressions of different genes while no separation can be seem
+> > along the PC2 axis. Labels of patient samples are automatically added in the
+> > biplot. Labels for each sample are added by default, but can be removed if
+> > there is too much overlap in names. Note that `PCAtools` does not scale
+> > biplot in the same way as biplot using the stats package.
 > {: .solution}
 {: .challenge}
 
@@ -584,18 +600,23 @@ We can use biplots to look for patterns in the output from the PCA.
 PCAtools::biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
 ```
 
-Sizes of labels, points and axes can be changed using arguments in `biplot` (see `help("biplot")`).
-We can see from the biplot that there appear to be two separate groups of points that separate on the PC1 axis, but that no other grouping is apparent on other PC axes.
+Sizes of labels, points and axes can be changed using arguments in `biplot`
+(see `help("biplot")`). We can see from the biplot that there appear to be two
+separate groups of points that separate on the PC1 axis, but that no other
+grouping is apparent on other PC axes.
 
 ```{r pca-loadings, fig.cap="Caption", fig.cap="Alt"}
 plotloadings(pc, labSize = 3)
 ```
 
-Plotting the loadings shows the magnitude and direction of loadings for probes detecting genes on each principal component.
+Plotting the loadings shows the magnitude and direction of loadings for probes
+detecting genes on each principal component.
 
 > ## Challenge 6
 > 
-> Use `colby` and `lab` arguments in `biplot` to explore whether these two groups may cluster by patient age or by whether or not the sample expresses the oestrogen receptor gene (ER+ or ER-).
+> Use `colby` and `lab` arguments in `biplot` to explore whether these two
+> groups may cluster by patient age or by whether or not the sample expresses
+> the oestrogen receptor gene (ER+ or ER-).
 > 
 > > ## Solution
 > > 
@@ -610,43 +631,57 @@ Plotting the loadings shows the magnitude and direction of loadings for probes d
 > {: .solution}
 {: .challenge}
 
-So far we have only looked at a biplot of PC1 versus PC2 which only gives part of the picture. The `pairplots` function in `PCAtools` can be used to create multiple biplots including different principal components.
+So far we have only looked at a biplot of PC1 versus PC2 which only gives part
+of the picture. The `pairplots` function in `PCAtools` can be used to create
+multiple biplots including different principal components.
 
 ```{r pairsplot, fig.cap="Caption", fig.cap="Alt"}
 pairsplot(pc)
 ```
 
-The plots show two apparent clusters involving the first principal component only. No other clusters are found involving other principal components.
+The plots show two apparent clusters involving the first principal component
+only. No other clusters are found involving other principal components.
 
 
 # Using PCA output in further analysis
 
-The output of PCA can be used to interpret data or can be used in further analyses. For example, the PCA outputs new variables (principal components) which represent several variables in the original dataset. These new variables are useful for further exploring data, for example, comparing principal component scores between groups or including the new variables in linear regressions. Because the principal components are uncorrelated (and independent) they can be included together in a single linear regression. 
+The output of PCA can be used to interpret data or can be used in further
+analyses. For example, the PCA outputs new variables (principal components)
+which represent several variables in the original dataset. These new variables
+are useful for further exploring data, for example, comparing principal
+component scores between groups or including the new variables in linear
+regressions. Because the principal components are uncorrelated (and independent)
+they can be included together in a single linear regression. 
 
 
 > ## Principal component regression 
 > 
-> PCA is often used to reduce large numbers of correlated variables into fewer uncorrelated variables that can then be included in linear regression or other models. 
-> This technique is called principal component regression (PCR) and it allows researchers to examine the effect of several correlated explanatory variables on a single  
-> response variable in cases where a high degree of correlation initially prevents them from being included in the same model. This is called principal componenet regression
-> (PCR) and is just one example of how principal components can be used in further analysis of data. When carrying out PCR, the variable of interest (response/dependent
-> variable) is regressed against the principal components calculated using PCA, rather than against each individual explanatory variable from the original dataset. As there
-> as many principal components created from PCA as there are variables in the dataset, we must select which principal components to include in PCR. This can be done by
-> examining the amount of variation in the data explained by each principal component (see above).
+> PCA is often used to reduce large numbers of correlated variables into fewer
+> uncorrelated variables that can then be included in linear regression or
+> other models. This technique is called principal component regression (PCR)
+> and it allows researchers to examine the effect of several correlated
+> explanatory variables on a single response variable in cases where a high
+> degree of correlation initially prevents them from being included in the same
+> model. This is called principal componenet regression (PCR) and is just one
+> example of how principal components can be used in further analysis of data.
+> When carrying out PCR, the variable of interest (response/dependent variable)
+> is regressed against the principal components calculated using PCA, rather
+> than against each individual explanatory variable from the original dataset.
+> As there as many principal components created from PCA as there are variables
+> in the dataset, we must select which principal components to include in PCR.
+> This can be done by examining the amount of variation in the data explained
+> by each principal component (see above).
 {: .callout}
 
 
 # Further reading
 
-James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
+- James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
 Chapter 6.3 (Dimension Reduction Methods), Chapter 10 (Unsupervised Learning)
+- Jolliffe, I.T. & Cadima, J. (2016) Principal component analysis: a review and recent developments. Phil. Trans. R. Soc A 374. [http://dx.doi.org/10.1098/rsta.2015.0202](http://dx.doi.org/10.1098/rsta.2015.0202)
+- Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Phil. Trans. R. Soc A 367. doi:10.1098/rsta.2009.0159
+- PCA: A Practical Guide to Principal Component Analysis, [Analytics Vidhya](https://www.analyticsvidhya.com/blog/2016/03/pca-practical-guide-principal-component-analysis-python/)
+- A One-Stop Shop for Principal Component Analysis, [Towards Data Science](https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c)
 
-Jolliffe, I.T. & Cadima, J. (2016) Principal component analysis: a review and recent developments. Phil. Trans. R. Soc A 374. http://dx.doi.org/10.1098/rsta.2015.0202 
 
-Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Phil. Trans. R. Soc A 367. doi:10.1098/rsta.2009.0159 
-
-PCA: A Practical Guide to Principal Component Analysis
-https://www.analyticsvidhya.com/blog/2016/03/pca-practical-guide-principal-component-analysis-python/   
-
-A One-Stop Shop for Principal Component Analysis
-https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c
+{% include links.md %}

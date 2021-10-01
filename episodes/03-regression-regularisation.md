@@ -28,7 +28,6 @@ math: yes
 
 
 
-
 # Introduction
 
 In the previous lesson we did a kind of feature selection by doing
@@ -707,6 +706,11 @@ we're not going to cover in more detail today, though!
 > that you use a modelling framework like `tidymodels` if you are applying
 > predictive models with cross-validation, because they can make this process
 > much easier.
+> 
+> There is some example code for doing this at the end of this episode if
+> you would like a start, but you can find more detailed instructions on the
+> [tidymodels website](https://www.tidymodels.org/).
+> 
 {: .callout}
 
 We can use this new idea to pick a lambda value, by finding the lambda
@@ -993,7 +997,7 @@ like for different values of `alpha`.
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-03-unnamed-chunk-1-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-03-binomial-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > In this case, the results aren't very interesting! We select an intercept-only
 > model.
 {: .callout}
@@ -1081,6 +1085,7 @@ like for different values of `alpha`.
 
 - [An introduction to statistical learning](https://www.statlearning.com/)
 - [Elements of statistical learning](https://web.stanford.edu/~hastie/ElemStatLearn/)
-
+- [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html)
+- [tidymodels](https://www.tidymodels.org/)
 
 {% include links.md %}

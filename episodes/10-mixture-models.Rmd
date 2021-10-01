@@ -3,16 +3,17 @@ title: "Mixture models"
 teaching: 45
 exercises: 15
 questions:
-- "What is clustering?"
-- "Why would we want to find clusters in data?"
 - "How can we cluster low-dimensional data with a model?"
 - "What difficulties does high-dimensional clustering present?"
 objectives:
-- "Understand the basis of mixture models in a low- and high-dimensional setting."
+- "Understand the basis of mixture models in a low- and high-dimensional
+  setting."
 keypoints:
-- "Mixture models can be used as a clustering method, to model data with heterogeneous characteristics."
+- "Mixture models can be used as a clustering method, to model data with
+  heterogeneous characteristics."
 - "Mixture models are a 'soft' clustering method."
-- "Mixture models in high-dimensional data can be difficult to fit and may not be ideal."
+- "Mixture models in high-dimensional data can be difficult to fit and may not
+  be ideal."
 math: yes
 ---
 
@@ -20,7 +21,7 @@ math: yes
 ```{r settings, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
-knitr_fig_path("08-")
+knitr_fig_path("10-")
 ```
 
 ```{r pkgs, echo=FALSE}
@@ -563,6 +564,4 @@ correct clustering is, nor even the true number of clusters.
 
 - https://web.stanford.edu/class/bios221/book/Chap-Mixtures.html
 
-
 {% include links.md %}
-

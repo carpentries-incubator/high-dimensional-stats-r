@@ -1,9 +1,9 @@
 rmarkdown
 here
-minfi
 knitr
-circlize
+minfi
 ComplexHeatmap
+circlize
 RColorBrewer
 viridis
 ggplot2
@@ -27,7 +27,6 @@ vegan3d
 bluster
 igraph
 irlba
-mclust
 mixtools
 Rtsne
 scater
@@ -41,8 +40,9 @@ pheatmap
 dplyr
 dendextend
 clValid
-BiocManager
+mclust
 stringr
+BiocManager
 desc
 remotes
 renv

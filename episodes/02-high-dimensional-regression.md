@@ -28,9 +28,6 @@ math: yes
 
 
 
-
-
-
 # DNA methylation data
 
 For the following few episodes, we'll be working with human
@@ -1208,6 +1205,5 @@ the experiment over and over.
 ## Further reading
 
 - [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
-
 
 {% include links.md %}
