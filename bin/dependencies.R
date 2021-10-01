@@ -51,11 +51,9 @@ install_dependencies <- function(required_pkgs, ...) {
   )
 
   BiocManager::install(required_pkgs)
-  BiocManager::install("isglobal-brge/methylclock")
   # create_description(required_pkgs)
   # on.exit(file.remove("DESCRIPTION"))
   # remotes::install_deps(dependencies = TRUE, ...)
-  remotes::install_github("isglobal-brge/methylclock")
 
   if (require("knitr") && packageVersion("knitr") < '1.9.19') {
     stop("knitr must be version 1.9.20 or higher")
