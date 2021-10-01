@@ -1,0 +1,374 @@
+---
+title: "Introduction to high-dimensional data"
+author: "GS Robertson"
+teaching: 60
+exercises: 20
+questions:
+- What are high-dimensional data and what do these data look like in the
+  biosciences?
+- What are the challenges when analysing high-dimensional data?
+- What statistical methods are suitable for analysing these data?
+- How can Bioconductor be used to explore high-dimensional data in the
+  biosciences?
+objectives:
+- Explore examples of high-dimensional data in the biosciences.
+- Appreciate challenges involved in analysing high-dimensional data.
+- Explore different statistical methods used for analysing high-dimensional data.
+- Work with example data created from biological studies.
+keypoints:
+- High-dimensional data are data in which the number of features, $p$, are close
+  to or larger than the number of observations, $n$.
+- These data are becoming more common in the biological sciences due to
+  increases in data storage capabilities and computing power.
+- Standard statistical methods, such as linear regression, run into difficulties
+  when analysing high-dimensional data.
+- In this workshop, we will explore statistical methods used for analysing
+  high-dimensional data using datasets available on Bioconductor.
+math: yes
+---
+
+
+```{r setup, include=FALSE}
+library("here")
+source(here("bin/chunk-options.R"))
+knitr_fig_path("01-")
+```
+
+
+# What are high-dimensional data? 
+
+*High-dimensional data* are defined as data in which the number of features
+in the data, $p$, are equal or larger than the number of observations (or data
+points), $n$. Unlike *low-dimensional data* in which the number of observations,
+$n$, far outnumbers the number of features, $p$, high-dimensional data require
+consideration of potential problems that comes from having a large number of
+features.
+
+High-dimensional data have become more common in many scientific fields as new
+automated data collection techniques have been developed. More and more datsets
+have a large number of features (or variables) and some have as many features as
+there are rows in the dataset. Datasets in which $p$>=$n$ are becoming more
+common. Such datasets pose a challenge for data analysis as standard methods of
+analysis, such as linear regression, are no longer appropriate.
+
+High-dimensional datasets are common in the biological sciences. Subjects like
+genomics and medical sciences often use both large (in terms of $n$) and wide
+(in terms of $p$) datasets that can be difficult to analyse or visualise using
+standard statistical tools. An example of high-dimensional data in biological
+sciences may include data collected from hospital patients recording symptoms,
+blood test results, behaviours, and general health, resulting in datasets with
+large numbers of features. Researchers often want to relate these features to
+specific patient outcomes (e.g. survival, length of time spent in hospital).
+An example of what high-dimensional data might look like in a biomedical study
+is shown in Figure 1. 
+
+```{r table-intro, echo = FALSE}
+knitr::include_graphics("../fig/intro-table.png")
+# ![Figure 1: Example of high-dimensional biomedical data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for Intro.png)
+```
+
+
+
+> ## Challenge 1 
+> 
+> Descriptions of three research questions and their datasets are given below.
+> Which of these are considered to have high-dimensional data?
+> 
+> 1. Predicting patient blood pressure using cholesterol level in blood, age,
+>    and BMI measurements collected from 100 patients.
+> 2. Predicting patient blood pressure using cholesterol level in blood, age,
+>    and BMI as well as information from 200,000 single nucleotide polymorphisms
+>    from 100 patients.
+> 3. Predicting length of time patients spend in hospital with pneumonia.
+>    infection using measurements on age, BMI, length of time with symptoms,
+>    number of symptoms, and percentage of neutrophils in blood using data
+>    from 200 patients.
+> 4. Predicting probability of a patient's cancer progressing using gene
+>    expression data as well as data associated with general patient health
+>    (age, weight, BMI, blood pressure) and cancer growth (tumour size,
+>    localised spread, blood test results).
+> 
+> > ## Solution
+> > 
+> > 2 and 4
+> {: .solution}
+{: .challenge}
+
+
+Now that we have an idea of what high-dimensional data look like we can think
+about the challenges we face in analysing them.
+
+
+# Challenges in dealing with high-dimensional data 
+
+Most classical statistical methods are set up for use on low-dimensional data
+(i.e. data where the number of observations $n$ is much larger than the number
+of features $p$). This is because low-dimensional data were much more common in
+the past when data collection was more difficult and time consuming. In recent
+years advances in information technology have allowed large amounts of data to
+be collected and stored with relative ease. This has allowed large numbers of
+features to be collected, meaning that datasets in which $p$ matches or exceeds
+$n$ are common (collecting observations is often more difficult or expensive
+than collecting many features from a single observation).
+
+Datasets with large numbers of features are difficult to visualise. When
+exploring low-dimensional datasets, it is possible to plot the response variable
+against each of the limited number of explanatory variables to get an idea which
+of these are important predictors of the response. With high-dimensional data
+the large number of explanatory variables makes doing this difficult. In some
+high-dimensional datasets it can also be difficult to identify a single response
+variable, making standard data exploration and analysis techniques less useful.
+
+Let's have a look at a simple dataset with lots of features to understand some
+of the challenges we are facing when working with high-dimensional data.
+
+
+> ## Challenge 2 
+> 
+> Load the `Prostate` dataset from the `lasso2` package and examine the column
+> names. 
+>
+> Examine the dataset (in which each row represents a single patient) and plot
+> relationships between the variables using the `pairs` function. Why does it
+> become more difficult to plot relationships between pairs of variables with
+> increasing numbers of variables? Discuss in groups.
+> 
+> > ## Solution
+> > 
+> > ```{r lasso2}
+> > library(lasso2)  #load lasso2 package
+> > data(Prostate)   #load the Prostate dataset
+> > ```
+> > 
+> > ```{r view-prostate, eval = FALSE}
+> > View(Prostate)   #view the dataset
+> > ```
+> > 
+> > ```{r pairs-prostate}
+> > names(Prostate)  #examine column names
+> >
+> > pairs(Prostate)  #plot each pair of variables against each other
+> > ```
+> > The `pairs` function plots relationships between each of the variables in
+> > the `Prostate` dataset. This is possible for datasets with smaller numbers
+> > of variables, but for datasets in which $p$ is larger it becomes difficult
+> > (and time consuming) to visualise relationships between all variables in the
+> > dataset. Even where visualisation is possible, fitting models to datasets
+> > with large numbers of variables is difficult due to the potential for
+> > overfitting and difficulties in identifying a response variable.
+> > 
+> {: .solution}
+{: .challenge}
+
+Imagine we are carrying out least squares regression on a dataset with 25
+observations. Fitting a best fit line through these data produces a plot shown
+in Figure 2a.
+
+However, imagine a situation in which the ratio of observations to features in
+a dataset is almost equal. In that situation the effective number of
+observations per features is low. The result of fitting a best fit line through
+few observations can be seen in Figure 2b.
+
+```{r intro-figure, echo = FALSE}
+knitr::include_graphics("../fig/intro-scatterplot.png")
+# ![Figure 2: Least squares regression using a) low-dimensional data and b) low ratio of observations per feature](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2 for Intro.png)
+```
+
+In the first situation, the least squares regression lines does not fit the data
+perfectly and there is some error around the regression line. But when there are
+only two observations the regression line will fit through the points exactly,
+resulting in overfitting of the data. This suggests that carrying out least
+squares regression on a dataset with few data points per feature would result
+in difficulties in applying the resulting model to further datsets. This is a
+common problem when using regression on high-dimensional datasets.
+
+Another problem in carrying out regression on high-dimensional data is dealing
+with correlations between explanatory variables. The large numbers of features
+in these datasets makes high correlations between variables more likely.
+
+
+> ## Challenge 3
+> 
+> Use the `cor` function to examine correlations between all variables in the
+> Prostate dataset. Are some variables highly correlated (i.e. correlation
+> coefficients > 0.6)? Carry out a linear regression predicting patient age
+> using all variables in the Prostate dataset.
+> 
+> > ## Solution
+> > 
+> > ```{r plot-lm}
+> > ## create a correlation matrix of all variables in the Prostate dataset
+> > cor(Prostate)
+> > 
+> > ## correlation matrix for variables describing cancer/clinical variables
+> > cor(Prostate[, c(1, 2, 4, 6, 9)])
+> > 
+> > ## use linear regression to predict patient age from cancer progression variables
+> > model <- lm(
+> >     age ~ lcavol + lweight + lbph + lcp + lpsa + svi + gleason + pgg45,
+> >     data = Prostate
+> > )
+> > summary(model)
+> >
+> > ## examine model residuals
+> > plot(model)
+> > ```
+> {: .solution}
+{: .challenge}
+
+The correlation matrix shows high correlation between some pairs of variables
+(e.g. between `lcavol` and `lpsa` and between `gleason` and `pgg45`). Including
+correlated variables in the same regression model can lead to problems in fitting
+a regression and interpreting the output. Some clinical variables
+(i.e. `lcavol`, `lweight`, `lbph`, `lcp`, `lpsa`) show high correlation between
+pairs of variables (e.g. between `lcavol` and `lpsa`). To allow variables to be
+included in the same model despite high levels of correlation we can use
+dimensionality reduction methods to collapse multiple variables into a single
+new variable (we will explore this dataset further in the dimensionality
+reduction lesson). We can also use modifications to linear regression like
+regularisation, which we will discuss in the lesson on high-dimensional
+regression.
+
+
+# What statistical methods are used to analyse high-dimensional data? 
+
+As we found out in the above challenges, carrying out linear regression on
+datasets with large numbers of features is difficult due to: high correlation
+between variables; difficulty in identifying clear a response variable; risk
+of overfitting. These problems are common to many high-dimensional datasets,
+for example, those using genomics data with multiple genes, or species
+composition data in an environment where relative abundance of different species
+within a community is of interest. For such datasets, other statistical methods
+may be used to examine whether groups of observations show similar features
+and whether these groups may relate to other features in the data (e.g.
+phenotype in genetics data). While straight-forward linear regression cannot
+be used in datasets with many features, high-dimensional regression methods
+are available with methods to deal with overfitting and fitting models including
+many explanatory variables.
+
+In situations where the response variable is difficult to identify or where
+explanatory variables are highly correlated, dimensionality reduction may be
+used to create fewer variables that represent variation in the original dataset.
+Various dimensionality reduction methods are available, including principal
+component analysis (PCA), factor analysis, and multidimensional scaling, which
+are used to address different types of research questions. Dimensionality
+reduction methods such as PCA can also be used to visualise data in fewer
+number of dimensions, making patterns and clusters within the data easier to
+visualise. Exploring data via clustering is a good way of understanding
+relationships within observations in complex datasets.
+
+Statistical methods (such as hierarchical clustering and k-means clustering)
+are often used to identify clusters within complex datasets. However, simply
+identifying clusters visually may not be enough - we also need to determine
+whether such clusters are 'real' or simply apparent interpretations of noise
+within the data.
+
+Let's create some random data and show how we can create clusters by changing
+parameters.
+
+```{r plot-random}
+set.seed(80)     
+
+## create random data from a normal distribution and store as a matrix
+x <- matrix(rnorm(200, mean = 0, sd = 1), 100, 2)
+
+plot(x, pch = 19)
+
+## create three groups for each row of x
+selected <- sample(1:3, 100, replace = TRUE)
+
+## plot x and colour by selected
+plot(x, col = selected, pch = 19)
+#note there are no clusters in these data
+
+## create random data representing mean of each of the three groups
+xsel <- matrix(rnorm(6, mean = 0, sd = 1), 3, 2)
+#Note how increasing the value of sd makes clusters clearer
+
+## add values of x to xsel for each of three defined groups
+xgroups <- x + xsel[selected, ]
+## plot xgroups and colour by each of the three groups
+plot(xgroups, col = selected, pch = 19)
+```
+
+> ## Challenge 4
+> 
+> Change the value of `sd` in the above example. What happens to the data when
+> `sd` is increased?
+> 
+> > ## Solution
+> > 
+> > When `sd = 1` in above example clusters in randomly generated data are not
+> > obvious. Increasing the value of `sd` makes clusters clearer. Sometimes it
+> > is possible to convince ourselves that there are clusters in the data just
+> > by colouring the data points by their respective groups! Formal cluster
+> > analysis and validation is necessary to determine whether visual clusters
+> > in data are 'real'.
+> > 
+> {: .solution}
+{: .challenge}
+
+
+# High-dimensional data in the biosciences
+
+In this workshop, we will look at statistical methods that can be used to
+visualise and analyse high-dimensional biological data using packages available
+from Bioconductor, open source software for analysing high throughput genomic
+data. Bioconductor contains useful packages and example datasets as shown on the
+website [https://www.bioconductor.org/](https://www.bioconductor.org/).
+
+Bioconductor packages can be installed and used in `R` using the `BiocManager`
+package. Let's install the `minfi` package from Bioconductor (a package for
+analysing Illumina Infinium DNA methylation arrays).
+
+```{r libminfi}
+library("minfi")
+```
+
+```{r vigminfi, eval=FALSE}
+browseVignettes("minfi")
+```
+
+We can explore these packages by browsing the vignettes provided in
+Bioconductor. Bioconductor has various packages that can be used to load and
+examine datasets in `R` that have been made available in Bioconductor, usually
+along with an associated paper or package.
+
+Next, we load the `methylation` dataset which represents data collected using
+Illumina Infinium methylation arrays which are used to examine methylation
+across the human genome. These data include information collected from the
+assay as well as associated metadata from individuals from whom samples were
+taken.
+
+```{r libsload}
+library("minfi")
+library("here")
+library("ComplexHeatmap")
+
+methylation <- readRDS(here("data/methylation.rds"))
+head(colData(methylation))
+
+methyl_mat <- t(assay(methylation))
+## calculate correlations between cells in matrix
+cor_mat <- cor(methyl_mat)
+```
+
+```{r view-cor}
+View(cor_mat[1:100,])
+```
+
+The `assay` function creates a matrix-like object where rows represent probes
+for genes and columns represent samples. We calculate correlations between
+features in the `methylation` dataset and examine the first 100 cells of this
+matrix. The size of the dataset makes it difficult to examine in full, a
+common challenge in analysing high-dimensional genomics data. 
+
+
+# Further reading
+
+- Buhlman, P. & van de Geer, S. (2011) Statistics for High-Dimensional Data. Springer, London.
+- [Buhlman, P., Kalisch, M. & Meier, L. (2014) High-dimensional statistics with a view toward applications in biology. Annual Review of Statistics and Its Application](https://doi.org/10.1146/annurev-statistics-022513-115545).
+- Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Philosophical Transactions of the Royal Society A 367:4237-4253.
+- [Bioconductor ethylation array analysis vignette](https://www.bioconductor.org/packages/release/workflows/vignettes/methylationArrayAnalysis/inst/doc/methylationArrayAnalysis.html).
+
+{% include links.md %}

@@ -33,51 +33,14 @@ math: yes
 ```{r settings, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
-knitr_fig_path("03-")
+knitr_fig_path("04-")
 ```
-
-# Introduction
-
-First, let's read in the data from the last lesson.
-
-```{r loadmethy}
-library("here")
-library("minfi")
-methylation <- readRDS(here("data/methylation.rds"))
-
-## here, we transpose the matrix to have features as rows and samples as columns
-methyl_mat <- t(assay(methylation))
-age <- methylation$Age
-```
-
-# Why would we want to do feature selection?
-
-In the previous lesson we did a kind of feature selection by doing
-univariate analysis and thresholding by p-value/effect size.
-
-However we might think there's some combination of methylation features
-that combined explain age. For example, if we want to be able to predict age 
-from methylation, that's a lot easier if we figure out what the contribution
-of each feature is conditional on all others, rather than independent of
-all others.
-
-$$
-    y_j = \beta_0 + \beta_1 X_1 + \dots \beta_p X_p + \epsilon_j
-$$
-
-However when the number of predictors is greater than the number of samples
-(basically always true in genetics) it isn't possible to include everything!
-
-What happens if we try to fit a model here?
-
-```{r fitall, R.options=list(max.print=20)}
-fit <- lm(age ~ methyl_mat)
-summary(fit)
-```
-
-Since we can't do that mathematically, we have to find another way.
 
 # Best subset selection
+
+In the previous lesson, we covered a method of feature selection
+using regularisation. Here, we'll explore some alternative ways of selecting
+features for a regression model, instead using iterative changes to our model.
 
 Best subset selection is one way of finding a subset of features
 that can predict an outcome. This works by trying every possible subset
@@ -86,7 +49,8 @@ This works, but is really computationally demanding,
 because the number of possible combinations of features is actually 
 $2^{n - 1}$. This means that for $10$ features, we need to estimate
 $2^9=512$ models, and for $100$ features this already rises to 
-$2^99 \approx 6.3e29$. You can imagine that this becomes *very* slow quite quickly!
+$2^99 \approx 6.3\times 10^29$. You can imagine that this becomes *very*
+slow quite quickly!
 
 First, we'll try it with a small subset of the methylation data
 with only 10 features and 37 samples. Programming this by hand would be
@@ -95,6 +59,14 @@ to do it. They term it "exhaustive search" because we are exhausting every
 possible combination of features to find the best one.
 
 ```{r bestsub}
+library("here")
+library("minfi")
+methylation <- readRDS(here("data/methylation.rds"))
+
+## here, we transpose the matrix to have features as rows and samples as columns
+methyl_mat <- t(assay(methylation))
+age <- methylation$Age
+
 library("leaps")
 ## Take a small number of features
 small_methyl <- methyl_mat[, 1:10]
@@ -154,10 +126,11 @@ published [here](https://doi.org/10.1214/19-STS733).
 
 ## Prostate data
 
-Since we have many more features than observations in this 
-methylation data, we'll work with the `Prostate` dataset
-that's available in the `lasso2` package for this model selection lesson.
-Further, this data is actually better suited to this statistical approach than the methylation data.
+Since we have many more features than observations in the 
+methylation data from episode one, we'll instead work with the `Prostate`
+dataset that's available in the `lasso2` package for this model selection
+lesson. Further, this data is actually better suited to this statistical
+approach than the methylation data.
 Generally, best subset selection and similar approaches work really well 
 when you have a relatively low number of features with relatively strong 
 impact on the outcome, which is commonly not the case with methylation 
@@ -508,7 +481,7 @@ and AIC (Akaike information criterion).
 > 
 > Predictive performance on unseen data can be thought of a measure of how
 > well our findings *generalise*. This very important topic is 
-> addressed in much more detail in the Carpentries machine learning course.
+> addressed in much more detail in the Ed-DaSH machine learning course.
 > 
 {: .callout}
 
