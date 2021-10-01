@@ -6,20 +6,34 @@ author: "GS Robertson"
 teaching: 90
 exercises: 30
 questions:
-- What is principal component analysis and when can it be used?
-- What are principal components and loadings?
-- How many principal components are needed to explain a significant amount of variation in the data?
-- How to interpret output of PCA?
+- What is principal component analysis (PCA) and when can it be used?
+- How can we perform a PCA in R?
+- How many principal components are needed to explain a significant amount of
+  variation in the data?
+- How to interpret the output of PCA using loadings and principal components?
 objectives:
-- Perform a PCA on high-dimensional data
-- Select appropriate number of principal components
-- Interpret output of PCA
+- Identify situations where PCA can be used to answer research questions using
+  high-dimensional data.
+- Perform a PCA on high-dimensional data.
+- Select the appropriate number of principal components.
+- Interpret the output of PCA.
 keypoints:
-- A principal component analysis is a statisitcal approach used to reduce dimensionality in high-dimensional datasets (i.e. where *p* is equal or greater than *n*) 
-- PCA may be used to create a low-dimensional set of features from a larger set of variables. Examples of when a PCA may be useful include reducing high-dimensional datasets to fewer variables for use in a linear regression and for identifying  groups with similar features
-- PCA is a useful dimensionality reduction technique used in the analysis of complex biological datasets (e.g. high throughput data or genetics data)
-- The first principal component represents the dimension along which there is maximum variation in the data. Subsequent principal components represent dimensions with progressively less variation.  
-- Screeplots and biplots may be used to show i) how much variation in the data is explained by each principal component and ii) how data points cluster according to principal component scores and which variables are associated with these scores
+- A principal component analysis is a statistical approach used to reduce
+  dimensionality in high-dimensional datasets (i.e. where $p$ is equal or
+  greater than $n$).
+- PCA may be used to create a low-dimensional set of features from a larger set
+  of variables. Examples of when a PCA may be useful include reducing
+  high-dimensional datasets to fewer variables for use in a linear regression
+  and for identifying groups with similar features.
+- PCA is a useful dimensionality reduction technique used in the analysis of
+  complex biological datasets (e.g. high throughput data or genetics data).
+- The first principal component represents the dimension along which there is
+  maximum variation in the data. Subsequent principal components represent
+  dimensions with progressively less variation.
+- "Screeplots and biplots may be used to show:  
+  1. how much variation in the data is explained by each principal component and
+  2. how data points cluster according to principal component scores and which
+  variables are associated with these scores."
 math: yes
 ---
 
@@ -29,115 +43,201 @@ math: yes
 
 # Introduction
 
-Often researchers want to reduce dimensionality in high-dimensional datasets to look for relationships among variables, identify clusters among subgroups of data points and summarise the dataset using a smaller number of representative variables.
+Imagine a dataset which contains many variables ($p$), close to the total number
+of rows in the dataset ($n$). Some of these variables are highly correlated and
+several form groups which you might expect to represent the same overall effect.
+Such datasets are challenging to analyse for several reasons, with the main
+problem being how to reduce dimensionality in the dataset while retaining the
+important features. 
 
-Imagine a dataset which contains many variables (*p*), close to the total number of rows in the dataset (*n*). Some of these variables are highly correlated and several form groups which you might expect to represent the same overall effect. Such datasets are challenging to analyse for several reasons, with the main problem being how to reduce dimensionality in the dataset while retaining the important features.
+In this episode we will explore **principal component analysis (PCA)** as a
+popular method of analysing high-dimensional data. PCA is an unsupervised
+statistical method which allows large datasets of correlated variables to be
+summarised into smaller numbers of uncorrelated principal components that
+explain most of the variability in the original dataset. This is useful,
+for example, during initial data exploration as it allows correlations among
+data points to be observed and principal components to be calculated for
+inclusion in further analysis (e.g. linear regression). An example of PCA might
+be reducing several variables representing aspects of patient health
+(blood pressure, heart rate, respiratory rate) into a single feature.
 
-In this episode we will explore **principal component analysis (PCA)** as a popular method of analysing high-dimensional data. PCA is an unsupervised statistical method which allows large datasets of correlated variables to be summarised into smaller numbers of uncorrelated principal components that explain most of the variability in the original dataset. This is useful, for example, during initial data exploration as it allows correlations among data points to be observed and principal components to be calculated for inclusion in further analysis (e.g. linear regression). An example of PCA might be reducing several variables representing aspects of patient health (blood pressure, heart rate, respiratory rate) into a single feature.
+The principal components are single variables that are calculated using a
+linear combination of the variables from the original dataset
+(e.g. the clinical variables mentioned in the above example). Many principal
+components are calculated, each representing different combinations of variables
+from the original dataset. Principal component scores for each principal
+component are calculated for each data point in the original dataset. The
+contributions that original variables make to the calculation of principal 
+components are represented in *principal component loadings*.  
 
-The principal components are single variables which are calculated using a linear combination of several variables from the original dataset (e.g. the clinical variables mentioned in the above example). Many principal components are calculated, each representing different combinations of variables from the original dataset. Principal component scores for each principal component are calculated for each data point in the original dataset. The contribution original variables make to the calculation of principal components is represented in *principal component loadings*.  
-
-PCA is a useful exploratory analysis tool. While plotting each variable against the other may help when exploring correlations between variables, when *p* is large the number of plots needed to examine the data this way quickly become unfeasible, and the amount of total variation in the data represented in each plot is small. PCA allows us to reduce a large number of variables into a few features which represent most of the variation in the original variables. This makes exploration of the original variables easier, although results of PCA require some interpretation first. Graphical tools are available which help us to understand the output of the PCA. 
+PCA is a useful exploratory analysis tool. While plotting each variable against
+the other may help when exploring correlations between variables, when $p$ is
+large the number of plots needed to examine the data in this way quickly become
+unfeasible, and the amount of total variation in the data represented in each
+plot is small. PCA allows us to reduce a large number of variables into a few
+features which represent most of the variation in the original variables. This
+makes exploration of the original variables easier, although results of PCA
+require some interpretation first. Graphical tools are available which help us
+to understand the output of the PCA. 
 
 
 # Advantages and disadvantages of PCA
 
 Advantages:
-* It is a relatively easy to use and population method. 
+* It is a relatively easy to use and popular method. 
 * Various software/packages are available to run a PCA.
-* The calculations used in a PCA are easy to understand for statisticians and non-statisticians alike.
+* The calculations used in a PCA are easy to understand for statisticians and
+  non-statisticians alike.
 
-The first principal component is calculated using the equation:
-$$Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p$$
+The first principal component ($Z_1$) is calculated using the equation:
 
-$X_1...X_p$ represents variables in the original dataset and $a_{11}...a_p$ represent principal component loadings, which can be thought of as the degree to which each variable contributes to the calculation of the principal component.
+$$  
+  Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p
+$$
 
-PCA does have some limitations: 
-* It assumes that variables in a dataset are correlated 
-* It is sensitive to the scale at which input variables are measured (hence the need for standardisation). If input variables a measured at different scales, loadings will be largest for variables with greatest variance which is related to scales of measurement 
-* It is not robust against outliers, meaning that very large or small data points can have a large effect on the output of the PCA 
-* PCA assumes a linear relationship between variables which is not always a realistic assumption
-* It can be difficult to interpret the meaning of the principal components, especially when including them in further analysis (e.g. inclusion in a linear regression).
+$X_1...X_p$ represents variables in the original dataset and $a_{11}...a_p$
+represent principal component loadings, which can be thought of as the degree to
+which each variable contributes to the calculation of the principal component.
+
+Disadvantages:
+* It assumes that variables in a dataset are correlated.
+* It is sensitive to the scale at which input variables are measured.
+  If input variables are measured at different scales, loadings will be largest
+  for the variables with the greatest variance. This means that variables
+  with large variance relative to the scale of measurement will have
+  greater impact on the principal components relative to variables with smaller
+  variance. In many cases, this is not desirable.
+* It is not robust against outliers, meaning that very large or small data
+  points can have a large effect on the output of the PCA.
+* PCA assumes a linear relationship between variables which is not always a
+  realistic assumption.
+* It can be difficult to interpret the meaning of the principal components,
+  especially when including them in further analyses (e.g. inclusion in a linear
+  regression).
 
 
 > ## Supervised vs unsupervised learning
-> Most statistical problems fall into one of two categories: supervised or unsupervised learning. 
-> Examples of supervised learning problems include linear regression and include analyses in which each observation has both at least one independent variables ($x$) 
-> as well as a dependent variable ($y$). In supervised learning problems the aim is to predict the value of the response given future observations or to understand 
-> the relationship between the dependent variable and the predictors. In unsupervised learning for each observation there is no dependent variable ($y$), but only 
-> a series of independent variables. In this situation there is no need for prediction, as there is no dependent variable to predict (hence the analysis can be thought 
-> as being unsupervised by the dependent variable). Instead statistical analysis can be used to understand relationships between the independent variables or between
-> observations themselves. Unsupervised learning problems often occur when analysing high-dimensional datasets in which there is no obvious dependent variable to be
-> predicted, but the analyst would like to understand more about patterns between groups of observations or reduce dimensionality so that a supervised learning process 
-> may be used.
+> Most statistical problems fall into one of two categories: supervised or
+> unsupervised learning. 
+> Examples of supervised learning problems include linear regression and include
+> analyses in which each observation has both at least one independent variable
+> ($x$) as well as a dependent variable ($y$). In supervised learning problems
+> the aim is to predict the value of the response given future observations or
+> to understand the relationship between the dependent variable and the
+> predictors. In unsupervised learning for each observation there is no
+> dependent variable ($y$), but only 
+> a series of independent variables. In this situation there is no need for
+> prediction, as there is no dependent variable to predict (hence the analysis
+> can be thought as being unsupervised by the dependent variable). Instead
+> statistical analysis can be used to understand relationships between the
+> independent variables or between observations themselves. Unsupervised
+> learning problems often occur when analysing high-dimensional datasets in
+> which there is no obvious dependent variable to be
+> predicted, but the analyst would like to understand more about patterns
+> between groups of observations or reduce dimensionality so that a supervised
+> learning process may be used.
 {: .callout}
 
 
 > ## Challenge 1 
 > 
-> Descriptions of three datasets and research questions are given below. For which of these might PCA be considered a useful tool for analysing data so that the research questions may be addressed?
+> Descriptions of three datasets and research questions are given below. For
+> which of these might PCA be considered a useful tool for analysing data so
+> that the research questions may be addressed?
 > 
-> A. An epidemiologist has data collected from different patients admitted to hospital with infectious respiratory disease. They would like to determine whether length of stay in hospital differs in patients with different respiratory diseases.
-> B. An online retailer has collected data on user interactions with its online app and has information on the number of times each user interacted with the app, what products they viewed per interaction, and the type and cost of these products. The retailer would like to use this information to predict whether or not a user will be interested in a new product.
-> C. A scientist has assayed gene expression levels in 1000 cancer patients and has data from probes targeting different genes in tumour samples from patients. She would like to create new variables representing relative abundance of different groups of genes to i) find out if genes form subgroups based on biological function and ii) use these new variables in a linear regression examining how gene expression varies with disease severity.
-> D. All of the above
+> 1. An epidemiologist has data collected from different patients admitted to
+>    hospital with infectious respiratory disease. They would like to determine
+>    whether length of stay in hospital differs in patients with different
+>    respiratory diseases.
+> 2. An online retailer has collected data on user interactions with its online
+>    app and has information on the number of times each user interacted with
+>    the app, what products they viewed per interaction, and the type and cost
+>    of these products. The retailer would like to use this information to
+>    predict whether or not a user will be interested in a new product.
+> 3. A scientist has assayed gene expression levels in 1000 cancer patients and
+>    has data from probes targeting different genes in tumour samples from
+>    patients. She would like to create new variables representing relative
+>    abundance of different groups of genes to i) find out if genes form
+>    subgroups based on biological function and ii) use these new variables
+>    in a linear regression examining how gene expression varies with disease
+>    severity.
+> 4. All of the above.
 > 
-> > Solution:
+> > ## Solution
 > > 
-> > C
+> > 3
 > {: .solution}
 {: .challenge}
 
 
-A PCA is carried out by calculating a matrix of Pearson's correlations from the original dataset which shows how each of the variables in the dataset relate to each other. This matrix can then be broken down so that the direction and magnitude of the data can be observed (i.e. how strongly variables are related and the direction of this relationship).
+# What is a principal component?
 
-The first principal component is the direction of the data along which the observations vary the most. The second principal component is the direction of the data along which the observations show the next highest amount of variation. For example, Figure 1 shows biodiversity index versus percentage area left fallow for 50 farms in southern England. The red line represents the first principal component direction of the data, which is the direction along which there is greatest variability in the data. Projecting points onto this line (i.e. by finding the location on the line closest to the point) would give a vector of points with the greatest possible variance. The next highest amount of variability in the data is represented by the line perpendicular to first regression line which represents the second principal component (green line).
+
+
+
+The first principal component is the direction of the data along which the
+observations vary the most. The second principal component is the direction of
+the data along which the observations show the next highest amount of variation.
+For example, Figure 1 shows biodiversity index versus percentage area left
+fallow for 50 farms in southern England. The red line represents the first
+principal component direction of the data, which is the direction along which
+there is greatest variability in the data. Projecting points onto this line
+(i.e. by finding the location on the line closest to the point) would give a
+vector of points with the greatest possible variance. The next highest amount
+of variability in the data is represented by the line perpendicular to first
+regression line which represents the second principal component (green line).
+
+The second principal component is a linear combination of the variables that
+is uncorrelated with the first principal component. There are as many principal
+components as there are variables in your dataset, but as we'll see, some are
+more useful at explaining your data than others. By definition, the first
+principal component explains more variation than other principal components.
 
 <img src="../fig/bio_index_vs_percentage_fallow.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
-The principal component score for the first principal component is calculated using the equation:
-$$Z_{i1} = a_1 \times (fallow_i - \overline{fallow}) + a_2 \times (bio index_i - \overline{bio index})$$
-
-$a_1$ and $a_2$ represent principal component loadings in this equation. A loading can be thought of as the 'weight' each variable has on the calculation of the principal component. 
-
-The second principal component is a linear combination of the variables that is uncorrelated with the first principal component. There are as many principal components as there are variables in your dataset, but as we'll see, some are more useful at explaining your data than others. By definition, the first principal component explains more variation than other principal components.
-
-If it helps, you can imagine that the long black line is a rod and each red dashed line is a spring. The energy of each spring is proportional to its squared length. The direction of the first principal component is the one that minimises the total energy of all of the springs. In the animation below,
-the springs pull the rod, finding the direction of the first principal component when they reach equilibrium. We then use the length of the springs from the rod as the first principal component.
+The animation below illustrates how principal components are calculated from
+data. You can imagine that the black line is a rod and each red dashed line is
+a spring. The energy of each spring is proportional to its squared length. The
+direction of the first principal component is the one that minimises the total
+energy of all of the springs. In the animation below, the springs pull the rod,
+finding the direction of the first principal component when they reach
+equilibrium. We then use the length of the springs from the rod as the first
+principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
 <img src="../fig/pendulum.gif" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
-> ## Challenge 2
-> 
-> 
-> Why might it be necessary to standardise variables before performing a PCA?  
-> Can you think of datasets where it might not be necessary to standardise variables? Discuss.
-> 
-> A. To make the results of the PCA interesting
-> B. To ensure that variables with different ranges of values contributes equally to analysis
-> C. To allow the feature matrix to be calculated faster, especially in cases where there are a lot of input variables
-> D. To allow both continuous and categorical variables to be included in the PCA
-> E. All of the above
-> 
-> > Solution
-> > 
-> > B
-> > Datasets which contain continuous variables all measured on the same scale (e.g. gene expression data or RNA sequencing data). 
-> {: .solution}
-{: .challenge}
+# How do we perform a PCA?
 
+## Introducing a dataset with information about prostate cancer patients
 
+The `Prostate` dataset is freely available online and represents data from 97
+men who have prostate cancer. The data come from a study which examined the
+correlation between the level of prostate specific antigen and a number of
+clinical measures in men who were about to receive a radical prostatectomy.
+The data have 97 rows and 9 columns.
 
-# Example of PCA using data
+Columns include:
+- `lcavol` (log-transformed cancer volume),
+- `lweight` (log-transformed prostate weight),
+- `lbph` (log-transformed amount of benign prostate enlargement),
+- `svi` (seminal vesicle invasion),
+- `lcp` (log-transformed capsular penetration; amount of spread of cancer in
+   outer walls of prostate),
+- `gleason` (Gleason score; grade of cancer cells),
+- `pgg45` (percentage Gleason scores 4 or 5),
+- `lpsa` (log-tranformed prostate specific antigen; level of PSA in blood).
+- `age` (patient age in years).
 
-The prostate dataset is freely available online and represents data from 97 men who have prostate cancer. The data come from a study which examined the correlation between the level of prostate specific antigen and a number of clinical measures in men who were about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
+Here we will calculate principal component scores for each of the rows in this
+dataset, using five principal components (one for each variable included in the
+PCA). We will include five clinical variables in our PCA, each of the continuous
+variables in the prostate dataset, so that we can create fewer variables
+representing clinical markers of cancer progression. Standard PCAs are carried
+out using continuous variables only.
 
-Columns include lcavol (log-transformed cancer volume), lweight (log-transformed prostate weight), lbph (log-transformed amount of benign prostate enlargement), svi (seminal vesicle invasion), lcp (log capsular penetration; amount of spread of cancer in outer walls of prostate), gleason (Gleason score; grade of cancer cells), pgg45 (percentage Gleason scores 4 or 5), lpsa (log prostate specific antigen; level of PSA in blood). Patient age (in years) is also available in this dataset.   
-Here we will calculate principal component scores for each of the rows in this dataset, using five principal components (one for each variable included in the PCA). We will include five clinical variables in our PCA, each of the continuous variables in the prostate dataset, so that we can create fewer variables representing clinical markers of cancer progression. 
-
-First, we will examine the prostate dataset which can be downloaded as part of the lasso2 package
-
+First, we will examine the `Prostate` dataset which can be downloaded as part
+of the `lasso2` package:
 
 
 ~~~
@@ -145,26 +245,6 @@ library(lasso2)
 data(Prostate)
 ~~~
 {: .language-r}
-
-
-~~~
-View(Prostate)
-~~~
-{: .language-r}
-
-
-~~~
-nrow(Prostate)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] 97
-~~~
-{: .output}
-
 
 
 ~~~
@@ -187,7 +267,8 @@ head(Prostate)
 
 Note that each row of the dataset represents a single patient.
 
-We will create a subset of the data including only clinical variables we want to use in the PCA.
+We will create a subset of the data including only the clinical variables we
+want to use in the PCA.
 
 
 ~~~
@@ -209,7 +290,9 @@ head(pros2)
 ~~~
 {: .output}
 
-Compare the variances between variables in the dataset.
+## Do we need to standardise the data?
+
+Now we compare the variances between variables in the dataset.
 
 
 ~~~
@@ -228,41 +311,82 @@ apply(pros2, 2, var)
 
 
 ~~~
-hist(pros2$lweight)
+par(mfrow = c(1, 2))
+hist(pros2$lweight, breaks = "FD")
+hist(pros2$lbph, breaks = "FD")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-8-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-var-hist-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-~~~
-hist(pros2$lbph)
-~~~
-{: .language-r}
+Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
+from this output that we need to scale each of these variables before including
+them in a PCA analysis to ensure that differences in variances between variables
+do not drive the calculation of principal components. In this example we
+standardise all five variables to have a mean of 0 and a standard
+deviation of 1. 
 
-<img src="../fig/rmd-05-unnamed-chunk-8-2.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-Note that variance is greatest for lbph and lowest for lweight. It is clear from this output that we need to scale each of these variables before including them in a PCA analysis to ensure that differences in variances between variables do not drive the calculation of principal components. In this example we standardise all five variables to have a mean of 0 and a standard deviation of 1. We can do this inside the `prcomp` function in R, which carries out a PCA with centred (around mean = 0) and standardised variables (with a standard deviation of 1). The `prcomp` function carries out a PCA on the input dataset (where the input data are in the form of a matrix).
+> ## Challenge 2
+> 
+> 
+> Why might it be necessary to standardise variables before performing a PCA?  
+> Can you think of datasets where it might not be necessary to standardise
+> variables?
+> Discuss.
+> 
+> 1. To make the results of the PCA interesting.
+> 2. To ensure that variables with different ranges of values contribute
+>    equally to analysis.
+> 3. To allow the feature matrix to be calculated faster, especially in cases
+>    where there are a lot of input variables.
+> 4. To allow both continuous and categorical variables to be included in the PCA.
+> 5. All of the above.
+> 
+> > ## Solution
+> > 
+> > 2
+> > 
+> > Datasets which contain continuous variables all measured on the same scale
+> > (e.g. gene expression data or RNA sequencing data). 
+> {: .solution}
+{: .challenge}
 
-Next we will carry out a PCA using the `prcomp` function in base R. Note that the scale = TRUE argument is used to standardise the variables to have a mean 0 and standard deviation of 1.
+Next we will carry out a PCA using the `prcomp` function in base R. The input
+data (`pros2`) is in the form of a matrix. Note that the `scale = TRUE` argument
+is used to standardise the variables to have a mean 0 and standard deviation of
+1.
 
 
 ~~~
 pca.pros <- prcomp(pros2, scale = TRUE, center = TRUE)
-
-sum(pca.pros$rotation[, 1]^2)
+pca.pros
 ~~~
 {: .language-r}
 
 
 
 ~~~
-[1] 1
+Standard deviations (1, .., p=5):
+[1] 1.5648756 1.1684678 0.7452990 0.6362941 0.4748755
+
+Rotation (n x k) = (5 x 5):
+              PC1         PC2         PC3         PC4         PC5
+lcavol  0.5616465 -0.23664270  0.01486043 -0.22708502  0.75945046
+lweight 0.2985223  0.60174151 -0.66320198  0.32126853  0.07577123
+lbph    0.1681278  0.69638466  0.69313753 -0.04517286  0.06558369
+lcp     0.4962203 -0.31092357  0.26309227  0.72394666 -0.25253840
+lpsa    0.5665123 -0.01680231 -0.10141557 -0.56487128 -0.59111493
 ~~~
 {: .output}
 
-The output from the PCA returns:
-* Standard deviations of each principal component (i.e. the square roots of the eigenvalues of the covariance/correlation matrix as stated in the `prcomp` helpfile). In this example there are 5 principal components (one for each variable in the dataset).
-* The matrix of principal component loadings in which the columns show the principal component loading vectors. Note that the square of values in each column sums to 1 as each loading is scaled so as to prevent a blow up in variance. Larger values in the columns suggest a greater contribution of that variable to the principal component.
+# How many principal components do we need?
+
+We have calculated one principal component for each variable in the original
+dataset. How do we choose how many of these are necessary to represent the true
+variation in the data, without having extra components that are unnecessary?
+
+Let's look at the relative importance of each component using `summary`.
 
 
 ~~~
@@ -281,14 +405,17 @@ Cumulative Proportion  0.4898 0.7628 0.8739 0.95490 1.0000
 ~~~
 {: .output}
 
-This returns the proportion of variance in the data explained by each of the (p = 5) principal components. In this example PC1 explains approximately 51% of variance in the data, PC2 26% of variance, PC3 a further 11%, PC4 approximately 8% and PC5 around 5%.
+This returns the proportion of variance in the data explained by each of the
+(p = 5) principal components. In this example, PC1 explains approximately 51%
+of variance in the data, PC2 26% of variance, PC3 a further 11%, PC4
+approximately 8% and PC5 around 5%.
 
-We can use a screeplot to see how much variation in the data is explained by each principal component.
-
+We can use a screeplot to see how much variation in the data is explained by
+each principal component. Let's calculate the screeplot for our PCA.
 
 
 ~~~
-#variance explained
+#calculate variance explained
 varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 #calculate percentage variance explained using output from the PCA
 varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
@@ -302,11 +429,70 @@ plot(varDF)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-12-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-vardf-plot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-The screeplot shows that the first principal component explains most of the variance in the data (>50%) and each subsequent principal component explains less and less of the total variance. The first two principal components explain >70% of variance in the data. But what do these two principal components mean?
+The screeplot shows that the first principal component explains most of the
+variance in the data (>50%) and each subsequent principal component explains
+less and less of the total variance. The first two principal components
+explain >70% of variance in the data. But what do these two principal
+components mean?
 
-We can better understand what the principal components represent in terms of the original variables by plotting the first two principal components against each other and labelling points by patient number. Clusters of points which have similar principal component scores can be observed using a biplot and the strength and direction of influence different variables have on the calculation of the principal component scores can be observed by plotting arrows representing the loadings onto the graph.
+
+## What are loadings and principal component scores?
+
+The output from a PCA returns a matrix of principal component loadings in which
+the columns show the principal component loading vectors. Note that the square
+of values in each column sums to 1 as each loading is scaled so as to prevent a
+blow up in variance. Larger values in the columns suggest a greater contribution
+of that variable to the principal component. 
+
+We can examine the output of our PCA by writing the following in `R`:
+
+
+~~~
+pca.pros
+~~~
+{: .language-r}
+
+
+
+~~~
+Standard deviations (1, .., p=5):
+[1] 1.5648756 1.1684678 0.7452990 0.6362941 0.4748755
+
+Rotation (n x k) = (5 x 5):
+              PC1         PC2         PC3         PC4         PC5
+lcavol  0.5616465 -0.23664270  0.01486043 -0.22708502  0.75945046
+lweight 0.2985223  0.60174151 -0.66320198  0.32126853  0.07577123
+lbph    0.1681278  0.69638466  0.69313753 -0.04517286  0.06558369
+lcp     0.4962203 -0.31092357  0.26309227  0.72394666 -0.25253840
+lpsa    0.5665123 -0.01680231 -0.10141557 -0.56487128 -0.59111493
+~~~
+{: .output}
+
+For each row in the original dataset PCA returns a principal component score
+for each of the principal components (PC1 to PC5 in the `Prostate` data example).
+We can see how the principal component score ($Z_{i1}$ for rows $i$ to $n$) is
+calculated for the first principal component using the following equation from
+Figure 1:
+
+$$
+  Z_{i1} = a_1 \times (fallow_i - \overline{fallow}) + a_2 \times (bio index_i - \overline{bio index})
+$$
+
+$a_1$ and $a_2$ represent principal component loadings in this equation.
+A loading can be thought of as the 'weight' each variable has on the calculation
+of the principal component. Note that in our example using the `Prostate`
+dataset `lcavol` and `lpsa` are the variables that contribute most to the first
+principal component.
+
+We can better understand what the principal components represent in terms of
+the original variables by plotting the first two principal components against
+each other and labelling points by patient number. Clusters of points which
+have similar principal component scores can be observed using a biplot and the
+strength and direction of influence different variables have on the calculation
+of the principal component scores can be observed by plotting arrows
+representing the loadings onto the graph.
 A biplot of the first two principal components can be created as follows:
 
 
@@ -315,25 +501,38 @@ stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-13-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-This biplot shows the position of each patient on a 2-dimensional plot where weight of loadings can be observed via the red arrows associated with each of the variables. The variables lpsa, lcavol and lcp are associated with positive values on PC1 while positive values on PC2 are associated with the variables lbph and lweight. The length of the arrows indicates how much each variable contributes to the calculation of each principal component.   
+<img src="../fig/rmd-05-stats-biplot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-The left and bottom axes show normalised principal component scores. The axes on the top and right of the plot are used to interpret the loadings, where loadings are scaled by the standard deviation of the principal components (`pca.pros$sdev`) times square root the number of observations. 
+This biplot shows the position of each patient on a 2-dimensional plot where
+loadings can be observed via the red arrows associated with each of
+the variables. The variables `lpsa`, `lcavol` and `lcp` are associated with
+positive values on PC1 while positive values on PC2 are associated with the
+variables `lbph` and `lweight`. The length of the arrows indicates how much
+each variable contributes to the calculation of each principal component.
+
+The left and bottom axes show normalised principal component scores. The axes
+on the top and right of the plot are used to interpret the loadings, where
+loadings are scaled by the standard deviation of the principal components
+(`pca.pros$sdev`) times the square root the number of observations.
 
 
-# Making use of different PCA packages for analysing biological data
+# Using PCA to analyse gene expression data 
 
-We will now examine a more complex high-dimensional dataset using the Bioconductor package PCAtools.
+In this section you will carry out your own PCA using the `PCAtools` package
+applied to gene expression data to explore the topics covered above. 
+`PCAtools` provides functions that can be used to explore data via PCA and
+produce useful figures and analysis tools.
 
-PCAtools provides functions for data exploration using PCA and allows the user to produce high quality figures. Functions to apply different methods for choosing appropriate numbers of principal components are available. This PCA package is designed specifically for the analysis of high-dimensional biological data.
-
-We are going to use PCAtools to explore some gene expression microarray data downloaded from the Gene Expression Omnibus (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990). To compare samples (e.g. those taken from patients with different cancer grades) a microarray analysis can be performed which compares genes expressed in two hybridised samples. The data collected using microarray analysis can be used to create gene expression profiles, which show simultaneous changes in the expression of many genes in response to a particular condition or treatment. The expression of thousands of genes in a sample can be assessed in this way.
+## Introducing a dataset of gene expression measurements for cancer patients
 
 The dataset we will be analysing in this lesson includes two subsets of data: 
-* a matrix of gene expression data showing microarray results for different probes used to examine gene expression profiles in 91 different breast cancer patient samples.
-* metadata associated with the gene expression results detailing information from patients from whom samples were taken.
+* a matrix of gene expression data showing microarray results for different
+  probes used to examine gene expression profiles in 91 different breast
+  cancer patient samples.
+* metadata associated with the gene expression results detailing information
+  from patients from whom samples were taken.
 
-To start our analysis we will load the PCAtools package from BioConductor. PCAtools provides functions that can be used to explore data via PCA and produce useful figures and analysis tools.
+Let's load the `PCAtools` package and the data.
 
 
 ~~~
@@ -341,7 +540,9 @@ library("PCAtools")
 ~~~
 {: .language-r}
 
-We will now load the microarray breast cancer gene expression data (and associated metadata) downloaded from the Gene Expression Omnibus (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990).
+We will first load the microarray breast cancer gene expression data and
+associated metadata, downloaded from the
+[Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990).
 
 
 ~~~
@@ -363,13 +564,13 @@ View(mat)
 
 ~~~
 View(metadata)
+#nrow=91
+#ncol=8
 ~~~
 {: .language-r}
 
 
 ~~~
-#nrow=91
-#ncol=8
 all(colnames(mat) == rownames(metadata))
 ~~~
 {: .language-r}
@@ -389,22 +590,55 @@ all(colnames(mat) == rownames(metadata))
 ~~~
 {: .language-r}
 
-The 'mat' dataset contains a matrix of gene expression profiles for each sample. Rows represent gene expression variables (as tested for using probes) and columns represent samples. The 'metadata' dataset contains the metadata associated with the gene expression data including the name of the study from which data originate, the age of the patient from which the sample was taken, whether or not an oestrogen receptor was involved in their cancer and the grade and size of the cancer for each sample (represented by rows).
 
-Microarray data are difficult to analyse for several reasons. Firstly, that they are typically high-dimensional and therefore are subject to the same difficulties associated with analysing high dimensional data outlined above (i.e. *p*>*n*, large numbers of rows, multiple possible response variables, curse of dimensionality). Secondly, formulating a research question using microarray data can be difficult, especially if not much is known a priori about which genes code for particular phenotypes of interest. Finally, exploratory analysis, which can be used to help formulate research questions and display relationships, is difficult using microarray data due to the number of potentially interesting response variables (i.e. expression data from probes targeting different genes).
+The 'mat' variable contains a matrix of gene expression profiles for each sample.
+Rows represent gene expression measurements and columns represent samples. The
+'metadata' variable contains the metadata associated with the gene expression
+data including the name of the study from which data originate, the age of the
+patient from which the sample was taken, whether or not an oestrogen receptor
+was involved in their cancer and the grade and size of the cancer for each
+sample (represented by rows).
 
-If researchers hypothesise that groups of genes may be associated with different phenotypic characteristics of cancers (e.g. histologic grade, tumour size), using statistical methods that reduce the number of columns in the microarray matrix to a smaller number of dimensions representing groups of genes would help visualise the data and address research questions regarding the effect different groups of genes have on disease progression.
+Microarray data are difficult to analyse for several reasons. Firstly, 
+they are typically high-dimensional and therefore are subject to the same
+difficulties associated with analysing high dimensional data outlined above
+(i.e. *p*>*n*, large numbers of rows, multiple possible response variables,
+curse of dimensionality). Secondly, formulating a research question using
+microarray data can be difficult, especially if not much is known a priori
+about which genes code for particular phenotypes of interest. Finally,
+exploratory analysis, which can be used to help formulate research questions
+and display relationships, is difficult using microarray data due to the number
+of potentially interesting response variables (i.e. expression data from probes
+targeting different genes).
 
-Using the Bioconductor package PCAtools we will apply a PCA to the cancer gene expression data, plot the amount of variation in the data explained by each principal component and plot the most important principal components against each other as well as understanding what each principal component represents.
+If researchers hypothesise that groups of genes (e.g. biological pathways) may
+be associated with different phenotypic characteristics of cancers (e.g.
+histologic grade, tumour size), using statistical methods that reduce the
+number of columns in the microarray matrix to a smaller number of dimensions
+representing groups of genes would help visualise the data and address
+research questions regarding the effect different groups of genes have on
+disease progression.
+
+Using the Bioconductor package `PCAtools` we will apply a PCA to the cancer
+gene expression data, plot the amount of variation in the data explained by
+each principal component and plot the most important principal components
+against each other as well as understanding what each principal component
+represents.
 
 
 > ## Challenge 3
 > 
-> Apply a PCA to the cancer gene expression data using the `pca` function from PCAtools. You can use the help files in PCAtools to find out about the `pca` function 
-> (type `?pca` in R). Remove the lower 20% of principal components from your PCA using the `removeVar` argument in the `pca` function. 
-> As in the example using prostate data above, examine the first 5 rows and columns of rotated data and loadings from your PCA.
+> Apply a PCA to the cancer gene expression data using the `pca` function from
+> PCAtools. You can use the help files in PCAtools to find out about the `pca`
+> function (type `help("pca")` or `?pca` in R).
 > 
-> > Solution:
+> Remove the lower 20% of principal components
+> from your PCA using the `removeVar` argument in the `pca` function.
+> 
+> As in the example using prostate data above, examine the first 5 rows and
+> columns of rotated data and loadings from your PCA.
+> 
+> > ## Solution
 > > 
 > > 
 > > ~~~
@@ -528,23 +762,49 @@ Using the Bioconductor package PCAtools we will apply a PCA to the cancer gene e
 > > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 -0.02164521
 > > ~~~
 > > {: .output}
+> > The function `pca` is used to perform PCA, and uses as inputs a matrix
+> > (`mat`) containing continuous numerical data
+> > in which rows are data variables and columns are samples, and `metadata`
+> > associated with the matrix in which rows represent samples and columns
+> > represent data variables. It has options to centre or scale the input data
+> > before a PCA is performed, although in this case gene expression data do
+> > not need to be transformed prior to PCA being carried out as variables are
+> > measured on a similar scale (values are comparable between rows). The output
+> > of the `pca` function includes a lot of information such as loading values
+> > for each variable (`loadings`), principal component scores (`rotated`)
+> > and the amount of variance in the data
+> > explained by each principal component.
+> > 
+> > Rotated data shows principal
+> > component scores for each sample and each principal component. Loadings
+> > the contribution each variable makes to each principal component. 
 > {: .solution}
 {: .challenge}
 
+## Choosing how many components are important to explain the variance in the data
 
-This function is used to carry out a PCA in PCAtools and uses as inputs a matrix containing continuous numerical data in which rows are data variables and columns are samples, and metadata associated with the matrix in which rows represent samples and columns represent data variables. The `pca` function has options to centre or scale the input data before a PCA is performed, although in this case gene expression data do not need to be transformed prior to PCA being carried out as variables are measured on a similar scale (values are comparable between rows). The output of the `pca` function includes a lot of information such as loading values for each variable (probe), principal components and amount of variance explained by each principal component.
+As in the example using the `Prostate` dataset we can use a screeplot to
+compare the proportion of variance in the data explained by each principal
+component. This allows us to understand how much information in the microarray
+dataset is lost by projecting the observations onto the first few principal
+components and whether these principal components represent a reasonable
+amount of the variation. The proportion of variance explained should sum to one.
 
-Rotated data shows principal component scores for each sample and each principal component. Loadings show principal component loading (or weight) each probe makes to each principal component. 
-
-As in the example using the prostate dataset we can use a screeplot to compare the proportion of variance in the data explained by each principal component. This allows us to understand how much information in the microarray dataset is lost by projecting the observations onto the first few principal components and whether these principal components represent a reasonable amount of the variation. The proportion of variance explained should sum to one.
-
+There are no clear guidelines on how many principal components should be
+included in PCA: your choice depends on the total variability of the data and
+the size of the dataset. We often look at the 'elbow’ on the screeplot as an
+indicator that the addition of principal components does not drastically
+contribute to explain the remaining variance or choose an arbitory cut off for
+proportion of variance explained.
 
 > ## Challenge 4
 > 
+> Using the screeplot function in `PCAtools`, create a screeplot to show 
+> proportion of variance explained by each principal component. Explain the
+> output of the screeplot in terms of proportion of variance in data explained
+> by each principal component.
 > 
-> Using the screeplot function in PCAtools, create a screeplot to show proportion of variance explained by each principal component. Explain the output of the screeplot in terms of proportion of variance in data explained by each principal component.
-> 
-> > Solution:
+> > ## Solution
 > > 
 > > 
 > > ~~~
@@ -552,25 +812,43 @@ As in the example using the prostate dataset we can use a screeplot to compare t
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-unnamed-chunk-20-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-scree-ex-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > Note that first principal component (PC1) explains more variation than
+> > other principal components (which is always the case in PCA). The screeplot
+> > shows that the first principal component only explains ~33% of the total
+> > variation in the micrarray data and many principal components explain very 
+> > little variation. The red line shows the cumulative percentage of explained
+> > variation with increasing principal components. Note that in this case 18
+> > principal components are needed to explain over 75% of variation in the
+> > data. This is not an unusual result for complex biological datasets
+> > including genetic information as clear relationships between groups are
+> > sometimes difficult to observe in the data. The screeplot shows that using
+> > a PCA we have reduced 91 predictors to 18 in order to explain a significant
+> > amount of variation in the data. See additional arguments in screeplot
+> > function for improving the appearance of the plot.
 > {: .solution}
 {: .challenge}
 
-Note that first principal component (PC1) explains more variation than other principal components (which is always the case in PCA). The screeplot shows that the first principal component only explains ~33% of the total variation in the micrarray data and many principal components explain very little variation. The red line shows the cumulative percentage of explained variation with increasing principal components. Note that in this case 18 principal components are needed to explain over 75% of variation in the data. This is not an unusual result for complex biological datasets including genetic information as clear relationships between groups is sometimes difficult to observe in the data. The screeplot shows that using a PCA we have reduced 91 predictors to 18 in order to explain a significant amount of variation in the data. See additional arguments in screeplot function for improving the appearance of the plot.
+## Investigating the principal components 
 
-There are no clear guidelines on how many principal components should be included in PCA: your choice depends on the total variability of the data and the size of the dataset. We often look at the 'elbow’ on the screeplot above as an indicator that the addition of principal components does not drastically contribute to explain the remaining variance or choose an arbitory cut off for proportion of variance explained.
+Once the most important principal components have been identified using the
+screeplot, these can be explored in more detail by plotting principal components
+against each other and highlighting points based on variables in the metadata.
+This will allow any potential clustering of points according to demographic or
+phenotypic variables to be seen.
 
-Once the most important principal components have been identified using the screeplot, these can be explored in more detail by plotting principal components against each other and highlighting points based on variables in the metadata. This will allow any potential clustering of points according to demographic or phenotypic variables to be seen.
-
-We can use these plots, called biplots, to look for patterns in the output from the PCA. 
+We can use biplots to look for patterns in the output from the PCA. Note that
+PCAtools does not scale biplot in the same way as biplot using the stats
+package.
 
 
 > ## Challenge 5
 > 
-> Create a biplot of the first two principal components from your PCA (using `biplot` function in PCAtools - see helpfile for arguments) 
-> and determine whether samples cluster based on variables in metadata. Explain you results.
+> Create a biplot of the first two principal components from your PCA
+> (using `biplot` function in PCAtools - see `help("biplot")` for arguments) 
+> and examine whether the data appear to form clusters. Explain your results.
 > 
-> > Solution:
+> > ## Solution
 > > 
 > > 
 > > ~~~
@@ -578,19 +856,18 @@ We can use these plots, called biplots, to look for patterns in the output from 
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-unnamed-chunk-21-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-> > 
-> > ~~~
-> > #Find genes associated with probe labels on loadings
-> > #This may be included as part of the challenge?
-> > ~~~
-> > {: .language-r}
+> > <img src="../fig/rmd-05-biplot-ex-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > The biplot shows the position of patient samples relative to PC1 and PC2
+> > in a 2-dimensional plot. Note that two groups are apparent along the PC1
+> > axis according to expressions of different genes while no separation can be
+> > seem along the PC2 axis. Labels of patient samples are automatically added
+> > in the biplot. Labels for each sample are added by default, but can be
+> > removed if there is too much overlap in names. Note that `PCAtools` does
+> > not scale biplot in the same way as biplot using the stats package.
 > {: .solution}
 {: .challenge}
 
-The biplot shows the position of patient samples relative to PC1 and PC2 in 2-dimensional plot. Note that two groups are apparent along the PC1 axis according to expressions of different genes while no separation can be seem along the PC2 axis. Labels of patient samples are automatically added in the biplot. The weight of loadings (i.e. how much each loading contributes to each PC) can be added to the plot. Labels for each sample are added by default, by can be removed if there is too much overlap in names. Sizes of labels, points and axes can be changed (see help file).
-
-Note that PCAtools does not scale biplot in the same way as biplot using the stats package.
+Let's consider this biplot in more detail, and also display the loadings:
 
 
 ~~~
@@ -606,7 +883,13 @@ increasing max.overlaps
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-05-unnamed-chunk-22-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-pca-biplot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+Sizes of labels, points and axes can be changed using arguments in `biplot`
+(see `help("biplot")`). We can see from the biplot that there appear to be two
+separate groups of points that separate on the PC1 axis, but that no other
+grouping is apparent on other PC axes.
+
 
 ~~~
 plotloadings(pc, labSize = 3)
@@ -616,23 +899,23 @@ plotloadings(pc, labSize = 3)
 
 
 ~~~
-Warning: ggrepel: 41 unlabeled data points (too many overlaps). Consider
+Warning: ggrepel: 38 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-05-unnamed-chunk-22-2.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-pca-loadings-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-We can see from this plot that there appear to be two separate groups of points that separate on the PC1 axis, but that no other grouping is apparent on other PC axes.
-
-Plotting the loadings shows the magnitude and direction of loadings for each probe on each principal component.
+Plotting the loadings shows the magnitude and direction of loadings for probes
+detecting genes on each principal component.
 
 > ## Challenge 6
 > 
+> Use `colby` and `lab` arguments in `biplot` to explore whether these two
+> groups may cluster by patient age or by whether or not the sample expresses
+> the oestrogen receptor gene (ER+ or ER-).
 > 
-> Use `colby` and `lab` arguments in biplot to explore whether these two groups may cluster by Age or by whether or not the sample expresses the Estrogen Receptor gene (ER+ or ER-).
-> 
-> > Solution:
+> > ## Solution
 > > 
 > > 
 > > ~~~
@@ -647,18 +930,19 @@ Plotting the loadings shows the magnitude and direction of loadings for each pro
 > > 
 > > 
 > > ~~~
-> > Warning: ggrepel: 34 unlabeled data points (too many overlaps). Consider
+> > Warning: ggrepel: 35 unlabeled data points (too many overlaps). Consider
 > > increasing max.overlaps
 > > ~~~
 > > {: .warning}
 > > 
-> > <img src="../fig/rmd-05-unnamed-chunk-23-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-pca-biplot-ex2-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > It appears that one cluster has more ER+ samples than the other group.
 > {: .solution}
 {: .challenge}
 
-It appears that one cluster has more ER+ samples than the other group.
-
-So far we have only looked at a biplot of PC1 versus PC2 which only gives part of the picture. The pairplots function in PCAtools can be used to create multiple biplots including different principal components.
+So far we have only looked at a biplot of PC1 versus PC2 which only gives part
+of the picture. The `pairplots` function in `PCAtools` can be used to create
+multiple biplots including different principal components.
 
 
 ~~~
@@ -666,41 +950,50 @@ pairsplot(pc)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-unnamed-chunk-24-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-pairsplot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-Use the components argument in pairsplot to define which principal components will be included in the plot. Default is 5 principal components.
-
-The plots show two apparent clusters involving the first principal component only. No other clusters are found involving other principal components.
-
+The plots show two apparent clusters involving the first principal component
+only. No other clusters are found involving other principal components.
 
 # Using PCA output in further analysis
 
-The output of PCA can be used to interpret data or can be used in further analyses. For example, the PCA outputs new variables (principal components) which represent several variables in the original dataset. These new variables are useful for further exploring data, for example comparing prinicpal component scores between groups or including the new variables in linear regressions. Because the principal components are uncorrelated (and independent) they can be included together in a single linear regression. 
+The output of PCA can be used to interpret data or can be used in further
+analyses. For example, the PCA outputs new variables (principal components)
+which represent several variables in the original dataset. These new variables
+are useful for further exploring data, for example, comparing principal
+component scores between groups or including the new variables in linear
+regressions. Because the principal components are uncorrelated (and independent)
+they can be included together in a single linear regression. 
 
 
-> ## Principal component regression
+> ## Principal component regression 
 > 
-> PCA is often used to reduce large numbers of correlated variables into fewer uncorrelated variables that can then be included in linear regression or other models. 
-> This technique allows researchers to examine the effect of several correlated explanatory variables on a single response variable in cases where a high degree of
-> correlation initially prevents them from being included in the same model. This is called principal componenet regression (PCR) and is just one example of how 
-> principal components can be used in further analysis of data. When carrying out PCR, the variable of interest (response/dependent variable) is regressed against 
-> the principal components calculated using PCA, rather than against each individual explanatory variable from the original dataset. As there as many principal 
-> components created from PCA as there are variables in the dataset, we must select which principal components to include in PCR. This can be done by examining 
-> the amount of variation in the data explained by each principal component (see above).
+> PCA is often used to reduce large numbers of correlated variables into fewer
+> uncorrelated variables that can then be included in linear regression or
+> other models. This technique is called principal component regression (PCR)
+> and it allows researchers to examine the effect of several correlated
+> explanatory variables on a single response variable in cases where a high
+> degree of correlation initially prevents them from being included in the same
+> model. This is called principal componenet regression (PCR) and is just one
+> example of how principal components can be used in further analysis of data.
+> When carrying out PCR, the variable of interest (response/dependent variable)
+> is regressed against the principal components calculated using PCA, rather
+> than against each individual explanatory variable from the original dataset.
+> As there as many principal components created from PCA as there are variables
+> in the dataset, we must select which principal components to include in PCR.
+> This can be done by examining the amount of variation in the data explained
+> by each principal component (see above).
 {: .callout}
 
 
 # Further reading
 
-James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
-Chapter 6.3 (Dimension Reduction Methods), Chapter 10 (Unsupervised Learning)
+- James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
+Chapter 6.3 (Dimension Reduction Methods), Chapter 10 (Unsupervised Learning).
+- [Jolliffe, I.T. & Cadima, J. (2016) Principal component analysis: a review and recent developments. Phil. Trans. R. Soc A 374.](http://dx.doi.org/10.1098/rsta.2015.0202).
+- [Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Phil. Trans. R. Soc A 367.](https://doi.org/10.1098/rsta.2009.0159)
+- [PCA: A Practical Guide to Principal Component Analysis, Analytics Vidhya](https://www.analyticsvidhya.com/blog/2016/03/pca-practical-guide-principal-component-analysis-python/).
+- [A One-Stop Shop for Principal Component Analysis, Towards Data Science](https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c).
 
-Jolliffe, I.T. & Cadima, J. (2016) Principal component analysis: a review and recent developments. Phil. Trans. R. Soc A 374. http://dx.doi.org/10.1098/rsta.2015.0202 
 
-Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Phil. Trans. R. Soc A 367. doi:10.1098/rsta.2009.0159 
-
-PCA: A Practical Guide to Principal Component Analysis
-https://www.analyticsvidhya.com/blog/2016/03/pca-practical-guide-principal-component-analysis-python/   
-
-A One-Stop Shop for Principal Component Analysis
-https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c
+{% include links.md %}

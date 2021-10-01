@@ -161,7 +161,7 @@ fig/%.pdf: fig/%.tex
 fig/%.png: fig/%.pdf
 	convert -density 300 $< $@
 
-fig/pendulum.gif: fig/animation.R
+fig/pendulum.gif: fig/pca-animation.R
 	Rscript $<
 
 fig/kmeans.gif: fig/kmeans.R
