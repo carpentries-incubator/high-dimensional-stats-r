@@ -51,6 +51,7 @@ install_dependencies <- function(required_pkgs, ...) {
   )
 
   BiocManager::install(required_pkgs)
+  BiocManager::install("isglobal-brge/methylclock")
   # create_description(required_pkgs)
   # on.exit(file.remove("DESCRIPTION"))
   # remotes::install_deps(dependencies = TRUE, ...)
