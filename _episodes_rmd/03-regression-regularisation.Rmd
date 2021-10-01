@@ -889,8 +889,8 @@ plot_elastic <- function(alpha) {
     for (i in seq_along(s)) {
         for (j in seq_along(s)) {
             norm_mat[i, j] <- (
-                (sqrt(s[[i]]^2 + s[[j]]^2) * alpha) +
-                ((abs(s[[i]]) + abs(s[[j]])) * (1 - alpha))
+                (sqrt(s[[i]]^2 + s[[j]]^2) * ((1 - alpha))) +
+                ((abs(s[[i]]) + abs(s[[j]])) * (alpha))
             )
             ll[i, j] <- loglik(s[i], s[j], x, y, noise_sd)
         }
@@ -1138,9 +1138,9 @@ plot_elastic(0.75)
 
 # Further reading
 
-- [An introduction to statistical learning](https://www.statlearning.com/)
-- [Elements of statistical learning](https://web.stanford.edu/~hastie/ElemStatLearn/)
-- [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html)
-- [tidymodels](https://www.tidymodels.org/)
+- [An introduction to statistical learning](https://www.statlearning.com/).
+- [Elements of statistical learning](https://web.stanford.edu/~hastie/ElemStatLearn/).
+- [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html).
+- [tidymodels](https://www.tidymodels.org/).
 
 {% include links.md %}

@@ -957,11 +957,11 @@ they can be included together in a single linear regression.
 # Further reading
 
 - James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
-Chapter 6.3 (Dimension Reduction Methods), Chapter 10 (Unsupervised Learning)
-- Jolliffe, I.T. & Cadima, J. (2016) Principal component analysis: a review and recent developments. Phil. Trans. R. Soc A 374. [http://dx.doi.org/10.1098/rsta.2015.0202](http://dx.doi.org/10.1098/rsta.2015.0202)
-- Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Phil. Trans. R. Soc A 367. doi:10.1098/rsta.2009.0159
-- PCA: A Practical Guide to Principal Component Analysis, [Analytics Vidhya](https://www.analyticsvidhya.com/blog/2016/03/pca-practical-guide-principal-component-analysis-python/)
-- A One-Stop Shop for Principal Component Analysis, [Towards Data Science](https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c)
+Chapter 6.3 (Dimension Reduction Methods), Chapter 10 (Unsupervised Learning).
+- [Jolliffe, I.T. & Cadima, J. (2016) Principal component analysis: a review and recent developments. Phil. Trans. R. Soc A 374.](http://dx.doi.org/10.1098/rsta.2015.0202).
+- [Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Phil. Trans. R. Soc A 367.](https://doi.org/10.1098/rsta.2009.0159)
+- [PCA: A Practical Guide to Principal Component Analysis, Analytics Vidhya](https://www.analyticsvidhya.com/blog/2016/03/pca-practical-guide-principal-component-analysis-python/).
+- [A One-Stop Shop for Principal Component Analysis, Towards Data Science](https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c).
 
 
 {% include links.md %}
