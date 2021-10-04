@@ -1197,7 +1197,7 @@ the experiment over and over.
 
 ## Further reading
 
-- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
+- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf).
 
 
 ## Footnotes
