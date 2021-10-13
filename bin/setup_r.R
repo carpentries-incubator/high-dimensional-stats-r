@@ -1,12 +1,15 @@
 #!/usr/bin/env Rscript
 
-install.packages(c("BiocManager"))
+library("utils")
+if (!"BiocManager" %in% rownames(installed.packages())) {
+    install.packages("BiocManager")
+}
 BiocManager::install(version = "3.13")
-deps <- read.table(
-    file = url("https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/gh-pages/dependencies.csv"),
+table <- read.table(
+    url("https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/gh-pages/dependencies.csv"),
     header = FALSE
 )
-BiocManager::install(deps[[1]])
+BiocManager::install(table[[1]])
 BiocManager::install("Alanocallaghan/shinystats")
 
 dir.create("data", showWarnings = FALSE)
@@ -18,11 +21,13 @@ data_files <- c(
     "small_methylation.rds"
 )
 for (file in data_files) {
-    download.file(
-        url = file.path(
-            "https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/gh-pages",
-            file
-        ),
-        destfile = file.path("data", file)
-    )
+    if (!file.exists(file.path("data", file))) {
+        download.file(
+            url = file.path(
+                "https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/gh-pages/data",
+                file
+            ),
+            destfile = file.path("data", file)
+        )
+    }
 }
