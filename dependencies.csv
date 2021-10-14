@@ -46,4 +46,5 @@ BiocManager
 desc
 renv
 rprojroot
+utils
 glue

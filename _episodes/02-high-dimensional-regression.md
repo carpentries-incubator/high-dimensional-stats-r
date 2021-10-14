@@ -5,23 +5,25 @@ title: "Regression with many features"
 teaching: 60
 exercises: 30
 questions:
-- "How can we apply regression methods in a high-dimensional setting?"
-- "How can we control for the fact that we do many tests?"
+- "How can we apply linear regression in a high-dimensional setting?"
 - "How can we benefit from the fact that we have many variables?"
+- "How can we control for the fact that we do many tests?"
 objectives:
 - "Perform and critically analyse high dimensional regression."
-- "Perform multiple testing adjustment."
 - "Understand methods for shrinkage of noise parameters in
   high-dimensional regression."
+- "Perform multiple testing adjustment."
 keypoints:
-- "When running a lot of tests for high-dimensional data, it's important to
-  correct for the number of tests performed."
-- "Multiple testing correction can enable us to account for many null hypothesis
-  significance tests while retaining power."
-- "Multiple testing methods can be more conservative or more liberal, depending
-  on our goals."
+- "Performing linear regression in a high-dimensional setting requires us
+  to perform hypothesis testing in a way that low-dimensional regression may
+  not."
 - "Sharing information between features can increase power and reduce false 
   positives."
+- "When running a lot of null hypothesis tests for high-dimensional data,
+  multiple testing correction allows retain power and avoid making costly false
+  discoveries."
+- "Multiple testing methods can be more conservative or more liberal, depending
+  on our goals."
 math: yes
 ---
 
@@ -750,9 +752,11 @@ let's compare the effect sizes estimates and p-values from the two approaches.
 
 These are exactly identical! This is because `limma` isn't performing any
 sharing of information when estimating effect sizes. This is in contrast to
-similar packages that use shrinkage, like `DESeq2`. These often use
-information sharing to shrink or moderate the effect size estimates.
-In contrast, let's look at the p-values:
+similar packages that apply shrinkage to the effect size estimates, like
+`DESeq2`. These often use information sharing to shrink or moderate the
+effect size estimates, in the case of DESeq2 by again sharing information
+between features about sample-to-sample variability. 
+In contrast, let's look at the p-values from `limma` and `lm`:
 
 <img src="../fig/rmd-02-plot-limma-lm-pval-1.png" title="plot of chunk plot-limma-lm-pval" alt="plot of chunk plot-limma-lm-pval" width="432" style="display: block; margin: auto;" />
 
@@ -1191,7 +1195,7 @@ the experiment over and over.
 
 ## Further reading
 
-- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
+- [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf).
 
 
 ## Footnotes
