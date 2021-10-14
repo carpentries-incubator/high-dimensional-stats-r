@@ -10,7 +10,7 @@ questions:
   biosciences?
 - What are the challenges when analysing high-dimensional data?
 - What statistical methods are suitable for analysing these data?
-- How can Bioconductor be used to explore high-dimensional data in the
+- How can Bioconductor be used to access high-dimensional data in the
   biosciences?
 objectives:
 - Explore examples of high-dimensional data in the biosciences.

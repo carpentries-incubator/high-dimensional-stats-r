@@ -1,5 +1,5 @@
 ---
-title: "Non-metric multi-dimensional scaling"
+title: "Non-metric multi-dimensional scaling (optional lesson)"
 author: "GS Robertson"
 teaching: 50
 exercises: 20
