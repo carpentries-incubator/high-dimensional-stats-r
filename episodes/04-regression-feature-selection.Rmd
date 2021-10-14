@@ -1,5 +1,5 @@
 ---
-title: "Feature selection for regression"
+title: "Feature selection for regression (optional lesson)"
 teaching: 45
 exercises: 15
 questions:
