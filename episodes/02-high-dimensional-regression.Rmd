@@ -958,7 +958,7 @@ observing are simply due to chance.
 When performing many statistical tests to
 categorise features, we're effectively classifying
 features as "significant" - meaning those for which we reject the null 
-hypothesis; and "non-significant". We also generally hope that there is a subset
+hypothesis - and "non-significant". We also generally hope that there is a subset
 of features for which the null hypothesis is truly false, as well as many
 for which the null truly does hold. We hope that for all features for which the null
 hypothesis is true, we accept it, and for all features for which the null hypothesis
