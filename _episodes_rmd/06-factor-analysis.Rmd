@@ -6,17 +6,17 @@ exercises: 10
 questions:
 - What is factor analysis and when can it be used?
 - What are communality and uniqueness in factor analysis?
-- How to decide on number of factors to use?
-- How to interpret output of factor analysis?
+- How to decide on the number of factors to use?
+- How to interpret the output of factor analysis?
 objectives:
 - Perform a factor analysis on high-dimensional data.
-- Select appropriate number of factors.
-- Interpret output of factor analysis.
+- Select an appropriate number of factors.
+- Interpret the output of factor analysis.
 keypoints:
 - Factor analysis is a method used for reducing dimensionality in a dataset by reducing variation contained in multiple variables into a smaller number of uncorrelated factors.
-- PCA can be used to identify number of factors to initially use in factor analysis.
+- PCA can be used to identify the number of factors to initially use in factor analysis.
 - The `factanal` function in R can be used to fit a factor analysis where the number of factors is specified by the user.
-- Factor analysis can take into account expert knowledge when deciding on number of factors to use, but a disadvantage is that the output requires careful interpretation.
+- Factor analysis can take into account expert knowledge when deciding on the number of factors to use, but a disadvantage is that the output requires careful interpretation.
 math: yes
 ---
 
@@ -46,13 +46,15 @@ knitr::include_graphics("../fig/table_for_fa.png")
 FA is designed to identify certain unobservable factors from observable variables included in the original dataset. This is slightly different from PCA which does not directly do this; instead PCA creates as many features as there are variables in the dataset which represent different combinations of variables.
 
 
-# Example using data (Code along 20 mins)
+# Introducing an example dataset from prostate cancer patients 
 
 The prostate dataset represents data from 97 men who have prostate cancer. The data come from a study which examined the correlation between the level of prostate specific antigen and a number of clinical measures in men who were about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 
 Columns include lcavol (log-transformed cancer volume), lweight (log-transformed prostate weight), lbph (log-transformed amount of benign prostate enlargement), svi (seminal vesicle invasion), lcp (log capsular penetration; amount of spread of cancer in outer walls of prostate), gleason (Gleason score; grade of cancer cells), pgg45 (percentage Gleason scores 4 or 5), lpsa (log prostate specific antigen; level of PSA in blood). Patient age (in years) is also available in this dataset. 
 
-In this example we use the clinical variables to identify factors representing various clinical variables from prostate cancer patients. Two principal componenets have already been identified as explaining a large proportion of variance in the data when these data were analysed in the PCA episode. We may expect a similar number of factors to exist in the data.
+In this example we use the clinical variables to identify factors representing various clinical variables from prostate cancer patients. Two principal components have already been identified as explaining a large proportion of variance in the data when these data were analysed in the PCA episode. We may expect a similar number of factors to exist in the data.
+
+Let's subset the data to just include the log-transformed clinical variables for the purposes of this episode:
 
 ```{r lasso2}
 library(lasso2)
@@ -67,12 +69,14 @@ View(Prostate)
 nrow(Prostate)
 head(Prostate)
 
-#select clinical variables for further analysis
+#select five log-transformed clinical variables for further analysis
 pros2 <- Prostate[, c(1, 2, 4, 6, 9)]
 head(pros2)
 ```
 
-Factor analysis may be implemented in R using the `factanal()` function from the stats package (which is a built in package in base R). This function fits a factor analysis by maximising the log-likelihood using data matrix as input. The number of factors to be fitted in the analysis is specified by the user using the `factors` argument. Options for transforming the factors by rotating the data in different ways are available via the `rotation` argument (default is 'none').
+# Performing factor analysis
+
+Factor analysis may be implemented in R using the `factanal()` function from the stats package (which is a built in package in base R). This function fits a factor analysis by maximising the log-likelihood using a data matrix as input. The number of factors to be fitted in the analysis is specified by the user using the `factors` argument. Options for transforming the factors by rotating the data in different ways are available via the `rotation` argument (default is 'none').
 
 
 > ## Challenge 1 (3 mins)
@@ -109,16 +113,20 @@ To select the most appropriate number of factors we repeat the factor analysis u
 
 Like PCA, the fewer factors that can explain most of the variation in the dataset, the better. It is easier to explore and interpret results using a smaller number of factors which represent underlying features in the data. 
 
-We will now explore two other parts of the `factanal` output: communality and uniqueness.
+# Communality and uniqueness
+
+An estimate of the total amount of variation in the original data, $\hat{\Sigma}$, is calculated by summing our estimate of total communality and uniqueness of each variable.
+
+*Communality* represents the degree to which variables explain the same variation in the data and is calculated for each variable by summing the (squared) loadings. 
+
+*Uniqueness* is the opposite of communality and represents the amount of variation in the data uniquely explained by one variable. Uniqueness is calculated by subtracting the communality value from 1.
 
 ```{r common-unique}
 apply(pros.fa$loadings^2, 1, sum)  #communality
 1 - apply(pros.fa$loadings^2, 1, sum)  #uniqueness
 ```
 
-An estimate of the total amount of variation in the original data, $\hat{\Sigma}$, is calculated by summing our estimate of total communality and uniqueness of each variable.
-
-Communality represents the degree to which variables explain the same variation in the data and is calculated for each variable by summing the (squared) loadings. Uniqueness is the opposite of communality and represents the amount of variation in the data uniquely explained by one variable. Uniqueness is calculated by subtracting the communality value from 1.
+# Visualising the contribution of each variable to the factors
 
 We can plot the loadings in a biplot and label points by variable names showing the contribution of each variable to the factors.
 
@@ -159,14 +167,14 @@ text(pros.fa$loadings[,1]-0.08,
 > {: .solution}
 {: .challenge}
 
-# Advantages and disadvantages of Factor Analysis (5 mins)
+# Advantages and disadvantages of Factor Analysis (FA)
 
 There are several advantages and disadvantages of using factor analysis as a dimensionality reduction method.
 
 Advantages:
 
 * FA is a useful way of combining different groups of data into known representative factors, thus reducing dimensionality in a dataset.
-* FA can take into account researchers' expert knowledge when choosing number of factors to use, and can be used to identify latent or hidden variables which may not be apparent from using other analysis methods.
+* FA can take into account researchers' expert knowledge when choosing the number of factors to use, and can be used to identify latent or hidden variables which may not be apparent from using other analysis methods.
 * It is easy to implement with many software tools available to carry out FA.
 
 Disadvantages:
