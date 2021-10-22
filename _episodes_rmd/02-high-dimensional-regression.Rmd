@@ -34,7 +34,7 @@ knitr_fig_path("02-")
 
 # DNA methylation data
 
-For the following few episodes, we'll be working with human
+For the following few episodes, we will be working with human
 DNA methylation data from flow-sorted blood samples.
 DNA methylation assays measure, for many sites in the genome,
 the proportion of DNA that carries a methyl mark.
@@ -65,9 +65,9 @@ on these objects it may be useful to consult the
 methylation
 ```
 
-You can see in this output that this object has a `dim` of `r dim(methylation)`.,
+You can see in this output that this object has a `dim` of `r dim(methylation)`,
 meaning it has `r nrow(methylation)` features and `r ncol(methylation)` columns.
-To extract the matrix of methylation values, we can use the `assay` function.
+To extract the matrix of methylation values (M-values), we can use the `assay` function.
 One thing to bear in mind with these objects (and data 
 structures for computational biology in R generally) is that
 in the matrix of methylation data, samples or observations
@@ -98,7 +98,7 @@ look like this for the first 6 samples:
 knitr::kable(head(colData(methylation)), row.names = FALSE)
 ```
 
-In this episode, we are focusing on the association between age and methylation.
+In this episode, we will focus on the association between age and methylation.
 The association between age and methylation status in blood samples has been
 studied extensively, and is actually a well-known application of some
 high-dimensional regression techniques, with the idea of "epigenetic age"
@@ -207,7 +207,7 @@ contained over 800,000!
 {: .callout}
 
 
-# Identifying associations with linear regression
+# Identifying associations using linear regression
 
 In high-throughput studies, it's common to have one or more 
 phenotypes or groupings that we want to relate to features of 
@@ -333,8 +333,7 @@ lm_age_methyl1 <- lm(methyl_mat[1, ] ~ age)
 lm_age_methyl1
 ```
 
-We now have estimates for the overall difference in means between these
-two variables (the intercept) and the change in methylation level for
+We now have estimates for the expected methylation level when age equals 0 (the intercept) and the change in methylation level for
 a unit change in age (the slope). We could plot this linear model:
 
 ```{r plot-lm-methyl1}
@@ -353,10 +352,10 @@ check whether the results of a linear model are statistically significant.
 # Hypothesis testing in linear regression
 
 Using the linear model we defined above, we can assess if the coefficients
-we've fitted is are worthy of further investigation, or if they would be likely
+we've fitted are worthy of further investigation, or if they would be likely
 to arise by chance. For linear regression, we usually do this
 using null hypothesis significance testing. This framework compares the results
-(here, linear model coefficients) we observed to the results you would expect
+that we observed (here, linear model coefficients) to the results you would expect
 under the null hypothesis.
 To be more specific, null hypothesis significance testing compares our observed
 results with a set of hypothetical counter-examples of what we would expect to
@@ -389,8 +388,9 @@ it would be to observe results like this under the "null hypothesis".
 > > ## Solution
 > > 
 > > The intercept for this model indicates that the mean of methylation, when
-> > age is zero, is 0.902. This isn't a particularly note-worthy finding!
-> > It's also unlikely to be a reliable finding, as
+> > age is zero, is 0.902. 
+> > However, this isn't a particularly note-worthy finding!
+> > Also, regardless of the p-value, it's unlikely to be a reliable finding, as
 > > we don't have any individuals with age zero, nor even any with age < 20.
 > >
 > {: .solution}
@@ -415,7 +415,7 @@ coef_age_methyl1
 ```
 
 
-However, fitting models in this way to `r nrow(methylation)`
+However, fitting models in this way to `r nrow(methylation)` features
 is not very computationally efficient, 
 and it would also be laborious to do programmatically. There are ways to get
 around this, but first let's talk about what exactly we're doing when we
@@ -559,7 +559,7 @@ uncertainty may lead to a small p-value.
 {: .callout}
 
 
-# Sharing information
+# Sharing information between features
 
 Now that we understand what's going on when we perform a hypothesis test
 for a linear model, we're going to introduce an idea that allows us to take
@@ -766,14 +766,14 @@ reduction in statistical significance, which has been shown to perform well
 in case studies. The degree of shrinkage generally depends on 
 the amount of pooled information and the strength of the 
 evidence independent of pooling. For example, with very few samples and many
-features, information sharing has a larger effect, because there is a lot
+features, information sharing has a larger effect, because there are a lot
 of genes that can be used to provide pooled estimates, and the evidence from
 the data that this is weighed against is relatively sparse. In contrast,
 when there are many samples and few features, there is not much opportunity
 to generate pooled estimates, and the evidence of the data can easily outweigh
 the pooling.
 
-Shrinkage methods can be complex to implement and understand,
+Shrinkage methods like these ones can be complex to implement and understand,
 but it's good to understand why these approaches may be more precise 
 and sensitive than the naive approach of fitting a model to each feature
 separately.
@@ -867,7 +867,7 @@ separately.
 > fold changes much more stable.
 > Similarly, in `limma` the authors made the assumption that
 > in the absence of biological effects, we can often expect the
-> technical variation of each genes to be broadly similar.
+> technical variation in the measurement of the expression of each of the genes to be broadly similar.
 > Again, better estimates of variability allow us to
 > prioritise genes in a more reliable way.
 > 
@@ -957,11 +957,11 @@ observing are simply due to chance.
 
 When performing many statistical tests to
 categorise features, we're effectively classifying
-features as "significant", meaning those for which we reject the null 
-hypothesis, and "non-significant". We also generally hope that there is a subset
+features as "significant" - meaning those for which we reject the null 
+hypothesis; and "non-significant". We also generally hope that there is a subset
 of features for which the null hypothesis is truly false, as well as many
-for which the null truly does hold. We hope that for all features that the null
-hypothesis is true, we accept it, and for all features that the null hypothesis
+for which the null truly does hold. We hope that for all features for which the null
+hypothesis is true, we accept it, and for all features for which the null hypothesis
 is not true, we reject it. As we showed in the example with permuted
 age, with a large number of tests it's inevitable that we'll get some of these wrong.
 
@@ -980,8 +980,7 @@ more tests we'd tend to correctly categorise most
 results as negative. However, since p-values
 are uniformly distributed under the null,
 at a significance level of 5%, 5% of all
-results will be "significant" even though
-these are results we expect under the null.
+results will be "significant" even though we would expect to see these results, given the null hypothesis is true, simply by chance.
 These would fall under the label "false positives" in the table
 above, and are also termed "false discoveries."
 
