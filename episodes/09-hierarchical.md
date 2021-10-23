@@ -33,10 +33,10 @@ math: yes
 
 
 
-# Problem Statement 
+# Why use hierarchical clustering on high-dimensional data?
 
 When analysing high-dimensional data in the life sciences, it is often useful
-to identify groups of similar data points to understand more about relationships
+to identify groups of similar data points to understand more about the relationships
 within the dataset. In **hierarchical clustering** an algorithm groups similar
 data points (or observations) into groups (or clusters). This results in a set
 of clusters, where each cluster is distinct, and the data points within each
@@ -47,44 +47,191 @@ of the algorithm's progression.
 Unlike K-means clustering, **hierarchical clustering** does not require the
 number of clusters $k$ to be specified by the user before analysis is carried
 out. Hierarchical clustering also provides an attractive *dendrogram*, a
-tree-like diagram showing degree of similarity between clusters. 
+tree-like diagram showing the degree of similarity between clusters. 
 
 The dendrogram is a key feature of hierarchical clustering. This tree allows
 relationships between data points in a dataset to be easily observed and the
-arrangement of clusters produced by analysis to be illustrated. Dendrograms are
+arrangement of clusters produced by the analysis to be illustrated. Dendrograms are
 created using a distance (or dissimilarity) matrix fitted to the data and a
 clustering algorithm to fuse different groups of data points together.
 
 In this episode we will explore hierarchical clustering for identifying
-clusters in high-dimensional data. We will be using *agglomerative* hierarchical
+clusters in high-dimensional data. We will use *agglomerative* hierarchical
 clustering (see box) in this episode.
 
 > ## Agglomerative and Divisive hierarchical clustering)
 > 
-> There are two main methods of carrying out heriarchical clustering:
+> There are two main methods of carrying out hierarchical clustering:
 > agglomerative clustering and divisive clustering. 
-> The latter is a 'bottom-up' approach to clustering whereby the clustering
+> The former is a 'bottom-up' approach to clustering whereby the clustering
 > approach begins with each data point (or observation) 
 > being regarded as being in its own separate cluster. Pairs of data points are
-> merged as we move > up the tree. 
+> merged as we move up the tree. 
 > Divisive clustering is a 'top-down' approach in which all data points start
 > in a single cluster and an algorithm is used to split groups of data points
 > from this main group.
 {: .callout}
 
-# Create a dendrogram using R 
 
+# The hierarchical clustering algorithm 
+
+The algorithm for hierarchical clustering is simple. First, we measure distance
+(or dissimilarity) between pairs of observations. Initially, and at the bottom
+of the dendrogram, each observation is considered to be in its own individual
+cluster. We start the clustering procedure by fusing the two observations that
+are most similar according to a distance matrix (e.g. that are closest
+together in *n*D space). Next, the next most similar observations are fused
+so that the total number of clusters is *number of observations* - 2 (see
+Figure 1a). Groups of observations may then be merged into a larger cluster
+(see Figure 1b) This process continues until all the observations are included
+in a single cluster.
+
+<img src="../fig/hierarchical_clustering_1.png" title="Figure 1a: Example data showing two clusters of observation pairs" alt="Figure 1a: Example data showing two clusters of observation pairs" width="500px" style="display: block; margin: auto;" />
+
+
+<img src="../fig/hierarchical_clustering_2.png" title="Figure 1b: Example data showing fusing of one observation into larger cluster" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" style="display: block; margin: auto;" />
+
+
+There are two things to consider before carrying out clustering:
+* how to define dissimilarity between observations using a distance matrix, and
+* how to define dissimilarity between clusters and when to fuse separate clusters.
+
+
+# Creating the distance matrix
+
+Hierarchical clustering is performed in two steps: calculating the distance
+matrix and applying clustering using this matrix. 
+
+There are different ways to
+specify a distance matrix for clustering:
+
+* Specify distance as a pre-defined option using the `method` argument in the
+  `dist()` function. Methods include `euclidean` (default), `maximum` and `manhattan`.
+* Create a self-defined function which calculates distance from a matrix or
+  from two vectors. The function should only contain one argument.
+
+Of pre-defined methods of calculating the distance matrix, Euclidean is one of
+the most commonly used. This method calculates the shortest straight-line
+distances between pairs of observations.
+
+Another option is to use a correlation matrix as the input matrix to the
+clustering algorithm. The type of distance matrix used in hierarchical
+clustering can have a big effect on the resulting tree. The decision of which
+distance matrix to use before carrying out hierarchical clustering depends on the
+type of data and question to be addressed. 
+
+Let's perform hierarchical clustering on a subset of the 'methylation' dataset using correlations between variables.
+
+The dataset we will be working with are correlations between the first 100 features in
+the methylation dataset introduced in the regression lesson. 
+
+Let's load the data and look at it.
+
+
+~~~
+library("minfi")
+library("here")
+
+#Load small version of the methylation dataset
+small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
+~~~
+{: .language-r}
+
+
+~~~
+#view the data
+View(small_methyl_mat)
+~~~
+{: .language-r}
+
+
+~~~
+#count the number of rows and columns
+#should be equal to 100
+ncol(small_methyl_mat)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 100
+~~~
+{: .output}
+
+
+
+~~~
+nrow(small_methyl_mat)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 100
+~~~
+{: .output}
+
+Recall the heatmap displayed in the regression lesson. If we display the heatmap
+without hierarchical clustering, we can see that it’s very noisy and clusters
+of correlations between variables are difficult to see.
+
+<img src="../fig/rmd-09-heatmap-noclust-1.png" title="plot of chunk heatmap-noclust" alt="plot of chunk heatmap-noclust" width="432" style="display: block; margin: auto;" />
+
+We carry out hierarchical clustering on these data using the function
+`Heatmap` from the ComplexHeatmap package. We use the correlation matrix
+from the small_methylation dataset as the input distance matrix. The `Heatmap`
+function groups features based on similarity of correlation values and orders rows and columns to show clustering of features.
+
+
+<img src="../fig/rmd-09-heatmap-clust-1.png" title="plot of chunk heatmap-clust" alt="plot of chunk heatmap-clust" width="432" style="display: block; margin: auto;" />
+
+Note that clusters are represented by blocks of similar colours in the heatmap. We can also add other annotations (e.g. dendrograms) to help us identify the clusters. We'll cover dendrograms later in this episode. 
+
+Where correlation between features is the data of interest, it may be more
+appropriate to carry out hierarchical clustering using the correlation matrix
+between features as the distance matrix.
+
+# Linkage methods
+
+The second step in performing hierarchical clustering after defining the
+distance matrix (or another function defining similarity between data points)
+is determining how to fuse different clusters.
+
+*Linkage* is used to define dissimilarity between groups of observations
+(or clusters) and is used to create the hierarchical structure in the
+dendrogram. Different linkage methods of creating a dendrogram are discussed
+below.
+
+The function `hclust` supports various linkage methods (e.g `complete`,
+`single`, `ward D`, `ward D2`, `average`, `median`) and these are also supported
+within the `Heatmap` function. The method used to perform hierarchical
+clustering in `Heatmap` can be specified by the arguments
+`clustering_method_rows` and `clustering_method_columns`. Each linkage method
+uses a slightly different algorithm to calculate how clusters are fused together
+and therefore different clustering decisions are made depending on the linkage
+method used.
+
+Complete linkage (the default in `hclust`) works by computing all pairwise
+dissimilarities between data points in different clusters, using the largest
+pairwise dissimilarity ($d$) to decide which cluster will be fused. Clusters
+with smallest value of $d$ are fused.
+
+# Creating a dendrogram using R 
+
+Dendograms are useful tools to visualise the grouping of points and clusters into bigger clusters.
 We can create and plot dendrograms in R using the `hclust` function which takes
 a distance matrix as input and creates the associated tree using hierarchical
 clustering. Here we create some example data to carry out hierarchical
 clustering. 
 
-In this code-along example, 20 data points are generated in 2D space. Each
-point belongs to a one of three classes. Suppose we did not know which class
-data points belonged to and we want to identify these via clustering analysis.
+Let's generate 20 data points in 2D space. Each
+point belongs to one of three classes. Suppose we did not know which class
+data points belonged to and we want to identify these via cluster analysis.
 Hierarchical clustering carried out on the data can be used to produce a
 dendrogram showing how the data is partitioned into clusters. But how do we
-interpret this dendrogram? Let's explore this using example data.
+interpret this dendrogram? Let's explore this using our example data.
 
 
 
@@ -117,9 +264,9 @@ dist_m <- dist(example_data, method = "euclidean")
 
 > ## Challenge 1
 >
-> Use the `clust` function to implement hierarchical clustering using the
+> Use the `hclust` function to implement hierarchical clustering using the
 > distance matrix `dist_m` and 
-> the `complete` method and plot the results as a dendrogram using `plot`.
+> the `complete` linkage method and plot the results as a dendrogram using `plot`.
 >
 > > ## Solution:
 > >
@@ -127,7 +274,6 @@ dist_m <- dist(example_data, method = "euclidean")
 > > ~~~
 > > clust <- hclust(dist_m, method = "complete")
 > > plot(clust)
-> > abline(h = 4, lty = 2)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -137,18 +283,18 @@ dist_m <- dist(example_data, method = "euclidean")
 
 This dendrogram shows similarities/differences in distances between data points.
 Each leaf of the dendrogram represents one of the 20 data points. These leaves
-fuse into branches as height increases. Observations that are similar fuse into
-the same branches and the earlier data points fuse, the more similar these
-points are in terms of distance separating them. The height at which any two
+fuse into branches as the height increases. Observations that are similar fuse into
+the same branches. The height at which any two
 data points fuse indicates how different these two points are. Points that fuse
 at the top of the tree are very different from each other compared with two
 points that fuse at the bottom of the tree, which are quite similar. You can
 see this by comparing the position of similar/dissimilar points according to
 the scatterplot with their position on the tree.
 
-How do we identify clusters based on the dendrogram? To do this we can make a
-horizontal cut through the dendrogram at a user-defined height. The sets of
-observations beneath this cut can be thought of as distinct clusters. For
+# Identifying clusters based on the dendrogram 
+
+To do this, we can make a horizontal cut through the dendrogram at a user-defined height. 
+The sets of observations beneath this cut can be thought of as distinct clusters. For
 example, a cut at height 10 produces two downstream clusters while a cut at
 height 4 produces six downstream clusters.
 
@@ -310,164 +456,13 @@ downstream of the cut).
 > > {: .language-r}
 > > 
 > > <img src="../fig/rmd-09-h-k-ex-plot-2.png" title="plot of chunk h-k-ex-plot" alt="plot of chunk h-k-ex-plot" width="432" style="display: block; margin: auto;" />
+> > 
+> > Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a
+> > horizontal line on the dendrogram at `h = 5` to help identify corresponding value of `k`.
 > {: .solution}
 {: .challenge}
 
-Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a
-horizontal line on the dendrogram at `h = 5` to help identify corresponding
-value of `k`.
-
-
-# The Hierarchical Clustering Algorithm 
-
-The algorithm for hierarchical clustering is simple. First, we measure distance
-(or dissimilarity) between pairs of observations. Initially, and at the bottom
-of the dendrogram, each observation is considered to be in its own individual
-cluster. We start the clustering procedure by fusing the two observations that
-are most similar according to the distance matrix (e.g. that are closest
-together in *n*D space). Next, the next most similar observations are fused
-so that the total number of clusters is *number of observations* - 2 (see
-Figure 1a). Groups of observations may then be merged into a larger cluster
-(see Figure 1b) This process continues until all the observations are included
-in a single cluster (i.e. the top of the dendrogram).
-
-<img src="../fig/hierarchical_clustering_1.png" title="Figure 1a: Example data showing two clusters of observation pairs" alt="Figure 1a: Example data showing two clusters of observation pairs" width="500px" style="display: block; margin: auto;" />
-
-
-<img src="../fig/hierarchical_clustering_2.png" title="Figure 1b: Example data showing fusing of one observation into larger cluster" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" style="display: block; margin: auto;" />
-
-
-There are two things to consider before carrying out clustering:
-* how to define dissimilarity between observations using a distance matrix, and
-* how to define dissimilarity between clusters and when to fuse separate clusters.
-
-
-# Creating the distance matrix
-
-
-Hierarchical clustering is performed in two steps: calculating the distance
-matrix and applying clustering using this matrix. There are different ways to
-specify a distance matrix for clustering:
-
-* Specify distance as a pre-defined option using the `method` argument in the
-  `dist()` function. Methods include `euclidean` (default: used in above
-  example), `maximum` and `manhattan`.
-* Create a self-defined function which calculates distance from a matrix or
-  from two vectors. The function should only contain one argument.
-
-Of pre-defined methods of calculating the distance matrix, Euclidean is one of
-the most commonly used. This method calculates the shortest straight-line
-distances between pairs of observations.
-
-Another option is to use a correlation matrix as the input matrix to the
-clustering algorithm. The type of distance matrix used in hierarchical
-clustering can have a big effect on the resulting tree. The decision of which
-distance matrix to use before carrying out hierarchical clustering depends on
-type of data and question to be addressed. 
-
-Let's use a subset of the 'methylation' dataset to create a dendrogram via
-hierarchical clustering using correlations between variables.
-
-The dataset we will be working with is a smaller version of the methylation
-dataset introduced in the regression lesson. The data are a subset of the
-original methylation dataset. The data display correlations between cells in
-the methylation matrix where the first 100 cells in the matrix are selected.
-Let's load the data and look at it.
-
-
-~~~
-library("minfi")
-library("here")
-
-#Load small version of the methylation dataset
-small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
-~~~
-{: .language-r}
-
-
-~~~
-#view the data
-View(small_methyl_mat)
-~~~
-{: .language-r}
-
-
-~~~
-#count the number of rows and columns
-#should be equal to 100
-ncol(small_methyl_mat)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] 100
-~~~
-{: .output}
-
-
-
-~~~
-nrow(small_methyl_mat)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] 100
-~~~
-{: .output}
-
-Recall the heatmap displayed in regression lesson. If we display the heatmap
-without hierarchical clustering, we can see that it’s very noisy and clusters
-of correlations between variables are difficult to see.
-
-<img src="../fig/rmd-09-heatmap-noclust-1.png" title="plot of chunk heatmap-noclust" alt="plot of chunk heatmap-noclust" width="432" style="display: block; margin: auto;" />
-
-We carry out hierarchical clustering on these data using the function
-`Heatmap` from the CompleHeatmap package. We use the correlation matrix
-(from the small_methylation) dataset as the input distance matrix. The `Heatmap`
-function groups features based on similarity of correlation values and creates
-a dendrogram showing clustering of features.
-
-
-<img src="../fig/rmd-09-heatmap-clust-1.png" title="plot of chunk heatmap-clust" alt="plot of chunk heatmap-clust" width="432" style="display: block; margin: auto;" />
-
-
-Note that the clusters shown in the dendrogram approximately match clusters
-that can be seen in the heatmap.
-
-Where correlation between features is the data of interest, it may be more
-appropriate to carry out hierarchical clustering using the correlation matrix
-between features as the distance matrix.
-
-
-# Linkage methods
-
-The second step in performing hierarchical clustering after defining the
-distance matrix (or other function defining similarity between data points)
-is determining how to fuse different clusters.
-
-*Linkage* is used to define dissimilarity between groups of observations
-(or clusters) and is used to create the hierarchical structure in the
-dendrogram. Different linkage methods of creating a dendrogram are discussed
-below.
-
-The function `hclust` supports various linkage methods (e.g `complete`,
-`single`, `ward D`, `ward D2`, `average`, `median`) and these are also supported
-within the `Heatmap` function. The method used to perform hierarchical
-clustering in `Heatmap` can be specified by the arguments
-`clustering_method_rows` and `clustering_method_columns`. Each linkage method
-uses a slightly different algorithm to calculate how clusters are fused together
-and therefore a different dendrogram is created depending on the linkage
-method used.
-
-Complete linkage (the default in `hclust`) works by computing all pairwise
-dissimilarities between data points in different clusters, using the largest
-pairwise dissimilarity ($d$) to decide which cluster will be fused. Clusters
-with smallest value of $d$ are fused.
+# What happens if we use different linkage methods?
 
 Here we carry out hierarchical clustering using `hclust` and the `complete`
 linkage method. In this example, we calculate a distance matrix between
@@ -529,7 +524,7 @@ using the complete linkage method.
 > ## Challenge 3
 >
 > Carry out hierarchical clustering on the small version of the
-> `small_methyl_mat` dataset using different linkage methods and compare
+> `small_methyl_mat` dataset using other different linkage methods and compare
 > resulting dendrograms.
 > Do any of the methods produce similar dendrograms?
 > Do some methods appear to
@@ -652,7 +647,7 @@ dunn(distance = distmat, cut)
 {: .output}
 
 The value of the Dunn index has no meaning in itself, but is used to compare
-between clustering methods with larger values being preferred.
+between sets of clusters with larger values being preferred.
 
 > ## Challenge 4
 > 
@@ -674,8 +669,8 @@ between clustering methods with larger values being preferred.
 > > <img src="../fig/rmd-09-dunn-ex-1.png" title="plot of chunk dunn-ex" alt="plot of chunk dunn-ex" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
-> > cut_h <- cutree(clust, h = 0.5)   #should be maximised
-> > cut_k <- cutree(clust, k = 15)   #should be maximised
+> > cut_h <- cutree(clust, h = 0.5)   
+> > cut_k <- cutree(clust, k = 15)   
 > > 
 > > dunn(distance = distmat, cut_h)
 > > ~~~
@@ -715,7 +710,7 @@ using the `cutree` function results in higher values of the Dunn index.
 
 There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
-Another method of validating identified clusters is the Silhouette coefficient
+Another method of validating identified clusters is the silhouette score 
 which uses the average distance between clusters and the points within them
 (see the K-means clustering episode for more information).
 

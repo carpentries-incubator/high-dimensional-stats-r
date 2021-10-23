@@ -36,7 +36,7 @@ way of finding features that are associated with our outcome,
 but it treats each feature independently.
 
 However we might think there's some combination of methylation features
-that combined explain age. For example, if we want to be able to predict age 
+that together explain age. For example, if we want to be able to predict age 
 from methylation, that's a lot easier if we figure out what the contribution
 of each feature is conditional on all others, rather than independent of
 all others.
@@ -166,7 +166,7 @@ way.
 Often, we have many variables that are all very correlated, with plenty
 of noise. For example, if we look at the `Prostate` data in the `lasso2` 
 package, we can calculate the Pearson correlation between each feature in the
-prostate. This measures how similar the patterns of variation in these features
+data. This measures how similar the patterns of variation in these features
 are across all of the observations in this dataset.
 We can see that in the prostate data, the few variables we have are generally
 pretty independent. 
@@ -190,10 +190,10 @@ the model properly.
 > 
 > Discuss in  groups:
 > 
-> 1. Why would we observed correlated features in high-dimensional biological
+> 1. Why would we observe correlated features in high-dimensional biological
 >    data?
 > 1. Why might correlated features be a problem when fitting linear models?
-> 1. What issue might correlated feature present for stepwise selection?
+> 1. What issue might correlated features present when selecting features to include in a model one at a time?
 > 
 > > ## Solution
 > >
@@ -203,10 +203,10 @@ the model properly.
 > >    levels at nearby sites are often very highly correlated.
 > > 1. Correlated features can make inference unstable or even impossible
 > >    mathematically.
-> > 1. When performing stepwise selection, we want to pick the most predictive
-> >    feature at each step. When a lot of features are very similar but encode
+> > 1. When we are selecting features one at a time we want to pick the most predictive feature each time. 
+> >    When a lot of features are very similar but encode
 > >    slightly different information, which of the correlated features we 
-> >    select can have a huge impact in the later stages of model selection!
+> >    select to include can have a huge impact on the later stages of model selection!
 > > 
 > {: .solution}
 {: .challenge}
@@ -217,7 +217,7 @@ When we fit a linear model, we're finding the line through our data that
 minimises the residual sum of squares.
 We can think of that as finding
 the slope and intercept that minimises the square of the length of the dashed
-lines. In this case, the red line is in the left panel is the line that
+lines. In this case, the red line in the left panel is the line that
 accomplishes this objective, and the red dot in the right panel is the point 
 that represents this line in terms of its slope and intercept among many 
 different possible models, where the background colour represents how well
@@ -269,8 +269,8 @@ models.
 
 # Model selection revisited
 
-In the previous lesson we discussed using measures like adjusted $R^2$, AIC and
-BIC to show how well the model is learning the data used in fitting the model. These are really good ways of telling us how
+Measures like adjusted $R^2$, AIC and
+BIC show us how well the model is learning the data used in fitting the model [^1]. These are really good ways of telling us how
 well the model is learning to fit the data we're using as an 
 input. However, this doesn't really tell us how well the model will generalise to new data. This is an important thing to 
 consider -- if our model doesn't generalise to new data,
@@ -530,7 +530,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 >    How do the predictions look for both methods? Why might ridge be 
 >    performing better?
 > 3. Compare the coefficients of the ridge model to the OLS model. Why might
->    the differences drive the differences in prediction that you see?
+>    the differences in coefficients drive the differences in prediction that you see?
 > 
 > > ## Solution
 > > 
@@ -562,7 +562,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    [1] 223.3571
 > >    ~~~
 > >    {: .output}
-> > 2. The ridge ones are less extreme.
+> > 2. The ridge ones are much less spread out with far fewer extreme predictions.
 > >    
 > >    ~~~
 > >    all <- c(pred_lm, test_age, pred_min_ridge)
@@ -663,13 +663,14 @@ diagonal (ie, one or more coefficient is exactly zero).
 > >    fit_lasso <- glmnet(x = methyl_mat, y = age, alpha = 1)
 > >    ~~~
 > >    {: .language-r}
-> > 2. When `xvar = "lambda", the x-axis represents increasing model sparsity
+> > 2. When `xvar = "lambda"`, the x-axis represents increasing model sparsity
 > >    from left to right, because increasing lambda increases the penalty added
 > >    to the coefficients. When we instead plot the L1 norm on the x-axis,
-> >    the x-axis, because increasing L1 norm means that we are allowing our
+> >    increasing L1 norm means that we are allowing our
 > >    coefficients to take on increasingly large values.
 > >    <img src="../fig/rmd-03-plotlas-1.png" title="plot of chunk plotlas" alt="plot of chunk plotlas" width="720" style="display: block; margin: auto;" />
-> > 3. The paths tend to go to exactly zero much more.
+> > 3. The paths tend to go to exactly zero much more when sparsity increases when we use a LASSO model. 
+> >    In the ridge case, the paths tend towards zero but less commonly reach exactly zero.
 > > 
 > {: .solution}
 {: .challenge}
@@ -747,7 +748,7 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 
 <img src="../fig/rmd-03-heatmap-lasso-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-# Blending ridge regression and the LASSO
+# Blending ridge regression and the LASSO - elastic nets
 
 So far, we've used ridge regression, where `alpha = 0`, and LASSO regression,
 where `alpha = 1`. What if `alpha` is set to a value between zero and one?
@@ -781,7 +782,7 @@ like for different values of `alpha`.
 
 > ## Exercise
 > 
-> 1. Fit an elastic net model (hint: alpha = 0.5) without and plot the model
+> 1. Fit an elastic net model (hint: alpha = 0.5) without cross-validation and plot the model
 >    object.
 > 2. Fit an elastic net model with cross-validation and plot the error. Compare
 >    with LASSO.
@@ -1011,7 +1012,7 @@ like for different values of `alpha`.
 > how to run normalisation, and . It's also useful to compare different
 > model "engines". 
 > 
-> To this end, have developed the tidymodels framework. The code below would be
+> To this end, the tidymodels framework exists. The code below would be
 > useful to perform repeated cross-validation. We're not doing a course on 
 > advanced topics in predictive modelling so we are not covering this framework.
 > 
@@ -1087,5 +1088,9 @@ like for different values of `alpha`.
 - [Elements of statistical learning](https://web.stanford.edu/~hastie/ElemStatLearn/).
 - [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html).
 - [tidymodels](https://www.tidymodels.org/).
+
+# Footnotes
+
+[^1]: Model selection including $R^2$, AIC and BIC are covered in the additional feature selection for regression episode of this course.
 
 {% include links.md %}
