@@ -37,9 +37,9 @@ math: yes
 
 *High-dimensional data* are defined as data in which the number of features
 in the data, $p$, are equal or larger than the number of observations (or data
-points), $n$. Unlike *low-dimensional data* in which the number of observations,
-$n$, far outnumbers the number of features, $p$, high-dimensional data require
-consideration of potential problems that comes from having a large number of
+points), $n$. Unlike for *low-dimensional data* in which the number of observations,
+$n$, far outnumbers the number of features, $p$, analyses of high-dimensional data requires
+consideration of potential problems that come from having a large number of
 features.
 
 High-dimensional data have become more common in many scientific fields as new
@@ -69,17 +69,17 @@ is shown in Figure 1.
 > Descriptions of three research questions and their datasets are given below.
 > Which of these are considered to have high-dimensional data?
 > 
-> 1. Predicting patient blood pressure using cholesterol level in blood, age,
->    and BMI measurements collected from 100 patients.
-> 2. Predicting patient blood pressure using cholesterol level in blood, age,
->    and BMI as well as information from 200,000 single nucleotide polymorphisms
+> 1. Predicting patient blood pressure using: cholesterol level in blood, age,
+>    and BMI measurements, collected from 100 patients.
+> 2. Predicting patient blood pressure using: cholesterol level in blood, age,
+>    and BMI, as well as information on 200,000 single nucleotide polymorphisms
 >    from 100 patients.
-> 3. Predicting length of time patients spend in hospital with pneumonia.
->    infection using measurements on age, BMI, length of time with symptoms,
->    number of symptoms, and percentage of neutrophils in blood using data
+> 3. Predicting the length of time patients spend in hospital with pneumonia infection
+>    using: measurements on age, BMI, length of time with symptoms,
+>    number of symptoms, and percentage of neutrophils in blood, using data
 >    from 200 patients.
 > 4. Predicting probability of a patient's cancer progressing using gene
->    expression data as well as data associated with general patient health
+>    expression data from 20,000 genes, as well as data associated with general patient health
 >    (age, weight, BMI, blood pressure) and cancer growth (tumour size,
 >    localised spread, blood test results).
 > 
@@ -187,8 +187,8 @@ few observations can be seen in Figure 2b.
 
 <img src="../fig/intro-scatterplot.png" title="plot of chunk intro-figure" alt="plot of chunk intro-figure" style="display: block; margin: auto;" />
 
-In the first situation, the least squares regression lines does not fit the data
-perfectly and there is some error around the regression line. But when there are
+In the first situation, the least squares regression line does not fit the data
+perfectly and there is some error around the regression line. But, when there are
 only two observations the regression line will fit through the points exactly,
 resulting in overfitting of the data. This suggests that carrying out least
 squares regression on a dataset with few data points per feature would result
@@ -204,7 +204,7 @@ in these datasets makes high correlations between variables more likely.
 > 
 > Use the `cor` function to examine correlations between all variables in the
 > Prostate dataset. Are some variables highly correlated (i.e. correlation
-> coefficients > 0.6)? Carry out a linear regression predicting patient age
+> coefficients > 0.6)? Fit a multiple linear regression model predicting patient age
 > using all variables in the Prostate dataset.
 > 
 > > ## Solution
@@ -336,10 +336,10 @@ regression.
 
 As we found out in the above challenges, carrying out linear regression on
 datasets with large numbers of features is difficult due to: high correlation
-between variables; difficulty in identifying clear a response variable; risk
-of overfitting. These problems are common to many high-dimensional datasets,
+between variables; difficulty in identifying a clear response variable; and risk
+of overfitting. These problems are common to the analysis of many high-dimensional datasets,
 for example, those using genomics data with multiple genes, or species
-composition data in an environment where relative abundance of different species
+composition data in an environment where the relative abundance of different species
 within a community is of interest. For such datasets, other statistical methods
 may be used to examine whether groups of observations show similar features
 and whether these groups may relate to other features in the data (e.g.
@@ -350,12 +350,12 @@ many explanatory variables.
 
 In situations where the response variable is difficult to identify or where
 explanatory variables are highly correlated, dimensionality reduction may be
-used to create fewer variables that represent variation in the original dataset.
+used to create fewer variables that represent the variation in the original dataset.
 Various dimensionality reduction methods are available, including principal
 component analysis (PCA), factor analysis, and multidimensional scaling, which
 are used to address different types of research questions. Dimensionality
 reduction methods such as PCA can also be used to visualise data in fewer
-number of dimensions, making patterns and clusters within the data easier to
+dimensions, making patterns and clusters within the data easier to
 visualise. Exploring data via clustering is a good way of understanding
 relationships within observations in complex datasets.
 
@@ -415,7 +415,7 @@ plot(xgroups, col = selected, pch = 19)
 > 
 > > ## Solution
 > > 
-> > When `sd = 1` in above example clusters in randomly generated data are not
+> > When `sd = 1` in above example, clusters in randomly generated data are not
 > > obvious. Increasing the value of `sd` makes clusters clearer. Sometimes it
 > > is possible to convince ourselves that there are clusters in the data just
 > > by colouring the data points by their respective groups! Formal cluster
@@ -426,7 +426,7 @@ plot(xgroups, col = selected, pch = 19)
 {: .challenge}
 
 
-# High-dimensional data in the biosciences
+# Using Bioconductor to access high-dimensional data in the biosciences
 
 In this workshop, we will look at statistical methods that can be used to
 visualise and analyse high-dimensional biological data using packages available

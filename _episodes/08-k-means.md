@@ -10,9 +10,9 @@ questions:
   - How can we perform K-means in `R`?
   - How can we appraise a clustering and test cluster robustness?
 objectives:
-  - Understand importance of clustering in high-dimensional data
+  - Understand the importance of clustering in high-dimensional data
   - Understand and perform K-means clustering in `R`.
-  - Assess clustering performance using silhouette score.
+  - Assess clustering performance using silhouette scores.
   - Assess cluster robustness using bootstrapping.
 keypoints:
   - K-means is an intuitive algorithm for clustering data.
@@ -45,7 +45,7 @@ similar to each other (according to some feature) than they are to observations
 in other groups. Cluster analysis is a useful statistical tool for exploring
 high-dimensional datasets as 
 visualising data with large numbers of features is difficult. It is commonly
-used in fields such a bioinformatics, genomics, and image processing in which
+used in fields such as bioinformatics, genomics, and image processing in which
 large datasets that include many features are often produced. Once groups
 (or clusters) of observations have been identified using cluster analysis,
 further analyses or interpretation can be carried out on the groups, for
@@ -83,13 +83,12 @@ that the clusters are 'real'. But how do we tell if clusters identified
 visually are 'real'?
 
 
-# K-means clustering
+# What is K-means clustering?
 
 **K-means clustering** is a clustering method which groups data points into a 
 user-defined number of distinct non-overlapping clusters. In K-means clustering 
-we're not concerned with fitting distributions to the data. Instead we are only 
-interested in minimising the *within-cluster variation*. This is the amount which 
-data points within a cluster differ from each other. In K-means clustering, distance 
+we are interested in minimising the *within-cluster variation*. This is the amount that
+data points within a cluster differ from each other. In K-means clustering, the distance 
 between data points within a cluster is used as a measure of within-cluster variation.
 Using a specified clustering algorithm like K-means clustering increases our confidence
 that our data can be partitioned into groups.
@@ -128,6 +127,8 @@ number of clusters that the data should be partitioned into.
 > manually, or running the algorithm from multiple different starting points.
 >
 {: .callout}
+
+# K-means clustering applied to single-cell RNAseq data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
 We're going to work with single-cell RNAseq data in these clustering exercises,
@@ -239,16 +240,15 @@ For each data point, the silhouette width is the average distance
 between this point and all other points in its cluster, relative to
 the average distance of that point to the next closest cluster.
 Ideally, we would have only large positive silhouette widths, indicating
-that each data point is much more similar to than it is to the points in 
-any other cluster. However, this is rarely the case. Often, points
-clusters are very fuzzy, and even if we are relatively sure about
+that each data point is much more similar to points within its cluster than it is to the points in 
+any other cluster. However, this is rarely the case. Often, clusters are very fuzzy, and even if we are relatively sure about
 the existence of discrete groupings in the data, observations on the boundaries
 can be difficult to confidently place in either cluster.
 
   
 Here we use the `silhouette` function from the `cluster` package to calculate the
-silhouette width of our K-means cluster using a distance matrix of distances
-between points in the cluster.
+silhouette width of our K-means clustering using a distance matrix of distances
+between points in the clusters.
 
 
 ~~~
@@ -261,8 +261,8 @@ plot(sil)
 
 <img src="../fig/rmd-08-silhouette-1.png" title="plot of chunk silhouette" alt="plot of chunk silhouette" width="432" style="display: block; margin: auto;" />
 
-Let's plot the silhoette score on the original dimensions used to cluster
-the data. Here, we're mapping cluster membership to point shape, and silhoette
+Let's plot the silhouette score on the original dimensions used to cluster
+the data. Here, we're mapping cluster membership to point shape, and silhouette
 width to colour.
 
 
@@ -555,7 +555,7 @@ pheatmap(ratios,
 > ## Consensus clustering
 > 
 > One useful and generic method of clustering is *consensus clustering*.
-> This method can use k-means, mixture models, or other methods.
+> This method can use k-means, or other clustering methods.
 > 
 > The idea behind this is to bootstrap the data repeatedly, and cluster
 > it each time, perhaps using different numbers of clusters.
@@ -585,8 +585,8 @@ pheatmap(ratios,
 > behind this algorithm
 > is that if the clusters we find are robust, we don't need to look at all of
 > the data every time. This is very helpful because it reduces the amount of
-> data that needs to be held in memory at once, but also because the 
-> computational cost of.
+> data that needs to be held in memory at once, but also because it minimises the 
+> computational cost.
 > 
 > Similarly, approximate nearest neighbour methods like 
 > [Annoy](https://pypi.org/project/annoy/) can be used to identify what the
