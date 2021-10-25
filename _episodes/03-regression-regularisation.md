@@ -263,6 +263,10 @@ This is especially important when our goal is prediction --
 it's not much good if we can only predict well for samples where
 the outcome is already known, after all!
 
+To get an idea of how well our model generalises, we can split the data into
+two - "training" and "test" sets. We use the "training" data to fit the model,
+and then see its performance on the "test" data.
+
 <img src="../fig/validation.png" title="Alt" alt="Alt" width="500px" style="display: block; margin: auto;" />
 
 One thing that happens a lot of the time in this context is that large 
