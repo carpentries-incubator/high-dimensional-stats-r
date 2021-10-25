@@ -1,0 +1,145 @@
+---
+title: "Regularised regression"
+output:
+    xaringan::moon_reader:
+        self_contained: true
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# Feature-feature correlation in "Prostate"
+```{r, out.width="450px", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-03-corr-mat-prostate-1.png"))
+```
+
+---
+# Feature-feature correlation in methylation
+```{r, out.width="450px", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-03-corr-mat-meth-1.png"))
+```
+
+---
+# Finding the best linear model
+```{r, out.width="600px", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-03-regplot-1.png"))
+```
+
+---
+# Training and test splits
+```{r, out.width="450px", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/validation.png"))
+```
+
+---
+
+# Ridge regression restricts the coefficients
+
+```{r, out.width="450px", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-03-ridgeplot-1.png"))
+```
+
+---
+
+# Ridge regression formally
+
+Ridge regression uses the normal linear regression loss function:
+
+$$
+    \sum_{i=1}^N (y_i - \hat{y}_i)^2
+$$
+
+--
+
+combined with the squared *L2 norm* of the coefficients:
+
+$$
+    \left\lVert \beta\right\lVert^2 = \sum_{j=1}^p \beta_j^2
+$$
+
+--
+
+this gives us a modified least squares:
+
+$$
+    \sum_{i=1}^N (y_i - \hat{y}_i)^2 +
+        \left\lVert \beta\right\lVert^2
+$$
+
+---
+
+# LASSO restricts the coefficient values
+```{r, out.width="450px", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-03-shrink-lasso-1.png"))
+```
+
+---
+
+# LASSO definition
+
+As with ridge regression, LASSO uses the normal linear regression loss function:
+
+$$
+    \sum_{i=1}^N (y_i - \hat{y}_i)^2
+$$
+
+but here this is combined with the *L1 norm* of the coefficients:
+
+$$
+    \left\lVert \beta \right\lVert^1 = \sum_{j=1}^p |\beta_j|
+$$
+
+The absolute value in place of the square is what leads to the different shape
+relative to ridge regression.
+
+
+---
+# Cross-validation is more rigorous than one test/training split
+```{r, out.width="450px", echo=FALSE}
+# , fig.cap='<img src="../fig/cross_validation.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
+knitr::include_graphics(here("fig/cross_validation.png"))
+```
+
+
+---
+# What is the elastic net?
+
+The elastic net aims to have the best parts of ridge regression:
+- good performance with correlated variables
+- generalisable models
+
+--
+
+with the good properties of LASSO:
+- sparse models
+- variable selection
+
+---
+
+# What is the elastic net?
+
+For the elastic net, we using the normal linear regression loss, a bit of ridge (L2 norm)
+penalty, and a bit of LASSO (L1 norm) penalty:
+
+$$
+    \left(\sum_{i=1}^N (y_i - \hat{y}_i)^2 \right) +
+        \lambda (\alpha \left\lVert \beta \right\lVert^1) +
+        \lambda ((1 - \alpha) \left\lVert \beta \right\lVert^2)
+$$
+
+--
+
+$\alpha$ controls the blend of the two penalties, with 1 giving pure LASSO,
+and 0 giving pure ridge regression.
+
+---
+# The elastic net blends LASSO and ridge regression
+```{r, out.width="900px", echo=FALSE}
+# , fig.cap='plot of chunk elastic-contour
+knitr::include_graphics(here("fig/rmd-03-elastic-contour-1.png"))
+```

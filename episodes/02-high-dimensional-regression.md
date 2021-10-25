@@ -89,7 +89,8 @@ Preprocessing
 ~~~
 {: .output}
 
-You can see in this output that this object has a `dim` of 5000, 37,
+You can see in this output that this object has a `dim` of 
+$5000 \times 37$,
 meaning it has 5000 features and 37 columns.
 To extract the matrix of methylation values (M-values), we can use the `assay` function.
 One thing to bear in mind with these objects (and data 
@@ -123,6 +124,13 @@ Similarly, we can examine the `colData`, which represents the sample-level
 metadata we have relating to these data.
 In this case, the metadata, phenotypes, and groupings in the `colData` 
 look like this for the first 6 samples:
+
+
+~~~
+knitr::kable(head(colData(methylation)), row.names = FALSE)
+~~~
+{: .language-r}
+
 
 
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
@@ -163,8 +171,8 @@ contained over 800,000!
 > >    fact can be dangerous; it's easy to make up a "story" that isn't
 > >    grounded in anything but the fact that we have signif findings.
 > > 2. We may not have a representative sample for each of these covariates. For
-> >    example, we may have very small sample sizes for soem ethnicities, leading to
-> >    spurious findings.
+> >    example, we may have very small sample sizes for some ethnicities,
+> >    leading to spurious findings.
 > > 3. If we perform $14 \times 5000$
 > >    tests, even if there were no true associations in the data, we'd be likely
 > >    to observe some strong spurious associations that arise just from random
@@ -276,7 +284,7 @@ So, in the data we've read in, we have a matrix of methylation values $X$ and a
 vector of ages, $y$.
 One way to model this is to see if we can "predict" the expected methylation
 value for sample $j$ at a given locus $i$, which we can write as $X_{ij}$,
-using age. We can write that predictive as:
+using age. We can write that model as:
 
 $$
     \mathbf{E}(X_{ij}) = \beta_0 + \beta_1 \text{Age}_j
@@ -308,7 +316,8 @@ Coefficients:
 ~~~
 {: .output}
 
-We now have estimates for the expected methylation level when age equals 0 (the intercept) and the change in methylation level for
+We now have estimates for the expected methylation level when age equals 0
+(the intercept) and the change in methylation level for
 a unit change in age (the slope). We could plot this linear model:
 
 
@@ -334,8 +343,8 @@ Using the linear model we defined above, we can assess if the coefficients
 we've fitted are worthy of further investigation, or if they would be likely
 to arise by chance. For linear regression, we usually do this
 using null hypothesis significance testing. This framework compares the results
-that we observed (here, linear model coefficients) to the results you would expect
-under the null hypothesis.
+that we observed (here, linear model coefficients) to the results you would
+expect under the null hypothesis.
 To be more specific, null hypothesis significance testing compares our observed
 results with a set of hypothetical counter-examples of what we would expect to
 observe if we repeated the same experiment and analysis over and over again 
@@ -343,7 +352,6 @@ under the null hypothesis. In the case of linear regression, the null
 hypothesis is that there is absolutely no relationship between the predictor
 variable(s) and the outcome. This may not always be the most realistic or
 useful null hypothesis, but it's the one we have!
-
 
 
 For this linear model, we can use `broom` to extract detailed information about
@@ -396,8 +404,9 @@ to narrow our focus. In particular,
 The first coefficient in a linear model like this is the intercept,
 which measures the overall 
 offset between age and methylation levels. It's not really interesting
-if this is zero or non-zero, since we don't really expect age and 
-methylation level to have the same mean. We're more 
+if this is zero or non-zero, since we probably don't care what the methylation
+level is when age is zero. In fact, this question doesn't even really make 
+much sense! Instead, we're more 
 interested if there is a relationship between increasing age and methylation
 levels. Therefore, we'll focus only on the second coefficient.
 
@@ -418,7 +427,7 @@ coef_age_methyl1
 ~~~
 {: .output}
 
-
+Now, we could do this for every feature in the dataset and rank the results.
 However, fitting models in this way to 5000 features
 is not very computationally efficient, 
 and it would also be laborious to do programmatically. There are ways to get
@@ -434,14 +443,14 @@ look at significance tests in this context.
 
 In order to decide whether a result would be unlikely
 under the null hypothesis, we can calculate a test statistic.
-For coefficient $j$ in a linear model (in our case, it would be the slope),
+For coefficient $k$ in a linear model (in our case, it would be the slope),
 the test statistic is a t-statistic given by:
 
 $$
-    t_{j} = \frac{\hat{\beta}_{j}}{SE\left(\hat{\beta}_{j}\right)}
+    t_{k} = \frac{\hat{\beta}_{k}}{SE\left(\hat{\beta}_{k}\right)}
 $$
 
-$SE\left(\hat{\beta}_{j}\right)$ measures the uncertainty we have in our effect
+$SE\left(\hat{\beta}_{k}\right)$ measures the uncertainty we have in our effect
 size estimate.
 Knowing what distribution these t-statistics follow under the null
 hypothesis allows us to determine how unlikely it would be for
@@ -506,7 +515,7 @@ uncertainty may lead to a small p-value.
 > t distribution under the null hypothesis, with degrees of freedom (a parameter
 > of the student t distribution) given by
 > the number of observations minus the number of coefficients fitted, in this
-> case 37 - 2 =
+> case $37 - 2 =
 > 35$.
 > We want to know what portion of
 > the distribution function of the test statistic is as extreme as, or more 
@@ -554,11 +563,11 @@ This can enable us to get a better estimate of the uncertainty of model
 parameters than we could get if we consider each feature in isolation.
 This enables us to share information between genes to get more robust
 estimators.
-Remember that the t-statistic for feature $i$, coefficient $j$ $\beta$ 
+Remember that the t-statistic for coefficient $\beta_k$
 in a linear model is the ratio of the coefficient value to the standard error:
 
 $$
-    t_{ij} = \frac{\hat{\beta}_{ij}}{SE\left(\hat{\beta}_{ij}\right)}
+    t_{k} = \frac{\hat{\beta}_{k}}{SE\left(\hat{\beta}_{k}\right)}
 $$
 
 It's clear that large effect sizes will likely lead to small p-values,
@@ -573,10 +582,10 @@ we have in the results.
 There are many statistical methods in genomics that use this type of approach
 to get better estimates by pooling information between features that were
 measured simultaneously using the same techniques.
-Here we will focus on the package `limma`, which is a quite old software package
-used to fit linear models, originally for the gene expression micro-arrays 
-that were common in the 2000s, but which is still in use in RNAseq experiments,
-among others.
+Here we will focus on the package `limma`, which is a relatively old software
+package used to fit linear models, originally for the gene expression
+micro-arrays that were common in the 2000s, but which is still in use in
+RNAseq experiments,among others.
 The authors of `limma` made some assumptions about the distributions that these
 follow, and pool information across genes to get a better estimate of the 
 uncertainty in effect size estimates. It uses the idea that noise levels should
@@ -682,6 +691,10 @@ an adjusted p-value is very shortly. The table also includes `B`,
 which represents the log-odds that a feature is signficantly different,
 which we won't cover here, but which will generally be a 1-1 transformation
 of the p-value.
+The coefficient estimates here are termed `logFC` for legacy reasons relating
+to how microarray experiments were traditionally performed.
+There are more details on this topic in many places, for example
+[this tutorial by Kasper D. Hansen](https://kasperdanielhansen.github.io/genbioconductor/html/limma.html)
 
 Now we have estimates of effect sizes and p-values for the association between
 methylation level at each locus and age for our 37 samples. It's useful to
@@ -883,14 +896,13 @@ we scramble age and run the same test again:
 
 ~~~
 age_perm <- age[sample(ncol(methyl_mat), ncol(methyl_mat))]
-coefs_perm <- lapply(
-    seq_len(nrow(methyl_mat)),
-    lm_feature,
-    methyl_mat = methyl_mat,
-    age = age_perm
-)
-coef_df_perm <- do.call(rbind, coefs_perm)
-plot(coef_df_perm$estimate, -log10(coef_df_perm$p.value),
+design_age_perm <- model.matrix(~age_perm)
+
+fit_age_perm <- lmFit(methyl_mat, design = design_age_perm)
+fit_age_perm <- eBayes(fit_age_perm)
+toptab_age_perm <- topTable(fit_age_perm, coef = 2, number = nrow(fit_age_perm))
+
+plot(toptab_age_perm$logFC, -log10(toptab_age_perm$P.Value),
     xlab = "Effect size", ylab = bquote(-log[10](p)),
     pch = 19
 )
@@ -1076,124 +1088,27 @@ the experiment over and over.
 > >    
 > >    <img src="../fig/rmd-02-p-fdr-1.png" title="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 > >    
+> >    ~~~
+> >    ggplot() +
+> >        aes(p_fdr, p_fwer) +
+> >        geom_point() +
+> >        scale_x_log10() + scale_y_log10() +
+> >        geom_abline(slope = 1, linetype = "dashed") +
+> >        geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
+> >        geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
+> >        labs(x = "Benjamini-Hochberg p-value", y = "Bonferroni p-value")
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    <img src="../fig/rmd-02-plot-fdr-fwer-1.png" title="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
-
-> ## Selecting variables before running models
-> 
-> To get around the problem of multiple testing, people sometimes reduce the 
-> number of variables as input. There are some valid and many invalid ways of
-> doing this. One (invalid) method is to select variables based on correlation 
-> with the outcome. The p-values we get out of this kind of approach
-> model are basically meaningless, because we're doing a 2-stage model and only
-> reporting one set of p-values (ignoring all the non-significant ones). This 
-> means that we are biasing the results towards significance, and further that
-> we are not correctly adjusting for the true number of tests we're
-> performing.
-> 
-> 
-> ~~~
-> ## calculate correlation between each feature and the outcome
-> cors <- apply(methyl_mat, 1, function(col) cor(col, age_perm))
-> ## select only features with the 50% highest correlation
-> x_cor <- methyl_mat[abs(cors) > quantile(abs(cors), 0.5), ]
-> ## create design matrix
-> design_age <- model.matrix(~age_perm)
-> ## fit model and apply shrinkage
-> fit_cor <- lmFit(x_cor, design = design_age)
-> fit_cor <- eBayes(fit_cor)
-> ## create table of features
-> toptab_cor <- topTable(fit_cor, coef = 2, number = nrow(fit_cor))
-> ## make a plot with two panels
-> par(mfrow = c(1, 2))
-> ## first panel
-> plot(toptab_cor$logFC, -log10(toptab_cor$P.Value),
->     xlab = "Effect size", ylab = bquote(-log[10](p)),
->     pch = 19
-> )
-> ## get the feature names of our new matrix
-> feats <- rownames(toptab_cor)
-> ## subset the original topTable results and our new results with this list 
-> ## of features
-> ## here we are using adjusted p-values
-> pvals_both <- cbind(
->     Original = toptab_age[feats, "adj.P.Val"],
->     Screened = toptab_cor[feats, "adj.P.Val"]
-> )
-> ## calculate x and y limits for the plot, so it's symmetric
-> lims <- range(pvals_both)
-> plot(pvals_both, pch = 19, xlim = lims, ylim = lims, log = "xy")
-> ## plot dashed red lines at p-value thresholds of 0.05
-> abline(h = 0.05, lty = "dashed", col = "firebrick")
-> abline(v = 0.05, lty = "dashed", col = "firebrick")
-> ## plot a dashed black line through the identity line x=y
-> abline(coef = 0:1, lty = "dashed")
-> ~~~
-> {: .language-r}
-> 
-> <img src="../fig/rmd-02-screening-cor-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
-> 
-> This two-step selection process biases the results towards
-> significance, and it means that the p-values we
-> report aren't accurate.
-> 
-> One way to screen for variables that *does* work is to use a filter
-> or screen that is independent of the test statistic.
-> Correlation is not independent of the t-statistic. However,
-> the overall variance of a feature *is* independent of this statistic, because
-> the overall variability level does not. We might suspect that
-> features that don't vary much at all don't vary in our groups of interest,
-> or alongside our continuous features (age in this example).
-> 
-> This approach was introduced by 
-> [Bourgon, Gentleman and Huber (2010)](https://www.pnas.org/content/107/21/9546.short)
-> and has be shown to be valid. This is because variance and the t-statistic
-> are not correlated under the null hypothesis, but are correlated under
-> the alternative.
-> 
-> 
-> ~~~
-> ## calculate variance of each feature independent of the outcome
-> vars <- apply(methyl_mat, 1, var)
-> ## select the top 50% variable features
-> x_var <- methyl_mat[vars > quantile(vars, 0.5), ]
-> ## fit model and apply shrinkage
-> fit_var <- lmFit(x_var, design = design_age)
-> fit_var <- eBayes(fit_var)
-> ## get the results for our screened features
-> toptab_var <- topTable(fit_var, coef = 2, number = nrow(fit_var))
-> ## make a plot with two panels beside each other
-> par(mfrow = c(1, 2))
-> ## first plot - a volcano plot
-> plot(toptab_var$logFC, -log10(toptab_var$P.Value),
->     xlab = "Effect size", ylab = bquote(-log[10](p)),
->     pch = 19
-> )
-> ## as before, select the screened feature from the original set of models
-> ## and the ones screened by variance
-> feats <- rownames(toptab_var)
-> pvals_both_var <- cbind(
->     Original = toptab_age[feats, "adj.P.Val"],
->     Screened = toptab_var[feats, "adj.P.Val"]
-> )
-> lims <- range(pvals_both_var)
-> ## plot these two sets of p-values against each other, with
-> ## red dashed lines at p=0.05 and a black dashed line along the identity line
-> ## of x=y
-> plot(pvals_both_var, pch = 16, xlim = lims, ylim = lims, log = "xy")
-> abline(h = 0.05, lty = "dashed", col = "firebrick")
-> abline(v = 0.05, lty = "dashed", col = "firebrick")
-> abline(coef = 0:1, lty = "dashed")
-> ~~~
-> {: .language-r}
-> 
-> <img src="../fig/rmd-02-screening-var-1.png" title="Alt-text" alt="Alt-text" width="720" style="display: block; margin: auto;" />
-> 
-{: .callout}
 
 
 ## Further reading
 
+
+- [limma tutorial by Kasper D. Hansen](https://kasperdanielhansen.github.io/genbioconductor/html/limma.html)
 - [limma user manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf).
 
 
