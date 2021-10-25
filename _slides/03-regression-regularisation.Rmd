@@ -28,13 +28,6 @@ knitr::include_graphics(here("fig/rmd-03-regplot-1.png"))
 ```
 
 ---
-# Training and test splits
-```{r, out.width="450px", echo=FALSE}
-# , fig.cap='Alt
-knitr::include_graphics(here("fig/validation.png"))
-```
-
----
 
 # Ridge regression restricts the coefficients
 
@@ -63,7 +56,7 @@ $$
 
 --
 
-this gives us a modified least squares:
+This gives us a modified least squares:
 
 $$
     \sum_{i=1}^N (y_i - \hat{y}_i)^2 +
@@ -94,8 +87,12 @@ $$
     \left\lVert \beta \right\lVert^1 = \sum_{j=1}^p |\beta_j|
 $$
 
-The absolute value in place of the square is what leads to the different shape
-relative to ridge regression.
+As before this gives us a modified least squares:
+
+$$
+    \sum_{i=1}^N (y_i - \hat{y}_i)^2 +
+        \left\lVert \beta\right\lVert^2
+$$
 
 
 ---

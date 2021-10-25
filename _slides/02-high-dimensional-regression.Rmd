@@ -82,16 +82,17 @@ knitr::include_graphics(here("fig/rmd-02-plot-limma-lm-pval-1.png"))
 
 # Calculating FDR p-values
 
-1. Rank the p-values
-2. Assign each a rank (1 is smallest)
-3. Calculate the critical value 
+2. Assign each p-value a rank (1 is smallest)
+3. Calculate the critical value
+    
     $$
-        q = \left(\frac{i}{m}\right)Q
-    $$,
+    q = \frac{i}{m}Q
+    $$
+
     where $i$ is rank, $m$ is the number of tests, and $Q$ is the
-    false discovery rate we want to target.[^5]
+    false discovery rate we want to target.
 4. Find the largest p-value less than the critical value.
-    All smaller than this are significant.
+   All smaller than this are significant.
 
 ---
 

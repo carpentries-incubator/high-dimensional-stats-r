@@ -514,7 +514,7 @@ cor_mat <- cor(methyl_mat)
 
 
 ~~~
-View(cor_mat[1:100,])
+View(cor_mat[1:100, ])
 ~~~
 {: .language-r}
 
