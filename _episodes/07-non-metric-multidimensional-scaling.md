@@ -1009,8 +1009,6 @@ ordiplot3d(ord, col = meta(ds.core)$nationality, angle = 30)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-07-vegan-3d-1.png" title="plot of chunk vegan-3d" alt="plot of chunk vegan-3d" width="432" style="display: block; margin: auto;" />
-
 We can see from this plot that it is much easier to visualise the three
 NMDS dimensions using a 3D scatterplot than it is using a series of three
 2D scatterplots. The disadvantage is that the current 3D scatterplot can only

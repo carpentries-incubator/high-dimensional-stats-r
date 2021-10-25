@@ -1,0 +1,156 @@
+---
+title: "Hierarchical clustering"
+output:
+    xaringan::moon_reader:
+        self_contained: true
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# Figure 1a: Example data showing two clusters of observation pairs
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Figure 1a: Example data showing two clusters of observation pairs
+knitr::include_graphics(here("fig/hierarchical_clustering_1.png"))
+```
+
+---
+# Figure 1b: Example data showing fusing of one observation into larger cluster
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Figure 1b: Example data showing fusing of one observation into larger cluster
+knitr::include_graphics(here("fig/hierarchical_clustering_2.png"))
+```
+
+---
+# plot of chunk heatmap-noclust
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk heatmap-noclust
+knitr::include_graphics(here("fig/rmd-09-heatmap-noclust-1.png"))
+```
+
+---
+# plot of chunk heatmap-clust
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk heatmap-clust
+knitr::include_graphics(here("fig/rmd-09-heatmap-clust-1.png"))
+```
+
+---
+# plot of chunk plotexample
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plotexample
+knitr::include_graphics(here("fig/rmd-09-plotexample-1.png"))
+```
+
+---
+# plot of chunk plotclustex
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plotclustex
+knitr::include_graphics(here("fig/rmd-09-plotclustex-1.png"))
+```
+
+---
+# plot of chunk cutree
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk cutree
+knitr::include_graphics(here("fig/rmd-09-cutree-1.png"))
+```
+
+---
+# plot of chunk h-k-ex-plot
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk h-k-ex-plot
+knitr::include_graphics(here("fig/rmd-09-h-k-ex-plot-1.png"))
+```
+
+---
+# plot of chunk h-k-ex-plot
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk h-k-ex-plot
+knitr::include_graphics(here("fig/rmd-09-h-k-ex-plot-2.png"))
+```
+
+---
+# plot of chunk plot-clust-method
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-method
+knitr::include_graphics(here("fig/rmd-09-plot-clust-method-1.png"))
+```
+
+---
+# plot of chunk plot-clust-method
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-method
+knitr::include_graphics(here("fig/rmd-09-plot-clust-method-2.png"))
+```
+
+---
+# plot of chunk plot-clust-ward
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-ward
+knitr::include_graphics(here("fig/rmd-09-plot-clust-ward-1.png"))
+```
+
+---
+# plot of chunk plot-clust-comp
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-comp
+knitr::include_graphics(here("fig/rmd-09-plot-clust-comp-1.png"))
+```
+
+---
+# plot of chunk plot-clust-single
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-single
+knitr::include_graphics(here("fig/rmd-09-plot-clust-single-1.png"))
+```
+
+---
+# plot of chunk plot-clust-average
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-average
+knitr::include_graphics(here("fig/rmd-09-plot-clust-average-1.png"))
+```
+
+---
+# plot of chunk plot-clust-mcq
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-mcq
+knitr::include_graphics(here("fig/rmd-09-plot-clust-mcq-1.png"))
+```
+
+---
+# plot of chunk plot-clust-median
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-median
+knitr::include_graphics(here("fig/rmd-09-plot-clust-median-1.png"))
+```
+
+---
+# plot of chunk plot-clust-centroid
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-centroid
+knitr::include_graphics(here("fig/rmd-09-plot-clust-centroid-1.png"))
+```
+
+---
+# plot of chunk plot-clust-dunn
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk plot-clust-dunn
+knitr::include_graphics(here("fig/rmd-09-plot-clust-dunn-1.png"))
+```
+
+---
+# plot of chunk dunn-ex
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='plot of chunk dunn-ex
+knitr::include_graphics(here("fig/rmd-09-dunn-ex-1.png"))
+```
+
+---
+# Figure 3: Dunn index increases with increasing number of clusters
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='<img src="../fig/hierarchical_clustering_3.png" title="Figure 3: Dunn index increases with increasing number of clusters" alt="Figure 3: Dunn index increases with increasing number of clusters" style="display: block; margin: auto;" />
+knitr::include_graphics(here("fig/hierarchical_clustering_3.png"))
+```
+
+---

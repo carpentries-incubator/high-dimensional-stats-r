@@ -97,8 +97,8 @@ F-statistic:   NaN on 36 and 0 DF,  p-value: NA
 ~~~
 {: .output}
 
-You can see that we're able to get effect size estimates, but they seem very 
-high! You can see in the summary that we were unable to estimate
+You can see that we're able to get some effect size estimates, but they seem very 
+high! The summary also says that we were unable to estimate
 effect sizes for 4,964 features
 because of "singularities". What this means is that R couldn't find a way to
 perform the calculations necessary due to the fact that we have more features
@@ -131,8 +131,6 @@ way.
 > of the matrix is zero, we are unable to find its inverse.
 > 
 > 
-> 
-> 
 > ~~~
 > xtx <- t(methyl_mat) %*% methyl_mat
 > det(xtx)
@@ -145,21 +143,6 @@ way.
 > [1] 0
 > ~~~
 > {: .output}
-> 
-> Further, we can only find the inverse of a matrix when
-> it is [full rank](https://en.wikipedia.org/wiki/Rank_(linear_algebra)),
-> which is to say that all of its columns are linearly independent.
-> In this case, the matrix is of rank 37. We may encounter *rank-deficient*
-> matrices if there is multi-collinearity in the data, too.
-> 
-> 
-> ~~~
-> ## Beware: this takes a long time to run
-> library("Matrix")
-> rankMatrix(xtx)
-> # 37
-> ~~~
-> {: .language-r}
 {: .callout}
 
 

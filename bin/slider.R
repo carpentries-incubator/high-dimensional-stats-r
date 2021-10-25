@@ -18,7 +18,9 @@ outfile <- args[[2]]
 header <- glue("
     ---
     title: <<title>>
-    output: beamer_presentation
+    output:
+        xaringan::moon_reader:
+            self_contained: true
     ---
     ```{r, echo=FALSE, message=FALSE}
     library(\"here\")
@@ -35,12 +37,12 @@ for (i in seq_along(images)) {
     out <- glue(
         "
         # <<titles[[i]]>>
-        ```{r, out.width=\"0.5\\\\textwidth\", echo=FALSE}
+        ```{r, out.width=\"100%\", echo=FALSE}
         # , fig.cap='<<alts[[i]]>>
         knitr::include_graphics(<<figfiles[[i]]>>)
         ```
 
-        \\newpage
+        ---
         ",
         .open="<<", .close=">>"
     )

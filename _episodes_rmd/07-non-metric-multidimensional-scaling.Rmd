@@ -426,7 +426,7 @@ We can use a 3D scatterplot to examine all three axes at once using the
 metadata, such as nationality. In the plot below, black points are African
 American participants and red points are rural African participants.
 
-```{r vegan-3d}
+```{r vegan-3d, eval=FALSE}
 library(vegan3d)
 ordiplot3d(ord, col = meta(ds.core)$nationality, angle = 30)
 ```
