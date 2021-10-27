@@ -626,7 +626,7 @@ LASSO is another type of regularisation. In this case we use the $L^1$ norm,
 or the sum of the absolute values of the coefficients.
 
 $$
-    \left\lVert \beta \right\lVert_1 = \sqrt{\sum_{j=1}^p \beta_j}
+    \left\lVert \beta \right\lVert_1 = \sum_{j=1}^p |\beta_j|
 $$
 
 This tends to produce sparse models; that is to say, it tends to remove features

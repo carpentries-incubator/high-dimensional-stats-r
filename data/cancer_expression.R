@@ -1,22 +1,9 @@
-##R script for preparing data for high-dimensional statistics workshop##
-##12/05/2021
+pkgs <- c("PCAtools", "Biobase", "GEOquery")
+BiocManager::install(pkgs, upgrade = FALSE, ask = FALSE)
+for (pkg in pkgs) {
+    suppressPackageStartupMessages(library(pkg, character.only = TRUE))
+}
 
-
-##For Dimensionality Reduction lesson##
-
-
-#Two datasets will be used in this lesson:
-#Gene expression profiling in breast cancer dataset available from BioConductor
-#Microbiome dataset from BioConductor
-
-
-library("PCAtools")
-
-
-#Load and prepare breast cancer data
-
-library("Biobase")
-library("GEOquery") #dataset is accessed via GEO
 
 Sys.setenv(VROOM_CONNECTION_SIZE = 500072)
 
@@ -25,7 +12,7 @@ gset <- getGEO("GSE2990", GSEMatrix = TRUE, getGPL = FALSE)  #eSet object
 mat <- exprs(gset[[1]])  #access expression and error measurements of assay data
 
 # remove Affymetrix control probes from the data
-mat <- mat[-grep("^AFFX", rownames(mat)),]    #see vignette for why this is done
+mat <- mat[-grep("^AFFX", rownames(mat)), ] # see vignette for why this is done
 #nrow = 22215
 #ncol = 189
 
@@ -41,8 +28,8 @@ idx <- which(colnames(pData(gset[[1]])) %in%
 metadata <- data.frame(
     pData(gset[[1]])[, idx], row.names = rownames(pData(gset[[1]]))
 )
-#nrow = 189
-#ncol = 8
+# nrow: 189
+# ncol: 8
 
 #redefine column names
 colnames(metadata) <- c(
@@ -84,29 +71,25 @@ metadata$Grade <- factor(
 metadata$Size <- as.numeric(as.character(metadata$Size))
 metadata$Time.RFS <- as.numeric(gsub("^KJX|^KJ", NA, metadata$Time.RFS))
 
-#metadata2<-metadata
-
 # remove samples from the pdata that have any NA value
 discard <- apply(metadata, 1, function(x) any(is.na(x)))
 metadata <- metadata[!discard,]
-#nrow = 91
-#ncol = 8
+# nrow: 91
+# ncol: 8
 
 # filter the expression data to match the samples in pdata
 mat <- mat[,which(colnames(mat) %in% rownames(metadata))]
-#nrow = 22215
-#ncol = 91
+# nrow: 22215
+# ncol: 91
 
 # check that sample names match exactly between pdata and expression data 
 all(colnames(mat) == rownames(metadata))
 
 #colnames in may are equal to rownames in metadata, so that"s good!
 
-#save datasets mat and metadata
-SE <- SummarizedExperiment::SummarizedExperiment(
+# save datasets mat and metadata
+se <- SummarizedExperiment::SummarizedExperiment(
     assays = list(expression = mat),
     colData = metadata
 )
-saveRDS(SE, file = here::here("data/cancer_expression.rds"))
-# saveRDS(mat, file = here("data/cancer_expression.rds"))
-# saveRDS(metadata, file = here("data/cancer_metadata.rds"))
+saveRDS(se, file = here::here("data/cancer_expression.rds"))

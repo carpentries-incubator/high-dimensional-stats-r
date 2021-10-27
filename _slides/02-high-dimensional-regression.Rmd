@@ -72,10 +72,10 @@ knitr::include_graphics(here("fig/rmd-02-plot-limma-lm-pval-1.png"))
 
 # Accepting or rejecting the null
 
-|              |Reject null   |Accept null|
-|-------------:|-------------:|--------------:|
-|Null is true  |True positive |False negative |
-|Null is false |False positive|True negative  |
+|                    |Label as different   |Label as not different|
+|-------------------:|--------------------:|---------------------:|
+|Truly different     |True positive        |False negative        |
+|Truly not different |False positive       |True negative         |
 
 
 ---

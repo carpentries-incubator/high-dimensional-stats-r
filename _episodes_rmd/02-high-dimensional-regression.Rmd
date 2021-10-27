@@ -157,10 +157,11 @@ contained over 800,000!
 > > 2. We may not have a representative sample for each of these covariates. For
 > >    example, we may have very small sample sizes for some ethnicities,
 > >    leading to spurious findings.
-> > 3. If we perform $`r ncol(colData(methylation))` \times `r nrow(methylation)`$
-> >    tests, even if there were no true associations in the data, we'd be likely
-> >    to observe some strong spurious associations that arise just from random
-> >    noise.
+> > 3. If we perform
+> >    $`r ncol(colData(methylation))` \times `r nrow(methylation)`$
+> >    tests, even if there were no true associations in the data, we'd be
+> >    likely to observe some strong spurious associations that arise just from
+> >    random noise.
 > > 
 > >
 > {: .solution}
@@ -293,22 +294,6 @@ ggplot() +
 And, of course, we often have an awful lot of features and need
 to prioritise a subset of them! We need a rigorous way to
 prioritise genes for further analysis.
-
-```{r pkgs, echo=FALSE}
-suppressPackageStartupMessages({
-    library("glmnet")
-    library("limma")
-    library("qvalue")
-    library("minfi")
-    library("here")
-    library("FlowSorted.Blood.EPIC")
-    library("IlluminaHumanMethylationEPICmanifest")
-    library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
-    library("ExperimentHub")
-    library("here")
-    library("broom")
-})
-```
 
 
 # Fitting a linear model
@@ -872,7 +857,8 @@ separately.
 > fold changes much more stable.
 > Similarly, in `limma` the authors made the assumption that
 > in the absence of biological effects, we can often expect the
-> technical variation in the measurement of the expression of each of the genes to be broadly similar.
+> technical variation in the measurement of the expression of each of the
+> genes to be broadly similar.
 > Again, better estimates of variability allow us to
 > prioritise genes in a more reliable way.
 > 
@@ -930,7 +916,7 @@ observing are simply due to chance.
 > ## Exercise
 >
 > 
-> 1. If we run 10,000 tests under the null hypothesis,
+> 1. If we run `r nrow(methylation)` tests under the null hypothesis,
 >    how many of them (on average) will be statistically
 >    significant at a threshold of $p < 0.05$?
 > 2. Why would we want to be conservative in labelling features
@@ -941,7 +927,8 @@ observing are simply due to chance.
 >    ensure "significant" changes are truly different? 
 > 
 > > ## Solution
-> > 1. By default we expect $10,000 \times 0.05 = 250$
+> > 1. By default we expect
+> >    $`r nrow(methylation)` \times 0.05 = `r nrow(methylation) * 0.05`$
 > >    features to be statistically significant under the null hypothesis,
 > >    because p-values should always be uniformly distributed under
 > >    the null hypothesis.
@@ -963,29 +950,33 @@ observing are simply due to chance.
 When performing many statistical tests to
 categorise features, we're effectively classifying
 features as "significant" - meaning those for which we reject the null 
-hypothesis - and "non-significant". We also generally hope that there is a subset
-of features for which the null hypothesis is truly false, as well as many
-for which the null truly does hold. We hope that for all features for which the null
-hypothesis is true, we accept it, and for all features for which the null hypothesis
-is not true, we reject it. As we showed in the example with permuted
-age, with a large number of tests it's inevitable that we'll get some of these wrong.
+hypothesis - and "non-significant". We also generally hope that there is a
+subset of features for which the null hypothesis is truly false, as well as many
+for which the null truly does hold. We hope that for all features for which the
+null hypothesis is true, we accept it, and for all features for which the null
+hypothesis is not true, we reject it. As we showed in the example with permuted
+age, with a large number of tests it's inevitable that we'll get some of these
+wrong.
 
 We can think of these features as being 
 "truly different" or "not truly different"[^2].
 Using this idea, we can see that each 
 categorisation we make falls into four categories:
 
-|              |Reject null|Accept null|
-|-------------:|-------------:|--------------:|
-|Null is true |True positive |False negative |
-|Null is false|False positive|True negative  |
+
+|                    |Label as different   |Label as not different|
+|-------------------:|--------------------:|---------------------:|
+|Truly different     |True positive        |False negative        |
+|Truly not different |False positive       |True negative         |
+
 
 If the null hypothesis was true for every feature, then as we perform more and
 more tests we'd tend to correctly categorise most
 results as negative. However, since p-values
 are uniformly distributed under the null,
 at a significance level of 5%, 5% of all
-results will be "significant" even though we would expect to see these results, given the null hypothesis is true, simply by chance.
+results will be "significant" even though we would expect to see these results,
+given the null hypothesis is true, simply by chance.
 These would fall under the label "false positives" in the table
 above, and are also termed "false discoveries."
 
