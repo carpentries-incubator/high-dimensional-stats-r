@@ -727,9 +727,8 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 
 
 ~~~
- [1] "cg16547529" "cg21801378" "cg22449114" "cg22736354" "cg01820374"
- [6] "cg09809672" "cg11299964" "cg15804973" "cg19761273" "cg22613010"
-[11] "cg26162695"
+[1] "cg02388150" "cg06493994" "cg22449114" "cg22736354" "cg03330058"
+[6] "cg09809672" "cg11299964" "cg19761273" "cg26162695"
 ~~~
 {: .output}
 
@@ -815,7 +814,7 @@ like for different values of `alpha`.
 > >    
 > >    
 > >    ~~~
-> >    [1] 4963
+> >    [1] 4973
 > >    ~~~
 > >    {: .output}
 > >    
@@ -829,7 +828,7 @@ like for different values of `alpha`.
 > >    
 > >    
 > >    ~~~
-> >    [1] 4961
+> >    [1] 4955
 > >    ~~~
 > >    {: .output}
 > >    
