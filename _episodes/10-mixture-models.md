@@ -23,7 +23,6 @@ math: yes
 
 
 
-
 # Introduction
 
 High-dimensional data, especially in biological settings, commonly has
@@ -287,11 +286,9 @@ values here, though it may help. You can see that below our initial starting
 
 
 ~~~
-Warning: Removed 4 rows containing missing values (geom_bar).
+Error in ggplot(data.frame(x = x)): could not find function "ggplot"
 ~~~
-{: .warning}
-
-<img src="../fig/rmd-10-mixture-animation-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+{: .error}
 
 We then assign each data point to the component that fits them better (this is
 the "expectation" step). Then, we maximise the likelihood of the data under
@@ -303,11 +300,9 @@ one iteration, but this won't usually be the case!
 
 
 ~~~
-Warning: Removed 4 rows containing missing values (geom_bar).
+Error in ggplot(data.frame(x = x)): could not find function "ggplot"
 ~~~
-{: .warning}
-
-<img src="../fig/rmd-10-mix-converged-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+{: .error}
 
 The figures shown here were made manually, to be able to step through the 
 process. To fit a 2-D mixture model, it's usually not wise to code it yourself,

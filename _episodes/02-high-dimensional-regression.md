@@ -74,7 +74,7 @@ class: GenomicRatioSet
 dim: 5000 37 
 metadata(0):
 assays(2): M CN
-rownames(5000): cg00075967 cg00374717 ... cg12238634 cg03037856
+rownames(5000): cg00075967 cg00374717 ... cg08482167 cg13174700
 rowData names(0):
 colnames(37): 201868500150_R01C01 201868500150_R03C01 ...
   201870610111_R06C01 201870610111_R07C01
@@ -275,8 +275,6 @@ the problem is a bit more difficult:
 And, of course, we often have an awful lot of features and need
 to prioritise a subset of them! We need a rigorous way to
 prioritise genes for further analysis.
-
-
 
 
 # Fitting a linear model
@@ -675,13 +673,13 @@ head(toptab_age)
 
 
 ~~~
-                logFC   AveExpr        t      P.Value  adj.P.Val        B
-cg06493994 0.01550941 -2.105788 5.583912 2.304679e-06 0.01152339 3.732429
-cg04931708 0.02857885 -1.899064 5.035127 1.267926e-05 0.01817359 2.039791
-cg09798398 0.01161866  2.744169 4.958809 1.604995e-05 0.01817359 1.806596
-cg02388150 0.02065069 -1.595072 4.878692 2.054575e-05 0.01817359 1.562557
-cg25148589 0.02507443 -2.108817 4.813015 2.514460e-05 0.01817359 1.363143
-cg12723809 0.01286601 -3.799122 4.808634 2.548527e-05 0.01817359 1.349864
+                 logFC    AveExpr         t      P.Value   adj.P.Val        B
+cg08446924 -0.02571353 -0.4185868 -6.039068 5.595675e-07 0.002797837 5.131574
+cg06493994  0.01550941 -2.1057877  5.593988 2.239813e-06 0.005599533 3.747986
+cg17661642  0.02266668 -2.0527722  5.358739 4.658336e-06 0.006048733 3.019698
+cg05168977  0.02276336 -2.2918472  5.346500 4.838987e-06 0.006048733 2.981904
+cg24549277  0.01975577 -1.7466088  4.939242 1.708355e-05 0.011508818 1.731821
+cg04436528 -0.01943612  0.7033503 -4.917179 1.828563e-05 0.011508818 1.664608
 ~~~
 {: .output}
 
@@ -918,7 +916,7 @@ Since we've generated a random sequence of ages, we have no reason to suspect
 that there is a true association between methylation levels and this sequence
 of random numbers. However, you can see that the p-value for many features is
 still lower than a traditional significance level of $p=0.05$. In fact, here
-210 features are significant at p < 0.05.
+235 features are significant at p < 0.05.
 If we were to use this fixed threshold in a real experiment, it's likely that
 we'd identify many features as associated with age, when the results we're
 observing are simply due to chance.

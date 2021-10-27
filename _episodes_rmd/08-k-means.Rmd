@@ -79,13 +79,13 @@ in `ggplot`.
 ```{r fake-cluster, echo = FALSE}
 set.seed(11)
 library("MASS")
-data <- mvrnorm(n = 200, mu = rep(1, 2), Sigma = matrix(runif(4), ncol = 2))   
+library("ggplot2")
+data <- mvrnorm(n = 200, mu = rep(1, 2), Sigma = matrix(runif(4), ncol = 2))
 data <- as.data.frame(data)
 colnames(data) <- c("x", "y")
 
 data$cluster <- ifelse(
     data$y < (data$x * -0.06 + 0.9),
-    # data$x < 1.5 & data$y < 1,
     "a",
     ifelse(
         data$y < 1.15,

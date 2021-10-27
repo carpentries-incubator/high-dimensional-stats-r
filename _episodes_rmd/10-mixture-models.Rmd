@@ -101,6 +101,7 @@ curve(
 ```
 
 ```{r plot-univar, echo=FALSE,eval=FALSE}
+library("ggplot2")
 ggplot(data.frame(x = univar)) +
     aes(x) +
     geom_histogram(aes(y = ..density..)) +
