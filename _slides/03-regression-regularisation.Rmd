@@ -53,14 +53,14 @@ combined with the squared *L2 norm* of the coefficients:
 $$
     \left\lVert \beta\right\lVert^2 = \sum_{j=1}^p \beta_j^2
 $$
-
 --
 
-This gives us a modified least squares:
+This gives us a modified least squares, including a weight, $\lambda$, 
+for the L2 norm:
 
 $$
     \sum_{i=1}^N (y_i - \hat{y}_i)^2 +
-        \left\lVert \beta\right\lVert^2
+        \lambda \left\lVert \beta\right\lVert^2
 $$
 
 ---
@@ -91,7 +91,7 @@ As before this gives us a modified least squares:
 
 $$
     \sum_{i=1}^N (y_i - \hat{y}_i)^2 +
-        \left\lVert \beta\right\lVert^2
+        \lambda \left\lVert \beta\right\lVert^2
 $$
 
 
@@ -100,6 +100,14 @@ $$
 ```{r, out.width="450px", echo=FALSE}
 # , fig.cap='<img src="../fig/cross_validation.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 knitr::include_graphics(here("fig/cross_validation.png"))
+```
+
+
+---
+# Selecting features can work
+```{r, out.width="500px", echo=FALSE}
+# , fig.cap='plot of chunk elastic-contour
+knitr::include_graphics(here("fig/rmd-03-heatmap-lasso-1.png"))
 ```
 
 
@@ -140,3 +148,4 @@ and 0 giving pure ridge regression.
 # , fig.cap='plot of chunk elastic-contour
 knitr::include_graphics(here("fig/rmd-03-elastic-contour-1.png"))
 ```
+

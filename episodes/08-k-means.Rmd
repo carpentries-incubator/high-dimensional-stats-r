@@ -29,23 +29,6 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("08-")
 ```
 
-```{r pkgs, echo=FALSE}
-## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("mixtools")
-    library("irlba")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("Rtsne")
-    library("igraph")
-    library("bluster")
-    library("here")
-})
-theme_set(theme_bw())
-```
-
 # Introduction
 
 High-dimensional data, especially in biological settings,  has

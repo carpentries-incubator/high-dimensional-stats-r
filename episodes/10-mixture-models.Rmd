@@ -24,23 +24,6 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("10-")
 ```
 
-```{r pkgs, echo=FALSE}
-## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("mixtools")
-    library("irlba")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("Rtsne")
-    library("mclust")
-    library("igraph")
-    library("bluster")
-    library("here")
-})
-theme_set(theme_bw())
-```
 
 # Introduction
 
