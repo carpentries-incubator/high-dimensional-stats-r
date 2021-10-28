@@ -165,7 +165,14 @@ Disadvantages:
 > 
 > > ## Solution
 > > 
-> > 3
+> > 3. 
+> >
+> > In the first case, a regression model would be more suitable; perhaps a
+> > survival model.
+> > In the second, again a regression model, likely linear or logistic, would
+> > be more suitable.
+> > In the third example, PCA can help to identify modules of correlated
+> > features that explain a large amount of variation within the data.
 > {: .solution}
 {: .challenge}
 
@@ -272,7 +279,7 @@ want to use in the PCA.
 
 
 ~~~
-pros2 <- Prostate[, c(1, 2, 4, 6, 9)]
+pros2 <- Prostate[, c("lcavol", "lweight", "lbph", "lcp", "lpsa")]
 head(pros2)
 ~~~
 {: .language-r}
@@ -336,8 +343,8 @@ deviation of 1.
 > Discuss.
 > 
 > 1. To make the results of the PCA interesting.
-> 2. To ensure that variables with different ranges of values contribute
->    equally to analysis.
+> 2. If you want to ensure that variables with different ranges of values
+>    contribute equally to analysis.
 > 3. To allow the feature matrix to be calculated faster, especially in cases
 >    where there are a lot of input variables.
 > 4. To allow both continuous and categorical variables to be included in the PCA.
@@ -345,10 +352,20 @@ deviation of 1.
 > 
 > > ## Solution
 > > 
-> > 2
+> > 2.
+> > Scaling the data isn't guaranteed to make the results more interesting.
+> > It also won't affect how quickly the output will be calculated, whether
+> > continuous and categorical variables are present or not.
 > > 
-> > Datasets which contain continuous variables all measured on the same scale
-> > (e.g. gene expression data or RNA sequencing data). 
+> > It is done to ensure that all features have equal weighting in the resulting
+> > PCs.
+> > 
+> > You may not want to standardise datasets which contain continuous variables
+> > all measured on the same scale (e.g. gene expression data or RNA sequencing
+> > data). In this case, variables with very little sample-to-sample variability
+> > may represent only random noise, and standardising the data would give
+> > these extra weight in the PCA.
+> > 
 > {: .solution}
 {: .challenge}
 
@@ -415,11 +432,11 @@ each principal component. Let's calculate the screeplot for our PCA.
 
 
 ~~~
-#calculate variance explained
+# calculate variance explained
 varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
-#calculate percentage variance explained using output from the PCA
+# calculate percentage variance explained using output from the PCA
 varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
-#create new dataframe with five rows, one for each principal component
+# create new dataframe with five rows, one for each principal component
 ~~~
 {: .language-r}
 
