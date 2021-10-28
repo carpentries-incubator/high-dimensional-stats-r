@@ -287,43 +287,6 @@ available via the `rotation` argument (default is 'none').
 > > 
 > > 
 > > ~~~
-> > pros.fa
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > 
-> > Call:
-> > factanal(x = pros2, factors = 2)
-> > 
-> > Uniquenesses:
-> >  lcavol lweight    lbph     lcp    lpsa 
-> >   0.121   0.422   0.656   0.478   0.317 
-> > 
-> > Loadings:
-> >         Factor1 Factor2
-> > lcavol   0.936         
-> > lweight  0.165   0.742 
-> > lbph             0.586 
-> > lcp      0.722         
-> > lpsa     0.768   0.307 
-> > 
-> >                Factor1 Factor2
-> > SS loadings      2.015   0.992
-> > Proportion Var   0.403   0.198
-> > Cumulative Var   0.403   0.601
-> > 
-> > Test of the hypothesis that 2 factors are sufficient.
-> > The chi square statistic is 0.02 on 1 degree of freedom.
-> > The p-value is 0.878 
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
 > > # Error shows that fitting three factors are not appropriate
 > > # for only 5 variables (number of variables too high)
 > > ~~~
@@ -361,11 +324,10 @@ An estimate of the total amount of variation in the original data,
 $\hat{\Sigma}$, is calculated by summing our estimate of total communality
 and uniqueness of each variable.
 
-*Communality* represents the degree to which variables explain the same
+- *Communality* represents the degree to which variables explain the same
 variation in the data and is calculated for each variable by summing the
 (squared) loadings. 
-
-*Uniqueness* is the opposite of communality and represents the amount of
+- *Uniqueness* is the opposite of communality and represents the amount of
 variation in the data uniquely explained by one variable. Uniqueness is
 calculated by subtracting the communality value from 1.
 
@@ -409,18 +371,18 @@ showing the contribution of each variable to the factors.
 pros.fa <- factanal(pros2, factors = 2)
 
 #plot loadings for each factor
-plot(pros.fa$loadings[,1], 
-     pros.fa$loadings[,2],
+plot(pros.fa$loadings[, 1], 
+     pros.fa$loadings[, 2],
      xlab = "Factor 1", 
      ylab = "Factor 2", 
-     ylim = c(-1,1),
-     xlim = c(-1,1),
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
      main = "Factor analysis of prostate data")
 abline(h = 0, v = 0)
 
 #add column names to each point
-text(pros.fa$loadings[,1] - 0.08, 
-     pros.fa$loadings[,2] + 0.08,
+text(pros.fa$loadings[, 1] - 0.08, 
+     pros.fa$loadings[, 2] + 0.08,
      colnames(pros2),
      col = "blue")
 ~~~
