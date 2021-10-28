@@ -7,87 +7,29 @@ output:
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-# plot of chunk fake-cluster
-```{r, out.width="100%", echo=FALSE}
+
+# Why would we cluster data?
+
+We think there is some unknown grouping driving the variation in the data.
+
+We want to identify how many subgroups are in the data.
+
+We want to then investigate the properties of these subgroups and
+infer their biological meaning.
+
+---
+
+# Clustering can be deceptive
+```{r, out.width="500px", echo=FALSE}
 # , fig.cap='plot of chunk fake-cluster
 knitr::include_graphics(here("fig/rmd-08-fake-cluster-1.png"))
 ```
 
 ---
-# Alt
-```{r, out.width="100%", echo=FALSE}
+
+# K-means in action
+
+```{r, out.width="500px", echo=FALSE}
 # , fig.cap='<img src="../fig/kmeans.gif" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 knitr::include_graphics(here("fig/kmeans.gif"))
 ```
-
----
-# Alt
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='Alt
-knitr::include_graphics(here("fig/rmd-08-kmeans-1.png"))
-```
-
----
-# plot of chunk kmeans-ex
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk kmeans-ex
-knitr::include_graphics(here("fig/rmd-08-kmeans-ex-1.png"))
-```
-
----
-# plot of chunk unnamed-chunk-1
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk unnamed-chunk-1
-knitr::include_graphics(here("fig/rmd-08-unnamed-chunk-1-1.png"))
-```
-
----
-# plot of chunk silhouette
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk silhouette
-knitr::include_graphics(here("fig/rmd-08-silhouette-1.png"))
-```
-
----
-# plot of chunk plot-silhouette
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk plot-silhouette
-knitr::include_graphics(here("fig/rmd-08-plot-silhouette-1.png"))
-```
-
----
-# plot of chunk silhouette-ex
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk silhouette-ex
-knitr::include_graphics(here("fig/rmd-08-silhouette-ex-1.png"))
-```
-
----
-# plot of chunk unnamed-chunk-4
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='> > <img src="../fig/silhouette5.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
-knitr::include_graphics(here("fig/silhouette5.png"))
-```
-
----
-# plot of chunk boots
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk boots
-knitr::include_graphics(here("fig/rmd-08-boots-1.png"))
-```
-
----
-# plot of chunk bs-heatmap
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk bs-heatmap
-knitr::include_graphics(here("fig/rmd-08-bs-heatmap-1.png"))
-```
-
----
-# plot of chunk bs-ex
-```{r, out.width="100%", echo=FALSE}
-# , fig.cap='plot of chunk bs-ex
-knitr::include_graphics(here("fig/rmd-08-bs-ex-1.png"))
-```
-
----
