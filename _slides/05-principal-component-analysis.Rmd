@@ -60,8 +60,18 @@ are weights or loadings.
 
 ---
 
-# PCA finds the main sources of variation in the data
+
+# PCA intuitively
 
 ```{r, out.width="500px", echo=FALSE}
 knitr::include_graphics(here("fig/pendulum.gif"))
 ```
+
+---
+
+# PCA is a rotation of the data
+
+```{r, out.width="700px", echo=FALSE}
+knitr::include_graphics(here("fig/bio_index_vs_percentage_fallow.png"))
+```
+
