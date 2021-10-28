@@ -1,6 +1,8 @@
 ---
 title: "Regression with many features"
-output: beamer_presentation
+output:
+    xaringan::moon_reader:
+        self_contained: true
 ---
 ```{r, echo=FALSE, message=FALSE}
 library("here")
