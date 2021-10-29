@@ -589,6 +589,171 @@ using the complete linkage method.
 {: .challenge}
 
 
+# Using different distance methods
+
+So far, we've been using Euclidean distance to define the dissimilarity
+or distance between observations. However, this isn't always the best
+metric for how dissimilar different observations are. Let's make an
+example to demonstrate. Here, we're creating two samples each with
+ten observations of random noise:
+
+
+~~~
+cor_example <- data.frame(
+  sample_a = rnorm(10),
+  sample_b = rnorm(10)
+)
+rownames(cor_example) <- paste(
+  "Feature", 1:nrow(cor_example)
+)
+~~~
+{: .language-r}
+
+Now, let's create a new sample that has exactly the same pattern across all
+our features as `sample_a`, just offset by 5:
+
+
+~~~
+cor_example$sample_c <- cor_example$sample_a + 5
+~~~
+{: .language-r}
+
+You can see that this is a lot like the `assay` of our methylation object
+from earlier, where columns are observations or samples, and rows are features:
+
+
+~~~
+head(cor_example)
+~~~
+{: .language-r}
+
+
+
+~~~
+            sample_a   sample_b sample_c
+Feature 1  0.2795263 -0.6430326 5.279526
+Feature 2 -1.5348885 -0.1910778 3.465112
+Feature 3 -0.3521304 -1.8745394 4.647870
+Feature 4  0.5815471  0.9185538 5.581547
+Feature 5 -0.1481313 -1.9568191 4.851869
+Feature 6  0.5243662  0.3559532 5.524366
+~~~
+{: .output}
+
+If we plot a heatmap of this, we can see that `sample_a` and `sample_b` are
+grouped together because they have a small distance to each other, despite
+being quite different in their pattern across the different features.
+In contrast, `sample_a` and `sample_c` are very distant, despite having
+*exactly* the same pattern across the different features.
+
+
+~~~
+pheatmap(cor_example)
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: The input is a data frame, convert it to the matrix.
+~~~
+{: .warning}
+
+<img src="../fig/rmd-09-heatmap-cor-example-1.png" title="plot of chunk heatmap-cor-example" alt="plot of chunk heatmap-cor-example" width="432" style="display: block; margin: auto;" />
+
+We can see that more clearly if we do a line plot:
+
+~~~
+## create a blank plot (type = "n" means don't draw anything)
+## with an x range to hold the number of features we have.
+## the range of y needs to be enough to show all the values for every feature
+plot(
+  1:nrow(cor_example),
+  rep(range(cor_example), 5),
+  type = "n"
+)
+## draw a red line for sample_a
+lines(cor_example$sample_a, col = "firebrick")
+## draw a blue line for sample_b
+lines(cor_example$sample_b, col = "dodgerblue")
+## draw a green line for sample_c
+lines(cor_example$sample_c, col = "forestgreen")
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-09-lineplot-cor-example-1.png" title="plot of chunk lineplot-cor-example" alt="plot of chunk lineplot-cor-example" width="432" style="display: block; margin: auto;" />
+
+We can see that `sample_a` and `sample_c` have exactly the same pattern across
+all of the different features. However, due to the overall difference between
+the values, they have a high distance to each other.
+We can see that if we cluster and plot the data ourselves using Euclidean
+distance:
+
+
+~~~
+clust_dist <- hclust(dist(t(cor_example)))
+plot(clust_dist)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-09-clust-euc-cor-example-1.png" title="plot of chunk clust-euc-cor-example" alt="plot of chunk clust-euc-cor-example" width="432" style="display: block; margin: auto;" />
+
+In some cases, we might want to ensure that samples that have similar patterns,
+whether that be of gene expression, or DNA methylation, have small distances
+to each other. Correlation is a measure of this kind of similarity in pattern.
+However, high correlations indicate similarity, while for a distance measure
+we know that high distances indicate dissimilarity. Therefore, if we wanted
+to cluster observations based on the correlation, or the similarity of patterns,
+we can use `1 - cor(x)` as the distance metric.
+The input to `hclust` must be a `dist` object, so we also need to call `as.dist`
+on it before passing it in.
+
+
+~~~
+cor_as_dist <- as.dist(1 - cor(cor_example))
+clust_cor <- hclust(cor_as_dist)
+plot(clust_cor)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-09-clust-cor-cor-example-1.png" title="plot of chunk clust-cor-cor-example" alt="plot of chunk clust-cor-cor-example" width="432" style="display: block; margin: auto;" />
+
+Now, `sample_a` and `sample_c` that have identical patterns across the features
+are grouped together, while `sample_b` is seen as distant because it has a
+different pattern, even though its values are closer to `sample_a`.
+Using your own distance function is often useful, especially if you have missing
+or unusual data. It's often possible to use correlation and other custom
+distance functions to functions that perform hierarchical clustering, such as
+`pheatmap` and `stats::heatmap`:
+
+
+~~~
+## pheatmap allows you to select correlation directly
+pheatmap(cor_example, clustering_distance_cols = "correlation")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: The input is a data frame, convert it to the matrix.
+~~~
+{: .warning}
+
+<img src="../fig/rmd-09-heatmap-cor-cor-example-1.png" title="plot of chunk heatmap-cor-cor-example" alt="plot of chunk heatmap-cor-cor-example" width="432" style="display: block; margin: auto;" />
+
+~~~
+## stats::heatmap requiresmatrix input
+heatmap(
+  as.matrix(cor_example),
+  distfun = function(x) as.dist(1 - cor(t(x)))
+)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-09-heatmap-cor-cor-example-2.png" title="plot of chunk heatmap-cor-cor-example" alt="plot of chunk heatmap-cor-cor-example" width="432" style="display: block; margin: auto;" />
+
+
 # Validating clusters
 
 Now that we know how to carry out hierarchical clustering, how do we know how
@@ -651,8 +816,8 @@ between sets of clusters with larger values being preferred.
 
 > ## Challenge 4
 > 
-> Examine how changing the `h` or `k` arguments in the `hclust` function
-> affects the value of the Dunn index
+> Examine how changing the `h` or `k` arguments in the `cutree` function
+> affects the value of the Dunn index.
 >
 > > ## Solution:
 > >
