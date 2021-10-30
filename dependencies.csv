@@ -13,7 +13,6 @@ lasso2
 SummarizedExperiment
 glmnet
 leaps
-stats
 PCAtools
 microbiome
 phyloseq

@@ -167,7 +167,10 @@ Disadvantages:
 > 
 > > ## Solution
 > > 
+<<<<<<< HEAD
 > > 3. 
+=======
+>>>>>>> origin/gh-pages
 > >
 > > In the first case, a regression model would be more suitable; perhaps a
 > > survival model.
@@ -175,6 +178,11 @@ Disadvantages:
 > > be more suitable.
 > > In the third example, PCA can help to identify modules of correlated
 > > features that explain a large amount of variation within the data.
+<<<<<<< HEAD
+=======
+> >
+> > Therefore the answer here is 3.
+>>>>>>> origin/gh-pages
 > {: .solution}
 {: .challenge}
 
@@ -258,8 +266,8 @@ First, we will examine the `Prostate` dataset which can be downloaded as part
 of the `lasso2` package:
 
 ```{r lasso2}
-library(lasso2)
-data(Prostate)
+library("lasso2")
+data("Prostate")
 ```
 
 ```{r prostate}
@@ -419,7 +427,7 @@ representing the loadings onto the graph.
 A biplot of the first two principal components can be created as follows:
 
 ```{r stats-biplot, fig.cap="Caption", fig.cap="Alt"}
-stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
+biplot(pca.pros, xlim = c(-0.3, 0.3))
 ```
 
 This biplot shows the position of each patient on a 2-dimensional plot where
@@ -536,7 +544,7 @@ represents.
 > 
 > > ## Solution
 > > 
-> > ```{r pca-ex, echo=FALSE}
+> > ```{r pca-ex}
 > > pc <- pca(mat, metadata = metadata)
 > > #Many PCs explain a very small amount of the total variance in the data
 > > #Remove the lower 20% of PCs with lower variance
@@ -636,7 +644,7 @@ package.
 > > ## Solution
 > > 
 > > ```{r biplot-ex, fig.cap="Caption", fig.cap="Alt"}
-> > PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
+> > biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 > > ```
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
@@ -651,7 +659,7 @@ package.
 Let's consider this biplot in more detail, and also display the loadings:
 
 ```{r pca-biplot, fig.cap="Caption", fig.cap="Alt"}
-PCAtools::biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
+biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
 ```
 
 Sizes of labels, points and axes can be changed using arguments in `biplot`
@@ -675,7 +683,7 @@ detecting genes on each principal component.
 > > ## Solution
 > > 
 > > ```{r pca-biplot-ex2, fig.cap="Caption", fig.cap="Alt"}
-> >   PCAtools::biplot(pc,
+> >   biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
 > >     hline = 0, vline = 0,

@@ -82,6 +82,7 @@ about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 
 Columns are:
 
+<<<<<<< HEAD
 
 - `lcavol`: log(cancer volume)
 - `lweight`: log(prostate weight)
@@ -101,6 +102,27 @@ components have already been identified as explaining a large proportion
 of variance in the data when these data were analysed in the PCA episode.
 We may expect a similar number of factors to exist in the data.
 
+=======
+
+- `lcavol`: log(cancer volume)
+- `lweight`: log(prostate weight)
+- `age`: age (years)
+- `lbph`: log(benign prostatic hyperplasia amount)
+- `svi`: seminal vesicle invasion
+- `lcp`: log (capsular penetration); amount of spread of cancer in outer walls
+  of prostate
+- `gleason`: [Gleason score](https://en.wikipedia.org/wiki/Gleason_grading_system)
+- `pgg45`: percentage Gleason scores 4 or 5
+- `lpsa`: log(prostate specific antigen)
+
+
+In this example we use the clinical variables to identify factors representing
+various clinical variables from prostate cancer patients. Two principal
+components have already been identified as explaining a large proportion
+of variance in the data when these data were analysed in the PCA episode.
+We may expect a similar number of factors to exist in the data.
+
+>>>>>>> origin/gh-pages
 Let's subset the data to just include the log-transformed clinical variables
 for the purposes of this episode:
 
@@ -157,7 +179,10 @@ available via the `rotation` argument (default is 'none').
 > > 
 > > #Include three factors
 > > pros.fa <- factanal(pros2, factors = 3)
+<<<<<<< HEAD
 > > pros.fa
+=======
+>>>>>>> origin/gh-pages
 > > # Error shows that fitting three factors are not appropriate
 > > # for only 5 variables (number of variables too high)
 > > ```
@@ -194,11 +219,18 @@ An estimate of the total amount of variation in the original data,
 $\hat{\Sigma}$, is calculated by summing our estimate of total communality
 and uniqueness of each variable.
 
+<<<<<<< HEAD
 *Communality* represents the degree to which variables explain the same
 variation in the data and is calculated for each variable by summing the
 (squared) loadings. 
 
 *Uniqueness* is the opposite of communality and represents the amount of
+=======
+- *Communality* represents the degree to which variables explain the same
+variation in the data and is calculated for each variable by summing the
+(squared) loadings. 
+- *Uniqueness* is the opposite of communality and represents the amount of
+>>>>>>> origin/gh-pages
 variation in the data uniquely explained by one variable. Uniqueness is
 calculated by subtracting the communality value from 1.
 
@@ -217,18 +249,23 @@ showing the contribution of each variable to the factors.
 pros.fa <- factanal(pros2, factors = 2)
 
 #plot loadings for each factor
-plot(pros.fa$loadings[,1], 
-     pros.fa$loadings[,2],
+plot(pros.fa$loadings[, 1], 
+     pros.fa$loadings[, 2],
      xlab = "Factor 1", 
      ylab = "Factor 2", 
-     ylim = c(-1,1),
-     xlim = c(-1,1),
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
      main = "Factor analysis of prostate data")
 abline(h = 0, v = 0)
 
 #add column names to each point
+<<<<<<< HEAD
 text(pros.fa$loadings[,1] - 0.08, 
      pros.fa$loadings[,2] + 0.08,
+=======
+text(pros.fa$loadings[, 1] - 0.08, 
+     pros.fa$loadings[, 2] + 0.08,
+>>>>>>> origin/gh-pages
      colnames(pros2),
      col = "blue")
 

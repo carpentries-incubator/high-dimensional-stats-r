@@ -7,65 +7,80 @@ output:
 ```{r, echo=FALSE, message=FALSE}
 library("here")
 ```
-
-
-# Why reduce dimensions?
-
-High dimensional data is difficult to analyse:
-- many variables (p)
-- difficult to visualise and intuit
-- sometimes no clear response variable.
-
---
-
-Reducing dimensionality can retain (most of) the original information
-and make the data easier to understand and work with.
-
---
-
-Principal Component Analysis (PCA) is one such method for identifying the main
-sources of variation in a dataset.
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='<img src="../fig/bio_index_vs_percentage_fallow.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
+knitr::include_graphics(here("fig/bio_index_vs_percentage_fallow.png"))
+```
 
 ---
-
-# What is PCA (informally)?
-
-PCA finds linear combinations of the input features that explain a large amount
-of the variation in the data, combining them into new features called
-"principal components" (PC).
-
---
-
-The first PC has largest explanatory power.
-
---
-
-Each of these PCs is independent from the previous one.
-
---
-
-The contribution of each feature to each PC is measured by its loading.
-
-
----
-
-# What is PCA (formally)?
-
-The first principal component ($Z_1$) is calculated using the equation:
-
-$$  
-  Z_1 = w_{11}X_1 + w_{21}X_2 +....+ w_{p1}X_p
-$$
-
-$X_1, ..., X_p$ represents variables in the original dataset and $w_{11}, ..., w_p$
-represent principal component loadings, which can be thought of as the degree to
-which each variable contributes to the calculation of the principal component.
-
----
-
-# PCA finds the main sources of variation in the data
-
+# Alt
 ```{r, out.width="100%", echo=FALSE}
 # , fig.cap='<img src="../fig/pendulum.gif" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 knitr::include_graphics(here("fig/pendulum.gif"))
 ```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-var-hist-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-vardf-plot-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-stats-biplot-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-scree-ex-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-biplot-ex-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-pca-biplot-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-pca-loadings-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-pca-biplot-ex2-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-05-pairsplot-1.png"))
+```
+
+---

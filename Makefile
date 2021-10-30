@@ -145,8 +145,8 @@ _episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
-_slides/%.Rmd: _episodes/%.md
-	Rscript bin/slider.R $< $@
+# _slides/%.Rmd: _episodes/%.md
+# 	Rscript bin/slider.R $< $@
 
 _slides/%.html: _slides/%.Rmd
 	Rscript -e 'rmarkdown::render("$<")'
