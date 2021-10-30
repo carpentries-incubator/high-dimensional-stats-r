@@ -188,8 +188,8 @@ available via the `rotation` argument (default is 'none').
 > > 
 > > ~~~
 > > # Include one factor only
-> > pros.fa <- factanal(pros2, factors = 1)
-> > pros.fa
+> > pros_fa <- factanal(pros2, factors = 1)
+> > pros_fa
 > > ~~~
 > > {: .language-r}
 > > 
@@ -230,8 +230,8 @@ available via the `rotation` argument (default is 'none').
 > > # dimensionality in the dataset
 > > 
 > > # Include two factors
-> > pros.fa <- factanal(pros2, factors = 2)
-> > pros.fa
+> > pros_fa <- factanal(pros2, factors = 2)
+> > pros_fa
 > > ~~~
 > > {: .language-r}
 > > 
@@ -273,7 +273,7 @@ available via the `rotation` argument (default is 'none').
 > > # full dimensionality in the dataset
 > > 
 > > #Include three factors
-> > pros.fa <- factanal(pros2, factors = 3)
+> > pros_fa <- factanal(pros2, factors = 3)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -333,7 +333,7 @@ calculated by subtracting the communality value from 1.
 
 
 ~~~
-apply(pros.fa$loadings^2, 1, sum)  #communality
+apply(pros_fa$loadings^2, 1, sum)  #communality
 ~~~
 {: .language-r}
 
@@ -348,7 +348,7 @@ apply(pros.fa$loadings^2, 1, sum)  #communality
 
 
 ~~~
-1 - apply(pros.fa$loadings^2, 1, sum)  #uniqueness
+1 - apply(pros_fa$loadings^2, 1, sum)  #uniqueness
 ~~~
 {: .language-r}
 
@@ -368,40 +368,31 @@ showing the contribution of each variable to the factors.
 
 ~~~
 #First, carry out factor analysis using two factors
-pros.fa <- factanal(pros2, factors = 2)
+pros_fa <- factanal(pros2, factors = 2)
 
 #plot loadings for each factor
-plot(pros.fa$loadings[, 1], 
-     pros.fa$loadings[, 2],
-     xlab = "Factor 1", 
-     ylab = "Factor 2", 
-     ylim = c(-1, 1),
-     xlim = c(-1, 1),
-     main = "Factor analysis of prostate data")
+plot(
+  pros_fa$loadings[, 1], 
+  pros_fa$loadings[, 2],
+  xlab = "Factor 1", 
+  ylab = "Factor 2", 
+  ylim = c(-1, 1),
+  xlim = c(-1, 1),
+  main = "Factor analysis of prostate data"
+)
 abline(h = 0, v = 0)
 
 #add column names to each point
-<<<<<<< HEAD
-text(pros.fa$loadings[,1] - 0.08, 
-     pros.fa$loadings[,2] + 0.08,
-=======
-text(pros.fa$loadings[, 1] - 0.08, 
-     pros.fa$loadings[, 2] + 0.08,
->>>>>>> origin/gh-pages
-     colnames(pros2),
-     col = "blue")
+text(
+  pros_fa$loadings[, 1] - 0.08, 
+  pros_fa$loadings[, 2] + 0.08,
+  colnames(pros2),
+  col = "blue"
+)
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error: <text>:15:1: unexpected input
-14: #add column names to each point
-15: <<
-    ^
-~~~
-{: .error}
+<img src="../fig/rmd-06-biplot-1.png" title="plot of chunk biplot" alt="plot of chunk biplot" width="432" style="display: block; margin: auto;" />
 
 
 > ## Challenge 2 (3 mins)

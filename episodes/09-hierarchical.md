@@ -792,7 +792,7 @@ Let's calculate the Dunn index for clustering carried out on the
 ## calculate dunn index
 ## (ratio of the smallest distance between obs not in the same cluster
 ## to the largest intra-cluster distance)
-library(clValid)
+library("clValid")
 ## calculate euclidean distance between points 
 distmat <- dist(small_methyl_mat)  
 clust <- hclust(distmat, method = "complete")
