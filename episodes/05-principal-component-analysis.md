@@ -165,10 +165,6 @@ Disadvantages:
 > 
 > > ## Solution
 > > 
-<<<<<<< HEAD
-> > 3. 
-=======
->>>>>>> origin/gh-pages
 > >
 > > In the first case, a regression model would be more suitable; perhaps a
 > > survival model.
@@ -176,11 +172,8 @@ Disadvantages:
 > > be more suitable.
 > > In the third example, PCA can help to identify modules of correlated
 > > features that explain a large amount of variation within the data.
-<<<<<<< HEAD
-=======
 > >
 > > Therefore the answer here is 3.
->>>>>>> origin/gh-pages
 > {: .solution}
 {: .challenge}
 
