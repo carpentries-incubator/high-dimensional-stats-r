@@ -29,23 +29,6 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("08-")
 ```
 
-```{r pkgs, echo=FALSE}
-## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("mixtools")
-    library("irlba")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("Rtsne")
-    library("igraph")
-    library("bluster")
-    library("here")
-})
-theme_set(theme_bw())
-```
-
 # Introduction
 
 High-dimensional data, especially in biological settings,  has
@@ -96,13 +79,13 @@ in `ggplot`.
 ```{r fake-cluster, echo = FALSE}
 set.seed(11)
 library("MASS")
-data <- mvrnorm(n = 200, mu = rep(1, 2), Sigma = matrix(runif(4), ncol = 2))   
+library("ggplot2")
+data <- mvrnorm(n = 200, mu = rep(1, 2), Sigma = matrix(runif(4), ncol = 2))
 data <- as.data.frame(data)
 colnames(data) <- c("x", "y")
 
 data$cluster <- ifelse(
     data$y < (data$x * -0.06 + 0.9),
-    # data$x < 1.5 & data$y < 1,
     "a",
     ifelse(
         data$y < 1.15,

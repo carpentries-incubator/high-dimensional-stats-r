@@ -1,11 +1,8 @@
-## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("here")
-})
+pkgs <- c("scRNAseq", "scater", "scuttle", "scran", "here")
+BiocManager::install(pkgs, upgrade = FALSE, ask = FALSE)
+for (pkg in pkgs) {
+    library(pkg, character.only = TRUE)
+}
 set.seed(42)
 
 zd <- ZeiselBrainData()

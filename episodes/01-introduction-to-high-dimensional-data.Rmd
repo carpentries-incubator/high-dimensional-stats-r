@@ -353,8 +353,8 @@ methyl_mat <- t(assay(methylation))
 cor_mat <- cor(methyl_mat)
 ```
 
-```{r view-cor}
-View(cor_mat[1:100,])
+```{r view-cor, eval=FALSE}
+View(cor_mat[1:100, ])
 ```
 
 The `assay` function creates a matrix-like object where rows represent probes

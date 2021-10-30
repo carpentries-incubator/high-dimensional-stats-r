@@ -1,8 +1,9 @@
-suppressPackageStartupMessages({
-    library("FlowSorted.Blood.EPIC")
-    library("ExperimentHub")
-    library("here")
-})
+pkgs <- c("FlowSorted.Blood.EPIC", "ExperimentHub", "here")
+BiocManager::install(pkgs, upgrade = FALSE, ask = FALSE)
+for (pkg in pkgs) {
+    suppressPackageStartupMessages(library(pkg, character.only = TRUE))
+}
+
 Sys.setenv(VROOM_CONNECTION_SIZE = 500072)
 
 hub <- ExperimentHub()

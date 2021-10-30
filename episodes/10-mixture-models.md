@@ -23,7 +23,6 @@ math: yes
 
 
 
-
 # Introduction
 
 High-dimensional data, especially in biological settings, commonly has
@@ -246,16 +245,10 @@ curve(
 > >    
 > >    ~~~
 > >    fitted_mean_log <- opt_exp$estimate[["meanlog"]]
-> >    fitted_sd_exp <- opt_exp$estimate[["sdlog"]]
+> >    fitted_sd_log <- opt_exp$estimate[["sdlog"]]
 > >    hist(univar_exp, freq = FALSE, breaks = "FD")
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-10-fit-dlnorm-1.png" title="plot of chunk fit-dlnorm" alt="plot of chunk fit-dlnorm" width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
 > >    curve(
-> >        dnorm(x, mean = fitted_mean_exp, sd = fitted_sd_exp),
+> >        dnorm(x, mean = fitted_mean_log, sd = fitted_sd_log),
 > >        from = min(univar_exp),
 > >        to = max(univar_exp),
 > >        add = TRUE
@@ -263,12 +256,7 @@ curve(
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    
-> >    
-> >    ~~~
-> >    Error in dnorm(x, mean = fitted_mean_exp, sd = fitted_sd_exp): object 'fitted_mean_exp' not found
-> >    ~~~
-> >    {: .error}
+> >    <img src="../fig/rmd-10-fit-dlnorm-1.png" title="plot of chunk fit-dlnorm" alt="plot of chunk fit-dlnorm" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
