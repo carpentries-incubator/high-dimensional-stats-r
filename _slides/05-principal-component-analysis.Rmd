@@ -53,9 +53,9 @@ The contribution of each feature to each PC is measured by its loading.
 
 The first principal component, $Z_1$ is calculated using the equation:  
 
-$Z_1 = w_{1} X_{1} + w_{21} X_{2} + \dots + w_{p1} X_{p}$
+$Z_1 = a_{11} X_{1} + a_{21} X_{2} + \dots + a_{p1} X_{p}$
 
-$X_1, ..., X_p$ are features in the original dataset and $w_{11}, ..., w_p$
+$X_1, ..., X_p$ are features in the original dataset and $a_{11}, ..., a_p$
 are weights or loadings.
 
 ---
