@@ -77,6 +77,7 @@ about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 
 Columns are:
 
+<<<<<<< HEAD
 
 - `lcavol`: log(cancer volume)
 - `lweight`: log(prostate weight)
@@ -96,6 +97,27 @@ components have already been identified as explaining a large proportion
 of variance in the data when these data were analysed in the PCA episode.
 We may expect a similar number of factors to exist in the data.
 
+=======
+
+- `lcavol`: log(cancer volume)
+- `lweight`: log(prostate weight)
+- `age`: age (years)
+- `lbph`: log(benign prostatic hyperplasia amount)
+- `svi`: seminal vesicle invasion
+- `lcp`: log (capsular penetration); amount of spread of cancer in outer walls
+  of prostate
+- `gleason`: [Gleason score](https://en.wikipedia.org/wiki/Gleason_grading_system)
+- `pgg45`: percentage Gleason scores 4 or 5
+- `lpsa`: log(prostate specific antigen)
+
+
+In this example we use the clinical variables to identify factors representing
+various clinical variables from prostate cancer patients. Two principal
+components have already been identified as explaining a large proportion
+of variance in the data when these data were analysed in the PCA episode.
+We may expect a similar number of factors to exist in the data.
+
+>>>>>>> origin/gh-pages
 Let's subset the data to just include the log-transformed clinical variables
 for the purposes of this episode:
 
@@ -190,41 +212,6 @@ available via the `rotation` argument (default is 'none').
 > > # Include one factor only
 > > pros.fa <- factanal(pros2, factors = 1)
 > > pros.fa
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > 
-> > Call:
-> > factanal(x = pros2, factors = 1)
-> > 
-> > Uniquenesses:
-> >  lcavol lweight    lbph     lcp    lpsa 
-> >   0.149   0.936   0.994   0.485   0.362 
-> > 
-> > Loadings:
-> >         Factor1
-> > lcavol  0.923  
-> > lweight 0.253  
-> > lbph           
-> > lcp     0.718  
-> > lpsa    0.799  
-> > 
-> >                Factor1
-> > SS loadings      2.074
-> > Proportion Var   0.415
-> > 
-> > Test of the hypothesis that 1 factor is sufficient.
-> > The chi square statistic is 29.81 on 5 degrees of freedom.
-> > The p-value is 1.61e-05 
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
 > > # p-value <0.05 suggests that one factor is not sufficient 
 > > # we reject the null hypothesis that one factor captures full
 > > # dimensionality in the dataset
@@ -232,102 +219,30 @@ available via the `rotation` argument (default is 'none').
 > > # Include two factors
 > > pros.fa <- factanal(pros2, factors = 2)
 > > pros.fa
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > 
-> > Call:
-> > factanal(x = pros2, factors = 2)
-> > 
-> > Uniquenesses:
-> >  lcavol lweight    lbph     lcp    lpsa 
-> >   0.121   0.422   0.656   0.478   0.317 
-> > 
-> > Loadings:
-> >         Factor1 Factor2
-> > lcavol   0.936         
-> > lweight  0.165   0.742 
-> > lbph             0.586 
-> > lcp      0.722         
-> > lpsa     0.768   0.307 
-> > 
-> >                Factor1 Factor2
-> > SS loadings      2.015   0.992
-> > Proportion Var   0.403   0.198
-> > Cumulative Var   0.403   0.601
-> > 
-> > Test of the hypothesis that 2 factors are sufficient.
-> > The chi square statistic is 0.02 on 1 degree of freedom.
-> > The p-value is 0.878 
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
 > > # p-value >0.05 suggests that two factors is sufficient 
 > > # we cannot reject the null hypothesis that two factors captures
 > > # full dimensionality in the dataset
 > > 
 > > #Include three factors
 > > pros.fa <- factanal(pros2, factors = 3)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in factanal(pros2, factors = 3): 3 factors are too many for 5 variables
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
+> > <<<<<<< HEAD
 > > pros.fa
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > 
-> > Call:
-> > factanal(x = pros2, factors = 2)
-> > 
-> > Uniquenesses:
-> >  lcavol lweight    lbph     lcp    lpsa 
-> >   0.121   0.422   0.656   0.478   0.317 
-> > 
-> > Loadings:
-> >         Factor1 Factor2
-> > lcavol   0.936         
-> > lweight  0.165   0.742 
-> > lbph             0.586 
-> > lcp      0.722         
-> > lpsa     0.768   0.307 
-> > 
-> >                Factor1 Factor2
-> > SS loadings      2.015   0.992
-> > Proportion Var   0.403   0.198
-> > Cumulative Var   0.403   0.601
-> > 
-> > Test of the hypothesis that 2 factors are sufficient.
-> > The chi square statistic is 0.02 on 1 degree of freedom.
-> > The p-value is 0.878 
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
+> > =======
+> > >>>>>>> origin/gh-pages
 > > # Error shows that fitting three factors are not appropriate
 > > # for only 5 variables (number of variables too high)
 > > ~~~
 > > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error: <text>:17:1: unexpected input
+> > 16: pros.fa <- factanal(pros2, factors = 3)
+> > 17: <<
+> >     ^
+> > ~~~
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
@@ -361,11 +276,18 @@ An estimate of the total amount of variation in the original data,
 $\hat{\Sigma}$, is calculated by summing our estimate of total communality
 and uniqueness of each variable.
 
+<<<<<<< HEAD
 *Communality* represents the degree to which variables explain the same
 variation in the data and is calculated for each variable by summing the
 (squared) loadings. 
 
 *Uniqueness* is the opposite of communality and represents the amount of
+=======
+- *Communality* represents the degree to which variables explain the same
+variation in the data and is calculated for each variable by summing the
+(squared) loadings. 
+- *Uniqueness* is the opposite of communality and represents the amount of
+>>>>>>> origin/gh-pages
 variation in the data uniquely explained by one variable. Uniqueness is
 calculated by subtracting the communality value from 1.
 
@@ -378,10 +300,9 @@ apply(pros.fa$loadings^2, 1, sum)  #communality
 
 
 ~~~
-   lcavol   lweight      lbph       lcp      lpsa 
-0.8793780 0.5782317 0.3438669 0.5223639 0.6832788 
+Error in apply(pros.fa$loadings^2, 1, sum): object 'pros.fa' not found
 ~~~
-{: .output}
+{: .error}
 
 
 
@@ -393,10 +314,9 @@ apply(pros.fa$loadings^2, 1, sum)  #communality
 
 
 ~~~
-   lcavol   lweight      lbph       lcp      lpsa 
-0.1206220 0.4217683 0.6561331 0.4776361 0.3167212 
+Error in apply(pros.fa$loadings^2, 1, sum): object 'pros.fa' not found
 ~~~
-{: .output}
+{: .error}
 
 # Visualising the contribution of each variable to the factors
 
@@ -409,24 +329,37 @@ showing the contribution of each variable to the factors.
 pros.fa <- factanal(pros2, factors = 2)
 
 #plot loadings for each factor
-plot(pros.fa$loadings[,1], 
-     pros.fa$loadings[,2],
+plot(pros.fa$loadings[, 1], 
+     pros.fa$loadings[, 2],
      xlab = "Factor 1", 
      ylab = "Factor 2", 
-     ylim = c(-1,1),
-     xlim = c(-1,1),
+     ylim = c(-1, 1),
+     xlim = c(-1, 1),
      main = "Factor analysis of prostate data")
 abline(h = 0, v = 0)
 
 #add column names to each point
+<<<<<<< HEAD
 text(pros.fa$loadings[,1] - 0.08, 
      pros.fa$loadings[,2] + 0.08,
+=======
+text(pros.fa$loadings[, 1] - 0.08, 
+     pros.fa$loadings[, 2] + 0.08,
+>>>>>>> origin/gh-pages
      colnames(pros2),
      col = "blue")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-biplot-1.png" title="plot of chunk biplot" alt="plot of chunk biplot" width="432" style="display: block; margin: auto;" />
+
+
+~~~
+Error: <text>:15:1: unexpected input
+14: #add column names to each point
+15: <<
+    ^
+~~~
+{: .error}
 
 
 > ## Challenge 2 (3 mins)

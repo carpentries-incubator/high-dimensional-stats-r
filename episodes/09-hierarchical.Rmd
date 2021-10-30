@@ -113,8 +113,8 @@ matrix and applying clustering using this matrix.
 There are different ways to
 specify a distance matrix for clustering:
 
-* Specify distance as a pre-defined option using the `method` argument in the
-  `dist()` function. Methods include `euclidean` (default), `maximum` and `manhattan`.
+* Specify distance as a pre-defined option using the `method` argument in
+  `dist()`. Methods include `euclidean` (default), `maximum` and `manhattan`.
 * Create a self-defined function which calculates distance from a matrix or
   from two vectors. The function should only contain one argument.
 
@@ -180,10 +180,11 @@ Heatmap(cor_mat,
 # ![Figure 2a: Feature-feature correlation in methylation data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2a hierarchical clustering.png)
 ```
 
-We carry out hierarchical clustering on these data using the function
-`Heatmap` from the ComplexHeatmap package. We use the correlation matrix
-from the small_methylation dataset as the input distance matrix. The `Heatmap`
-function groups features based on similarity of correlation values and orders rows and columns to show clustering of features.
+We carry out hierarchical clustering on these data using 
+`Heatmap()` from the ComplexHeatmap package. We use the correlation matrix
+from the small_methylation dataset as the input distance matrix. `Heatmap()`
+groups features based on similarity of correlation values and orders rows and
+columns to show clustering of features.
 
 
 ```{r heatmap-clust, echo=FALSE}
@@ -203,7 +204,9 @@ Heatmap(cor_mat,
 # ![Figure 2b: Feature-feature correlation in methylation data with dendrogram](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2b hierarchical clustering.png)
 ```
 
-Note that clusters are represented by blocks of similar colours in the heatmap. We can also add other annotations (e.g. dendrograms) to help us identify the clusters. We'll cover dendrograms later in this episode. 
+Note that clusters are represented by blocks of similar colours in the heatmap.
+We can also add other annotations (e.g. dendrograms) to help us identify the
+clusters. We'll cover dendrograms later in this episode. 
 
 Where correlation between features is the data of interest, it may be more
 appropriate to carry out hierarchical clustering using the correlation matrix
@@ -220,16 +223,16 @@ is determining how to fuse different clusters.
 dendrogram. Different linkage methods of creating a dendrogram are discussed
 below.
 
-The function `hclust` supports various linkage methods (e.g `complete`,
+`hclust()` supports various linkage methods (e.g `complete`,
 `single`, `ward D`, `ward D2`, `average`, `median`) and these are also supported
 within the `Heatmap` function. The method used to perform hierarchical
-clustering in `Heatmap` can be specified by the arguments
+clustering in `Heatmap()` can be specified by the arguments
 `clustering_method_rows` and `clustering_method_columns`. Each linkage method
 uses a slightly different algorithm to calculate how clusters are fused together
 and therefore different clustering decisions are made depending on the linkage
 method used.
 
-Complete linkage (the default in `hclust`) works by computing all pairwise
+Complete linkage (the default in `hclust()`) works by computing all pairwise
 dissimilarities between data points in different clusters, using the largest
 pairwise dissimilarity ($d$) to decide which cluster will be fused. Clusters
 with smallest value of $d$ are fused.
@@ -237,7 +240,7 @@ with smallest value of $d$ are fused.
 # Creating a dendrogram using R 
 
 Dendograms are useful tools to visualise the grouping of points and clusters into bigger clusters.
-We can create and plot dendrograms in R using the `hclust` function which takes
+We can create and plot dendrograms in R using `hclust()` which takes
 a distance matrix as input and creates the associated tree using hierarchical
 clustering. Here we create some example data to carry out hierarchical
 clustering. 
@@ -273,9 +276,10 @@ dist_m <- dist(example_data, method = "euclidean")
 
 > ## Challenge 1
 >
-> Use the `hclust` function to implement hierarchical clustering using the
+> Use `hclust()` to implement hierarchical clustering using the
 > distance matrix `dist_m` and 
-> the `complete` linkage method and plot the results as a dendrogram using `plot`.
+> the `complete` linkage method and plot the results as a dendrogram using
+> `plot()`.
 >
 > > ## Solution:
 > >
@@ -304,7 +308,7 @@ example, a cut at height 10 produces two downstream clusters while a cut at
 height 4 produces six downstream clusters.
 
 We can cut the dendrogram to determine number of clusters at different heights
-using the function `cutree`. This function cuts a dendrogram into several
+using `cutree()`. This function cuts a dendrogram into several
 groups (or clusters) where the number of desired groups is controlled by the
 user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut).
@@ -336,7 +340,7 @@ downstream of the cut).
 
 > ## Challenge 2:
 >
-> Identify the value of `k` in the `cutree` function that gives the same
+> Identify the value of `k` in `cutree()` that gives the same
 > output as `h = 5`
 >
 > > ## Solution:
@@ -360,13 +364,14 @@ downstream of the cut).
 > > ```
 > > 
 > > Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a
-> > horizontal line on the dendrogram at `h = 5` to help identify corresponding value of `k`.
+> > horizontal line on the dendrogram at `h = 5` to help identify
+> > corresponding value of `k`.
 > {: .solution}
 {: .challenge}
 
 # What happens if we use different linkage methods?
 
-Here we carry out hierarchical clustering using `hclust` and the `complete`
+Here we carry out hierarchical clustering using `hclust()` and the `complete`
 linkage method. In this example, we calculate a distance matrix between
 correlations in the `small_methyl_mat` dataset. 
 
@@ -392,7 +397,7 @@ avg_dend_obj <- as.dendrogram(clust)
 plot(color_branches(avg_dend_obj, h = 4))
 ```
 
-We can colour clusters downstream of a specified cut using the `color_branches`
+We can colour clusters downstream of a specified cut using `color_branches()`
 function from the `dendextend` package.
 
 Other methods use different metrics to decide which clusters should be fused
@@ -454,6 +459,113 @@ using the complete linkage method.
 {: .challenge}
 
 
+# Using different distance methods
+
+So far, we've been using Euclidean distance to define the dissimilarity
+or distance between observations. However, this isn't always the best
+metric for how dissimilar different observations are. Let's make an
+example to demonstrate. Here, we're creating two samples each with
+ten observations of random noise:
+
+```{r create-cor-example}
+set.seed(20)
+cor_example <- data.frame(
+  sample_a = rnorm(10),
+  sample_b = rnorm(10)
+)
+rownames(cor_example) <- paste(
+  "Feature", 1:nrow(cor_example)
+)
+```
+
+Now, let's create a new sample that has exactly the same pattern across all
+our features as `sample_a`, just offset by 5:
+
+```{r sample-c}
+cor_example$sample_c <- cor_example$sample_a + 5
+```
+
+You can see that this is a lot like the `assay()` of our methylation object
+from earlier, where columns are observations or samples, and rows are features:
+
+```{r head-cor-example}
+head(cor_example)
+```
+
+If we plot a heatmap of this, we can see that `sample_a` and `sample_b` are
+grouped together because they have a small distance to each other, despite
+being quite different in their pattern across the different features.
+In contrast, `sample_a` and `sample_c` are very distant, despite having
+*exactly* the same pattern across the different features.
+
+```{r heatmap-cor-example}
+pheatmap(cor_example)
+```
+
+We can see that more clearly if we do a line plot:
+```{r lineplot-cor-example}
+## create a blank plot (type = "n" means don't draw anything)
+## with an x range to hold the number of features we have.
+## the range of y needs to be enough to show all the values for every feature
+plot(
+  1:nrow(cor_example),
+  rep(range(cor_example), 5),
+  type = "n"
+)
+## draw a red line for sample_a
+lines(cor_example$sample_a, col = "firebrick")
+## draw a blue line for sample_b
+lines(cor_example$sample_b, col = "dodgerblue")
+## draw a green line for sample_c
+lines(cor_example$sample_c, col = "forestgreen")
+```
+
+We can see that `sample_a` and `sample_c` have exactly the same pattern across
+all of the different features. However, due to the overall difference between
+the values, they have a high distance to each other.
+We can see that if we cluster and plot the data ourselves using Euclidean
+distance:
+
+```{r clust-euc-cor-example}
+clust_dist <- hclust(dist(t(cor_example)))
+plot(clust_dist)
+```
+
+In some cases, we might want to ensure that samples that have similar patterns,
+whether that be of gene expression, or DNA methylation, have small distances
+to each other. Correlation is a measure of this kind of similarity in pattern.
+However, high correlations indicate similarity, while for a distance measure
+we know that high distances indicate dissimilarity. Therefore, if we wanted
+to cluster observations based on the correlation, or the similarity of patterns,
+we can use `1 - cor(x)` as the distance metric.
+The input to `hclust` must be a `dist` object, so we also need to call
+`as.dist()` on it before passing it in.
+
+```{r clust-cor-cor-example}
+cor_as_dist <- as.dist(1 - cor(cor_example))
+clust_cor <- hclust(cor_as_dist)
+plot(clust_cor)
+```
+
+Now, `sample_a` and `sample_c` that have identical patterns across the features
+are grouped together, while `sample_b` is seen as distant because it has a
+different pattern, even though its values are closer to `sample_a`.
+Using your own distance function is often useful, especially if you have missing
+or unusual data. It's often possible to use correlation and other custom
+distance functions to functions that perform hierarchical clustering, such as
+`pheatmap()` and `stats::heatmap()`:
+
+```{r heatmap-cor-cor-example}
+## pheatmap allows you to select correlation directly
+pheatmap(cor_example, clustering_distance_cols = "correlation")
+## stats::heatmap requires matrix input
+heatmap(
+  as.matrix(cor_example),
+  distfun = function(x) as.dist(1 - cor(t(x)))
+)
+```
+
+
 # Validating clusters
 
 Now that we know how to carry out hierarchical clustering, how do we know how
@@ -502,8 +614,8 @@ between sets of clusters with larger values being preferred.
 
 > ## Challenge 4
 > 
-> Examine how changing the `h` or `k` arguments in the `hclust` function
-> affects the value of the Dunn index
+> Examine how changing the `h` or `k` arguments in `cutree()`
+> affects the value of the Dunn index.
 >
 > > ## Solution:
 > >
@@ -528,7 +640,7 @@ bigger increases the value of the Dunn index in this example. In this example,
 decreasing `h` below 0.5 gives an infinite Dunn index.
 
 Figure 3 shows how increasing the value of `k` and reducing the value of `h`
-using the `cutree` function results in higher values of the Dunn index.
+using `cutree()` results in higher values of the Dunn index.
 
 ```{r hclust-fig3, echo=FALSE, fig.cap="Figure 3: Dunn index increases with increasing number of clusters"}
 knitr::include_graphics("../fig/hierarchical_clustering_3.png")

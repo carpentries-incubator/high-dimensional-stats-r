@@ -165,7 +165,10 @@ Disadvantages:
 > 
 > > ## Solution
 > > 
+<<<<<<< HEAD
 > > 3. 
+=======
+>>>>>>> origin/gh-pages
 > >
 > > In the first case, a regression model would be more suitable; perhaps a
 > > survival model.
@@ -173,6 +176,11 @@ Disadvantages:
 > > be more suitable.
 > > In the third example, PCA can help to identify modules of correlated
 > > features that explain a large amount of variation within the data.
+<<<<<<< HEAD
+=======
+> >
+> > Therefore the answer here is 3.
+>>>>>>> origin/gh-pages
 > {: .solution}
 {: .challenge}
 
@@ -248,8 +256,8 @@ of the `lasso2` package:
 
 
 ~~~
-library(lasso2)
-data(Prostate)
+library("lasso2")
+data("Prostate")
 ~~~
 {: .language-r}
 
@@ -514,7 +522,7 @@ A biplot of the first two principal components can be created as follows:
 
 
 ~~~
-stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
+biplot(pca.pros, xlim = c(-0.3, 0.3))
 ~~~
 {: .language-r}
 
@@ -659,6 +667,18 @@ represents.
 > > 
 > > 
 > > ~~~
+> > pc <- pca(mat, metadata = metadata)
+> > #Many PCs explain a very small amount of the total variance in the data
+> > #Remove the lower 20% of PCs with lower variance
+> > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
+> > #Explore other arguments provided in pca
+> > pc$rotated[1:5, 1:5]
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
 > >                PC1        PC2        PC3        PC4        PC5
 > > GSM65752 -29.79105  43.866788   3.255903 -40.663138 15.3427597
 > > GSM65753 -37.33911 -15.244788  -4.948201  -6.182795  9.4725870
@@ -667,6 +687,13 @@ represents.
 > > GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772
 > > ~~~
 > > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > pc$loadings[1:5, 1:5]
+> > ~~~
+> > {: .language-r}
 > > 
 > > 
 > > 
@@ -683,9 +710,23 @@ represents.
 > > 
 > > 
 > > ~~~
+> > which.max(pc$loadings[, 1])
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
 > > [1] 49
 > > ~~~
 > > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > pc$loadings[49, ]
+> > ~~~
+> > {: .language-r}
 > > 
 > > 
 > > 
@@ -734,9 +775,23 @@ represents.
 > > 
 > > 
 > > ~~~
+> > which.max(pc$loadings[, 2])
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
 > > [1] 27
 > > ~~~
 > > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > pc$loadings[27, ]
+> > ~~~
+> > {: .language-r}
 > > 
 > > 
 > > 
@@ -869,7 +924,7 @@ package.
 > > 
 > > 
 > > ~~~
-> > PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
+> > biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 > > ~~~
 > > {: .language-r}
 > > 
@@ -888,7 +943,7 @@ Let's consider this biplot in more detail, and also display the loadings:
 
 
 ~~~
-PCAtools::biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
+biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
 ~~~
 {: .language-r}
 
@@ -936,7 +991,7 @@ detecting genes on each principal component.
 > > 
 > > 
 > > ~~~
-> >   PCAtools::biplot(pc,
+> >   biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
 > >     hline = 0, vline = 0,

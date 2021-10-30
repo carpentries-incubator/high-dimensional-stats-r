@@ -310,7 +310,7 @@ prostate_scaled <- scale(prostate_mat)
 > ## Exercise 
 > 
 > 1. Fit a model with the scaled data and compare with the unscaled data.
-> 2. Which coefficients are different between the scaled and unscaled model? Why
+> 2. Which p-values are different between the scaled and unscaled model? Why
 >    do you think that is?
 > 
 > > ## Solution
@@ -357,18 +357,21 @@ prostate_scaled <- scale(prostate_mat)
 > >    
 > >    
 > >    ~~~
-> >    plot(summ_prostate$coef[, "Pr(>|t|)"], summ_scaled$coef[, "Pr(>|t|)"],
-> >      xlab = "Coefficients without scaling",
-> >      ylab = "Coefficients with scaling"
+> >    plot(
+> >      summ_prostate$coef[, "Pr(>|t|)"],
+> >      summ_scaled$coef[, "Pr(>|t|)"],
+> >      xlab = "p-values without scaling",
+> >      ylab = "p-values with scaling"
 > >    )
+> >    abline(0:1, lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
 > >    <img src="../fig/rmd-04-fit-scale-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-> > 2. The intercept is different, because the mean and scale of the input
+> > 2. The p-value for the intercept is different, because the mean and scale of the input
 > >    features have changed! If we were to scale the output, that would also
-> >    change the intercept. The intercept quantifies the difference in means
-> >    independent of changes in the features.
+> >    change the intercept. The intercept quantifies the difference in the mean
+> >    of the response to zero, independent of the explanatory features.
 > > 
 > {: .solution}
 {: .challenge}
@@ -413,7 +416,7 @@ values we really observe.
 
 > ## Exercise 
 > 
-> Do best subset with the prostate data.
+> Do best subset selection with the prostate data.
 > 
 > > ## Solution
 > > 
