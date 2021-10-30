@@ -101,7 +101,7 @@ workshop-check:
 RMD_SRC = $(wildcard _episodes_rmd/??-*.Rmd)
 RMD_DST = $(patsubst _episodes_rmd/%.Rmd,_episodes/%.md,$(RMD_SRC))
 SLI_DST = $(patsubst _episodes/%.md,_slides/%.Rmd,$(RMD_DST))
-SLI_PDF = $(patsubst _slides/%.Rmd,_slides/%.pdf,$(SLI_DST))
+SLI_HTML = $(patsubst _slides/%.Rmd,_slides/%.html,$(SLI_DST))
 FIG_TEX = $(wildcard fig/*.tex)
 FIG_PDF = $(patsubst fig/%.tex,fig/%.pdf,$(FIG_TEX))
 FIG_PNG = $(patsubst fig/%.pdf,fig/%.png,$(FIG_PDF))
@@ -145,13 +145,13 @@ _episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
-_slides/%.Rmd: _episodes/%.md
-	Rscript bin/slider.R $< $@
+# _slides/%.Rmd: _episodes/%.md
+# 	Rscript bin/slider.R $< $@
 
-_slides/%.pdf: _slides/%.Rmd
+_slides/%.html: _slides/%.Rmd
 	Rscript -e 'rmarkdown::render("$<")'
 
-slides: ${SLI_DST} ${SLI_PDF}
+slides: ${SLI_DST} ${SLI_HTML}
 
 figure: ${FIG_PNG} fig/pendulum.gif fig/kmeans.gif clean-fig
 

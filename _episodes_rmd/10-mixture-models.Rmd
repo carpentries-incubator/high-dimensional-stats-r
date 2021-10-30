@@ -24,23 +24,6 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("10-")
 ```
 
-```{r pkgs, echo=FALSE}
-## preamble
-suppressPackageStartupMessages({
-    library("scRNAseq")
-    library("mixtools")
-    library("irlba")
-    library("scater")
-    library("scuttle")
-    library("scran")
-    library("Rtsne")
-    library("mclust")
-    library("igraph")
-    library("bluster")
-    library("here")
-})
-theme_set(theme_bw())
-```
 
 # Introduction
 
@@ -118,6 +101,7 @@ curve(
 ```
 
 ```{r plot-univar, echo=FALSE,eval=FALSE}
+library("ggplot2")
 ggplot(data.frame(x = univar)) +
     aes(x) +
     geom_histogram(aes(y = ..density..)) +
@@ -153,10 +137,10 @@ ggplot(data.frame(x = univar)) +
 > >    mean(univar_exp)
 > >    sd(univar_exp)
 > >    fitted_mean_log <- opt_exp$estimate[["meanlog"]]
-> >    fitted_sd_exp <- opt_exp$estimate[["sdlog"]]
+> >    fitted_sd_log <- opt_exp$estimate[["sdlog"]]
 > >    hist(univar_exp, freq = FALSE, breaks = "FD")
 > >    curve(
-> >        dnorm(x, mean = fitted_mean_exp, sd = fitted_sd_exp),
+> >        dnorm(x, mean = fitted_mean_log, sd = fitted_sd_log),
 > >        from = min(univar_exp),
 > >        to = max(univar_exp),
 > >        add = TRUE
@@ -179,6 +163,7 @@ values here, though it may help. You can see that below our initial starting
 "guess" is really bad in this case:
 
 ```{r mixture-animation, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
+library("ggplot2")
 means <- c(0, 0.1)
 sds <- c(1, 1)
 label_points_mixture <- function(x, means, sds) {

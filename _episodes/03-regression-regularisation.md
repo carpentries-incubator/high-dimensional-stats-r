@@ -97,8 +97,8 @@ F-statistic:   NaN on 36 and 0 DF,  p-value: NA
 ~~~
 {: .output}
 
-You can see that we're able to get effect size estimates, but they seem very 
-high! You can see in the summary that we were unable to estimate
+You can see that we're able to get some effect size estimates, but they seem very 
+high! The summary also says that we were unable to estimate
 effect sizes for 4,964 features
 because of "singularities". What this means is that R couldn't find a way to
 perform the calculations necessary due to the fact that we have more features
@@ -131,8 +131,6 @@ way.
 > of the matrix is zero, we are unable to find its inverse.
 > 
 > 
-> 
-> 
 > ~~~
 > xtx <- t(methyl_mat) %*% methyl_mat
 > det(xtx)
@@ -145,21 +143,6 @@ way.
 > [1] 0
 > ~~~
 > {: .output}
-> 
-> Further, we can only find the inverse of a matrix when
-> it is [full rank](https://en.wikipedia.org/wiki/Rank_(linear_algebra)),
-> which is to say that all of its columns are linearly independent.
-> In this case, the matrix is of rank 37. We may encounter *rank-deficient*
-> matrices if there is multi-collinearity in the data, too.
-> 
-> 
-> ~~~
-> ## Beware: this takes a long time to run
-> library("Matrix")
-> rankMatrix(xtx)
-> # 37
-> ~~~
-> {: .language-r}
 {: .callout}
 
 
@@ -279,6 +262,10 @@ to fit the outcome we're modelling.
 This is especially important when our goal is prediction -- 
 it's not much good if we can only predict well for samples where
 the outcome is already known, after all!
+
+To get an idea of how well our model generalises, we can split the data into
+two - "training" and "test" sets. We use the "training" data to fit the model,
+and then see its performance on the "test" data.
 
 <img src="../fig/validation.png" title="Alt" alt="Alt" width="500px" style="display: block; margin: auto;" />
 
@@ -633,7 +620,7 @@ LASSO is another type of regularisation. In this case we use the $L^1$ norm,
 or the sum of the absolute values of the coefficients.
 
 $$
-    \left\lVert \beta \right\lVert_1 = \sqrt{\sum_{j=1}^p \beta_j}
+    \left\lVert \beta \right\lVert_1 = \sum_{j=1}^p |\beta_j|
 $$
 
 This tends to produce sparse models; that is to say, it tends to remove features
@@ -740,9 +727,8 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 
 
 ~~~
- [1] "cg16547529" "cg21801378" "cg22449114" "cg22736354" "cg01820374"
- [6] "cg09809672" "cg11299964" "cg15804973" "cg19761273" "cg22613010"
-[11] "cg26162695"
+[1] "cg02388150" "cg06493994" "cg22449114" "cg22736354" "cg03330058"
+[6] "cg09809672" "cg11299964" "cg19761273" "cg26162695"
 ~~~
 {: .output}
 
@@ -828,7 +814,7 @@ like for different values of `alpha`.
 > >    
 > >    
 > >    ~~~
-> >    [1] 4963
+> >    [1] 4973
 > >    ~~~
 > >    {: .output}
 > >    
@@ -842,7 +828,7 @@ like for different values of `alpha`.
 > >    
 > >    
 > >    ~~~
-> >    [1] 4961
+> >    [1] 4955
 > >    ~~~
 > >    {: .output}
 > >    

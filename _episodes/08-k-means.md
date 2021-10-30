@@ -27,8 +27,6 @@ math: yes
 
 
 
-
-
 # Introduction
 
 High-dimensional data, especially in biological settings,  has
