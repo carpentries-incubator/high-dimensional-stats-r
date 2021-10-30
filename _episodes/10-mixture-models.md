@@ -245,16 +245,10 @@ curve(
 > >    
 > >    ~~~
 > >    fitted_mean_log <- opt_exp$estimate[["meanlog"]]
-> >    fitted_sd_exp <- opt_exp$estimate[["sdlog"]]
+> >    fitted_sd_log <- opt_exp$estimate[["sdlog"]]
 > >    hist(univar_exp, freq = FALSE, breaks = "FD")
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-10-fit-dlnorm-1.png" title="plot of chunk fit-dlnorm" alt="plot of chunk fit-dlnorm" width="432" style="display: block; margin: auto;" />
-> >    
-> >    ~~~
 > >    curve(
-> >        dnorm(x, mean = fitted_mean_exp, sd = fitted_sd_exp),
+> >        dnorm(x, mean = fitted_mean_log, sd = fitted_sd_log),
 > >        from = min(univar_exp),
 > >        to = max(univar_exp),
 > >        add = TRUE
@@ -262,12 +256,7 @@ curve(
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    
-> >    
-> >    ~~~
-> >    Error in dnorm(x, mean = fitted_mean_exp, sd = fitted_sd_exp): object 'fitted_mean_exp' not found
-> >    ~~~
-> >    {: .error}
+> >    <img src="../fig/rmd-10-fit-dlnorm-1.png" title="plot of chunk fit-dlnorm" alt="plot of chunk fit-dlnorm" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -286,9 +275,11 @@ values here, though it may help. You can see that below our initial starting
 
 
 ~~~
-Error in ggplot(data.frame(x = x)): could not find function "ggplot"
+Warning: Removed 4 rows containing missing values (geom_bar).
 ~~~
-{: .error}
+{: .warning}
+
+<img src="../fig/rmd-10-mixture-animation-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 We then assign each data point to the component that fits them better (this is
 the "expectation" step). Then, we maximise the likelihood of the data under
@@ -300,9 +291,11 @@ one iteration, but this won't usually be the case!
 
 
 ~~~
-Error in ggplot(data.frame(x = x)): could not find function "ggplot"
+Warning: Removed 4 rows containing missing values (geom_bar).
 ~~~
-{: .error}
+{: .warning}
+
+<img src="../fig/rmd-10-mix-converged-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The figures shown here were made manually, to be able to step through the 
 process. To fit a 2-D mixture model, it's usually not wise to code it yourself,
