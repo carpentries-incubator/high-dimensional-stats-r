@@ -158,8 +158,8 @@ contained over 800,000!
 > >    example, we may have very small sample sizes for some ethnicities,
 > >    leading to spurious findings.
 > > 3. If we perform
-> >    $`r ncol(colData(methylation))` \times `r nrow(methylation)`$
-> >    tests, even if there were no true associations in the data, we'd be
+> >    `r nrow(methylation)` tests for each of `r ncol(colData(methylation))`
+> >    variables, even if there were no true associations in the data, we'd be
 > >    likely to observe some strong spurious associations that arise just from
 > >    random noise.
 > > 
@@ -300,9 +300,9 @@ prioritise genes for further analysis.
 
 So, in the data we've read in, we have a matrix of methylation values $X$ and a
 vector of ages, $y$.
-One way to model this is to see if we can "predict" the expected methylation
-value for sample $j$ at a given locus $i$, which we can write as $X_{ij}$,
-using age. We can write that model as:
+One way to model this is to see if we can use age to predict the expected
+(average) methylation value for sample $j$ at a given locus $i$, which we can
+write as $X_{ij}$. We can write that model as:
 
 $$
     \mathbf{E}(X_{ij}) = \beta_0 + \beta_1 \text{Age}_j
