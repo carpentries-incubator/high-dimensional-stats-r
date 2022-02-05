@@ -91,11 +91,65 @@ in a single cluster.
 
 <img src="../fig/hierarchical_clustering_2.png" title="Figure 1b: Example data showing fusing of one observation into larger cluster" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" style="display: block; margin: auto;" />
 
+# A motivating example
 
+To motivate this lesson, let's first look at an example where hierarchical
+clustering is really useful, and then we can understand how to apply it in more
+detail. To do this, we'll return to the large methylation dataset we worked
+with in the regression lessons. Let's load the data and look at it.
+
+
+~~~
+library("minfi")
+library("here")
+library("ComplexHeatmap")
+
+methyl <- readRDS(here("data/methylation.rds"))
+~~~
+{: .language-r}
+
+If we plot a heatmap of these data, we can see there may be some patterns
+going on - many columns appear to have a similar level across all the rows
+of the data. However, they are all quite jumbled at the moment, so it's hard to tell
+how many line up exactly.
+
+<img src="../fig/rmd-09-heatmap-noclust-1.png" title="plot of chunk heatmap-noclust" alt="plot of chunk heatmap-noclust" width="432" style="display: block; margin: auto;" />
+
+We can order these data to make the patterns more clear using hierarchical
+clustering. To do this, we can change the arguments we pass to 
+`Heatmap()` from the ComplexHeatmap package. `Heatmap()`
+groups features based on dissimilarity (here, Euclidean distance) and orders
+rows and columns to show clustering of features and observations.
+
+
+~~~
+Heatmap(methyl_mat,
+  name = "Methylation level",
+  cluster_rows = TRUE, cluster_columns = TRUE,
+  row_dend_width = unit(0.2, "npc"),
+  column_dend_height = unit(0.2, "npc"),
+  show_row_names = FALSE, show_column_names = FALSE
+)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-09-heatmap-clust-1.png" title="plot of chunk heatmap-clust" alt="plot of chunk heatmap-clust" width="432" style="display: block; margin: auto;" />
+
+We can see that clustering the features (CpG sites) results in an overall
+gradient of high to low methylation levels from left to right. Maybe more
+interesting is the fact that the rows are now split into groups, with different
+groups of samples showing different patterns in a subset of features.
+For example, 12 samples seem to have lower methylation levels for a small subset
+of CpG sites in the middle, relative to all the other samples. It's not clear
+without investigating further what the cause of this is - it could be a batch
+effect, or a known grouping (e.g., old vs young samples). However, clustering
+like this can be a useful part of exploratory analysis of data to build
+hypotheses.
+
+Now, let's cover the inner workings of clustering in more detail.
 There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
-
 
 # Creating the distance matrix
 
@@ -119,82 +173,6 @@ clustering algorithm. The type of distance matrix used in hierarchical
 clustering can have a big effect on the resulting tree. The decision of which
 distance matrix to use before carrying out hierarchical clustering depends on the
 type of data and question to be addressed. 
-
-Let's perform hierarchical clustering on a subset of the 'methylation' dataset using correlations between variables.
-
-The dataset we will be working with are correlations between the first 100 features in
-the methylation dataset introduced in the regression lesson. 
-
-Let's load the data and look at it.
-
-
-~~~
-library("minfi")
-library("here")
-
-#Load small version of the methylation dataset
-small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
-~~~
-{: .language-r}
-
-
-~~~
-#view the data
-View(small_methyl_mat)
-~~~
-{: .language-r}
-
-
-~~~
-#count the number of rows and columns
-#should be equal to 100
-ncol(small_methyl_mat)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] 100
-~~~
-{: .output}
-
-
-
-~~~
-nrow(small_methyl_mat)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] 100
-~~~
-{: .output}
-
-Recall the heatmap displayed in the regression lesson. If we display the heatmap
-without hierarchical clustering, we can see that it’s very noisy and clusters
-of correlations between variables are difficult to see.
-
-<img src="../fig/rmd-09-heatmap-noclust-1.png" title="plot of chunk heatmap-noclust" alt="plot of chunk heatmap-noclust" width="432" style="display: block; margin: auto;" />
-
-We carry out hierarchical clustering on these data using 
-`Heatmap()` from the ComplexHeatmap package. We use the correlation matrix
-from the small_methylation dataset as the input distance matrix. `Heatmap()`
-groups features based on similarity of correlation values and orders rows and
-columns to show clustering of features.
-
-
-<img src="../fig/rmd-09-heatmap-clust-1.png" title="plot of chunk heatmap-clust" alt="plot of chunk heatmap-clust" width="432" style="display: block; margin: auto;" />
-
-Note that clusters are represented by blocks of similar colours in the heatmap.
-We can also add other annotations (e.g. dendrograms) to help us identify the
-clusters. We'll cover dendrograms later in this episode. 
-
-Where correlation between features is the data of interest, it may be more
-appropriate to carry out hierarchical clustering using the correlation matrix
-between features as the distance matrix.
 
 # Linkage methods
 
@@ -471,12 +449,12 @@ downstream of the cut).
 
 Here we carry out hierarchical clustering using `hclust()` and the `complete`
 linkage method. In this example, we calculate a distance matrix between
-correlations in the `small_methyl_mat` dataset. 
+correlations in the `methyl_mat` dataset. 
 
 
 ~~~
 ## create a distance matrix using euclidean method
-distmat <- dist(small_methyl_mat)
+distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
 clust <- hclust(distmat, method = "complete")
 ## plot resulting dendrogram
@@ -512,7 +490,7 @@ and when.
 For example, Ward’s method uses increases in the error sum of squares to
 determine which clusters should be fused. 
 Next we use Ward's linkage method in hierarchical clustering of the
-`small_methyl_mat` dataset.
+`methyl_mat` dataset.
 
 
 ~~~
@@ -529,7 +507,7 @@ using the complete linkage method.
 > ## Challenge 3
 >
 > Carry out hierarchical clustering on the small version of the
-> `small_methyl_mat` dataset using other different linkage methods and compare
+> `methyl_mat` dataset using other different linkage methods and compare
 > resulting dendrograms.
 > Do any of the methods produce similar dendrograms?
 > Do some methods appear to
@@ -785,7 +763,7 @@ inter-cluster variance. The higher the Dunn index, the better defined the
 clusters.
 
 Let's calculate the Dunn index for clustering carried out on the
-`small_methyl_mat` dataset using the `clValid` package.
+`methyl_mat` dataset using the `clValid` package.
 
 
 ~~~
@@ -794,7 +772,7 @@ Let's calculate the Dunn index for clustering carried out on the
 ## to the largest intra-cluster distance)
 library("clValid")
 ## calculate euclidean distance between points 
-distmat <- dist(small_methyl_mat)  
+distmat <- dist(methyl_mat)  
 clust <- hclust(distmat, method = "complete")
 plot(clust)
 ~~~
@@ -813,7 +791,7 @@ dunn(distance = distmat, cut)
 
 
 ~~~
-[1] 0.3740255
+[1] Inf
 ~~~
 {: .output}
 
@@ -831,7 +809,7 @@ between sets of clusters with larger values being preferred.
 > > ~~~
 > > library(clValid)
 > > 
-> > distmat <- dist(small_methyl_mat)
+> > distmat <- dist(methyl_mat)
 > > clust <- hclust(distmat, method = "complete")
 > > plot(clust)
 > > ~~~
@@ -850,7 +828,7 @@ between sets of clusters with larger values being preferred.
 > > 
 > > 
 > > ~~~
-> > [1] 1.722725
+> > [1] Inf
 > > ~~~
 > > {: .output}
 > > 
@@ -864,7 +842,7 @@ between sets of clusters with larger values being preferred.
 > > 
 > > 
 > > ~~~
-> > [1] 0.3550975
+> > [1] 0.8377104
 > > ~~~
 > > {: .output}
 > {: .solution}
