@@ -11,7 +11,7 @@ questions:
 objectives:
 - "Understand the benefits of regularised models."
 - "Understand how different types of regularisation work."
-- "Apply and critically analyse penalised regression models."
+- "Apply and critically analyse regularised regression models."
 keypoints:
 - Regularisation is a way to fit a model, get better estimates of effect sizes,
   and perform variable selection simultaneously.
@@ -30,8 +30,10 @@ math: yes
 
 # Introduction
 
-In the previous lesson we did a kind of feature selection by doing
-univariate analysis and thresholding by p-value/effect size. This is one 
+In the previous lesson we fit a lot of linear models to find a subset of
+features that are associated with our outcome of interest. This type of
+analysis is very useful when we have a lot of features and we want to identify
+ones that are related to our outcome. This is one 
 way of finding features that are associated with our outcome,
 but it treats each feature independently.
 
@@ -197,7 +199,7 @@ the model properly.
 # The objective of a linear model
 
 When we fit a linear model, we're finding the line through our data that 
-minimises the residual sum of squares.
+minimises the sum of the squared residuals.
 We can think of that as finding
 the slope and intercept that minimises the square of the length of the dashed
 lines. In this case, the red line in the left panel is the line that
@@ -208,7 +210,7 @@ different combinations of slope and intercept accomplish this objective.
 
 <img src="../fig/rmd-03-regplot-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 
-Mathematically, we can write that as
+Mathematically, we can write the sum of squared residuals as
 
 $$
     \sum_{i=1}^N \hat{y}_i - y_i
@@ -250,7 +252,7 @@ models.
 {: .challenge}
 
 
-# Model selection revisited
+# Model selection
 
 Measures like adjusted $R^2$, AIC and
 BIC show us how well the model is learning the data used in fitting the model [^1]. These are really good ways of telling us how
@@ -275,7 +277,7 @@ test error on unseen data. First, we'll go through an example of what exactly
 this means.
 
 For the next few exercises, we'll work with a set of features
-known to be associated with age from Horvath.
+known to be associated with age from a paper by Horvath et al.[^2].
 
 
 ~~~
@@ -284,6 +286,29 @@ methylation <- readRDS(here::here("data/methylation.rds"))
 library("SummarizedExperiment")
 age <- methylation$Age
 methyl_mat <- t(assay(methylation))
+~~~
+{: .language-r}
+
+
+In this lesson, we're going to perform centering and scaling on the data.
+This means that we standardise each variable, so that each variable has a mean
+of zero and a standard deviation of one. This is a common step when performing
+multiple linear regression, and it has a number of advantages. Firstly, it often
+makes things easier to compute. Secondly, it means that the effect size for
+each feature corresponds to the importance of that feature in making 
+predictions, rather than just being a measure of its range. We saw in
+the previous lesson that effect size estimates can be very small when the range
+of the predictor variable is very large, and the opposite is true, too!
+When all variables are on different scales, it's hard to know if a large
+coefficient for a feature means it's very important, or if it has a small 
+influence but also has a very small range overall.
+
+Standardisation is a very important step when performing regularisation! A lot
+of the theoretical guarantees that make these methods statistically powerful
+rely on the input data being scaled like this.
+
+
+~~~
 ## centre and scale the data
 methyl_mat <- scale(methyl_mat, center = TRUE, scale = TRUE)
 
@@ -320,8 +345,7 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    ~~~
 > >    {: .language-r}
 > > 
-> > 2. Fitting a model to the training data is similar to what we did in the
-> >    previous episode.
+> > 2. To 
 > >    
 > >    
 > >    ~~~
@@ -354,6 +378,7 @@ data, or "mean squared error" (MSE). Unfortunately, it seems like this is a lot
 higher than the error on the training data!
 
 
+
 ~~~
 mse <- function(true, prediction) {
     mean((true - prediction)^2)
@@ -371,6 +396,9 @@ err_lm
 ~~~
 {: .output}
 
+Further, if we plot true age against predicted age for the samples in the test
+set, we can see how well we're really doing - ideally these would line up
+exactly!
 
 
 ~~~
@@ -420,6 +448,14 @@ $$
     \left(\sum_{i=1}^N y_i - X_i\beta\right) + \lambda \left\lVert \beta \right\lVert_2
 $$
 
+Another way of thinking about this is that when finding the best model, we're
+weighing up a balance of the ordinary least squares objective and a "penalty"
+term that punished models with large coefficients. The balance between the
+penalty and the ordinary least squares objective is controlled by $\lambda$ - 
+when $\lambda$ is large, we care a lot about the size of the coefficients.
+When it's small, we don't really care a lot. When it's zero, we're back to
+just using ordinary least squares.
+
 # Why would we want to restrict our model?
 
 It's an odd thing to do, restrict the possible values of our model parameters, 
@@ -428,7 +464,7 @@ correlated features our model estimates can be very unstable or even difficult
 to calculate. Secondly, this type of approach can make our model more 
 generalisable. To show this,
 we'll fit a model using the Horvath methylation predictors, using both
-penalised and ordinary least squares.
+regularised and ordinary least squares.
 
 
 ~~~
@@ -513,7 +549,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > ## Exercise
 > 
 > 1. Which performs better, ridge or OLS?
-> 2. Plot the predictions for each method against the ground truth.
+> 2. Plot predicted ages for each method against the true ages.
 >    How do the predictions look for both methods? Why might ridge be 
 >    performing better?
 > 3. Compare the coefficients of the ridge model to the OLS model. Why might
@@ -1078,5 +1114,6 @@ like for different values of `alpha`.
 # Footnotes
 
 [^1]: Model selection including $R^2$, AIC and BIC are covered in the additional feature selection for regression episode of this course.
+[^2]: [Epigenetic Predictor of Age, Bocklandt et al. (2011)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0014821)
 
 {% include links.md %}
