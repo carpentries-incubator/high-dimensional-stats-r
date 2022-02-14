@@ -449,7 +449,7 @@ downstream of the cut).
 
 Here we carry out hierarchical clustering using `hclust()` and the `complete`
 linkage method. In this example, we calculate a distance matrix between
-correlations in the `methyl_mat` dataset. 
+samples in the `methyl_mat` dataset. 
 
 
 ~~~
@@ -471,12 +471,12 @@ rect.hclust(clust, k = 2, border = 2:6)
 
 ~~~
 ## cut tree at height = 4
-cut<-cutree(clust, h = 4)
+cut <- cutree(clust, h = 50)
 
 library("dendextend")
 avg_dend_obj <- as.dendrogram(clust)      
 ## colour branches of dendrogram depending on clusters
-plot(color_branches(avg_dend_obj, h = 4))
+plot(color_branches(avg_dend_obj, h = 50))
 ~~~
 {: .language-r}
 
@@ -781,7 +781,7 @@ plot(clust)
 <img src="../fig/rmd-09-plot-clust-dunn-1.png" title="plot of chunk plot-clust-dunn" alt="plot of chunk plot-clust-dunn" width="432" style="display: block; margin: auto;" />
 
 ~~~
-cut <- cutree(clust, h = 5)
+cut <- cutree(clust, h = 50)
 
 ## retrieve Dunn's index for given matrix and clusters
 dunn(distance = distmat, cut)
@@ -791,7 +791,7 @@ dunn(distance = distmat, cut)
 
 
 ~~~
-[1] Inf
+[1] 0.8823501
 ~~~
 {: .output}
 
@@ -807,7 +807,7 @@ between sets of clusters with larger values being preferred.
 > >
 > > 
 > > ~~~
-> > library(clValid)
+> > library("clValid")
 > > 
 > > distmat <- dist(methyl_mat)
 > > clust <- hclust(distmat, method = "complete")
@@ -818,8 +818,8 @@ between sets of clusters with larger values being preferred.
 > > <img src="../fig/rmd-09-dunn-ex-1.png" title="plot of chunk dunn-ex" alt="plot of chunk dunn-ex" width="432" style="display: block; margin: auto;" />
 > > 
 > > ~~~
-> > cut_h <- cutree(clust, h = 0.5)   
-> > cut_k <- cutree(clust, k = 15)   
+> > cut_h <- cutree(clust, h = 10)
+> > cut_k <- cutree(clust, k = 15)
 > > 
 > > dunn(distance = distmat, cut_h)
 > > ~~~
@@ -852,16 +852,16 @@ Note how making the values of `h` smaller and making the values of `k`
 bigger increases the value of the Dunn index in this example. In this example,
 decreasing `h` below 0.5 gives an infinite Dunn index.
 
-Figure 3 shows how increasing the value of `k` and reducing the value of `h`
-using `cutree()` results in higher values of the Dunn index.
+The figures below show how increasing the value of `k` and reducing the value of
+`h` using `cutree()` each result in higher values of the Dunn index.
 
-<img src="../fig/hierarchical_clustering_3.png" title="Figure 3: Dunn index increases with increasing number of clusters" alt="Figure 3: Dunn index increases with increasing number of clusters" style="display: block; margin: auto;" />
+<img src="../fig/rmd-09-hclust-fig3-1.png" title="Figure 3: Dunn index increases with increasing number of clusters" alt="Figure 3: Dunn index increases with increasing number of clusters" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-09-hclust-fig3-2.png" title="Figure 3: Dunn index increases with increasing number of clusters" alt="Figure 3: Dunn index increases with increasing number of clusters" width="432" style="display: block; margin: auto;" />
 
 There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
 Another method of validating identified clusters is the silhouette score 
-which uses the average distance between clusters and the points within them
-(see the K-means clustering episode for more information).
+which uses the average distance between clusters and the points within them;
+see the K-means clustering episode for more information on this measure.
 
 Another more robust method of validating clusters identified using hierarchical
 clustering is splitting the data into test and training datasets and comparing
