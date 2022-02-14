@@ -49,7 +49,8 @@ issue.
 Current maintainers of this lesson are
 
 * [Alan O'Callaghan](@Alanocallaghan)
-* Gail Roberston
+* Ailith Ewing
+* Catalina Vallejos
 
 
 ## Authors
