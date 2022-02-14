@@ -99,11 +99,68 @@ knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 # ![Figure 1b: Example data showing fusing of one observation into larger cluster](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1b hierarchical clustering.png)
 ```
 
+# A motivating example
 
+To motivate this lesson, let's first look at an example where hierarchical
+clustering is really useful, and then we can understand how to apply it in more
+detail. To do this, we'll return to the large methylation dataset we worked
+with in the regression lessons. Let's load the data and look at it.
+
+```{r}
+library("minfi")
+library("here")
+library("ComplexHeatmap")
+
+methyl <- readRDS(here("data/methylation.rds"))
+```
+
+If we plot a heatmap of these data, we can see there may be some patterns
+going on - many columns appear to have a similar level across all the rows
+of the data. However, they are all quite jumbled at the moment, so it's hard to tell
+how many line up exactly.
+
+```{r heatmap-noclust, echo=FALSE}
+library("ComplexHeatmap")
+
+methyl_mat <- t(assay(methyl))
+Heatmap(methyl_mat,
+  name = "Methylation level",
+  cluster_rows = FALSE, cluster_columns = FALSE,
+  show_row_names = FALSE, show_column_names = FALSE
+)
+```
+
+We can order these data to make the patterns more clear using hierarchical
+clustering. To do this, we can change the arguments we pass to 
+`Heatmap()` from the ComplexHeatmap package. `Heatmap()`
+groups features based on dissimilarity (here, Euclidean distance) and orders
+rows and columns to show clustering of features and observations.
+
+```{r heatmap-clust}
+Heatmap(methyl_mat,
+  name = "Methylation level",
+  cluster_rows = TRUE, cluster_columns = TRUE,
+  row_dend_width = unit(0.2, "npc"),
+  column_dend_height = unit(0.2, "npc"),
+  show_row_names = FALSE, show_column_names = FALSE
+)
+```
+
+We can see that clustering the features (CpG sites) results in an overall
+gradient of high to low methylation levels from left to right. Maybe more
+interesting is the fact that the rows are now split into groups, with different
+groups of samples showing different patterns in a subset of features.
+For example, 12 samples seem to have lower methylation levels for a small subset
+of CpG sites in the middle, relative to all the other samples. It's not clear
+without investigating further what the cause of this is - it could be a batch
+effect, or a known grouping (e.g., old vs young samples). However, clustering
+like this can be a useful part of exploratory analysis of data to build
+hypotheses.
+
+Now, let's cover the inner workings of clustering in more detail.
 There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
-
 
 # Creating the distance matrix
 
@@ -127,90 +184,6 @@ clustering algorithm. The type of distance matrix used in hierarchical
 clustering can have a big effect on the resulting tree. The decision of which
 distance matrix to use before carrying out hierarchical clustering depends on the
 type of data and question to be addressed. 
-
-Let's perform hierarchical clustering on a subset of the 'methylation' dataset using correlations between variables.
-
-The dataset we will be working with are correlations between the first 100 features in
-the methylation dataset introduced in the regression lesson. 
-
-Let's load the data and look at it.
-
-```{r}
-library("minfi")
-library("here")
-
-#Load small version of the methylation dataset
-small_methyl_mat <- readRDS(here("data/small_methylation.rds"))
-```
-
-```{r, eval=FALSE}
-#view the data
-View(small_methyl_mat)
-```
-
-```{r}
-#count the number of rows and columns
-#should be equal to 100
-ncol(small_methyl_mat)
-nrow(small_methyl_mat)
-```
-
-Recall the heatmap displayed in the regression lesson. If we display the heatmap
-without hierarchical clustering, we can see that it’s very noisy and clusters
-of correlations between variables are difficult to see.
-
-```{r heatmap-noclust, echo=FALSE}
-library("minfi")
-library("here")
-library("ComplexHeatmap")
-
-cor_mat <- readRDS(here::here("data/small_methylation.rds"))
-col <- circlize::colorRamp2(
-    breaks = seq(-1, 1, length.out = 9),
-    colors = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))
-)
-Heatmap(cor_mat,
-    column_title = "Feature-feature correlation in methylation data",
-    name = "Pearson correlation",
-    col = col,
-    cluster_rows = FALSE, cluster_columns = FALSE,
-    show_row_dend = FALSE, show_column_dend = FALSE,
-    show_row_names = FALSE, show_column_names = FALSE
-)
-# ![Figure 2a: Feature-feature correlation in methylation data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2a hierarchical clustering.png)
-```
-
-We carry out hierarchical clustering on these data using 
-`Heatmap()` from the ComplexHeatmap package. We use the correlation matrix
-from the small_methylation dataset as the input distance matrix. `Heatmap()`
-groups features based on similarity of correlation values and orders rows and
-columns to show clustering of features.
-
-
-```{r heatmap-clust, echo=FALSE}
-library("minfi")
-library("here")
-library("ComplexHeatmap")
-
-cor_mat <- readRDS(here::here("data/small_methylation.rds"))
-Heatmap(cor_mat,
-    column_title = "Feature-feature correlation in methylation data",
-    name = "Pearson correlation",
-    col = col,
-    cluster_rows = TRUE, cluster_columns = TRUE,
-    show_row_names = FALSE, show_column_names = FALSE,
-    show_row_dend = FALSE, show_column_dend = FALSE
-)
-# ![Figure 2b: Feature-feature correlation in methylation data with dendrogram](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2b hierarchical clustering.png)
-```
-
-Note that clusters are represented by blocks of similar colours in the heatmap.
-We can also add other annotations (e.g. dendrograms) to help us identify the
-clusters. We'll cover dendrograms later in this episode. 
-
-Where correlation between features is the data of interest, it may be more
-appropriate to carry out hierarchical clustering using the correlation matrix
-between features as the distance matrix.
 
 # Linkage methods
 
@@ -373,11 +346,11 @@ downstream of the cut).
 
 Here we carry out hierarchical clustering using `hclust()` and the `complete`
 linkage method. In this example, we calculate a distance matrix between
-correlations in the `small_methyl_mat` dataset. 
+samples in the `methyl_mat` dataset. 
 
 ```{r plot-clust-method}
 ## create a distance matrix using euclidean method
-distmat <- dist(small_methyl_mat)
+distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
 clust <- hclust(distmat, method = "complete")
 ## plot resulting dendrogram
@@ -389,12 +362,12 @@ rect.hclust(clust, k = 3, border = 2:6)
 rect.hclust(clust, k = 2, border = 2:6)
 
 ## cut tree at height = 4
-cut<-cutree(clust, h = 4)
+cut <- cutree(clust, h = 50)
 
 library("dendextend")
 avg_dend_obj <- as.dendrogram(clust)      
 ## colour branches of dendrogram depending on clusters
-plot(color_branches(avg_dend_obj, h = 4))
+plot(color_branches(avg_dend_obj, h = 50))
 ```
 
 We can colour clusters downstream of a specified cut using `color_branches()`
@@ -405,7 +378,7 @@ and when.
 For example, Ward’s method uses increases in the error sum of squares to
 determine which clusters should be fused. 
 Next we use Ward's linkage method in hierarchical clustering of the
-`small_methyl_mat` dataset.
+`methyl_mat` dataset.
 
 ```{r plot-clust-ward}
 clust <- hclust(distmat, method = "ward.D")
@@ -418,7 +391,7 @@ using the complete linkage method.
 > ## Challenge 3
 >
 > Carry out hierarchical clustering on the small version of the
-> `small_methyl_mat` dataset using other different linkage methods and compare
+> `methyl_mat` dataset using other different linkage methods and compare
 > resulting dendrograms.
 > Do any of the methods produce similar dendrograms?
 > Do some methods appear to
@@ -591,7 +564,7 @@ inter-cluster variance. The higher the Dunn index, the better defined the
 clusters.
 
 Let's calculate the Dunn index for clustering carried out on the
-`small_methyl_mat` dataset using the `clValid` package.
+`methyl_mat` dataset using the `clValid` package.
 
 ```{r plot-clust-dunn}
 ## calculate dunn index
@@ -599,11 +572,11 @@ Let's calculate the Dunn index for clustering carried out on the
 ## to the largest intra-cluster distance)
 library("clValid")
 ## calculate euclidean distance between points 
-distmat <- dist(small_methyl_mat)  
+distmat <- dist(methyl_mat)  
 clust <- hclust(distmat, method = "complete")
 plot(clust)
 
-cut <- cutree(clust, h = 5)
+cut <- cutree(clust, h = 50)
 
 ## retrieve Dunn's index for given matrix and clusters
 dunn(distance = distmat, cut)
@@ -620,14 +593,14 @@ between sets of clusters with larger values being preferred.
 > > ## Solution:
 > >
 > > ```{r dunn-ex}
-> > library(clValid)
+> > library("clValid")
 > >
-> > distmat <- dist(small_methyl_mat)
+> > distmat <- dist(methyl_mat)
 > > clust <- hclust(distmat, method = "complete")
 > > plot(clust)
 > >
-> > cut_h <- cutree(clust, h = 0.5)   
-> > cut_k <- cutree(clust, k = 15)   
+> > cut_h <- cutree(clust, h = 10)
+> > cut_k <- cutree(clust, k = 15)
 > >
 > > dunn(distance = distmat, cut_h)
 > > dunn(distance = distmat, cut_k)
@@ -639,19 +612,23 @@ Note how making the values of `h` smaller and making the values of `k`
 bigger increases the value of the Dunn index in this example. In this example,
 decreasing `h` below 0.5 gives an infinite Dunn index.
 
-Figure 3 shows how increasing the value of `k` and reducing the value of `h`
-using `cutree()` results in higher values of the Dunn index.
+The figures below show how increasing the value of `k` and reducing the value of
+`h` using `cutree()` each result in higher values of the Dunn index.
 
 ```{r hclust-fig3, echo=FALSE, fig.cap="Figure 3: Dunn index increases with increasing number of clusters"}
-knitr::include_graphics("../fig/hierarchical_clustering_3.png")
-# ![Figure 3: Dunn index increases with increasing number of clusters](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 3 hierarchical clustering.png)
+h_seq <- seq(10, 60, by = 10)
+h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x)))
+k_seq <- seq(2, 10)
+k_dunn <- sapply(k_seq, function(x) dunn(distance = distmat, cutree(clust, k = x)))
+plot(h_seq, h_dunn, xlab = "Height", ylab = "Dunn index")
+plot(k_seq, k_dunn, xlab = "Number of clusters", ylab = "Dunn index")
 ```
 
 There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
 Another method of validating identified clusters is the silhouette score 
-which uses the average distance between clusters and the points within them
-(see the K-means clustering episode for more information).
+which uses the average distance between clusters and the points within them;
+see the K-means clustering episode for more information on this measure.
 
 Another more robust method of validating clusters identified using hierarchical
 clustering is splitting the data into test and training datasets and comparing
