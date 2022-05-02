@@ -315,7 +315,7 @@ belong to.
 > > ```
 > > ```{r, eval=FALSE, echo=FALSE}
 > > ## this needs to be plotted manually or it gets an unmapped memory crash
-> > cairoDevice::Cairo_png("fig/silhouette5.png")
+> > Cairo::Cairo("fig/silhouette5.png")
 > > plot(sil5)
 > > dev.off()
 > > ```
