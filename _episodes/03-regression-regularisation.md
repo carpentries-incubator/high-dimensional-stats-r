@@ -213,7 +213,7 @@ different combinations of slope and intercept accomplish this objective.
 Mathematically, we can write the sum of squared residuals as
 
 $$
-    \sum_{i=1}^N \hat{y}_i - y_i
+    \sum_{i=1}^N (\hat{y}_i - y_i)^2
 $$
 
 where $\hat{y}_i$ is the predicted y value for each input data

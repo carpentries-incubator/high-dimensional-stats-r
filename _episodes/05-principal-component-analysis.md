@@ -423,10 +423,13 @@ Cumulative Proportion  0.4898 0.7628 0.8739 0.95490 1.0000
 ~~~
 {: .output}
 
+
+
 This returns the proportion of variance in the data explained by each of the
-(p = 5) principal components. In this example, PC1 explains approximately 51%
-of variance in the data, PC2 26% of variance, PC3 a further 11%, PC4
-approximately 8% and PC5 around 5%.
+(p = 5) principal components. In this example, PC1 explains approximately
+49% of variance in the data, PC2 27% of variance,
+PC3 a further 11%, PC4 approximately 8% and PC5
+around 5%.
 
 We can use a screeplot to see how much variation in the data is explained by
 each principal component. Let's calculate the screeplot for our PCA.
