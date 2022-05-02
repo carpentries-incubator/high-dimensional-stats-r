@@ -353,10 +353,17 @@ Let's look at the relative importance of each component using `summary`.
 summary(pca.pros)
 ```
 
+```{R, echo = FALSE}
+# Get proportions of variance explained by each PC (rounded to 2 DP)
+prop.var <- round(summary(pca.pros)$importance["Proportion of Variance", ], 2) *
+  100
+```
+
 This returns the proportion of variance in the data explained by each of the
-(p = 5) principal components. In this example, PC1 explains approximately 51%
-of variance in the data, PC2 26% of variance, PC3 a further 11%, PC4
-approximately 8% and PC5 around 5%.
+(p = 5) principal components. In this example, PC1 explains approximately
+`r prop.var[1]`% of variance in the data, PC2 `r prop.var[2]`% of variance, PC3
+a further `r prop.var[3]`%, PC4 approximately `r prop.var[4]`% and PC5 around
+`r prop.var[5]`%.
 
 We can use a screeplot to see how much variation in the data is explained by
 each principal component. Let's calculate the screeplot for our PCA.
