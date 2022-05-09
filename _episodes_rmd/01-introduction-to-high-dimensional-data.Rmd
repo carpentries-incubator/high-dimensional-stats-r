@@ -22,7 +22,7 @@ keypoints:
   increases in data storage capabilities and computing power.
 - Standard statistical methods, such as linear regression, run into difficulties
   when analysing high-dimensional data.
-- In this workshop, we will explore statistical methods used for analysing
+- We will explore statistical methods used for analysing
   high-dimensional data using datasets available on Bioconductor.
 math: yes
 ---
