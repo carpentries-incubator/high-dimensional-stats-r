@@ -288,7 +288,7 @@ available via the `rotation` argument (default is 'none').
 > > 
 > > ~~~
 > > # Error shows that fitting three factors are not appropriate
-> > # for only 5 variables (number of variables too high)
+> > # for only 5 variables (number of factors too high)
 > > ~~~
 > > {: .language-r}
 > {: .solution}
