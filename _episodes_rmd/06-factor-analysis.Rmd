@@ -158,7 +158,7 @@ available via the `rotation` argument (default is 'none').
 > > #Include three factors
 > > pros_fa <- factanal(pros2, factors = 3)
 > > # Error shows that fitting three factors are not appropriate
-> > # for only 5 variables (number of variables too high)
+> > # for only 5 variables (number of factors too high)
 > > ```
 > {: .solution}
 {: .challenge}
