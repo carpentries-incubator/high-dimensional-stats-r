@@ -994,7 +994,7 @@ This is often very conservative, especially
 with a lot of features!
 
 ```{r p-fwer, fig.cap="Bonferroni correction often produces very large p-values, especially with low sample sizes.", fig.alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
-p_raw <- coef_df$p.value
+p_raw <- toptab_age$P.Value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
 library("ggplot2")
 ggplot() +
