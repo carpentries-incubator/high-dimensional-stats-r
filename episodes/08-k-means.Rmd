@@ -262,7 +262,7 @@ between points in the clusters.
 library("cluster")
 dist_mat <- dist(pcs)
 sil <- silhouette(cluster$cluster, dist = dist_mat)
-plot(sil)
+plot(sil, border = NA)
 ```
 
 Let's plot the silhouette score on the original dimensions used to cluster
