@@ -445,27 +445,6 @@ library("minfi")
 {: .language-r}
 
 
-
-~~~
-Warning: package 'S4Vectors' was built under R version 4.1.1
-~~~
-{: .warning}
-
-
-
-~~~
-Warning: package 'GenomeInfoDb' was built under R version 4.1.1
-~~~
-{: .warning}
-
-
-
-~~~
-Warning: package 'MatrixGenerics' was built under R version 4.1.1
-~~~
-{: .warning}
-
-
 ~~~
 browseVignettes("minfi")
 ~~~

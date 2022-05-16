@@ -126,19 +126,6 @@ tax_table.
 ~~~
 #Load example data for microbiome (phylogenetic sequencing data)
 library(microbiome)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: package 'ggplot2' was built under R version 4.1.2
-~~~
-{: .warning}
-
-
-
-~~~
 library(phyloseq)
 library(ggplot2)
 data(dietswap)
@@ -295,11 +282,11 @@ Anaerovorax odorimutans et rel.   "Anaerovorax odorimutans et rel."
 ~~~
 {: .output}
 
-Here we use the `transform` function from the microbiome package to calculate
-relative abundances of each Genus in the 'dietswap' data. The `transform`
-argument includes options on how to transform the data. 'Compositional' is used
+Here we use `transform()` from the microbiome package to calculate
+relative abundances of each Genus in the 'dietswap' data. `transform()`
+includes options on how to transform the data. 'Compositional' is used
 to calculate relative abundance (i.e. proportional abundance). This function
-returns an object suitable for input into the `ordinate` function which carries
+returns an object suitable for input into `ordinate()` which carries
 out the NMDS.
 
 `otu_table` allows us to see the species composition table which displays the
@@ -308,7 +295,7 @@ number of positive tests for each species in the participants' samples.
 returns taxonomic information (phylum, family) for each species identified in
 patient samples.
 
-Let's examine the phylogenetic structure of the data using function from
+Let's examine the phylogenetic structure of the data using functions from
 phyloseq.
 
 
@@ -483,17 +470,17 @@ table(tax_table(ds.core)[, "Genus"])
 ~~~
 {: .output}
 
-The function `rank_names` returns the taxonomic levels contained within the
+`rank_names()` returns the taxonomic levels contained within the
 'ds.core' data. In this case, we have data from Phylum, Family and Genus. We
 can examine the number of different Phyla, Families and Genuses in samples using
-the `tax_table` function as shown above. There are many Genuses, Families and
+the `tax_table()` as shown above. There are many Genuses, Families and
 Phyla with only single features. Some are highly over-represented (e.g. the
 Firmicutes phylum).
 
 
 # Running NMDS in R
 
-Let's carry out NMDS using the `ordinate` function. 
+Let's carry out NMDS using the `ordinate()`. 
 This function takes phylogenetic sequencing data on which you want to apply
 your chosen ordination method and specifies the method (in this case, NMDS),
 number of axes/dimensions (k, in this case 2), the distance measure (in this
@@ -516,7 +503,7 @@ Run 2 stress 0.1584647
 Run 3 stress 0.1611791 
 Run 4 stress 0.1789562 
 Run 5 stress 0.15668 
-Run 6 stress 0.1640327 
+Run 6 stress 0.1640325 
 Run 7 stress 0.148614 
 Run 8 stress 0.1519784 
 Run 9 stress 0.1443964 
@@ -534,6 +521,10 @@ Run 17 stress 0.15341
 Run 18 stress 0.1999476 
 Run 19 stress 0.1541285 
 Run 20 stress 0.1484817 
+Run 21 stress 0.1608378 
+Run 22 stress 0.1638227 
+Run 23 stress 0.1817737 
+Run 24 stress 0.1622664 
 *** Solution reached
 ~~~
 {: .output}
@@ -549,11 +540,11 @@ Run 20 stress 0.1484817
 ~~~
 {: .language-r}
 
-Notice how changing the value of `set.seed` gives a slightly different value of
+Notice how changing the value of `set.seed()` gives a slightly different value of
 stress of the solution. This is because the solution to NMDS is calculated
 using different random starting data configurations, so it gives a slightly
-different answer each time. The `ordinate` function stops when the minimum
-value of stress is found. `set.seed` allows the same result to be returned each
+different answer each time. `ordinate()` stops when the minimum
+value of stress is found. `set.seed()` allows the same result to be returned each
 time the code is run, even though there is a random element to reaching
 the solution. 
 
@@ -577,7 +568,7 @@ provides a poor representation of the data in the number of dimensions selected.
 > ## Challenge 1 
 > 
 > What do you think we could do to reduce stress if the overall solution of
-> the ordinate function had a stress solution greater than 0.3? Discuss in
+> the `ordinate()` had a stress solution greater than 0.3? Discuss in
 > groups.
 > 
 > > ## Solution
@@ -598,26 +589,6 @@ Closer to one means a better fit.
 
 ~~~
 library(vegan)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: package 'vegan' was built under R version 4.1.2
-~~~
-{: .warning}
-
-
-
-~~~
-Warning: package 'permute' was built under R version 4.1.2
-~~~
-{: .warning}
-
-
-
-~~~
 stressplot(ord)
 ~~~
 {: .language-r}
@@ -631,9 +602,9 @@ original data well.
 > ## Challenge 2 
 > 
 > Identify the lowest value of k that gives the best stress value for NMDS
-> using the microbiome data (ds.core). Think about getting a low stress value
+> using the microbiome data (`ds.core`). Think about getting a low stress value
 > as well as creating results that can be easily visualised and interpreted.
-> Use the function stressplot to examine how distribution around the
+> Use `stressplot()` to examine how distribution around the
 > regression line changes with increases in k. Use what you have learned to
 > decide on best number of dimensions to include in NMDS analysis of the
 > microbiome data. Use `set.seed(1000)` for k values greater than 2 to allow
@@ -651,33 +622,37 @@ original data well.
 > > 
 > > 
 > > ~~~
-> > Run 0 stress 0.06883309 
-> > Run 1 stress 0.06958173 
+> > Run 0 stress 0.0688331 
+> > Run 1 stress 0.06958135 
 > > Run 2 stress 0.0689553 
-> > ... Procrustes: rmse 0.005878326  max resid 0.05848458 
-> > Run 3 stress 0.06956389 
-> > Run 4 stress 0.07001277 
-> > Run 5 stress 0.07207354 
-> > Run 6 stress 0.07033404 
+> > ... Procrustes: rmse 0.005872248  max resid 0.05843999 
+> > Run 3 stress 0.06958234 
+> > Run 4 stress 0.06998722 
+> > Run 5 stress 0.07180568 
+> > Run 6 stress 0.07039164 
 > > Run 7 stress 0.07085392 
 > > Run 8 stress 0.06895907 
-> > ... Procrustes: rmse 0.006909204  max resid 0.08103494 
+> > ... Procrustes: rmse 0.006904971  max resid 0.08102637 
 > > Run 9 stress 0.07078944 
-> > Run 10 stress 0.06956375 
-> > Run 11 stress 0.07377381 
+> > Run 10 stress 0.06956202 
+> > Run 11 stress 0.07382995 
 > > Run 12 stress 0.07324842 
-> > Run 13 stress 0.06961728 
+> > Run 13 stress 0.06962017 
 > > Run 14 stress 0.06889305 
-> > ... Procrustes: rmse 0.003933647  max resid 0.05689851 
+> > ... Procrustes: rmse 0.003930006  max resid 0.05685175 
 > > Run 15 stress 0.06888851 
-> > ... Procrustes: rmse 0.006879907  max resid 0.08089453 
-> > Run 16 stress 0.06883407 
-> > ... Procrustes: rmse 0.0003462506  max resid 0.002230121 
+> > ... Procrustes: rmse 0.006876936  max resid 0.0808861 
+> > Run 16 stress 0.0688348 
+> > ... Procrustes: rmse 0.0004083019  max resid 0.002545549 
 > > ... Similar to previous best
 > > Run 17 stress 0.07046705 
-> > Run 18 stress 0.06956281 
+> > Run 18 stress 0.06956713 
 > > Run 19 stress 0.07053079 
 > > Run 20 stress 0.07194726 
+> > Run 21 stress 0.0702962 
+> > Run 22 stress 0.07231626 
+> > Run 23 stress 0.0696101 
+> > Run 24 stress 0.06970453 
 > > *** Solution reached
 > > ~~~
 > > {: .output}
@@ -698,49 +673,49 @@ original data well.
 > > 
 > > 
 > > ~~~
-> > Run 0 stress 0.09379867 
+> > Run 0 stress 0.09379872 
 > > Run 1 stress 0.1026698 
 > > Run 2 stress 0.1002676 
-> > Run 3 stress 0.1023264 
-> > Run 4 stress 0.0928726 
+> > Run 3 stress 0.1023272 
+> > Run 4 stress 0.09287257 
 > > ... New best solution
-> > ... Procrustes: rmse 0.01237079  max resid 0.1707453 
+> > ... Procrustes: rmse 0.01237011  max resid 0.1707368 
 > > Run 5 stress 0.09588158 
 > > Run 6 stress 0.1093368 
-> > Run 7 stress 0.1030245 
+> > Run 7 stress 0.1029276 
 > > Run 8 stress 0.1034482 
 > > Run 9 stress 0.09738996 
-> > Run 10 stress 0.108229 
-> > Run 11 stress 0.1028016 
+> > Run 10 stress 0.1082283 
+> > Run 11 stress 0.1028023 
 > > Run 12 stress 0.1036501 
 > > Run 13 stress 0.09532804 
-> > Run 14 stress 0.1026388 
+> > Run 14 stress 0.102258 
 > > Run 15 stress 0.1024873 
-> > Run 16 stress 0.101386 
+> > Run 16 stress 0.1013874 
 > > Run 17 stress 0.09505229 
 > > Run 18 stress 0.09796259 
 > > Run 19 stress 0.1068903 
-> > Run 20 stress 0.1066894 
-> > Run 21 stress 0.1084819 
-> > Run 22 stress 0.1004321 
-> > Run 23 stress 0.1027155 
-> > Run 24 stress 0.107186 
+> > Run 20 stress 0.1066879 
+> > Run 21 stress 0.1086129 
+> > Run 22 stress 0.100432 
+> > Run 23 stress 0.102715 
+> > Run 24 stress 0.1071413 
 > > Run 25 stress 0.1047762 
-> > Run 26 stress 0.09526087 
+> > Run 26 stress 0.09526129 
 > > Run 27 stress 0.09958195 
-> > Run 28 stress 0.09607167 
-> > Run 29 stress 0.1060667 
-> > Run 30 stress 0.1075295 
+> > Run 28 stress 0.09607154 
+> > Run 29 stress 0.1060663 
+> > Run 30 stress 0.1075293 
 > > Run 31 stress 0.09590724 
-> > Run 32 stress 0.09845318 
+> > Run 32 stress 0.09845323 
 > > Run 33 stress 0.1082491 
 > > Run 34 stress 0.09620151 
-> > Run 35 stress 0.1047374 
-> > Run 36 stress 0.09495708 
+> > Run 35 stress 0.1047376 
+> > Run 36 stress 0.09496087 
 > > Run 37 stress 0.09609119 
 > > Run 38 stress 0.1064076 
-> > Run 39 stress 0.1050149 
-> > Run 40 stress 0.09626936 
+> > Run 39 stress 0.105015 
+> > Run 40 stress 0.09626336 
 > > Run 41 stress 0.1028917 
 > > Run 42 stress 0.1019894 
 > > Run 43 stress 0.09481307 
@@ -748,56 +723,57 @@ original data well.
 > > Run 45 stress 0.1070549 
 > > Run 46 stress 0.09458377 
 > > Run 47 stress 0.1038932 
-> > Run 48 stress 0.09983307 
-> > Run 49 stress 0.1001502 
+> > Run 48 stress 0.09983303 
+> > Run 49 stress 0.1001508 
 > > Run 50 stress 0.09829187 
-> > Run 51 stress 0.09990189 
-> > Run 52 stress 0.109043 
+> > Run 51 stress 0.09990176 
+> > Run 52 stress 0.1085232 
 > > Run 53 stress 0.09551422 
 > > Run 54 stress 0.0977556 
 > > Run 55 stress 0.09406389 
 > > Run 56 stress 0.1041708 
-> > Run 57 stress 0.09631192 
-> > Run 58 stress 0.09624346 
+> > Run 57 stress 0.0963039 
+> > Run 58 stress 0.09624402 
 > > Run 59 stress 0.09865697 
-> > Run 60 stress 0.1061666 
-> > Run 61 stress 0.1027314 
-> > Run 62 stress 0.1059547 
+> > Run 60 stress 0.1061679 
+> > Run 61 stress 0.1027311 
+> > Run 62 stress 0.1059518 
 > > Run 63 stress 0.1066049 
-> > Run 64 stress 0.09887413 
+> > Run 64 stress 0.09887407 
 > > Run 65 stress 0.09469729 
-> > Run 66 stress 0.106663 
+> > Run 66 stress 0.1066662 
 > > Run 67 stress 0.101879 
 > > Run 68 stress 0.09416585 
-> > Run 69 stress 0.09884341 
+> > Run 69 stress 0.09884343 
 > > Run 70 stress 0.1046467 
 > > Run 71 stress 0.09468667 
 > > Run 72 stress 0.09958167 
-> > Run 73 stress 0.09539819 
-> > Run 74 stress 0.107003 
+> > Run 73 stress 0.09539729 
+> > Run 74 stress 0.1070031 
 > > Run 75 stress 0.09957389 
-> > Run 76 stress 0.09495902 
-> > Run 77 stress 0.0977281 
+> > Run 76 stress 0.09495955 
+> > Run 77 stress 0.09773001 
 > > Run 78 stress 0.106397 
 > > Run 79 stress 0.1037537 
 > > Run 80 stress 0.09875277 
 > > Run 81 stress 0.09479951 
-> > Run 82 stress 0.1040489 
+> > Run 82 stress 0.1040475 
 > > Run 83 stress 0.09430034 
-> > Run 84 stress 0.1064105 
+> > Run 84 stress 0.1064933 
 > > Run 85 stress 0.1005868 
-> > Run 86 stress 0.1061675 
+> > Run 86 stress 0.1061674 
 > > Run 87 stress 0.09729939 
-> > Run 88 stress 0.09810382 
+> > Run 88 stress 0.09810385 
 > > Run 89 stress 0.1051389 
-> > Run 90 stress 0.1032559 
+> > Run 90 stress 0.1032564 
 > > Run 91 stress 0.09523564 
 > > Run 92 stress 0.09795836 
 > > Run 93 stress 0.1012748 
 > > Run 94 stress 0.09966816 
 > > Run 95 stress 0.09287379 
-> > ... Procrustes: rmse 0.0003422189  max resid 0.003809763 
+> > ... Procrustes: rmse 0.000348827  max resid 0.003927931 
 > > ... Similar to previous best
+> > Run 96 stress 0.1056731 
 > > *** Solution reached
 > > ~~~
 > > {: .output}
@@ -840,13 +816,13 @@ head(ord$points)
 
 
 ~~~
-               MDS1        MDS2         MDS3
-Sample-1 -0.6944705 -0.33582954 -0.146604674
-Sample-2  0.1917434  0.42307368 -0.005075534
-Sample-3  0.4922269  0.03364407 -0.008225661
-Sample-4 -0.3730633  0.75183971 -0.218681635
-Sample-5  0.6479689 -0.14073732  0.109730913
-Sample-6  0.7172022 -0.18674872  0.129074787
+               MDS1       MDS2         MDS3
+Sample-1 -0.6944678 -0.3358325 -0.146610850
+Sample-2  0.1917433  0.4230776 -0.005082133
+Sample-3  0.4922274  0.0336472 -0.008231960
+Sample-4 -0.3730962  0.7517736 -0.218845078
+Sample-5  0.6479681 -0.1407363  0.109727771
+Sample-6  0.7172035 -0.1867499  0.129067262
 ~~~
 {: .output}
 
@@ -862,12 +838,12 @@ head(ord$species)
 
 ~~~
                                         MDS1       MDS2        MDS3
-Akkermansia                       -0.5384333  0.1430774 -0.41564875
-Alcaligenes faecalis et rel.      -0.4204477 -0.3244622 -0.16165022
-Allistipes et rel.                -0.7164723 -0.3335286 -0.20521486
-Anaerostipes caccae et rel.       -0.5278484 -0.1341678  0.06745106
-Anaerotruncus colihominis et rel. -0.1171549  0.4444772  0.01741303
-Anaerovorax odorimutans et rel.   -0.1625617  0.3333726  0.02402519
+Akkermansia                       -0.5384262  0.1430608 -0.41560373
+Alcaligenes faecalis et rel.      -0.4204429 -0.3244718 -0.16160293
+Allistipes et rel.                -0.7164758 -0.3335269 -0.20523172
+Anaerostipes caccae et rel.       -0.5278467 -0.1341668  0.06741638
+Anaerotruncus colihominis et rel. -0.1171632  0.4444919  0.01746933
+Anaerovorax odorimutans et rel.   -0.1625668  0.3333850  0.02398548
 ~~~
 {: .output}
 
@@ -916,7 +892,7 @@ plot_ordination(ds.core, ord, color = "group", axes = c(2, 3)) +
 
 > ## Challenge 3 
 > 
-> Use the `plot_ordination` function to look for clusters in points
+> Use `plot_ordination()` to look for clusters in points
 > on the NMDS axes according to sex, bmi_group and other factors in the
 > metadata.Do any of these factors appear to form clusters?
 > 
@@ -1038,7 +1014,7 @@ NMDS dimensions using a 3D scatterplot than it is using a series of three
 2D scatterplots. The disadvantage is that the current 3D scatterplot can only
 be observed from one angle making it difficult to observe some data points.
 The user can change the angle that the scatterplot is viewed from using the
-`angle` argument in `ordiplot3d`. 
+`angle` argument in `ordiplot3d()`. 
 
 Visualising output of NMDS analysis can provide important information
 regarding relationships between samples and clusters according to metadata
