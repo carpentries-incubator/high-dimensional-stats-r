@@ -48,6 +48,33 @@ Let's read in the data for this episode:
 ~~~
 library("here")
 library("minfi")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: package 'S4Vectors' was built under R version 4.1.1
+~~~
+{: .warning}
+
+
+
+~~~
+Warning: package 'GenomeInfoDb' was built under R version 4.1.1
+~~~
+{: .warning}
+
+
+
+~~~
+Warning: package 'MatrixGenerics' was built under R version 4.1.1
+~~~
+{: .warning}
+
+
+
+~~~
 methylation <- readRDS(here("data/methylation.rds"))
 ~~~
 {: .language-r}
@@ -262,6 +289,12 @@ for low-dimensional data may be very slow when applied to high-dimensional data.
 Ideally when performing regression, we want to identify cases like this,
 where there is a clear assocation, and we probably "don't need" statistics:
 
+
+~~~
+Warning: package 'ggplot2' was built under R version 4.1.2
+~~~
+{: .warning}
+
 <img src="../fig/rmd-02-example1-1.png" title="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. A strong linear relationship with a positive slope exists between the two." alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" style="display: block; margin: auto;" />
 
 or equivalently for a discrete covariate:
@@ -359,6 +392,19 @@ the coefficients and the associated hypothesis tests in this model:
 
 ~~~
 library("broom")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: package 'broom' was built under R version 4.1.2
+~~~
+{: .warning}
+
+
+
+~~~
 tidy(lm_age_methyl1)
 ~~~
 {: .language-r}
@@ -1003,7 +1049,7 @@ with a lot of features!
 
 
 ~~~
-p_raw <- coef_df$p.value
+p_raw <- toptab_age$P.Value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
 library("ggplot2")
 ggplot() +
