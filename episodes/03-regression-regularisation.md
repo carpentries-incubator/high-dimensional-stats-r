@@ -56,6 +56,33 @@ First, let's read in the data from the last lesson.
 ~~~
 library("here")
 library("minfi")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: package 'S4Vectors' was built under R version 4.1.1
+~~~
+{: .warning}
+
+
+
+~~~
+Warning: package 'GenomeInfoDb' was built under R version 4.1.1
+~~~
+{: .warning}
+
+
+
+~~~
+Warning: package 'MatrixGenerics' was built under R version 4.1.1
+~~~
+{: .warning}
+
+
+
+~~~
 methylation <- readRDS(here("data/methylation.rds"))
 
 ## here, we transpose the matrix to have features as rows and samples as columns
@@ -213,7 +240,7 @@ different combinations of slope and intercept accomplish this objective.
 Mathematically, we can write the sum of squared residuals as
 
 $$
-    \sum_{i=1}^N (\hat{y}_i - y_i)^2
+    \sum_{i=1}^N ( y_i-X_i\beta)^2
 $$
 
 where $\hat{y}_i$ is the predicted y value for each input data
@@ -310,11 +337,15 @@ rely on the input data being scaled like this.
 
 ~~~
 ## centre and scale the data
-methyl_mat <- scale(methyl_mat, center = TRUE, scale = TRUE)
+methyl_mat_sc <- scale(methyl_mat, center = TRUE, scale = TRUE)
 
 coef_horvath <- coef_horvath[1:20, ]
 features <- coef_horvath$CpGmarker
-horvath_mat <- methyl_mat[, features]
+horvath_mat_sc <- methyl_mat_sc[, features]
+
+## Extract scales and centres for later
+methyl_mat_sc_scales <- attr(methyl_mat_sc, "scaled:scale")[1:20]
+methyl_mat_sc_centres <- attr(methyl_mat_sc, "scaled:center")[1:20]
 
 ## Generate an index to split the data
 set.seed(42)
@@ -338,9 +369,9 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    
 > >    ~~~
-> >    train_mat <- horvath_mat[train_ind, ]
+> >    train_mat_sc <- horvath_mat_sc[train_ind, ]
 > >    train_age <- age[train_ind]
-> >    test_mat <- horvath_mat[-train_ind, ]
+> >    test_mat_sc <- horvath_mat_sc[-train_ind, ]
 > >    test_age <- age[-train_ind]
 > >    ~~~
 > >    {: .language-r}
@@ -349,7 +380,7 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    
 > >    ~~~
-> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
+> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat_sc))
 > >    ~~~
 > >    {: .language-r}
 > > 
@@ -383,7 +414,7 @@ higher than the error on the training data!
 mse <- function(true, prediction) {
     mean((true - prediction)^2)
 }
-pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
+pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat_sc))
 err_lm <- mse(test_age, pred_lm)
 err_lm
 ~~~
@@ -410,7 +441,7 @@ abline(coef = 0:1, lty = "dashed")
 
 <img src="../fig/rmd-03-test-plot-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-# Ridge regression
+# What is regularisation? (using ridge regression as an example)
 
 One way to tackle these many correlated variables with lots of noise is
 *regularisation*.
@@ -436,7 +467,7 @@ coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
 $$
-    \left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+    \left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2} 
 $$
 
 To control this, we specify that the solution for the equation above
@@ -445,7 +476,7 @@ we try to minimise a function that includes our $L^2$ norm scaled by a
 factor that is usually written $\lambda$.
 
 $$
-    \left(\sum_{i=1}^N y_i - X_i\beta\right) + \lambda \left\lVert \beta \right\lVert_2
+     \sum_{i=1}^N \biggl( y_i - X_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
 $$
 
 Another way of thinking about this is that when finding the best model, we're
@@ -469,6 +500,26 @@ regularised and ordinary least squares.
 
 ~~~
 library("glmnet")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: package 'glmnet' was built under R version 4.1.2
+~~~
+{: .warning}
+
+
+
+~~~
+## glmnet() performs scaling by default, supply un-scaled data:
+horvath_mat <- methyl_mat[, features] # select the first 20 sites as before
+train_mat <- horvath_mat[train_ind, ] # use the same individuals as selected before
+test_mat <- horvath_mat[-train_ind, ]
+
+
+
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
 plot(ridge_fit, xvar = "lambda")
 abline(h = 0, lty = "dashed")
@@ -609,7 +660,8 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    
 > >    ~~~
 > >    par(mfrow = c(1, 1))
-> >    plot(coef(fit_horvath), coef(ridge_fit, s = which_min_err),
+> >    plot(coef(fit_horvath) * c(1, methyl_mat_sc_scales) + c(0, methyl_mat_sc_centres),
+> >    coef(ridge_fit, s = which_min_err),
 > >        pch = 19
 > >    )
 > >    abline(coef = 0:1, lty = "dashed")
