@@ -281,7 +281,7 @@ points(
 Mathematically, we can write the sum of squared residuals as
 
 $$
-    \sum_{i=1}^N (\hat{y}_i - y_i)^2
+    \sum_{i=1}^N ( y_i-X_i\beta)^2
 $$
 
 where $\hat{y}_i$ is the predicted y value for each input data
@@ -454,7 +454,7 @@ plot(test_age, pred_lm, pch = 19)
 abline(coef = 0:1, lty = "dashed")
 ```
 
-# Ridge regression
+# What is regularisation? (using ridge regression as an example)
 
 One way to tackle these many correlated variables with lots of noise is
 *regularisation*.
@@ -513,7 +513,7 @@ coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
 $$
-    \left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+    \left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2} 
 $$
 
 To control this, we specify that the solution for the equation above
@@ -522,7 +522,7 @@ we try to minimise a function that includes our $L^2$ norm scaled by a
 factor that is usually written $\lambda$.
 
 $$
-    \left(\sum_{i=1}^N y_i - X_i\beta\right) + \lambda \left\lVert \beta \right\lVert_2
+     \sum_{i=1}^N \biggl( y_i - X_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
 $$
 
 Another way of thinking about this is that when finding the best model, we're
