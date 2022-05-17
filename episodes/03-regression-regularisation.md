@@ -243,7 +243,7 @@ $$
     \sum_{i=1}^N ( y_i-X_i\beta)^2
 $$
 
-where $\hat{y}_i$ is the predicted y value for each input data
+where $X_i\beta$ is the predicted y value for each input data
 point $X_i$, and $y_i$ is the true observed value.
 This line is the line of best fit through our data when considering this
 goal of minimising the sum of squared error. However, it is not the only 
