@@ -112,7 +112,6 @@ library("here")
 library("ComplexHeatmap")
 
 methyl <- readRDS(here("data/methylation.rds"))
-methyl_mat <- t(assay(methyl))
 ```
 
 If we plot a heatmap of these data, we can see there may be some patterns
@@ -121,6 +120,9 @@ of the data. However, they are all quite jumbled at the moment, so it's hard to 
 how many line up exactly.
 
 ```{r heatmap-noclust, echo=FALSE}
+library("ComplexHeatmap")
+
+methyl_mat <- t(assay(methyl))
 Heatmap(methyl_mat,
   name = "Methylation level",
   cluster_rows = FALSE, cluster_columns = FALSE,

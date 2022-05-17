@@ -503,7 +503,7 @@ Run 2 stress 0.1584647
 Run 3 stress 0.1611791 
 Run 4 stress 0.1789562 
 Run 5 stress 0.15668 
-Run 6 stress 0.1640326 
+Run 6 stress 0.1640325 
 Run 7 stress 0.148614 
 Run 8 stress 0.1519784 
 Run 9 stress 0.1443964 
@@ -513,7 +513,7 @@ Run 12 stress 0.1426428
 ... New best solution
 ... Procrustes: rmse 0.000483717  max resid 0.004997887 
 ... Similar to previous best
-Run 13 stress 0.1616121 
+Run 13 stress 0.1616122 
 Run 14 stress 0.1602666 
 Run 15 stress 0.143847 
 Run 16 stress 0.1562442 
@@ -521,6 +521,10 @@ Run 17 stress 0.15341
 Run 18 stress 0.1999476 
 Run 19 stress 0.1541285 
 Run 20 stress 0.1484817 
+Run 21 stress 0.1608378 
+Run 22 stress 0.1638227 
+Run 23 stress 0.1817737 
+Run 24 stress 0.1622664 
 *** Solution reached
 ~~~
 {: .output}
@@ -618,33 +622,37 @@ original data well.
 > > 
 > > 
 > > ~~~
-> > Run 0 stress 0.06883309 
-> > Run 1 stress 0.06958173 
+> > Run 0 stress 0.0688331 
+> > Run 1 stress 0.06958135 
 > > Run 2 stress 0.0689553 
-> > ... Procrustes: rmse 0.005878326  max resid 0.05848458 
-> > Run 3 stress 0.06957764 
-> > Run 4 stress 0.07000042 
-> > Run 5 stress 0.07181074 
-> > Run 6 stress 0.07033401 
-> > Run 7 stress 0.07085398 
+> > ... Procrustes: rmse 0.005872248  max resid 0.05843999 
+> > Run 3 stress 0.06958234 
+> > Run 4 stress 0.06998722 
+> > Run 5 stress 0.07180568 
+> > Run 6 stress 0.07039164 
+> > Run 7 stress 0.07085392 
 > > Run 8 stress 0.06895907 
-> > ... Procrustes: rmse 0.006909204  max resid 0.08103494 
+> > ... Procrustes: rmse 0.006904971  max resid 0.08102637 
 > > Run 9 stress 0.07078944 
 > > Run 10 stress 0.06956202 
-> > Run 11 stress 0.07379008 
+> > Run 11 stress 0.07382995 
 > > Run 12 stress 0.07324842 
-> > Run 13 stress 0.06961728 
+> > Run 13 stress 0.06962017 
 > > Run 14 stress 0.06889305 
-> > ... Procrustes: rmse 0.003933647  max resid 0.05689851 
+> > ... Procrustes: rmse 0.003930006  max resid 0.05685175 
 > > Run 15 stress 0.06888851 
-> > ... Procrustes: rmse 0.006879761  max resid 0.08089582 
-> > Run 16 stress 0.06883488 
-> > ... Procrustes: rmse 0.0003875964  max resid 0.002401171 
+> > ... Procrustes: rmse 0.006876936  max resid 0.0808861 
+> > Run 16 stress 0.0688348 
+> > ... Procrustes: rmse 0.0004083019  max resid 0.002545549 
 > > ... Similar to previous best
-> > Run 17 stress 0.07052512 
-> > Run 18 stress 0.06956379 
+> > Run 17 stress 0.07046705 
+> > Run 18 stress 0.06956713 
 > > Run 19 stress 0.07053079 
 > > Run 20 stress 0.07194726 
+> > Run 21 stress 0.0702962 
+> > Run 22 stress 0.07231626 
+> > Run 23 stress 0.0696101 
+> > Run 24 stress 0.06970453 
 > > *** Solution reached
 > > ~~~
 > > {: .output}
@@ -665,99 +673,99 @@ original data well.
 > > 
 > > 
 > > ~~~
-> > Run 0 stress 0.09379868 
-> > Run 1 stress 0.1026697 
+> > Run 0 stress 0.09379872 
+> > Run 1 stress 0.1026698 
 > > Run 2 stress 0.1002676 
 > > Run 3 stress 0.1023272 
 > > Run 4 stress 0.09287257 
 > > ... New best solution
-> > ... Procrustes: rmse 0.01237104  max resid 0.1707511 
+> > ... Procrustes: rmse 0.01237011  max resid 0.1707368 
 > > Run 5 stress 0.09588158 
-> > Run 6 stress 0.1093369 
-> > Run 7 stress 0.1030217 
+> > Run 6 stress 0.1093368 
+> > Run 7 stress 0.1029276 
 > > Run 8 stress 0.1034482 
 > > Run 9 stress 0.09738996 
-> > Run 10 stress 0.108229 
-> > Run 11 stress 0.1028017 
+> > Run 10 stress 0.1082283 
+> > Run 11 stress 0.1028023 
 > > Run 12 stress 0.1036501 
 > > Run 13 stress 0.09532804 
-> > Run 14 stress 0.1022372 
-> > Run 15 stress 0.1024869 
-> > Run 16 stress 0.101386 
+> > Run 14 stress 0.102258 
+> > Run 15 stress 0.1024873 
+> > Run 16 stress 0.1013874 
 > > Run 17 stress 0.09505229 
 > > Run 18 stress 0.09796259 
 > > Run 19 stress 0.1068903 
 > > Run 20 stress 0.1066879 
-> > Run 21 stress 0.1085169 
-> > Run 22 stress 0.1004321 
-> > Run 23 stress 0.1027152 
-> > Run 24 stress 0.1071443 
+> > Run 21 stress 0.1086129 
+> > Run 22 stress 0.100432 
+> > Run 23 stress 0.102715 
+> > Run 24 stress 0.1071413 
 > > Run 25 stress 0.1047762 
-> > Run 26 stress 0.09526087 
+> > Run 26 stress 0.09526129 
 > > Run 27 stress 0.09958195 
-> > Run 28 stress 0.09607168 
-> > Run 29 stress 0.1060682 
-> > Run 30 stress 0.1075295 
+> > Run 28 stress 0.09607154 
+> > Run 29 stress 0.1060663 
+> > Run 30 stress 0.1075293 
 > > Run 31 stress 0.09590724 
 > > Run 32 stress 0.09845323 
 > > Run 33 stress 0.1082491 
 > > Run 34 stress 0.09620151 
-> > Run 35 stress 0.1047374 
-> > Run 36 stress 0.09495708 
-> > Run 37 stress 0.09609133 
-> > Run 38 stress 0.1064078 
-> > Run 39 stress 0.1050149 
-> > Run 40 stress 0.09626938 
+> > Run 35 stress 0.1047376 
+> > Run 36 stress 0.09496087 
+> > Run 37 stress 0.09609119 
+> > Run 38 stress 0.1064076 
+> > Run 39 stress 0.105015 
+> > Run 40 stress 0.09626336 
 > > Run 41 stress 0.1028917 
-> > Run 42 stress 0.101983 
+> > Run 42 stress 0.1019894 
 > > Run 43 stress 0.09481307 
 > > Run 44 stress 0.09446836 
 > > Run 45 stress 0.1070549 
 > > Run 46 stress 0.09458377 
 > > Run 47 stress 0.1038932 
-> > Run 48 stress 0.09983213 
-> > Run 49 stress 0.1001502 
+> > Run 48 stress 0.09983303 
+> > Run 49 stress 0.1001508 
 > > Run 50 stress 0.09829187 
-> > Run 51 stress 0.09990189 
-> > Run 52 stress 0.1090401 
+> > Run 51 stress 0.09990176 
+> > Run 52 stress 0.1085232 
 > > Run 53 stress 0.09551422 
 > > Run 54 stress 0.0977556 
 > > Run 55 stress 0.09406389 
 > > Run 56 stress 0.1041708 
-> > Run 57 stress 0.09631193 
+> > Run 57 stress 0.0963039 
 > > Run 58 stress 0.09624402 
-> > Run 59 stress 0.09865492 
-> > Run 60 stress 0.1061676 
-> > Run 61 stress 0.1027302 
-> > Run 62 stress 0.1059547 
+> > Run 59 stress 0.09865697 
+> > Run 60 stress 0.1061679 
+> > Run 61 stress 0.1027311 
+> > Run 62 stress 0.1059518 
 > > Run 63 stress 0.1066049 
 > > Run 64 stress 0.09887407 
 > > Run 65 stress 0.09469729 
-> > Run 66 stress 0.106663 
+> > Run 66 stress 0.1066662 
 > > Run 67 stress 0.101879 
-> > Run 68 stress 0.094166 
+> > Run 68 stress 0.09416585 
 > > Run 69 stress 0.09884343 
 > > Run 70 stress 0.1046467 
 > > Run 71 stress 0.09468667 
 > > Run 72 stress 0.09958167 
-> > Run 73 stress 0.09540004 
-> > Run 74 stress 0.107003 
+> > Run 73 stress 0.09539729 
+> > Run 74 stress 0.1070031 
 > > Run 75 stress 0.09957389 
-> > Run 76 stress 0.09495904 
+> > Run 76 stress 0.09495955 
 > > Run 77 stress 0.09773001 
-> > Run 78 stress 0.1063964 
+> > Run 78 stress 0.106397 
 > > Run 79 stress 0.1037537 
 > > Run 80 stress 0.09875277 
 > > Run 81 stress 0.09479951 
-> > Run 82 stress 0.1040489 
+> > Run 82 stress 0.1040475 
 > > Run 83 stress 0.09430034 
 > > Run 84 stress 0.1064933 
 > > Run 85 stress 0.1005868 
-> > Run 86 stress 0.1061675 
+> > Run 86 stress 0.1061674 
 > > Run 87 stress 0.09729939 
-> > Run 88 stress 0.09810382 
+> > Run 88 stress 0.09810385 
 > > Run 89 stress 0.1051389 
-> > Run 90 stress 0.1032565 
+> > Run 90 stress 0.1032564 
 > > Run 91 stress 0.09523564 
 > > Run 92 stress 0.09795836 
 > > Run 93 stress 0.1012748 
@@ -765,6 +773,7 @@ original data well.
 > > Run 95 stress 0.09287379 
 > > ... Procrustes: rmse 0.000348827  max resid 0.003927931 
 > > ... Similar to previous best
+> > Run 96 stress 0.1056731 
 > > *** Solution reached
 > > ~~~
 > > {: .output}
