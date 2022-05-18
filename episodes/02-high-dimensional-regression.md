@@ -1003,7 +1003,7 @@ with a lot of features!
 
 
 ~~~
-p_raw <- coef_df$p.value
+p_raw <- toptab_age$P.Value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
 library("ggplot2")
 ggplot() +

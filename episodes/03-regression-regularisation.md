@@ -310,11 +310,15 @@ rely on the input data being scaled like this.
 
 ~~~
 ## centre and scale the data
-methyl_mat <- scale(methyl_mat, center = TRUE, scale = TRUE)
+methyl_mat_sc <- scale(methyl_mat, center = TRUE, scale = TRUE)
 
 coef_horvath <- coef_horvath[1:20, ]
 features <- coef_horvath$CpGmarker
-horvath_mat <- methyl_mat[, features]
+horvath_mat_sc <- methyl_mat_sc[, features]
+
+## Extract scales and centres for later
+methyl_mat_sc_scales <- attr(methyl_mat_sc, "scaled:scale")[1:20]
+methyl_mat_sc_centres <- attr(methyl_mat_sc, "scaled:center")[1:20]
 
 ## Generate an index to split the data
 set.seed(42)
@@ -338,9 +342,9 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    
 > >    ~~~
-> >    train_mat <- horvath_mat[train_ind, ]
+> >    train_mat_sc <- horvath_mat_sc[train_ind, ]
 > >    train_age <- age[train_ind]
-> >    test_mat <- horvath_mat[-train_ind, ]
+> >    test_mat_sc <- horvath_mat_sc[-train_ind, ]
 > >    test_age <- age[-train_ind]
 > >    ~~~
 > >    {: .language-r}
@@ -349,7 +353,7 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    
 > >    ~~~
-> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
+> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat_sc))
 > >    ~~~
 > >    {: .language-r}
 > > 
@@ -383,7 +387,7 @@ higher than the error on the training data!
 mse <- function(true, prediction) {
     mean((true - prediction)^2)
 }
-pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
+pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat_sc))
 err_lm <- mse(test_age, pred_lm)
 err_lm
 ~~~
@@ -469,6 +473,14 @@ regularised and ordinary least squares.
 
 ~~~
 library("glmnet")
+
+## glmnet() performs scaling by default, supply un-scaled data:
+horvath_mat <- methyl_mat[, features] # select the first 20 sites as before
+train_mat <- horvath_mat[train_ind, ] # use the same individuals as selected before
+test_mat <- horvath_mat[-train_ind, ]
+
+
+
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
 plot(ridge_fit, xvar = "lambda")
 abline(h = 0, lty = "dashed")
@@ -609,7 +621,8 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    
 > >    ~~~
 > >    par(mfrow = c(1, 1))
-> >    plot(coef(fit_horvath), coef(ridge_fit, s = which_min_err),
+> >    plot(coef(fit_horvath) * c(1, methyl_mat_sc_scales) + c(0, methyl_mat_sc_centres),
+> >    coef(ridge_fit, s = which_min_err),
 > >        pch = 19
 > >    )
 > >    abline(coef = 0:1, lty = "dashed")
