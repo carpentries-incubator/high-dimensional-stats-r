@@ -37,12 +37,13 @@ knitr_fig_path("01-")
 
 # What are high-dimensional data? 
 
-*High-dimensional data* are defined as data in which the number of features
+*High-dimensional data* are defined as data in which the number of features (variables observed)
 in the data, $p$, are equal or larger than the number of observations (or data
 points), $n$. Unlike for *low-dimensional data* in which the number of observations,
 $n$, far outnumbers the number of features, $p$, analyses of high-dimensional data requires
 consideration of potential problems that come from having a large number of
-features.
+features. A related concept is *wide data*. This refers to data with numerous features
+irrespective of the number of observations.
 
 High-dimensional data have become more common in many scientific fields as new
 automated data collection techniques have been developed. More and more datsets
