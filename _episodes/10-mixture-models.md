@@ -617,7 +617,7 @@ it to find?
 > > 
 > > 
 > > ~~~
-> > number of iterations= 49 
+> > number of iterations= 70 
 > > ~~~
 > > {: .output}
 > > 
@@ -638,9 +638,17 @@ it to find?
 > > 
 > > 
 > > ~~~
-> > number of iterations= 183 
+> > Need new starting values due to singularity... 
+> > Need new starting values due to singularity... 
 > > ~~~
 > > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in qr.solve(a): singular matrix 'a' in solve
+> > ~~~
+> > {: .error}
 > > 
 > > 
 > > 
@@ -649,7 +657,12 @@ it to find?
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-10-mix3_2-1.png" title="plot of chunk mix3_2" alt="plot of chunk mix3_2" width="432" style="display: block; margin: auto;" />
+> > 
+> > 
+> > ~~~
+> > Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'mix_sc3_2' not found
+> > ~~~
+> > {: .error}
 > {: .solution}
 {: .challenge}
 

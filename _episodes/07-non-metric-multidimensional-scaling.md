@@ -521,10 +521,6 @@ Run 17 stress 0.15341
 Run 18 stress 0.1999476 
 Run 19 stress 0.1541285 
 Run 20 stress 0.1484817 
-Run 21 stress 0.1608378 
-Run 22 stress 0.1638227 
-Run 23 stress 0.1817737 
-Run 24 stress 0.1622664 
 *** Solution reached
 ~~~
 {: .output}
@@ -622,37 +618,33 @@ original data well.
 > > 
 > > 
 > > ~~~
-> > Run 0 stress 0.0688331 
+> > Run 0 stress 0.06883309 
 > > Run 1 stress 0.06958135 
 > > Run 2 stress 0.0689553 
-> > ... Procrustes: rmse 0.005872248  max resid 0.05843999 
+> > ... Procrustes: rmse 0.005878326  max resid 0.05848458 
 > > Run 3 stress 0.06958234 
 > > Run 4 stress 0.06998722 
 > > Run 5 stress 0.07180568 
 > > Run 6 stress 0.07039164 
 > > Run 7 stress 0.07085392 
 > > Run 8 stress 0.06895907 
-> > ... Procrustes: rmse 0.006904971  max resid 0.08102637 
+> > ... Procrustes: rmse 0.006909204  max resid 0.08103494 
 > > Run 9 stress 0.07078944 
 > > Run 10 stress 0.06956202 
 > > Run 11 stress 0.07382995 
 > > Run 12 stress 0.07324842 
 > > Run 13 stress 0.06962017 
 > > Run 14 stress 0.06889305 
-> > ... Procrustes: rmse 0.003930006  max resid 0.05685175 
+> > ... Procrustes: rmse 0.003933647  max resid 0.05689851 
 > > Run 15 stress 0.06888851 
-> > ... Procrustes: rmse 0.006876936  max resid 0.0808861 
+> > ... Procrustes: rmse 0.006879907  max resid 0.08089453 
 > > Run 16 stress 0.0688348 
-> > ... Procrustes: rmse 0.0004083019  max resid 0.002545549 
+> > ... Procrustes: rmse 0.0004035756  max resid 0.002467138 
 > > ... Similar to previous best
 > > Run 17 stress 0.07046705 
 > > Run 18 stress 0.06956713 
 > > Run 19 stress 0.07053079 
 > > Run 20 stress 0.07194726 
-> > Run 21 stress 0.0702962 
-> > Run 22 stress 0.07231626 
-> > Run 23 stress 0.0696101 
-> > Run 24 stress 0.06970453 
 > > *** Solution reached
 > > ~~~
 > > {: .output}
@@ -673,13 +665,13 @@ original data well.
 > > 
 > > 
 > > ~~~
-> > Run 0 stress 0.09379872 
+> > Run 0 stress 0.09379867 
 > > Run 1 stress 0.1026698 
 > > Run 2 stress 0.1002676 
 > > Run 3 stress 0.1023272 
 > > Run 4 stress 0.09287257 
 > > ... New best solution
-> > ... Procrustes: rmse 0.01237011  max resid 0.1707368 
+> > ... Procrustes: rmse 0.01237063  max resid 0.1707448 
 > > Run 5 stress 0.09588158 
 > > Run 6 stress 0.1093368 
 > > Run 7 stress 0.1029276 
@@ -773,7 +765,6 @@ original data well.
 > > Run 95 stress 0.09287379 
 > > ... Procrustes: rmse 0.000348827  max resid 0.003927931 
 > > ... Similar to previous best
-> > Run 96 stress 0.1056731 
 > > *** Solution reached
 > > ~~~
 > > {: .output}
