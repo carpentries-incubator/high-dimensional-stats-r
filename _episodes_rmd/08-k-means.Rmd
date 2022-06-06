@@ -258,12 +258,13 @@ Here we use the `silhouette` function from the `cluster` package to calculate th
 silhouette width of our K-means clustering using a distance matrix of distances
 between points in the clusters.
 
-```{r silhouette, dev = "Cairo_png"}
+```{r silhouette}
 library("cluster")
 dist_mat <- dist(pcs)
 sil <- silhouette(cluster$cluster, dist = dist_mat)
 plot(sil, border = NA)
 ```
+
 
 Let's plot the silhouette score on the original dimensions used to cluster
 the data. Here, we're mapping cluster membership to point shape, and silhouette
@@ -311,12 +312,12 @@ belong to.
 > > The average silhouette width is lower when k=5.
 > > 
 > > ```{r, eval=FALSE}
-> > plot(sil5)
+> > plot(sil5, border = NA)
 > > ```
 > > ```{r, eval=FALSE, echo=FALSE}
 > > ## this needs to be plotted manually or it gets an unmapped memory crash
 > > Cairo::Cairo("fig/silhouette5.png")
-> > plot(sil5)
+> > plot(sil5, border = NA)
 > > dev.off()
 > > ```
 > > ```{r, echo=FALSE}
