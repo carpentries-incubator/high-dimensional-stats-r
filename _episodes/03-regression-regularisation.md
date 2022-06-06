@@ -56,6 +56,20 @@ First, let's read in the data from the last lesson.
 ~~~
 library("here")
 library("minfi")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: replacing previous import 'utils::download.file' by
+'restfulr::download.file' when loading 'rtracklayer'
+~~~
+{: .warning}
+
+
+
+~~~
 methylation <- readRDS(here("data/methylation.rds"))
 
 ## here, we transpose the matrix to have features as rows and samples as columns
