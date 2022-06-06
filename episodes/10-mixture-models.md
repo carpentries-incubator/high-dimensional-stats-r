@@ -95,7 +95,11 @@ deviation) that best fit the data.
 set.seed(66)
 univar <- rnorm(200)
 library("MASS")
-opt <- fitdistr(x = univar, densfun = dnorm, start = list(mean = 1, sd = 1))
+opt <- fitdistr(
+    x = univar,
+    densfun = dnorm,
+    start = list(mean = 1, sd = 1)
+)
 ~~~
 {: .language-r}
 
@@ -111,6 +115,9 @@ Warning in densfun(x, parm[1], parm[2], ...): NaNs produced
 
 
 ~~~
+## fitdistr here produces warnings because it does not constrain sd to be > 0.
+## we could stop this by supplying a lower bound in the `lower` argument
+## but it doesn't make any difference.
 fitted_mean <- opt$estimate[["mean"]]
 fitted_sd <- opt$estimate[["sd"]]
 hist(univar, freq = FALSE, breaks = "FD")
@@ -137,7 +144,8 @@ curve(
 >    *Hint: try `dlnorm` with parameter names `meanlog` and `sdlog`.*
 > 
 > > ## Solution
-> > 1. 
+> > 1. The estimates are very close to the empirical mean and SD estimates, as we
+> >    might expect.
 > >    
 > >    ~~~
 > >    opt
@@ -184,7 +192,8 @@ curve(
 > >    
 > >    ~~~
 > >    univar_exp <- exp(univar)
-> >    opt_exp <- fitdistr(x = univar_exp, densfun = dlnorm, start = list(meanlog = 1, sdlog = 1))
+> >    opt_exp <- fitdistr(x = univar_exp, densfun = dlnorm,
+> >        start = list(meanlog = 1, sdlog = 1))
 > >    ~~~
 > >    {: .language-r}
 > >    
@@ -200,6 +209,7 @@ curve(
 > >    
 > >    
 > >    ~~~
+> >    ## again, fitdistr produces warnings because it does not constrain sdlog to be > 0.
 > >    opt_exp
 > >    ~~~
 > >    {: .language-r}
@@ -273,12 +283,6 @@ It's important to note that we don't necessarily have to pick good starting
 values here, though it may help. You can see that below our initial starting
 "guess" is really bad in this case:
 
-
-~~~
-Warning: Removed 4 rows containing missing values (geom_bar).
-~~~
-{: .warning}
-
 <img src="../fig/rmd-10-mixture-animation-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 We then assign each data point to the component that fits them better (this is
@@ -288,12 +292,6 @@ distributions for each of the $k$ components. We continue this two-step process
 until the algorithm converges -- meaning that the components don't change from 
 iteration to iteration. In this simple example, the algorithm converges after 
 one iteration, but this won't usually be the case!
-
-
-~~~
-Warning: Removed 4 rows containing missing values (geom_bar).
-~~~
-{: .warning}
 
 <img src="../fig/rmd-10-mix-converged-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 

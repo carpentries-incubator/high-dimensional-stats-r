@@ -88,7 +88,14 @@ deviation) that best fit the data.
 set.seed(66)
 univar <- rnorm(200)
 library("MASS")
-opt <- fitdistr(x = univar, densfun = dnorm, start = list(mean = 1, sd = 1))
+opt <- fitdistr(
+    x = univar,
+    densfun = dnorm,
+    start = list(mean = 1, sd = 1)
+)
+## fitdistr here produces warnings because it does not constrain sd to be > 0.
+## we could stop this by supplying a lower bound in the `lower` argument
+## but it doesn't make any difference.
 fitted_mean <- opt$estimate[["mean"]]
 fitted_sd <- opt$estimate[["sd"]]
 hist(univar, freq = FALSE, breaks = "FD")
@@ -123,7 +130,8 @@ ggplot(data.frame(x = univar)) +
 >    *Hint: try `dlnorm` with parameter names `meanlog` and `sdlog`.*
 > 
 > > ## Solution
-> > 1. 
+> > 1. The estimates are very close to the empirical mean and SD estimates, as we
+> >    might expect.
 > >    ```{r stats-univar}
 > >    opt
 > >    mean(univar)
@@ -132,7 +140,9 @@ ggplot(data.frame(x = univar)) +
 > > 2. 
 > >    ```{r fit-dlnorm}
 > >    univar_exp <- exp(univar)
-> >    opt_exp <- fitdistr(x = univar_exp, densfun = dlnorm, start = list(meanlog = 1, sdlog = 1))
+> >    opt_exp <- fitdistr(x = univar_exp, densfun = dlnorm,
+> >        start = list(meanlog = 1, sdlog = 1))
+> >    ## again, fitdistr produces warnings because it does not constrain sdlog to be > 0.
 > >    opt_exp
 > >    mean(univar_exp)
 > >    sd(univar_exp)
@@ -194,6 +204,7 @@ plot_mixture <- function(x, means, sds, components) {
         aes(x) +
         geom_histogram(
             aes(y = ..density.., fill = factor(paste("component", components))),
+            na.rm = TRUE,
             alpha = 0.4
         ) +
         lims(x = range(x) * 1.5) +
@@ -370,14 +381,14 @@ both variables at once. In fact, in some cases it can basically be identical:
 
 ```{r mvnorm, echo=FALSE}
 xy <- mvrnorm(1000, mu  = c(0, 0), Sigma = diag(2))
-plot(xy)
+plot(xy, xlab="x", ylab="y")
 ```
 
 However, it also allows us to model sets of variables that aren't *independent*:
 
 ```{r mvnormcor, echo=FALSE}
 xy <- mvrnorm(1000, mu = c(0, 0), Sigma = matrix(c(1, 0.8, 10, 1), nrow = 2, ncol = 2))
-plot(xy)
+plot(xy, xlab="x", ylab="y")
 ```
 
 This is useful in a mixture model, because there's no reason to think that
