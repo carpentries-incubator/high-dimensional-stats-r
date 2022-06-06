@@ -1,3 +1,4 @@
+## this is hard to install with github actions...
 # if (!"methylclock" %in% rownames(installed.packages())) {
 #     remotes::install_github("isglobal-brge/methylclock", upgrade = "never")
 # }
