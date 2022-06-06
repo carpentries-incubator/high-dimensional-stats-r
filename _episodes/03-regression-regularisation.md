@@ -329,19 +329,7 @@ methyl_mat_sc <- scale(methyl_mat, center = TRUE, scale = TRUE)
 coef_horvath <- coef_horvath[1:20, ]
 features <- coef_horvath$CpGmarker
 horvath_mat_sc <- methyl_mat_sc[, features]
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in methyl_mat_sc[, features]: subscript out of bounds
-~~~
-{: .error}
-
-
-
-~~~
 ## Extract scales and centres for later
 methyl_mat_sc_scales <- attr(methyl_mat_sc, "scaled:scale")[1:20]
 methyl_mat_sc_centres <- attr(methyl_mat_sc, "scaled:center")[1:20]
@@ -369,34 +357,8 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    ~~~
 > >    train_mat_sc <- horvath_mat_sc[train_ind, ]
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in eval(expr, envir, enclos): object 'horvath_mat_sc' not found
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    train_age <- age[train_ind]
 > >    test_mat_sc <- horvath_mat_sc[-train_ind, ]
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in eval(expr, envir, enclos): object 'horvath_mat_sc' not found
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    test_age <- age[-train_ind]
 > >    ~~~
 > >    {: .language-r}
@@ -408,13 +370,6 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat_sc))
 > >    ~~~
 > >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': object 'train_mat_sc' not found
-> >    ~~~
-> >    {: .error}
 > > 
 > > 3. The mean squared error of the model is the mean of the square of the
 > >    residuals. This seems very low here -- on average we're only off by 
@@ -428,9 +383,9 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    
 > >    ~~~
-> >    Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mean': error in evaluating the argument 'object' in selecting a method for function 'residuals': object 'fit_horvath' not found
+> >    [1] 1.319628
 > >    ~~~
-> >    {: .error}
+> >    {: .output}
 > >
 > {: .solution}
 {: .challenge}
@@ -447,33 +402,7 @@ mse <- function(true, prediction) {
     mean((true - prediction)^2)
 }
 pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat_sc))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in predict(fit_horvath, newdata = as.data.frame(test_mat_sc)): object 'fit_horvath' not found
-~~~
-{: .error}
-
-
-
-~~~
 err_lm <- mse(test_age, pred_lm)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mean': object 'pred_lm' not found
-~~~
-{: .error}
-
-
-
-~~~
 err_lm
 ~~~
 {: .language-r}
@@ -481,9 +410,9 @@ err_lm
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'err_lm' not found
+[1] 223.3571
 ~~~
-{: .error}
+{: .output}
 
 Further, if we plot true age against predicted age for the samples in the test
 set, we can see how well we're really doing - ideally these would line up
@@ -493,29 +422,11 @@ exactly!
 ~~~
 par(mfrow = c(1, 1))
 plot(test_age, pred_lm, pch = 19)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'pred_lm' not found
-~~~
-{: .error}
-
-
-
-~~~
 abline(coef = 0:1, lty = "dashed")
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-03-test-plot-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 # Ridge regression
 
@@ -579,85 +490,18 @@ library("glmnet")
 
 ## glmnet() performs scaling by default, supply un-scaled data:
 horvath_mat <- methyl_mat[, features] # select the first 20 sites as before
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in methyl_mat[, features]: subscript out of bounds
-~~~
-{: .error}
-
-
-
-~~~
 train_mat <- horvath_mat[train_ind, ] # use the same individuals as selected before
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'horvath_mat' not found
-~~~
-{: .error}
-
-
-
-~~~
 test_mat <- horvath_mat[-train_ind, ]
-~~~
-{: .language-r}
 
 
 
-~~~
-Error in eval(expr, envir, enclos): object 'horvath_mat' not found
-~~~
-{: .error}
-
-
-
-~~~
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in glmnet(x = train_mat, y = train_age, alpha = 0): object 'train_mat' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(ridge_fit, xvar = "lambda")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'ridge_fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 abline(h = 0, lty = "dashed")
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-03-plot-ridge-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 This plot shows how the coefficients change as we increase the penalty. That is,
 as we decrease the size of the region that solutions can fall into, the values
@@ -678,33 +522,7 @@ regression gives us a better prediction in this case:
 
 ~~~
 pred_ridge <- predict(ridge_fit, newx = test_mat)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in predict(ridge_fit, newx = test_mat): object 'ridge_fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col))
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in apply(pred_ridge, 2, function(col) mse(test_age, col)): object 'pred_ridge' not found
-~~~
-{: .error}
-
-
-
-~~~
 min(err_ridge)
 ~~~
 {: .language-r}
@@ -712,9 +530,9 @@ min(err_ridge)
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'err_ridge' not found
+[1] 46.76802
 ~~~
-{: .error}
+{: .output}
 
 
 
@@ -726,51 +544,18 @@ err_lm
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'err_lm' not found
+[1] 223.3571
 ~~~
-{: .error}
+{: .output}
 
 
 
 ~~~
 which_min_err <- which.min(err_ridge)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'which.min': object 'err_ridge' not found
-~~~
-{: .error}
-
-
-
-~~~
 min_err_ridge <- min(err_ridge)
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'err_ridge' not found
-~~~
-{: .error}
-
-
-
-~~~
 pred_min_ridge <- pred_ridge[, which_min_err]
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'pred_ridge' not found
-~~~
-{: .error}
 
 We can see where on the continuum of lambdas we've picked a model by plotting
 the coefficient paths again. In this case, we've picked a model with fairly
@@ -779,43 +564,12 @@ modest shrinkage.
 
 ~~~
 chosen_lambda <- ridge_fit$lambda[which.min(err_ridge)]
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'ridge_fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(ridge_fit, xvar = "lambda")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'ridge_fit' not found
-~~~
-{: .error}
-
-
-
-~~~
 abline(v = log(chosen_lambda), lty = "dashed")
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'chosen_lambda' not found
-~~~
-{: .error}
+<img src="../fig/rmd-03-chooselambda-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
 > ## Exercise
@@ -840,9 +594,9 @@ Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'chose
 > >    
 > >    
 > >    ~~~
-> >    Error in eval(expr, envir, enclos): object 'min_err_ridge' not found
+> >    [1] 46.76802
 > >    ~~~
-> >    {: .error}
+> >    {: .output}
 > >    
 > >    
 > >    
@@ -854,99 +608,29 @@ Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'chose
 > >    
 > >    
 > >    ~~~
-> >    Error in eval(expr, envir, enclos): object 'err_lm' not found
+> >    [1] 223.3571
 > >    ~~~
-> >    {: .error}
+> >    {: .output}
 > > 2. The ridge ones are much less spread out with far fewer extreme predictions.
 > >    
 > >    ~~~
 > >    all <- c(pred_lm, test_age, pred_min_ridge)
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in eval(expr, envir, enclos): object 'pred_lm' not found
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    lims <- range(all)
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in min(x, na.rm = na.rm): invalid 'type' (list) of argument
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    par(mfrow = 1:2)
 > >    plot(test_age, pred_lm,
 > >        xlim = lims, ylim = lims,
 > >        pch = 19
 > >    )
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'pred_lm' not found
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    abline(coef = 0:1, lty = "dashed")
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    plot(test_age, pred_min_ridge,
 > >        xlim = lims, ylim = lims,
 > >        pch = 19
 > >    )
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'pred_min_ridge' not found
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    abline(coef = 0:1, lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    
-> >    
-> >    ~~~
-> >    Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-> >    ~~~
-> >    {: .error}
+> >    <img src="../fig/rmd-03-plot-ridge-prediction-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 > > 3. They're generally smaller.
 > >    
 > >    ~~~
@@ -955,29 +639,11 @@ Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'chose
 > >    coef(ridge_fit, s = which_min_err),
 > >        pch = 19
 > >    )
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': error in evaluating the argument 'object' in selecting a method for function 'coef': object 'fit_horvath' not found
-> >    ~~~
-> >    {: .error}
-> >    
-> >    
-> >    
-> >    ~~~
 > >    abline(coef = 0:1, lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    
-> >    
-> >    ~~~
-> >    Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-> >    ~~~
-> >    {: .error}
+> >    <img src="../fig/rmd-03-coef-ridge-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -1124,7 +790,8 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 
 
 ~~~
-character(0)
+[1] "cg02388150" "cg06493994" "cg22449114" "cg22736354" "cg03330058"
+[6] "cg09809672" "cg11299964" "cg19761273" "cg26162695"
 ~~~
 {: .output}
 
