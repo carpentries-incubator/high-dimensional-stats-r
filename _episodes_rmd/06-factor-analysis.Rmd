@@ -15,7 +15,7 @@ objectives:
 keypoints:
 - Factor analysis is a method used for reducing dimensionality in a dataset by reducing variation contained in multiple variables into a smaller number of uncorrelated factors.
 - PCA can be used to identify the number of factors to initially use in factor analysis.
-- The `factanal` function in R can be used to fit a factor analysis where the number of factors is specified by the user.
+- The `factanal()` function in R can be used to fit a factor analysis where the number of factors is specified by the user.
 - Factor analysis can take into account expert knowledge when deciding on the number of factors to use, but a disadvantage is that the output requires careful interpretation.
 math: yes
 ---
@@ -29,35 +29,37 @@ knitr_fig_path("06-")
 # Introduction
 
 Biologists often encounter high-dimensional datasets from which they wish to
-extract features which are expected to be represented within the data (e.g.
-clinicians may suspect several diseases given a list of clinical signs and
-symptoms in patients with respiratory distress).
+extract underlying features -- they need to carry out dimensionality reduction.
+The last episode dealt with one method to achieve this this, called principal component analysis (PCA). Here, we
+introduce another methed called *factor analysis* (FA).
 
-Another method that may be used to reduce dimensionality in high-dimensional
-datasets is a statistical method called **factor analysis (FA)**. Factor
-analysis is used to identify *latent features* in a dataset from among a set of
-original variables. Like PCA, this method can be used to reduce a large set of
-variables in the original dataset to a smaller set of variables that represent
-most of the variance in the original variables. FA does this in a similar way
-to PCA, by creating a linear combination of factors that represent similarity
-between variables.
+Factor analysis is used to identify *latent features* in a dataset from among a
+set of original variables. Like PCA, this method can be used to reduce a large
+set of variables in the original dataset to a smaller set of variables that
+represent most of the variance in the original variables. FA does this in a
+similar way to PCA, by creating a linear combination of factors that represent
+similarity between variables.
 
-Unlike PCA, researchers carrying out FA can specify the number of latent
-variables (or factors) they expect to find before carrying out the analysis.
-Researchers may use exploratory data analysis methods (including PCA) to provide
-an initial estimate of how many factors adequately explain variation in the
-dataset.
+There are two types of FA, called exploratory and confirmatory factor analysis
+(EFA and CFA). We will mainly focus on EFA here, which is used to group features
+into a specified number of latent factors.
 
-Examples of datasets and research questions for which FA may be appropriate
-include: assessing two factors 'writing ability' and 'mathematical ability'
-using students' examination scores including sections with multiple questions
-on writing and mathematics. FA could be used to give each student a score for
-'writing ability' and 'mathematical ability' based on responses to a larger
-selection of examination questions (Figure 1). FA may be more appropriate than
-PCA in this example as researchers know in advance of analysis how many factors
-(or features) the data have and this knowledge can be included in analysis.
-Another example of how FA can be used is creating new factors based on a
-researcher's knowledge of how genes group into clusters.
+Unlike with PCA, researchers using FA have to specify the number of latent
+variables (factors) at the point of running the analysis. Researchers may use exploratory
+data analysis methods (including PCA) to provide an initial estimate of how many
+factors adequately explain the variation observed in a dataset. In practice, a
+range of different values is usually tested.
+
+One scenario for using FA would be whether student scores in different subjects
+can be summarised by certain subject categories. Take a look at the hypothetical
+dataset below. If we were to run and EFA on this, we might find that the scores can be summarised
+well by two factors, which we can then interpret. We have labelled these hypothetical factors
+"mathematical ability" and "writing ability".
+
+If a researcher already has a hypothesis about what factors explain the
+variation in a dataset, they can run a CFA, specifying which features are though
+to be represented by which latent factor(s). The fit of the CFA is then
+assessed.
 
 
 ```{r table, echo = FALSE}
@@ -65,15 +67,44 @@ knitr::include_graphics("../fig/table_for_fa.png")
 # ![Figure 1: Student exam scores per subject. Subjects can be split into two factors representing mathematical ability and writing ability](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for FA.png)
 ```
 
+Another example of how FA can be used is creating new factors based on a
+researcher's knowledge of how genes group into clusters.
 
-FA is designed to identify certain unobservable factors from observable
-variables included in the original dataset. This is slightly different from
-PCA which does not directly do this; instead PCA creates as many features as
-there are variables in the dataset which represent different combinations of
-variables.
+So, EFA is designed to identify a specified number of unobservable factors from
+observable features contained in the original dataset. This is slightly
+different from PCA which does not do this directly. Just to recap, PCA creates
+as many principal components as there are features in the dataset, each
+component representing a different linear combination of features. The principal
+components are ordered by the amount of variance they account for.
 
+# Advantages and disadvantages of Factor Analysis
 
-# Introducing an example dataset from prostate cancer patients 
+There are several advantages and disadvantages of using FA as a
+dimensionality reduction method.
+
+Advantages:
+
+* FA is a useful way of combining different groups of data into known
+  representative factors, thus reducing dimensionality in a dataset.
+* FA can take into account researchers' expert knowledge when choosing
+  the number of factors to use, and can be used to identify latent or hidden
+  variables which may not be apparent from using other analysis methods.
+* It is easy to implement with many software tools available to carry out FA.
+
+Disadvantages:
+
+* Justifying the choice of
+  number of factors to use may be difficult if little is known about the
+  structure of the data before analysis is carried out.
+* Sometimes, it can be difficult to interpret what factors mean after
+  analysis has been completed. 
+* FA is not a commonly used method in some areas of biology
+  (including genomics), although this is changing.
+* Like PCA, standard methods of carrying out FA assume that input variables
+  are continuous, although extensions to FA allow ordinal and binary
+  variables to be included (after transforming the input matrix).
+
+# Prostate cancer patient data
 
 The prostate dataset represents data from 97 men who have prostate cancer.
 The data come from a study which examined the correlation between the level
@@ -122,9 +153,9 @@ pros2 <- Prostate[, c(1, 2, 4, 6, 9)]
 head(pros2)
 ```
 
-# Performing factor analysis
+# Performing exploratory factor analysis
 
-Factor analysis may be implemented in R using the `factanal()` function
+EFA may be implemented in R using the `factanal()` function
 from the stats package (which is a built in package in base R). This
 function fits a factor analysis by maximising the log-likelihood using a
 data matrix as input. The number of factors to be fitted in the analysis
@@ -135,7 +166,7 @@ available via the `rotation` argument (default is 'none').
 
 > ## Challenge 1 (3 mins)
 > 
-> Use the `factanal` function to identify the minimum number of factors
+> Use the `factanal()` function to identify the minimum number of factors
 > necessary to explain most of the variation in the data
 > 
 > > ## Solution
@@ -164,7 +195,7 @@ available via the `rotation` argument (default is 'none').
 {: .challenge}
 
 
-The output of `factanal` shows the loadings for each of the input variables
+The output of `factanal()` shows the loadings for each of the input variables
 associated with each factor. The loadings are values between -1 and 1 which
 represent the relative contribution each input variable makes to the factors.
 Positive values show that these variables are positively related to the
@@ -187,7 +218,7 @@ Like PCA, the fewer factors that can explain most of the variation in the
 dataset, the better. It is easier to explore and interpret results using a
 smaller number of factors which represent underlying features in the data. 
 
-# Communality and uniqueness
+# Variance accounted for, communality and uniqueness
 
 An estimate of the total amount of variation in the original data,
 $\hat{\Sigma}$, is calculated by summing our estimate of total communality
@@ -260,33 +291,7 @@ text(
 > {: .solution}
 {: .challenge}
 
-# Advantages and disadvantages of Factor Analysis (FA)
 
-There are several advantages and disadvantages of using factor analysis as a
-dimensionality reduction method.
-
-Advantages:
-
-* FA is a useful way of combining different groups of data into known
-  representative factors, thus reducing dimensionality in a dataset.
-* FA can take into account researchers' expert knowledge when choosing
-  the number of factors to use, and can be used to identify latent or hidden
-  variables which may not be apparent from using other analysis methods.
-* It is easy to implement with many software tools available to carry out FA.
-
-Disadvantages:
-
-* Any analysis method is only as good as the data. FA cannot be used when
-  factors are not clearly defined by the user. Justifying the choice of
-  number of factors to use is difficult if little is known about the
-  structure of the data before analysis is carried out.
-* Sometime it can be difficult to interpret what factors mean after
-  analysis has been completed. 
-* FA is not a commonly used method in some areas of biology
-  (including genomics), although this is changing.
-* Like PCA, standard methods of carrying out FA assume that input variables
-  are continuous, although extensions to FA allow ordinal and binary
-  variables to be included (after transforming the input matrix).
 
 
 # Further reading 
