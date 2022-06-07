@@ -137,7 +137,8 @@ of the challenges we are facing when working with high-dimensional data.
 > names. Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
-> Examine the dataset (in which each row represents a single patient) and plot
+> Examine the dataset (in which each row represents a single patient) to:
+
 > relationships between the variables using the `pairs` function. Why does it
 > become more difficult to plot relationships between pairs of variables with
 > increasing numbers of variables? Discuss in groups.
