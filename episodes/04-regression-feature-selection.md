@@ -60,33 +60,6 @@ possible combination of features to find the best one.
 ~~~
 library("here")
 library("minfi")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: package 'S4Vectors' was built under R version 4.1.1
-~~~
-{: .warning}
-
-
-
-~~~
-Warning: package 'GenomeInfoDb' was built under R version 4.1.1
-~~~
-{: .warning}
-
-
-
-~~~
-Warning: package 'MatrixGenerics' was built under R version 4.1.1
-~~~
-{: .warning}
-
-
-
-~~~
 methylation <- readRDS(here("data/methylation.rds"))
 
 ## here, we transpose the matrix to have features as rows and samples as columns
