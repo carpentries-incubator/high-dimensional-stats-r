@@ -134,14 +134,13 @@ of the challenges we are facing when working with high-dimensional data.
 > will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
-
-a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function)
-
-b) Describe what variables were measured (hint: see the `names()` and `head()` functions)
-
-c) Plot the relationship between the variables (hint: see the `pairs()` function). 
-> relationships between the variables using the `pairs` function. Why does it
-> become more difficult to plot relationships between pairs of variables with
+> 
+> a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function)
+> 
+> b) Describe what variables were measured (hint: see the `names()` and `head()` functions)
+> 
+> c) Plot the relationship between the variables (hint: see the `pairs()` function). 
+> Why does it become more difficult to plot relationships between pairs of variables with
 > increasing numbers of variables? Discuss in groups.
 > 
 > > ## Solution
@@ -182,7 +181,7 @@ in the left-hand panel of the figure below.
 
 However, imagine a situation in which the ratio of observations to features in
 a dataset is almost equal. In that situation the effective number of
-observations per features is low. The result of fitting a best fit line through
+observations per feature is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE}
