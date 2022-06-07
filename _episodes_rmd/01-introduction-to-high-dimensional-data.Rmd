@@ -161,7 +161,7 @@ c) Plot the relationship between the variables (hint: see the `pairs()` function
 > > 
 > > ```{r pairs-prostate}
 > > 
-> >
+> > ### c)
 > > pairs(Prostate)  #plot each pair of variables against each other
 > > ```
 > > The `pairs` function plots relationships between each of the variables in
