@@ -159,7 +159,9 @@ of the challenges we are facing when working with high-dimensional data.
 > > ```
 > >
 > > ```{r head-prostate, eval = FALSE}
+>> names(Prostate) # examine the variable names
 > > head(Prostate)   #print the first 6 rows
+
 > > ```
 > > 
 > > ```{r pairs-prostate}
