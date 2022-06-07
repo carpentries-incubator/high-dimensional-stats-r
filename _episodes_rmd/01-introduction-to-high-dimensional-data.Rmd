@@ -53,7 +53,7 @@ pose a challenge for data analysis as standard methods of analysis, such as line
 regression, are no longer appropriate.
 
 High-dimensional datasets are common in the biological sciences. Subjects like
-genomics and medical sciences often use both large (in terms of $n$) and wide
+genomics and medical sciences often use both tall (in terms of $n$) and wide
 (in terms of $p$) datasets that can be difficult to analyse or visualise using
 standard statistical tools. An example of high-dimensional data in biological
 sciences may include data collected from hospital patients recording symptoms,
