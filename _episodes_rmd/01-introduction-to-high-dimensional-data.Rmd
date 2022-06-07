@@ -133,7 +133,8 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `Prostate` dataset from the `lasso2` package and examine the column
+> Load the `Prostate` dataset from the `lasso2` package.
+
 > names. Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
