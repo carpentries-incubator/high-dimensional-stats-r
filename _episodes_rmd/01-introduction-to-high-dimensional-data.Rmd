@@ -129,7 +129,7 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `Prostate` dataset from the `lasso2` package and examine the column
+> Load the `Prostate` dataset from the **`lasso2`** package and examine the column
 > names. Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
@@ -154,8 +154,9 @@ c) Plot the relationship between the variables (hint: see the `pairs()` function
 > > ```{r dim-prostate, eval = FALSE}
 > > dim(Prostate)   #print the number of rows and columns
 > > ```
-> >
+> > ### b)
 > > ```{r head-prostate, eval = FALSE}
+> > names(Prostate)  #print column names
 > > head(Prostate)   #print the first 6 rows
 > > ```
 > > 
@@ -164,7 +165,7 @@ c) Plot the relationship between the variables (hint: see the `pairs()` function
 > > ### c)
 > > pairs(Prostate)  #plot each pair of variables against each other
 > > ```
-> > The `pairs` function plots relationships between each of the variables in
+> > The `pairs()` function plots relationships between each of the variables in
 > > the `Prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
