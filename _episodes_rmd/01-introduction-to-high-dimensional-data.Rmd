@@ -150,7 +150,7 @@ c) Plot the relationship between the variables (hint: see the `pairs()` function
 > > library(lasso2)  #load lasso2 package
 > > data(Prostate)   #load the Prostate dataset
 > > ```
-> > 
+> > ### a)
 > > ```{r dim-prostate, eval = FALSE}
 > > dim(Prostate)   #print the number of rows and columns
 > > ```
