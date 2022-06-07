@@ -227,7 +227,7 @@ different combinations of slope and intercept accomplish this objective.
 Mathematically, we can write the sum of squared residuals as
 
 $$
-    \sum_{i=1}^N (\hat{y}_i - y_i)^2
+    \sum_{i=1}^N ( y_i-X_i\beta)^2
 $$
 
 where $\hat{y}_i$ is the predicted y value for each input data
@@ -291,48 +291,20 @@ test error on unseen data. First, we'll go through an example of what exactly
 this means.
 
 For the next few exercises, we'll work with a set of features
-known to be associated with age from a paper by Horvath et al.[^2].
+known to be associated with age from a paper by Horvath et al.[^2]. Horvath et al, use methylation markers alone to predict the biological age of an individual. This is useful in studying age-related disease amongst many other things.
 
 
 ~~~
 coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 methylation <- readRDS(here::here("data/methylation.rds"))
+
 library("SummarizedExperiment")
 age <- methylation$Age
 methyl_mat <- t(assay(methylation))
-~~~
-{: .language-r}
-
-
-In this lesson, we're going to perform centering and scaling on the data.
-This means that we standardise each variable, so that each variable has a mean
-of zero and a standard deviation of one. This is a common step when performing
-multiple linear regression, and it has a number of advantages. Firstly, it often
-makes things easier to compute. Secondly, it means that the effect size for
-each feature corresponds to the importance of that feature in making 
-predictions, rather than just being a measure of its range. We saw in
-the previous lesson that effect size estimates can be very small when the range
-of the predictor variable is very large, and the opposite is true, too!
-When all variables are on different scales, it's hard to know if a large
-coefficient for a feature means it's very important, or if it has a small 
-influence but also has a very small range overall.
-
-Standardisation is a very important step when performing regularisation! A lot
-of the theoretical guarantees that make these methods statistically powerful
-rely on the input data being scaled like this.
-
-
-~~~
-## centre and scale the data
-methyl_mat_sc <- scale(methyl_mat, center = TRUE, scale = TRUE)
 
 coef_horvath <- coef_horvath[1:20, ]
 features <- coef_horvath$CpGmarker
-horvath_mat_sc <- methyl_mat_sc[, features]
-
-## Extract scales and centres for later
-methyl_mat_sc_scales <- attr(methyl_mat_sc, "scaled:scale")[1:20]
-methyl_mat_sc_centres <- attr(methyl_mat_sc, "scaled:center")[1:20]
+horvath_mat <- methyl_mat[, features]
 
 ## Generate an index to split the data
 set.seed(42)
@@ -356,9 +328,9 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    
 > >    ~~~
-> >    train_mat_sc <- horvath_mat_sc[train_ind, ]
+> >    train_mat <- horvath_mat[train_ind, ]
 > >    train_age <- age[train_ind]
-> >    test_mat_sc <- horvath_mat_sc[-train_ind, ]
+> >    test_mat <- horvath_mat[-train_ind, ]
 > >    test_age <- age[-train_ind]
 > >    ~~~
 > >    {: .language-r}
@@ -367,7 +339,7 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    
 > >    
 > >    ~~~
-> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat_sc))
+> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 > >    ~~~
 > >    {: .language-r}
 > > 
@@ -401,7 +373,7 @@ higher than the error on the training data!
 mse <- function(true, prediction) {
     mean((true - prediction)^2)
 }
-pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat_sc))
+pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
 err_lm <- mse(test_age, pred_lm)
 err_lm
 ~~~
@@ -428,7 +400,7 @@ abline(coef = 0:1, lty = "dashed")
 
 <img src="../fig/rmd-03-test-plot-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-# Ridge regression
+# What is regularisation? (using ridge regression as an example)
 
 One way to tackle these many correlated variables with lots of noise is
 *regularisation*.
@@ -454,7 +426,7 @@ coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
 $$
-    \left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2}
+    \left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2} 
 $$
 
 To control this, we specify that the solution for the equation above
@@ -463,7 +435,7 @@ we try to minimise a function that includes our $L^2$ norm scaled by a
 factor that is usually written $\lambda$.
 
 $$
-    \left(\sum_{i=1}^N y_i - X_i\beta\right) + \lambda \left\lVert \beta \right\lVert_2
+     \sum_{i=1}^N \biggl( y_i - X_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
 $$
 
 Another way of thinking about this is that when finding the best model, we're
@@ -578,8 +550,6 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > 2. Plot predicted ages for each method against the true ages.
 >    How do the predictions look for both methods? Why might ridge be 
 >    performing better?
-> 3. Compare the coefficients of the ridge model to the OLS model. Why might
->    the differences in coefficients drive the differences in prediction that you see?
 > 
 > > ## Solution
 > > 
@@ -631,51 +601,9 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    {: .language-r}
 > >    
 > >    <img src="../fig/rmd-03-plot-ridge-prediction-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
-> > 3. They're generally smaller.
-> >    
-> >    ~~~
-> >    par(mfrow = c(1, 1))
-> >    plot(coef(fit_horvath) * c(1, methyl_mat_sc_scales) + c(0, methyl_mat_sc_centres),
-> >    coef(ridge_fit, s = which_min_err),
-> >        pch = 19
-> >    )
-> >    abline(coef = 0:1, lty = "dashed")
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    <img src="../fig/rmd-03-coef-ridge-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
-
-> ## Ridge regression through a Bayesian lens
->
-> Bayesian statistics is another way of modelling data, in contrast to the
-> frequentist methods we're using at the moment.
-> 
-> Under a Bayesian lens, we consider the likelihood just as we modelled earlier.
-> For linear regression, this is the density of the data under the normal
-> distribution specified by our model parameters (slope and intercept, 
-> for example).
-> 
-> In Bayesian linear regression, we also place a *prior* distribution on our 
-> coefficients, $\beta$. A common distribution that we use here is a normal 
-> distribution. This means that we imagine our coefficients are likely to
-> be close to zero.
-> This tends to *shrink* the coefficients towards zero, with the strength
-> of the shrinkage controlled by the variance of the normal distribution.
-> 
-> The density of a normally distributed variable $x \sim N(\mu, \sigma^2)$ is
-> defined
-> 
-> $$
->   \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
-> $$
-> 
-> If we centre our distribution at zero, we can see that the numerator of the
-> exponent is $x^2$. In fact, these are mathematically equivalent.
-> 
-{: .callout}
 
 # LASSO regression
 
@@ -739,30 +667,6 @@ of how generalisable our model is. Cross-validation is a really deep topic that
 we're not going to cover in more detail today, though!
 
 <img src="../fig/cross_validation.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
-
-> ## Centering and scaling in cross-validation
-> 
-> Earlier, we performed centering and scaling so that the input data have
-> mean of zero and standard deviation of one. This is important for some of
-> the statistical properties of regularised models to hold. However, when we
-> perform test and training splits, it's important that our testing and training
-> data are treated completely independently.
-> 
-> *Normalisation* steps like centering and scaling can cause information leakage
-> between the test and training steps. Therefore it's generally recommended that
-> these are performed separately on each dataset, without sharing parameters or
-> information between the two.
->
-> For the sake of time we won't cover this today. However, we do recommend
-> that you use a modelling framework like `tidymodels` if you are applying
-> predictive models with cross-validation, because they can make this process
-> much easier.
-> 
-> There is some example code for doing this at the end of this episode if
-> you would like a start, but you can find more detailed instructions on the
-> [tidymodels website](https://www.tidymodels.org/).
-> 
-{: .callout}
 
 We can use this new idea to pick a lambda value, by finding the lambda
 that minimises the error across each of the test and training splits.

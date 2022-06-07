@@ -282,11 +282,11 @@ Anaerovorax odorimutans et rel.   "Anaerovorax odorimutans et rel."
 ~~~
 {: .output}
 
-Here we use the `transform` function from the microbiome package to calculate
-relative abundances of each Genus in the 'dietswap' data. The `transform`
-argument includes options on how to transform the data. 'Compositional' is used
+Here we use `transform()` from the microbiome package to calculate
+relative abundances of each Genus in the 'dietswap' data. `transform()`
+includes options on how to transform the data. 'Compositional' is used
 to calculate relative abundance (i.e. proportional abundance). This function
-returns an object suitable for input into the `ordinate` function which carries
+returns an object suitable for input into `ordinate()` which carries
 out the NMDS.
 
 `otu_table` allows us to see the species composition table which displays the
@@ -295,7 +295,7 @@ number of positive tests for each species in the participants' samples.
 returns taxonomic information (phylum, family) for each species identified in
 patient samples.
 
-Let's examine the phylogenetic structure of the data using function from
+Let's examine the phylogenetic structure of the data using functions from
 phyloseq.
 
 
@@ -470,17 +470,17 @@ table(tax_table(ds.core)[, "Genus"])
 ~~~
 {: .output}
 
-The function `rank_names` returns the taxonomic levels contained within the
+`rank_names()` returns the taxonomic levels contained within the
 'ds.core' data. In this case, we have data from Phylum, Family and Genus. We
 can examine the number of different Phyla, Families and Genuses in samples using
-the `tax_table` function as shown above. There are many Genuses, Families and
+the `tax_table()` as shown above. There are many Genuses, Families and
 Phyla with only single features. Some are highly over-represented (e.g. the
 Firmicutes phylum).
 
 
 # Running NMDS in R
 
-Let's carry out NMDS using the `ordinate` function. 
+Let's carry out NMDS using the `ordinate()`. 
 This function takes phylogenetic sequencing data on which you want to apply
 your chosen ordination method and specifies the method (in this case, NMDS),
 number of axes/dimensions (k, in this case 2), the distance measure (in this
@@ -536,11 +536,11 @@ Run 20 stress 0.1484817
 ~~~
 {: .language-r}
 
-Notice how changing the value of `set.seed` gives a slightly different value of
+Notice how changing the value of `set.seed()` gives a slightly different value of
 stress of the solution. This is because the solution to NMDS is calculated
 using different random starting data configurations, so it gives a slightly
-different answer each time. The `ordinate` function stops when the minimum
-value of stress is found. `set.seed` allows the same result to be returned each
+different answer each time. `ordinate()` stops when the minimum
+value of stress is found. `set.seed()` allows the same result to be returned each
 time the code is run, even though there is a random element to reaching
 the solution. 
 
@@ -564,7 +564,7 @@ provides a poor representation of the data in the number of dimensions selected.
 > ## Challenge 1 
 > 
 > What do you think we could do to reduce stress if the overall solution of
-> the ordinate function had a stress solution greater than 0.3? Discuss in
+> the `ordinate()` had a stress solution greater than 0.3? Discuss in
 > groups.
 > 
 > > ## Solution
@@ -598,9 +598,9 @@ original data well.
 > ## Challenge 2 
 > 
 > Identify the lowest value of k that gives the best stress value for NMDS
-> using the microbiome data (ds.core). Think about getting a low stress value
+> using the microbiome data (`ds.core`). Think about getting a low stress value
 > as well as creating results that can be easily visualised and interpreted.
-> Use the function stressplot to examine how distribution around the
+> Use `stressplot()` to examine how distribution around the
 > regression line changes with increases in k. Use what you have learned to
 > decide on best number of dimensions to include in NMDS analysis of the
 > microbiome data. Use `set.seed(1000)` for k values greater than 2 to allow
@@ -883,7 +883,7 @@ plot_ordination(ds.core, ord, color = "group", axes = c(2, 3)) +
 
 > ## Challenge 3 
 > 
-> Use the `plot_ordination` function to look for clusters in points
+> Use `plot_ordination()` to look for clusters in points
 > on the NMDS axes according to sex, bmi_group and other factors in the
 > metadata.Do any of these factors appear to form clusters?
 > 
@@ -1005,7 +1005,7 @@ NMDS dimensions using a 3D scatterplot than it is using a series of three
 2D scatterplots. The disadvantage is that the current 3D scatterplot can only
 be observed from one angle making it difficult to observe some data points.
 The user can change the angle that the scatterplot is viewed from using the
-`angle` argument in `ordiplot3d`. 
+`angle` argument in `ordiplot3d()`. 
 
 Visualising output of NMDS analysis can provide important information
 regarding relationships between samples and clusters according to metadata
