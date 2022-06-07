@@ -175,7 +175,8 @@ observations. Fitting a best fit line through these data produces a plot shown
 in the left-hand panel of the figure below.
 
 However, imagine a situation in which the ratio of observations to features in
-a dataset is almost equal. In that situation the effective number of
+In that situation the effective number of
+
 observations per features is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
