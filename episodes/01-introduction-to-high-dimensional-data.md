@@ -35,22 +35,26 @@ math: yes
 
 # What are high-dimensional data? 
 
-*High-dimensional data* are defined as data in which the number of features
-in the data, $p$, are equal or larger than the number of observations (or data
-points), $n$. Unlike for *low-dimensional data* in which the number of observations,
-$n$, far outnumbers the number of features, $p$, analyses of high-dimensional data requires
-consideration of potential problems that come from having a large number of
-features.
+*High-dimensional data* are defined as data in which the number of features (variables observed),
+$p$, are close to or larger than the number of observations (or data points), $n$.
+The opposite is *low-dimensional data* in which the number of observations,
+$n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which
+
+efers to data with numerous features irrespective of the number of observations (similarly, *tall data* is often used to denote data with a large number of observations)
+Analyses of high-dimensional data require consideration of potential problems that
+come from having more features than observations.
+
 
 High-dimensional data have become more common in many scientific fields as new
-automated data collection techniques have been developed. More and more datsets
-have a large number of features (or variables) and some have as many features as
-there are rows in the dataset. Datasets in which $p$>=$n$ are becoming more
-common. Such datasets pose a challenge for data analysis as standard methods of
-analysis, such as linear regression, are no longer appropriate.
+automated data collection techniques have been developed. More and more datasets
+have a large number of features and some have as many features as there are rows
+in the dataset. Datasets in which $p$>=$n$ are becoming more common. Such datasets
+pose a challenge for data analysis as standard methods of analysis, such as linear
+regression, are no longer appropriate.
 
 High-dimensional datasets are common in the biological sciences. Subjects like
-genomics and medical sciences often use both large (in terms of $n$) and wide
+genomics and medical sciences often use both tall (in terms of $n$) and wide
+
 (in terms of $p$) datasets that can be difficult to analyse or visualise using
 standard statistical tools. An example of high-dimensional data in biological
 sciences may include data collected from hospital patients recording symptoms,
@@ -58,7 +62,7 @@ blood test results, behaviours, and general health, resulting in datasets with
 large numbers of features. Researchers often want to relate these features to
 specific patient outcomes (e.g. survival, length of time spent in hospital).
 An example of what high-dimensional data might look like in a biomedical study
-is shown in Figure 1. 
+is shown in the figure below. 
 
 <img src="../fig/intro-table.png" title="plot of chunk table-intro" alt="plot of chunk table-intro" style="display: block; margin: auto;" />
 
@@ -85,7 +89,11 @@ is shown in Figure 1.
 > 
 > > ## Solution
 > > 
-> > 2 and 4
+> > 1. No. The number of observations (100 patients) is far greater than the number of features (3).
+> > 2. Yes, this is an example of high-dimensional data. There are only 100 observations but 200,000+3 features.
+> > 3. No. There are many more observations (200 patients) than features (5). 
+
+> > 4. Yes. There is only one observation of more than 20,000 features.
 > {: .solution}
 {: .challenge}
 
@@ -120,11 +128,17 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `Prostate` dataset from the `lasso2` package and examine the column
-> names. 
+> Load the `Prostate` dataset from the **`lasso2`** package.
+
+> names. Although technically not a high-dimensional dataset, the `Prostate` data
+> will allow us explore the problems encountered when working with many features.
 >
-> Examine the dataset (in which each row represents a single patient) and plot
-> relationships between the variables using the `pairs` function. Why does it
+> Examine the dataset (in which each row represents a single patient) to:
+
+> a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function) 
+> b) Examine what variables were measured (hint: see the `names()` and `head()` functions)
+> c) Plot the relationship between the variables (hint: see the `pairs()` function). 
+
 > become more difficult to plot relationships between pairs of variables with
 > increasing numbers of variables? Discuss in groups.
 > 
@@ -139,7 +153,14 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > View(Prostate)   #view the dataset
+> > dim(Prostate)   #print the number of rows and columns
+> > ~~~
+> > {: .language-r}
+> >
+> > 
+> > ~~~
+> > >> names(Prostate) # examine the variable names
+> > head(Prostate)   #print the first 6 rows
 > > ~~~
 > > {: .language-r}
 > > 
@@ -170,7 +191,7 @@ of the challenges we are facing when working with high-dimensional data.
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
-> > with large numbers of variables is difficult due to the potential for
+> > with many variables is difficult due to the potential for
 > > overfitting and difficulties in identifying a response variable.
 > > 
 > {: .solution}
@@ -178,12 +199,14 @@ of the challenges we are facing when working with high-dimensional data.
 
 Imagine we are carrying out least squares regression on a dataset with 25
 observations. Fitting a best fit line through these data produces a plot shown
-in Figure 2a.
+in the left-hand panel of the figure below.
 
-However, imagine a situation in which the ratio of observations to features in
-a dataset is almost equal. In that situation the effective number of
+However, imagine a situation in which the number of observations and features in a dataset are almost equal.
+
+In that situation the effective number of
+
 observations per features is low. The result of fitting a best fit line through
-few observations can be seen in Figure 2b.
+few observations can be seen in the right-hand panel below.
 
 <img src="../fig/intro-scatterplot.png" title="plot of chunk intro-figure" alt="plot of chunk intro-figure" style="display: block; margin: auto;" />
 
@@ -202,7 +225,7 @@ in these datasets makes high correlations between variables more likely.
 
 > ## Challenge 3
 > 
-> Use the `cor` function to examine correlations between all variables in the
+> Use the `cor()` function to examine correlations between all variables in the
 > Prostate dataset. Are some variables highly correlated (i.e. correlation
 > coefficients > 0.6)? Fit a multiple linear regression model predicting patient age
 > using all variables in the Prostate dataset.
@@ -426,112 +449,112 @@ plot(xgroups, col = selected, pch = 19)
 {: .challenge}
 
 
-# Using Bioconductor to access high-dimensional data in the biosciences
-
-In this workshop, we will look at statistical methods that can be used to
-visualise and analyse high-dimensional biological data using packages available
-from Bioconductor, open source software for analysing high throughput genomic
-data. Bioconductor contains useful packages and example datasets as shown on the
-website [https://www.bioconductor.org/](https://www.bioconductor.org/).
-
-Bioconductor packages can be installed and used in `R` using the `BiocManager`
-package. Let's install the `minfi` package from Bioconductor (a package for
-analysing Illumina Infinium DNA methylation arrays).
-
-
-~~~
-library("minfi")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: replacing previous import 'utils::download.file' by
-'restfulr::download.file' when loading 'rtracklayer'
-~~~
-{: .warning}
-
-
-~~~
-browseVignettes("minfi")
-~~~
-{: .language-r}
-
-We can explore these packages by browsing the vignettes provided in
-Bioconductor. Bioconductor has various packages that can be used to load and
-examine datasets in `R` that have been made available in Bioconductor, usually
-along with an associated paper or package.
-
-Next, we load the `methylation` dataset which represents data collected using
-Illumina Infinium methylation arrays which are used to examine methylation
-across the human genome. These data include information collected from the
-assay as well as associated metadata from individuals from whom samples were
-taken.
-
-
-~~~
-library("minfi")
-library("here")
-library("ComplexHeatmap")
-
-methylation <- readRDS(here("data/methylation.rds"))
-head(colData(methylation))
-~~~
-{: .language-r}
-
-
-
-~~~
-DataFrame with 6 rows and 14 columns
-                    Sample_Well Sample_Name    purity         Sex       Age
-                    <character> <character> <integer> <character> <integer>
-201868500150_R01C01         A07     PCA0612        94           M        39
-201868500150_R03C01         C07   NKpan2510        95           M        49
-201868500150_R05C01         E07      WB1148        95           M        20
-201868500150_R07C01         G07       B0044        97           M        49
-201868500150_R08C01         H07   NKpan1869        95           F        33
-201868590193_R02C01         B03   NKpan1850        93           F        21
-                    weight_kg  height_m       bmi    bmi_clas Ethnicity_wide
-                    <numeric> <numeric> <numeric> <character>    <character>
-201868500150_R01C01   88.4505    1.8542   25.7269  Overweight          Mixed
-201868500150_R03C01   81.1930    1.6764   28.8911  Overweight  Indo-European
-201868500150_R05C01   80.2858    1.7526   26.1381  Overweight  Indo-European
-201868500150_R07C01   82.5538    1.7272   27.6727  Overweight  Indo-European
-201868500150_R08C01   87.5433    1.7272   29.3452  Overweight  Indo-European
-201868590193_R02C01   87.5433    1.6764   31.1507       Obese          Mixed
-                       Ethnic_self      smoker       Array       Slide
-                       <character> <character> <character>   <numeric>
-201868500150_R01C01       Hispanic          No      R01C01 2.01869e+11
-201868500150_R03C01      Caucasian          No      R03C01 2.01869e+11
-201868500150_R05C01        Persian          No      R05C01 2.01869e+11
-201868500150_R07C01      Caucasian          No      R07C01 2.01869e+11
-201868500150_R08C01      Caucasian          No      R08C01 2.01869e+11
-201868590193_R02C01 Finnish/Creole          No      R02C01 2.01869e+11
-~~~
-{: .output}
-
-
-
-~~~
-methyl_mat <- t(assay(methylation))
-## calculate correlations between cells in matrix
-cor_mat <- cor(methyl_mat)
-~~~
-{: .language-r}
-
-
-~~~
-View(cor_mat[1:100, ])
-~~~
-{: .language-r}
-
-The `assay` function creates a matrix-like object where rows represent probes
-for genes and columns represent samples. We calculate correlations between
-features in the `methylation` dataset and examine the first 100 cells of this
-matrix. The size of the dataset makes it difficult to examine in full, a
-common challenge in analysing high-dimensional genomics data. 
-
+> ## Using Bioconductor to access high-dimensional data in the biosciences
+> 
+> In this workshop, we will look at statistical methods that can be used to
+> visualise and analyse high-dimensional biological data using packages available
+> from Bioconductor, open source software for analysing high throughput genomic
+> data. Bioconductor contains useful packages and example datasets as shown on the
+> website [https://www.bioconductor.org/](https://www.bioconductor.org/).
+> 
+> Bioconductor packages can be installed and used in `R` using the **`BiocManager`**
+> package. Let's install the **`minfi`** package from Bioconductor (a package for
+> analysing Illumina Infinium DNA methylation arrays).
+> 
+> 
+> ~~~
+> library("minfi")
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Warning: replacing previous import 'utils::download.file' by
+> 'restfulr::download.file' when loading 'rtracklayer'
+> ~~~
+> {: .warning}
+> 
+> 
+> ~~~
+> browseVignettes("minfi")
+> ~~~
+> {: .language-r}
+> 
+> We can explore these packages by browsing the vignettes provided in
+> Bioconductor. Bioconductor has various packages that can be used to load and
+> examine datasets in `R` that have been made available in Bioconductor, usually
+> along with an associated paper or package.
+> 
+> Next, we load the `methylation` dataset which represents data collected using
+> Illumina Infinium methylation arrays which are used to examine methylation
+> across the human genome. These data include information collected from the
+> assay as well as associated metadata from individuals from whom samples were
+> taken.
+> 
+> 
+> ~~~
+> library("minfi")
+> library("here")
+> library("ComplexHeatmap")
+> 
+> methylation <- readRDS(here("data/methylation.rds"))
+> head(colData(methylation))
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> DataFrame with 6 rows and 14 columns
+>                     Sample_Well Sample_Name    purity         Sex       Age
+>                     <character> <character> <integer> <character> <integer>
+> 201868500150_R01C01         A07     PCA0612        94           M        39
+> 201868500150_R03C01         C07   NKpan2510        95           M        49
+> 201868500150_R05C01         E07      WB1148        95           M        20
+> 201868500150_R07C01         G07       B0044        97           M        49
+> 201868500150_R08C01         H07   NKpan1869        95           F        33
+> 201868590193_R02C01         B03   NKpan1850        93           F        21
+>                     weight_kg  height_m       bmi    bmi_clas Ethnicity_wide
+>                     <numeric> <numeric> <numeric> <character>    <character>
+> 201868500150_R01C01   88.4505    1.8542   25.7269  Overweight          Mixed
+> 201868500150_R03C01   81.1930    1.6764   28.8911  Overweight  Indo-European
+> 201868500150_R05C01   80.2858    1.7526   26.1381  Overweight  Indo-European
+> 201868500150_R07C01   82.5538    1.7272   27.6727  Overweight  Indo-European
+> 201868500150_R08C01   87.5433    1.7272   29.3452  Overweight  Indo-European
+> 201868590193_R02C01   87.5433    1.6764   31.1507       Obese          Mixed
+>                        Ethnic_self      smoker       Array       Slide
+>                        <character> <character> <character>   <numeric>
+> 201868500150_R01C01       Hispanic          No      R01C01 2.01869e+11
+> 201868500150_R03C01      Caucasian          No      R03C01 2.01869e+11
+> 201868500150_R05C01        Persian          No      R05C01 2.01869e+11
+> 201868500150_R07C01      Caucasian          No      R07C01 2.01869e+11
+> 201868500150_R08C01      Caucasian          No      R08C01 2.01869e+11
+> 201868590193_R02C01 Finnish/Creole          No      R02C01 2.01869e+11
+> ~~~
+> {: .output}
+> 
+> 
+> 
+> ~~~
+> methyl_mat <- t(assay(methylation))
+> ## calculate correlations between cells in matrix
+> cor_mat <- cor(methyl_mat)
+> ~~~
+> {: .language-r}
+> 
+> 
+> ~~~
+> cor_mat[1:10, 1:10] # print the top-left corner of the correlation matrix
+> ~~~
+> {: .language-r}
+> 
+> The `assay()` function creates a matrix-like object where rows represent probes
+> for genes and columns represent samples. We calculate correlations between
+> features in the `methylation` dataset and examine the first 100 cells of this
+> matrix. The size of the dataset makes it difficult to examine in full, a
+> common challenge in analysing high-dimensional genomics data.   
+{: .callout}
 
 # Further reading
 
