@@ -101,10 +101,25 @@ with in the regression lessons. Let's load the data and look at it.
 
 ~~~
 library("minfi")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: replacing previous import 'utils::download.file' by
+'restfulr::download.file' when loading 'rtracklayer'
+~~~
+{: .warning}
+
+
+
+~~~
 library("here")
 library("ComplexHeatmap")
 
 methyl <- readRDS(here("data/methylation.rds"))
+methyl_mat <- t(assay(methyl))
 ~~~
 {: .language-r}
 

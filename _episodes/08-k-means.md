@@ -259,6 +259,7 @@ plot(sil, border = NA)
 
 <img src="../fig/rmd-08-silhouette-1.png" title="plot of chunk silhouette" alt="plot of chunk silhouette" width="432" style="display: block; margin: auto;" />
 
+
 Let's plot the silhouette score on the original dimensions used to cluster
 the data. Here, we're mapping cluster membership to point shape, and silhouette
 width to colour.
@@ -337,7 +338,7 @@ belong to.
 > > 
 > > 
 > > ~~~
-> > plot(sil5)
+> > plot(sil5, border = NA)
 > > ~~~
 > > {: .language-r}
 > > 
