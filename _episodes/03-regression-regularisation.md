@@ -56,6 +56,20 @@ First, let's read in the data from the last lesson.
 ~~~
 library("here")
 library("minfi")
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: replacing previous import 'utils::download.file' by
+'restfulr::download.file' when loading 'rtracklayer'
+~~~
+{: .warning}
+
+
+
+~~~
 methylation <- readRDS(here("data/methylation.rds"))
 
 ## here, we transpose the matrix to have features as rows and samples as columns
@@ -216,7 +230,7 @@ $$
     \sum_{i=1}^N ( y_i-X_i\beta)^2
 $$
 
-where $X_i\beta$ is the predicted y value for each input data
+where $\hat{y}_i$ is the predicted y value for each input data
 point $X_i$, and $y_i$ is the true observed value.
 This line is the line of best fit through our data when considering this
 goal of minimising the sum of squared error. However, it is not the only 
