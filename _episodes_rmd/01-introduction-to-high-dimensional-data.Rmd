@@ -41,7 +41,7 @@ knitr_fig_path("01-")
 $p$, are close to or larger than the number of observations (or data points), $n$.
 The opposite is *low-dimensional data* in which the number of observations,
 $n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which 
-This refers to data with numerous features irrespective of the number of observations.
+refers to data with numerous features irrespective of the number of observations (similarly, *tall data* is often used to denote data with a large number of observations).
 Analyses of high-dimensional data require consideration of potential problems that
 come from having a large number of features. 
 
