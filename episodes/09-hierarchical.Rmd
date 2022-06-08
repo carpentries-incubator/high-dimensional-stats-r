@@ -16,8 +16,8 @@ objectives:
 keypoints:
 - Hierarchical clustering uses an algorithm to group similar data points into
   clusters. A dendrogram is used to plot relationships between clusters (using
-  the `hclust` function in `R`).
-- Hierarchical clustering differs from K-means clustering as it does not require
+  the `hclust()` function in R).
+- Hierarchical clustering differs from k-means clustering as it does not require
   the user to specify expected number of clusters
 - The distance (dissimilarity) matrix can be calculated in various ways, and
   different clustering algorithms (linkage methods) can affect the resulting
@@ -39,19 +39,19 @@ knitr_fig_path("09-")
 
 When analysing high-dimensional data in the life sciences, it is often useful
 to identify groups of similar data points to understand more about the relationships
-within the dataset. In **hierarchical clustering** an algorithm groups similar
+within the dataset. In *hierarchical clustering* an algorithm groups similar
 data points (or observations) into groups (or clusters). This results in a set
 of clusters, where each cluster is distinct, and the data points within each
 cluster have similar features. The clustering algorithm works by iteratively
 grouping data points so that different clusters may exist at different stages
 of the algorithm's progression.
 
-Unlike K-means clustering, **hierarchical clustering** does not require the
+Unlike K-means clustering, *hierarchical clustering* does not require the
 number of clusters $k$ to be specified by the user before analysis is carried
 out. Hierarchical clustering also provides an attractive *dendrogram*, a
 tree-like diagram showing the degree of similarity between clusters. 
 
-The dendrogram is a key feature of hierarchical clustering. This tree allows
+The dendrogram is a key feature of hierarchical clustering. This tree-shaped graph allows
 relationships between data points in a dataset to be easily observed and the
 arrangement of clusters produced by the analysis to be illustrated. Dendrograms are
 created using a distance (or dissimilarity) matrix fitted to the data and a
@@ -61,7 +61,7 @@ In this episode we will explore hierarchical clustering for identifying
 clusters in high-dimensional data. We will use *agglomerative* hierarchical
 clustering (see box) in this episode.
 
-> ## Agglomerative and Divisive hierarchical clustering)
+> ## Agglomerative and Divisive hierarchical clustering
 > 
 > There are two main methods of carrying out hierarchical clustering:
 > agglomerative clustering and divisive clustering. 
@@ -77,15 +77,15 @@ clustering (see box) in this episode.
 
 # The hierarchical clustering algorithm 
 
-The algorithm for hierarchical clustering is simple. First, we measure distance
+The algorithm for hierarchical clustering is comparatively simple. First, we measure distance
 (or dissimilarity) between pairs of observations. Initially, and at the bottom
 of the dendrogram, each observation is considered to be in its own individual
 cluster. We start the clustering procedure by fusing the two observations that
 are most similar according to a distance matrix (e.g. that are closest
-together in *n*D space). Next, the next most similar observations are fused
+together in *n*D space). Next, the next-most similar observations are fused
 so that the total number of clusters is *number of observations* - 2 (see
-Figure 1a). Groups of observations may then be merged into a larger cluster
-(see Figure 1b) This process continues until all the observations are included
+panel below). Groups of observations may then be merged into a larger cluster
+(see next panel below, green box). This process continues until all the observations are included
 in a single cluster.
 
 ```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Figure 1a: Example data showing two clusters of observation pairs"}
@@ -112,15 +112,16 @@ library("here")
 library("ComplexHeatmap")
 
 methyl <- readRDS(here("data/methylation.rds"))
-methyl_mat <- t(assay(methyl))
 ```
 
-If we plot a heatmap of these data, we can see there may be some patterns
-going on - many columns appear to have a similar level across all the rows
-of the data. However, they are all quite jumbled at the moment, so it's hard to tell
-how many line up exactly.
+Looking at a heatmap of these data, we may spot some patterns -- many columns
+appear to have a similar methylation levels across all rows. However, they are
+all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
 ```{r heatmap-noclust, echo=FALSE}
+library("ComplexHeatmap")
+
+methyl_mat <- t(assay(methyl))
 Heatmap(methyl_mat,
   name = "Methylation level",
   cluster_rows = FALSE, cluster_columns = FALSE,
@@ -130,7 +131,7 @@ Heatmap(methyl_mat,
 
 We can order these data to make the patterns more clear using hierarchical
 clustering. To do this, we can change the arguments we pass to 
-`Heatmap()` from the ComplexHeatmap package. `Heatmap()`
+`Heatmap()` from the **`ComplexHeatmap`** package. `Heatmap()`
 groups features based on dissimilarity (here, Euclidean distance) and orders
 rows and columns to show clustering of features and observations.
 
@@ -146,16 +147,15 @@ Heatmap(methyl_mat,
 
 We can see that clustering the features (CpG sites) results in an overall
 gradient of high to low methylation levels from left to right. Maybe more
-interesting is the fact that the rows are now split into groups, with different
-groups of samples showing different patterns in a subset of features.
-For example, 12 samples seem to have lower methylation levels for a small subset
-of CpG sites in the middle, relative to all the other samples. It's not clear
-without investigating further what the cause of this is - it could be a batch
-effect, or a known grouping (e.g., old vs young samples). However, clustering
-like this can be a useful part of exploratory analysis of data to build
-hypotheses.
+interesting is the fact that the rows (corresponding to individuals) are now
+grouped according to methylation patterns. For example, 12 samples seem to have
+lower methylation levels for a small subset of CpG sites in the middle, relative
+to all the other samples. It's not clear without investigating further what the
+cause of this is -- it could be a batch effect, or a known grouping (e.g., old
+vs young samples). However, clustering like this can be a useful part of
+exploratory analysis of data to build hypotheses.
 
-Now, let's cover the inner workings of clustering in more detail.
+Now, let's cover the inner workings of hierachiacl clustering in more detail.
 There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
@@ -196,7 +196,7 @@ below.
 
 `hclust()` supports various linkage methods (e.g `complete`,
 `single`, `ward D`, `ward D2`, `average`, `median`) and these are also supported
-within the `Heatmap` function. The method used to perform hierarchical
+within the `Heatmap()` function. The method used to perform hierarchical
 clustering in `Heatmap()` can be specified by the arguments
 `clustering_method_rows` and `clustering_method_columns`. Each linkage method
 uses a slightly different algorithm to calculate how clusters are fused together
@@ -208,7 +208,7 @@ dissimilarities between data points in different clusters, using the largest
 pairwise dissimilarity ($d$) to decide which cluster will be fused. Clusters
 with smallest value of $d$ are fused.
 
-# Creating a dendrogram using R 
+# Computing a dendrogram
 
 Dendograms are useful tools to visualise the grouping of points and clusters into bigger clusters.
 We can create and plot dendrograms in R using `hclust()` which takes
@@ -369,7 +369,7 @@ plot(color_branches(avg_dend_obj, h = 50))
 ```
 
 We can colour clusters downstream of a specified cut using `color_branches()`
-function from the `dendextend` package.
+function from the **`dendextend`** package.
 
 Other methods use different metrics to decide which clusters should be fused
 and when.
@@ -509,7 +509,7 @@ However, high correlations indicate similarity, while for a distance measure
 we know that high distances indicate dissimilarity. Therefore, if we wanted
 to cluster observations based on the correlation, or the similarity of patterns,
 we can use `1 - cor(x)` as the distance metric.
-The input to `hclust` must be a `dist` object, so we also need to call
+The input to `hclust()` must be a `dist` object, so we also need to call
 `as.dist()` on it before passing it in.
 
 ```{r clust-cor-cor-example}
@@ -562,7 +562,7 @@ inter-cluster variance. The higher the Dunn index, the better defined the
 clusters.
 
 Let's calculate the Dunn index for clustering carried out on the
-`methyl_mat` dataset using the `clValid` package.
+`methyl_mat` dataset using the **`clValid`** package.
 
 ```{r plot-clust-dunn}
 ## calculate dunn index
@@ -626,7 +626,7 @@ There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
 Another method of validating identified clusters is the silhouette score 
 which uses the average distance between clusters and the points within them;
-see the K-means clustering episode for more information on this measure.
+see the k-means clustering episode for more information on this measure.
 
 Another more robust method of validating clusters identified using hierarchical
 clustering is splitting the data into test and training datasets and comparing
