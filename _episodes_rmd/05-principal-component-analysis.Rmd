@@ -52,7 +52,7 @@ Such datasets are challenging to analyse for several reasons, with the main
 problem being how to reduce dimensionality in the dataset while retaining the
 important features. 
 
-In this episode we will explore **principal component analysis (PCA)** as a
+In this episode we will explore *principal component analysis* (PCA) as a
 popular method of analysing high-dimensional data. PCA is an unsupervised
 statistical method which allows large datasets of correlated variables to be
 summarised into smaller numbers of uncorrelated principal components that
@@ -228,7 +228,7 @@ knitr::include_graphics("../fig/pendulum.gif")
 
 # How do we perform a PCA?
 
-## Introducing a dataset with information about prostate cancer patients
+## A prostate cancer dataset
 
 The `Prostate` dataset is freely available online and represents data from 97
 men who have prostate cancer. The data come from a study which examined the
@@ -256,7 +256,7 @@ representing clinical markers of cancer progression. Standard PCAs are carried
 out using continuous variables only.
 
 First, we will examine the `Prostate` dataset which can be downloaded as part
-of the `lasso2` package:
+of the **`lasso2`** package:
 
 ```{r lasso2}
 library("lasso2")
@@ -331,7 +331,7 @@ deviation of 1.
 > {: .solution}
 {: .challenge}
 
-Next we will carry out a PCA using the `prcomp` function in base R. The input
+Next we will carry out a PCA using the `prcomp()` function in base R. The input
 data (`pros2`) is in the form of a matrix. Note that the `scale = TRUE` argument
 is used to standardise the variables to have a mean 0 and standard deviation of
 1.
@@ -445,12 +445,12 @@ loadings are scaled by the standard deviation of the principal components
 
 # Using PCA to analyse gene expression data 
 
-In this section you will carry out your own PCA using the `PCAtools` package
+In this section you will carry out your own PCA using the Bioconductor package **`PCAtools`** 
 applied to gene expression data to explore the topics covered above. 
-`PCAtools` provides functions that can be used to explore data via PCA and
+**`PCAtools`** provides functions that can be used to explore data via PCA and
 produce useful figures and analysis tools.
 
-## Introducing a dataset of gene expression measurements for cancer patients
+##  A gene expression dataset of cancer patients
 
 The dataset we will be analysing in this lesson includes two subsets of data: 
 * a matrix of gene expression data showing microarray results for different
@@ -459,7 +459,7 @@ The dataset we will be analysing in this lesson includes two subsets of data:
 * metadata associated with the gene expression results detailing information
   from patients from whom samples were taken.
 
-Let's load the `PCAtools` package and the data.
+Let's load the **`PCAtools`** package and the data.
 
 ```{r pcatools}
 library("PCAtools")
@@ -523,7 +523,7 @@ representing groups of genes would help visualise the data and address
 research questions regarding the effect different groups of genes have on
 disease progression.
 
-Using the Bioconductor package `PCAtools` we will apply a PCA to the cancer
+Using the **`PCAtools`** we will apply a PCA to the cancer
 gene expression data, plot the amount of variation in the data explained by
 each principal component and plot the most important principal components
 against each other as well as understanding what each principal component
@@ -532,12 +532,13 @@ represents.
 
 > ## Challenge 3
 > 
-> Apply a PCA to the cancer gene expression data using the `pca` function from
-> PCAtools. You can use the help files in PCAtools to find out about the `pca`
+> Apply a PCA to the cancer gene expression data using the `pca()` function from
+> **`PCAtools`**. You can use the help files in PCAtools to find out about the `pca()`
 > function (type `help("pca")` or `?pca` in R).
 > 
 > Remove the lower 20% of principal components
-> from your PCA using the `removeVar` argument in the `pca` function.
+> from your PCA using the `removeVar` argument in the `pca()` function.
+>
 > 
 > As in the example using prostate data above, examine the first 5 rows and
 > columns of rotated data and loadings from your PCA.
@@ -559,7 +560,7 @@ represents.
 > > which.max(pc$loadings[, 2])
 > > pc$loadings[27, ]
 > > ```
-> > The function `pca` is used to perform PCA, and uses as inputs a matrix
+> > The function `pca()` is used to perform PCA, and uses as inputs a matrix
 > > (`mat`) containing continuous numerical data
 > > in which rows are data variables and columns are samples, and `metadata`
 > > associated with the matrix in which rows represent samples and columns
@@ -567,7 +568,7 @@ represents.
 > > before a PCA is performed, although in this case gene expression data do
 > > not need to be transformed prior to PCA being carried out as variables are
 > > measured on a similar scale (values are comparable between rows). The output
-> > of the `pca` function includes a lot of information such as loading values
+> > of the `pca()` function includes a lot of information such as loading values
 > > for each variable (`loadings`), principal component scores (`rotated`)
 > > and the amount of variance in the data
 > > explained by each principal component.
@@ -577,6 +578,19 @@ represents.
 > > the contribution each variable makes to each principal component. 
 > {: .solution}
 {: .challenge}
+
+> ## Scaling variables for PCA
+>
+> When running `pca()` above, we kept the default setting, `scale=FALSE`. That means genes with higher variation in
+> their expression levels should have higher loadings, which is what we are interested in.
+> Whether or not to scale variables for PCA will depend on your data and research question.  
+>
+> Note that this is different from normalising gene expression data. Gene expression
+> data have to be normalised before donwstream analyses can be
+> carried out. This is to reduce to effect technical and other potentially confounding
+> factors. We assume that the expression data we use had been noralised previously.
+>
+>{: .callout}
 
 ## Choosing how many components are important to explain the variance in the data
 
@@ -596,7 +610,7 @@ proportion of variance explained.
 
 > ## Challenge 4
 > 
-> Using the screeplot function in `PCAtools`, create a screeplot to show 
+> Using the `screeplot()` function in **`PCAtools`**, create a screeplot to show 
 > proportion of variance explained by each principal component. Explain the
 > output of the screeplot in terms of proportion of variance in data explained
 > by each principal component.
@@ -624,21 +638,21 @@ proportion of variance explained.
 
 ## Investigating the principal components 
 
-Once the most important principal components have been identified using the
-screeplot, these can be explored in more detail by plotting principal components
+Once the most important principal components have been identified using
+`screeplot()`, these can be explored in more detail by plotting principal components
 against each other and highlighting points based on variables in the metadata.
 This will allow any potential clustering of points according to demographic or
 phenotypic variables to be seen.
 
-We can use biplots to look for patterns in the output from the PCA. Note that
-PCAtools does not scale biplot in the same way as biplot using the stats
-package.
+We can use biplots to look for patterns in the output from the PCA. Note that there
+are two functions called `biplot()`, one in the package **`PCAtools`** and one in
+**`stats`**. Both functions produce biplots but their scales are different!
 
 
 > ## Challenge 5
 > 
 > Create a biplot of the first two principal components from your PCA
-> (using `biplot` function in PCAtools - see `help("biplot")` for arguments) 
+> (using `biplot()` function in **`PCAtools`** - see `help("PCAtools::biplot")` for arguments) 
 > and examine whether the data appear to form clusters. Explain your results.
 > 
 > > ## Solution
@@ -651,7 +665,7 @@ package.
 > > axis according to expressions of different genes while no separation can be
 > > seem along the PC2 axis. Labels of patient samples are automatically added
 > > in the biplot. Labels for each sample are added by default, but can be
-> > removed if there is too much overlap in names. Note that `PCAtools` does
+> > removed if there is too much overlap in names. Note that **`PCAtools`** does
 > > not scale biplot in the same way as biplot using the stats package.
 > {: .solution}
 {: .challenge}
@@ -676,7 +690,7 @@ detecting genes on each principal component.
 
 > ## Challenge 6
 > 
-> Use `colby` and `lab` arguments in `biplot` to explore whether these two
+> Use `colby` and `lab` arguments in `biplot()` to explore whether these two
 > groups may cluster by patient age or by whether or not the sample expresses
 > the oestrogen receptor gene (ER+ or ER-).
 > 
@@ -694,7 +708,7 @@ detecting genes on each principal component.
 {: .challenge}
 
 So far we have only looked at a biplot of PC1 versus PC2 which only gives part
-of the picture. The `pairplots` function in `PCAtools` can be used to create
+of the picture. The `pairplots()` function in **`PCAtools`** can be used to create
 multiple biplots including different principal components.
 
 ```{r pairsplot, fig.cap="Caption", fig.cap="Alt"}
