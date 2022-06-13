@@ -146,7 +146,7 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > library(lasso2)  #load lasso2 package
+> > library("lasso2")  #load lasso2 package
 > > data(Prostate)   #load the Prostate dataset
 > > ~~~
 > > {: .language-r}
@@ -458,7 +458,7 @@ plot(xgroups, col = selected, pch = 19)
 > website [https://www.bioconductor.org/](https://www.bioconductor.org/).
 > 
 > Bioconductor packages can be installed and used in `R` using the **`BiocManager`**
-> package. Let's install the **`minfi`** package from Bioconductor (a package for
+> package. Let's load the **`minfi`** package from Bioconductor (a package for
 > analysing Illumina Infinium DNA methylation arrays).
 > 
 > 
