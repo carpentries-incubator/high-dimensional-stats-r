@@ -70,7 +70,7 @@ methylation
 You can see in this output that this object has a `dim()` of
 $`r nrow(methylation)` \times `r ncol(methylation)`$, meaning it has
 `r nrow(methylation)` features and `r ncol(methylation)` columns. To
-extract the matrix of methylation values (M-values), we can use the
+extract the matrix of methylation M-values, we can use the
 `assay()` function. One thing to bear in mind with these objects (and
 data structures for computational biology in R generally) is that in the
 matrix of methylation data, samples or observations are stored as
