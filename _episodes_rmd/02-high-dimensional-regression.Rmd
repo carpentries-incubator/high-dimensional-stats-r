@@ -56,7 +56,7 @@ methylation <- readRDS(here("data/methylation.rds"))
 This `methylation` object is a `GenomicRatioSet`, a Bioconductor data
 object derived from the `SummarizedExperiment` class. These
 `SummarizedExperiment` objects contain `assay`s, in this case
-methylation levels, and optional sample-level `colData` and
+normalised methylation levels, and optional sample-level `colData` and
 feature-level `metadata`. These objects are very convenient to contain
 all of the information about a dataset in a high-throughput context. If
 you would like more detail on these objects it may be useful to consult
