@@ -468,14 +468,6 @@ plot(xgroups, col = selected, pch = 19)
 > {: .language-r}
 > 
 > 
-> 
-> ~~~
-> Warning: replacing previous import 'utils::download.file' by
-> 'restfulr::download.file' when loading 'rtracklayer'
-> ~~~
-> {: .warning}
-> 
-> 
 > ~~~
 > browseVignettes("minfi")
 > ~~~
