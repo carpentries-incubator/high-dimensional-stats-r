@@ -49,20 +49,6 @@ Let's read in the data for this episode:
 ~~~
 library("here")
 library("minfi")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: replacing previous import 'utils::download.file' by
-'restfulr::download.file' when loading 'rtracklayer'
-~~~
-{: .warning}
-
-
-
-~~~
 methylation <- readRDS(here("data/methylation.rds"))
 ~~~
 {: .language-r}

@@ -60,20 +60,6 @@ possible combination of features to find the best one.
 ~~~
 library("here")
 library("minfi")
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: replacing previous import 'utils::download.file' by
-'restfulr::download.file' when loading 'rtracklayer'
-~~~
-{: .warning}
-
-
-
-~~~
 methylation <- readRDS(here("data/methylation.rds"))
 
 ## here, we transpose the matrix to have features as rows and samples as columns
