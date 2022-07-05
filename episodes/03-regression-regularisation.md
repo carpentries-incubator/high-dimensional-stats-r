@@ -30,27 +30,18 @@ math: yes
 
 # Introduction
 
-In the previous lesson we fit a lot of linear models to find a subset of
-features that are associated with our outcome of interest. This type of
-analysis is very useful when we have a lot of features and we want to identify
-ones that are related to our outcome. This is one 
-way of finding features that are associated with our outcome,
-but it treats each feature independently.
+One reason that we need special statistical tools for high-dimensional data is
+that standard linear models cannot handle high-dimensional data sets -- one cannot fit
+a linear model where there are more features (predictor variables) than there are observations
+(data points). In the previous lesson we dealt with this problem by fitting individual
+models for each feature and sharing information among these models. Now we will
+take a look at an alternative approach called regularisation. Regularisation can be used to
+stabilise coefficient estimates (and thus to fit models with more features than observations)
+and even to select a subset of relevant features.
 
-However we might think there's some combination of methylation features
-that together explain age. For example, if we want to be able to predict age 
-from methylation, that's a lot easier if we figure out what the contribution
-of each feature is conditional on all others, rather than independent of
-all others.
+First, let us check out what happens if we try to fit a linear model to high-dimensional
+data! We start by reading in the data from the last lesson:
 
-$$
-    \mathbf{E}(y) = \beta_0 + \beta_1 X_1 + \dots \beta_p X_p
-$$
-
-However when the number of predictors is greater than the number of samples
-(basically always true in genetics) it isn't possible to include everything!
-What happens if we try to fit a model in this situation?
-First, let's read in the data from the last lesson.
 
 
 ~~~
@@ -64,8 +55,8 @@ age <- methylation$Age
 ~~~
 {: .language-r}
 
-Then, we can try to fit a model of age using all of the 5,000 features in this
-dataset.
+Then, we try to fit a model of age using all of the 5,000 features in this
+dataset (average methylation levels, M-values, across different sites in the genome).
 
 
 ~~~
@@ -105,8 +96,7 @@ effect sizes for 4,964 features
 because of "singularities". What this means is that R couldn't find a way to
 perform the calculations necessary due to the fact that we have more features
 than observations.
-Since we can't mathematically fit a model like this, we have to find another
-way.
+
 
 > ## Singularities
 > 
@@ -145,30 +135,37 @@ way.
 > [1] 0
 > ~~~
 > {: .output}
+
+
+
+> ## Correlated features -- common in high-dimensional data
+> 
+> So, we can't fit a standard linear model to high-dimensional data. But there
+> is another issue. In high-dimensional datasets, there
+> are often multiple features that contain redundant information (correlated features).
+> 
+> To investigate the level of correlation between features, we can compute correlation coefficients
+> for all pairs of features in a dataset, for instance using Pearson's correlation
+> coefficient. This measures how similar the patterns of variation in these features.
+> We can see that in the `Prostate` data in the *`lasso2`* package, there are relatively
+> few features and they are largely independent. 
+> 
+> <img src="../fig/rmd-03-corr-mat-prostate-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> 
+> If we do the same for the methylation dataset, in contrast, we can see that many
+> of the features essentially represent the same information (there are many off-diagonal
+> cells which are deep red or blue). This can present problems for a lot of the mathematical
+> techniques we will use to calculate a linear regression model.
+> 
+> <img src="../fig/rmd-03-corr-mat-meth-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> 
+> Correlation between features can be problematic for technical reasons. If it is 
+> very severe, it may even make it impossible to fit a model! This is in addition to
+> the fact that with more features than observations, we can't even estimate
+> the model properly. Regularisation can help us to deal with correlated features.
 {: .callout}
 
 
-Often, we have many variables that are all very correlated, with plenty
-of noise. For example, if we look at the `Prostate` data in the `lasso2` 
-package, we can calculate the Pearson correlation between each feature in the
-data. This measures how similar the patterns of variation in these features
-are across all of the observations in this dataset.
-We can see that in the prostate data, the few variables we have are generally
-pretty independent. 
-
-<img src="../fig/rmd-03-corr-mat-prostate-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-
-If we do the same for the methylation dataset, in contrast, we can see that many
-of the features essentially represent the same information. This can present
-problems for a lot of the mathematical techniques we use to calculate a linear
-regression model.
-
-<img src="../fig/rmd-03-corr-mat-meth-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
-
-For technical reasons, this correlation can be problematic, and if it's 
-very severe it may even make it impossible to fit a model! This is aside 
-from the fact that with more features than observations, we can't even estimate
-the model properly.
 
 
 > ## Exercise
@@ -196,11 +193,10 @@ the model properly.
 > {: .solution}
 {: .challenge}
 
-# The objective of a linear model
+# Coefficient estimates of a linear model
 
 When we fit a linear model, we're finding the line through our data that 
-minimises the sum of the squared residuals.
-We can think of that as finding
+minimises the sum of the squared residuals. We can think of that as finding
 the slope and intercept that minimises the square of the length of the dashed
 lines. In this case, the red line in the left panel is the line that
 accomplishes this objective, and the red dot in the right panel is the point 
@@ -221,9 +217,11 @@ point $X_i$, and $y_i$ is the true observed value.
 This line is the line of best fit through our data when considering this
 goal of minimising the sum of squared error. However, it is not the only 
 possible line we could use! For example, we might want to err on the side of
-caution when estimating effect sizes. That is, we might want to avoid estimating
+caution when estimating effect sizes (coefficients). That is, we might want to avoid estimating
 very large effect sizes. This can help us to create *generalisable*
-models.
+models. This is important when models that are fitted (trained) on one dataset
+and then used to predict outcomes from a new dataset. Restricting parameter
+estimates is particularly important when analysing high-dimensional data.
 
 
 > ## Exercise
@@ -252,32 +250,33 @@ models.
 {: .challenge}
 
 
-# Model selection
+# Model selection using training and test sets
 
-Measures like adjusted $R^2$, AIC and
-BIC show us how well the model is learning the data used in fitting the model [^1]. These are really good ways of telling us how
-well the model is learning to fit the data we're using as an 
-input. However, this doesn't really tell us how well the model will generalise to new data. This is an important thing to 
-consider -- if our model doesn't generalise to new data,
-then there's a chance that it's just picking up on a technical or batch effect in our data, or simply some noise that happens
-to fit the outcome we're modelling.
-This is especially important when our goal is prediction -- 
-it's not much good if we can only predict well for samples where
-the outcome is already known, after all!
+Sets of models are often compared using statistics such as adjusted $R^2$, AIC or BIC.
+These show us how well the model is learning the data used in fitting that same model [^1].
+However, these statistics do not really tell us how well the model will generalise to new data.
+This is an important thing to  consider -- if our model doesn't generalise to new data,
+then there's a chance that it's just picking up on a technical or batch effect
+in our data, or simply some noise that happens to fit the outcome we're modelling.
+This is especially important when our goal is prediction -- it's not much good
+if we can only predict well for samples where the outcome is already known,
+after all! 
 
 To get an idea of how well our model generalises, we can split the data into
-two - "training" and "test" sets. We use the "training" data to fit the model,
+two - a "training" and a "test" set. We use the "training" data to fit the model,
 and then see its performance on the "test" data.
 
 <img src="../fig/validation.png" title="Alt" alt="Alt" width="500px" style="display: block; margin: auto;" />
 
-One thing that happens a lot of the time in this context is that large 
+One thing that often happens in this context is that large 
 coefficient values minimise the training error, but they don't minimise the 
 test error on unseen data. First, we'll go through an example of what exactly 
 this means.
 
 For the next few exercises, we'll work with a set of features
-known to be associated with age from a paper by Horvath et al.[^2]. Horvath et al, use methylation markers alone to predict the biological age of an individual. This is useful in studying age-related disease amongst many other things.
+known to be associated with age from a paper by Horvath et al.[^2]. Horvath et al
+use methylation markers alone to predict the biological age of an individual.
+This is useful in studying age-related disease amongst many other things.
 
 
 ~~~
@@ -348,10 +347,11 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > {: .solution}
 {: .challenge}
 
-With this model, now we can check how well it does. Here we use the mean of
-the squared difference between our predictions and the true ages for the test
-data, or "mean squared error" (MSE). Unfortunately, it seems like this is a lot
-higher than the error on the training data!
+Having trained this model, now we can check how well it does in predicting age
+from new dataset (the test data).
+Here we use the mean of the squared difference between our predictions and the
+true ages for the test data, or "mean squared error" (MSE). Unfortunately, it
+seems like this is a lot higher than the error on the training data!
 
 
 
@@ -386,17 +386,16 @@ abline(coef = 0:1, lty = "dashed")
 
 <img src="../fig/rmd-03-test-plot-lm-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-# What is regularisation? (using ridge regression as an example)
+# Using regularisation to impove generalisability
 
-One way to tackle these many correlated variables with lots of noise is
-*regularisation*.
-The idea of regularisation is to add another condition to the problem we're
-solving with linear regression. This condition controls the total size of the 
-coefficients that come out. 
+As stated above, restricting model parameter estimates can improve a model's
+generalisability. This can be done with *regularisation*. The idea to add another
+condition to the problem we're solving with linear regression. This condition
+controls the total size of the  coefficients that come out. 
 For example, we might say that the point representing the slope and intercept
-must fall within a certain distance of the origin, $(0, 0)$. Note that
-we are still trying to solve for the line that minimises the square of the
-residuals; we are just adding this extra constraint to our solution. 
+must fall within a certain distance of the origin, $(0, 0)$. Note that we are still trying to
+solve for the line that minimises the square of the residuals; we are just
+adding this extra constraint to our solution. 
 
 For the 2-parameter model (slope and intercept), we could
 visualise this constraint as a circle with a given radius. We 
@@ -430,12 +429,12 @@ term that punished models with large coefficients. The balance between the
 penalty and the ordinary least squares objective is controlled by $\lambda$ - 
 when $\lambda$ is large, we care a lot about the size of the coefficients.
 When it's small, we don't really care a lot. When it's zero, we're back to
-just using ordinary least squares.
+just using ordinary least squares. This type of regularisation is called *ridge regression*.
 
 # Why would we want to restrict our model?
 
-It's an odd thing to do, restrict the possible values of our model parameters, 
-though! Why would we want to do this? Well firstly, when we have many 
+It may seem an odd thing to do, to restrict the possible values of our model
+parameters! Why would we want to do this? Well firstly, when we have many 
 correlated features our model estimates can be very unstable or even difficult
 to calculate. Secondly, this type of approach can make our model more 
 generalisable. To show this,
@@ -461,12 +460,13 @@ abline(h = 0, lty = "dashed")
 
 <img src="../fig/rmd-03-plot-ridge-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
 
-This plot shows how the coefficients change as we increase the penalty. That is,
+This plot shows how the estimated coefficients for each methrylated site  change
+as we increase the penalty, $\lambda$. That is,
 as we decrease the size of the region that solutions can fall into, the values
 of the coefficients that we get back tend to decrease. In this case,
 coefficients trend towards zero but generally don't reach it until the penalty
 gets very large. We can see that initially, some parameter estimates are really,
-really large, and these tend to shink fairly rapidly.
+really large, and these tend to shrink fairly rapidly.
 
 We can also notice that some parameters "flip signs"; that is, they start off
 positive and become negative as lambda grows. This is a sign of collinearity,
@@ -593,7 +593,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 
 # LASSO regression
 
-LASSO is another type of regularisation. In this case we use the $L^1$ norm,
+*LASSO* is another type of regularisation. In this case we use the $L^1$ norm,
 or the sum of the absolute values of the coefficients.
 
 $$
@@ -605,7 +605,7 @@ from the model that aren't necessary to produce accurate predictions. This
 is because the region we're restricting the coefficients to has sharp edges.
 So, when we increase the penalty (reduce the norm), it's more likely that
 the best solution that falls in this region will be at the corner of this
-diagonal (ie, one or more coefficient is exactly zero).
+diagonal (i.e., one or more coefficient is exactly zero).
 
 <img src="../fig/rmd-03-shrink-lasso-1.png" title="Alt" alt="Alt" width="720" style="display: block; margin: auto;" />
 
@@ -640,21 +640,21 @@ diagonal (ie, one or more coefficient is exactly zero).
 {: .challenge}
 
 
-# Cross-validation
+# Cross-validation to find the best value of $\lambda$
 
 There are various methods to select the "best"
-value for $\lambda$. One idea is to split
+value for $\lambda$. One is to split
 the data into $K$ chunks. We then use $K-1$ of
 these as the training set, and the remaining $1$ chunk
 as the test set. We can repeat this until we've rotated through all $K$ chunks,
 giving us a good estimate of how well each of the lambda values work in our
-data. Doing this repeated test/train split gives us a better estimate
-of how generalisable our model is. Cross-validation is a really deep topic that
-we're not going to cover in more detail today, though!
+data. This is called cross-validation, and doing this repeated test/train split
+gives us a better estimate of how generalisable our model is. Cross-validation
+is a really deep topic that we're not going to cover in more detail today, though!
 
 <img src="../fig/cross_validation.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
 
-We can use this new idea to pick a lambda value, by finding the lambda
+We can use this new idea to choose a lambda value, by finding the lambda
 that minimises the error across each of the test and training splits.
 
 
