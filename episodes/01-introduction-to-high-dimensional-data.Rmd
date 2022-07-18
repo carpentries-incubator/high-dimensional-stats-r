@@ -41,11 +41,10 @@ knitr_fig_path("01-")
 $p$, are close to or larger than the number of observations (or data points), $n$.
 The opposite is *low-dimensional data* in which the number of observations,
 $n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which
-
-efers to data with numerous features irrespective of the number of observations (similarly, *tall data* is often used to denote data with a large number of observations)
+refers to data with numerous features irrespective of the number of observations (similarly,
+*tall data* is often used to denote data with a large number of observations)
 Analyses of high-dimensional data require consideration of potential problems that
 come from having more features than observations.
-
 
 High-dimensional data have become more common in many scientific fields as new
 automated data collection techniques have been developed. More and more datasets
@@ -56,7 +55,6 @@ regression, are no longer appropriate.
 
 High-dimensional datasets are common in the biological sciences. Subjects like
 genomics and medical sciences often use both tall (in terms of $n$) and wide
-
 (in terms of $p$) datasets that can be difficult to analyse or visualise using
 standard statistical tools. An example of high-dimensional data in biological
 sciences may include data collected from hospital patients recording symptoms,
@@ -97,7 +95,6 @@ knitr::include_graphics("../fig/intro-table.png")
 > > 1. No. The number of observations (100 patients) is far greater than the number of features (3).
 > > 2. Yes, this is an example of high-dimensional data. There are only 100 observations but 200,000+3 features.
 > > 3. No. There are many more observations (200 patients) than features (5). 
-
 > > 4. Yes. There is only one observation of more than 20,000 features.
 > {: .solution}
 {: .challenge}
@@ -134,18 +131,13 @@ of the challenges we are facing when working with high-dimensional data.
 > ## Challenge 2 
 > 
 > Load the `Prostate` dataset from the **`lasso2`** package.
-
 > names. Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
-
 > a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function) 
 > b) Examine what variables were measured (hint: see the `names()` and `head()` functions)
 > c) Plot the relationship between the variables (hint: see the `pairs()` function). 
-
-> become more difficult to plot relationships between pairs of variables with
-> increasing numbers of variables? Discuss in groups.
 > 
 > > ## Solution
 > > 
@@ -161,7 +153,6 @@ of the challenges we are facing when working with high-dimensional data.
 > > ```{r head-prostate, eval = FALSE}
 >> names(Prostate) # examine the variable names
 > > head(Prostate)   #print the first 6 rows
-
 > > ```
 > > 
 > > ```{r pairs-prostate}
