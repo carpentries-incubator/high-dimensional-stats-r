@@ -151,7 +151,7 @@ of the challenges we are facing when working with high-dimensional data.
 > > ```
 > >
 > > ```{r head-prostate, eval = FALSE}
->> names(Prostate) # examine the variable names
+> > names(Prostate) # examine the variable names
 > > head(Prostate)   #print the first 6 rows
 > > ```
 > > 
@@ -175,11 +175,9 @@ Imagine we are carrying out least squares regression on a dataset with 25
 observations. Fitting a best fit line through these data produces a plot shown
 in the left-hand panel of the figure below.
 
-However, imagine a situation in which the number of observations and features in a dataset are almost equal.
-
-In that situation the effective number of
-
-observations per features is low. The result of fitting a best fit line through
+However, imagine a situation in which the number of observations and features in a
+dataset are almost equal. In that situation the effective number of observations
+per features is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE}
@@ -246,7 +244,7 @@ regression.
 # What statistical methods are used to analyse high-dimensional data? 
 
 As we found out in the above challenges, carrying out linear regression on
-datasets with large numbers of features is difficult due to: high correlation
+datasets with large numbers of features is difficult due to: high levels of correlation
 between variables; difficulty in identifying a clear response variable; and risk
 of overfitting. These problems are common to the analysis of many high-dimensional datasets,
 for example, those using genomics data with multiple genes, or species
@@ -316,7 +314,7 @@ plot(xgroups, col = selected, pch = 19)
 > > is possible to convince ourselves that there are clusters in the data just
 > > by colouring the data points by their respective groups! Formal cluster
 > > analysis and validation is necessary to determine whether visual clusters
-> > in data are 'real'.
+> > in data are likely 'real'.
 > > 
 > {: .solution}
 {: .challenge}
