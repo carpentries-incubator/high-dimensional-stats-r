@@ -860,8 +860,7 @@ represents.
 > data have to be normalised before donwstream analyses can be
 > carried out. This is to reduce to effect technical and other potentially confounding
 > factors. We assume that the expression data we use had been noralised previously.
->
->{: .callout}
+{: .callout}
 
 ## Choosing how many components are important to explain the variance in the data
 

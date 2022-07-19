@@ -158,8 +158,8 @@ features to do so manually.
 
 > ## Exercise
 >
-> Why can we not just fit linear regression models of all of the columns
-> in the `colData` above against all of the features in the matrix of
+> Why can we not just fit many linear regression models, one for each of the columns
+> in the `colData` above against each of the features in the matrix of
 > assays, and choose all of the significant results at a p-value of
 > 0.05?
 >
@@ -178,7 +178,8 @@ features to do so manually.
 > > associations in the data, we'd be likely to observe some strong
 > > spurious associations that arise just from random noise.
 > >
-> > {: .solution} {: .challenge}
+> {: .solution}
+{: .challenge}
 
 > ## Measuring DNA Methylation
 >
@@ -213,8 +214,8 @@ features to do so manually.
 > $$
 >
 > M-values are not bounded to an interval as Beta values are, and
-> therefore can be easier to work with in statistical models. {:
-> .callout}
+> therefore can be easier to work with in statistical models.
+{: .callout}
 
 # Identifying associations using linear regression
 
@@ -342,7 +343,7 @@ relationship between the predictor variable(s) and the outcome. This may
 not always be the most realistic or useful null hypothesis, but it is
 the one we have!
 
-For this linear model, we can use `broom` to extract detailed
+For this linear model, we can use `tidy()` from the **`broom`** package to extract detailed
 information about the coefficients and the associated hypothesis tests
 in this model:
 
@@ -377,12 +378,13 @@ under the "null hypothesis".
 > > ## Solution
 > >
 > > The intercept for this model indicates that the mean of methylation,
-> > when age is zero, is 0.902. However, this isn't a particularly
-> > note-worthy finding! Also, regardless of the p-value, it's unlikely
-> > to be a reliable finding, as we don't have any individuals with age
-> > zero, nor even any with age \< 20.
+> > when age is zero, is 0.902. However, this is not a particularly
+> > noteworthy finding! Also, regardless of the p-value, it is unlikely
+> > to be a reliable finding, as we do not have any observations with age
+> > zero (nor even any with age \< 20).
 > >
-> > {: .solution} {: .challenge}
+> {: .solution}
+{: .challenge}
 
 # Fitting a lot of linear models
 
@@ -475,8 +477,8 @@ The red-ish shaded region represents the portion of the distribution of
 the test statistic under the null hypothesis that is equal or greater to
 the value we observe for the intercept term. This shaded region is small
 relative to the total area of the null distribution; therefore, the
-p-value is small ($p=0.013$). The blue-ish shaded region represents the same measure for the slope  term; this is larger, relative to the total area of the distribution, therefore the p-value is larger than the one for the intercept term ($p=`r
-round(table_age_methyl1$p.value[[2]], digits = 3)`$). You can see that
+p-value is small ($p=0.013$). The blue-ish shaded region represents the same measure for the slope  term; this is larger, relative to the total area of the distribution, therefore the p-value is larger than the one for the intercept term 
+($p=`round(table_age_methyl1$p.value[[2]], digits = 3)`$). You can see that
 the p-value is a function of the size of the effect we're estimating and
 the uncertainty we have in that effect. A large effect with large
 uncertainty may not lead to a small p-value, and a small effect with
@@ -491,16 +493,18 @@ small uncertainty may lead to a small p-value.
 >
 > Since the statistic in a linear model is a t-statistic, it follows a
 > student t distribution under the null hypothesis, with degrees of
-> freedom (a parameter of the student t distribution) given by the
+> freedom (a parameter of the student t-distribution) given by the
 > number of observations minus the number of coefficients fitted, in
 > this case
-> $37 - 2 = 35$. We want to know what portion of the distribution function of the test statistic is as extreme as, or more  extreme than, the value we observed. The function`pt`(similar to`pnorm\`,
-> etc) can give us this information.
+> $37 - 2 = 35$.
+> We want to know what portion of the distribution function of the test
+> statistic is as extreme as, or more  extreme than, the value we observed.
+> The function`pt()`(similar to`pnorm()`, etc) can give us this information.
 >
 > Since we're not sure if the coefficient will be larger or smaller than
 > zero, we want to do a 2-tail test. Therefore we take the absolute
 > value of the t-statistic, and look at the upper rather than lower
-> tail. Because in a 2-tail test we're looking at "half" of the
+> tailed. Because in a 2-tailed test we're looking at "half" of the
 > t-distribution, we also multiply the p-value by 2.
 >
 > Combining all of this gives us:
@@ -519,7 +523,8 @@ small uncertainty may lead to a small p-value.
 > ~~~
 > {: .output}
 >
-> {: .callout}
+>
+>{: .callout}
 
 # Sharing information between features
 
@@ -703,7 +708,7 @@ methylation with increasing age. Points higher on the x-axis represent
 features for which we think the results we observed would be very
 unlikely under the null hypothesis.
 
-Since we want to identify feature that have different methylation levels
+Since we want to identify features that have different methylation levels
 in different age groups, in an ideal case there would be clear
 separation between "null" and "non-null" features. However, usually we
 observe results as we do here: there is a continuum of effect sizes and
@@ -729,32 +734,33 @@ made more difficult by the number of tests we perform.
 > > Because the uncertainty in our estimates is much smaller than the
 > > estimates themselves, the p-values are also small.
 > >
-> > If we predicted age using methylation level, it's likely we'd see
+> > If we predicted age using methylation level, it is likely we would see
 > > much larger coefficients, though broadly similar p-values!
 > >
-> > {: .solution} {: .challenge}
+> {: .solution}
+{: .challenge}
 
-It's worthwhile considering what exactly the effect of the *moderation*
-or information sharing that `limma` performs has on our results. To do
-this, let's compare the effect sizes estimates and p-values from the two
+It is worthwhile considering what exactly the effect of the *moderation*
+or information sharing that **`limma`** performs has on our results. To do
+this, let us compare the effect sizes estimates and p-values from the two
 approaches.
 
 <img src="../fig/rmd-02-plot-limma-lm-effect-1.png" title="plot of chunk plot-limma-lm-effect" alt="plot of chunk plot-limma-lm-effect" width="432" style="display: block; margin: auto;" />
 
-These are exactly identical! This is because `limma` isn't performing
+These are exactly identical! This is because **`limma`** does not perform
 any sharing of information when estimating effect sizes. This is in
 contrast to similar packages that apply shrinkage to the effect size
-estimates, like `DESeq2`. These often use information sharing to shrink
-or moderate the effect size estimates, in the case of DESeq2 by again
+estimates, like **`DESeq2`**. These often use information sharing to shrink
+or moderate the effect size estimates, in the case of **`DESeq2`** by again
 sharing information between features about sample-to-sample variability.
-In contrast, let's look at the p-values from `limma` and `lm`:
+In contrast, let us look at the p-values from **`limma`** and R's built-in `lm()` function:
 
 <img src="../fig/rmd-02-plot-limma-lm-pval-1.png" title="plot of chunk plot-limma-lm-pval" alt="plot of chunk plot-limma-lm-pval" width="432" style="display: block; margin: auto;" />
 
-You can see that for the vast majority of features, the results are
-broadly similar. There seems to be a minor general tendency for `limma`
+we can see that for the vast majority of features, the results are
+broadly similar. There seems to be a minor general tendency for **`limma`**
 to produce smaller p-values, but for several features, the p-values from
-limma are considerably larger than the p-values from `lm`. This is
+limma are considerably larger than the p-values from `lm()`. This is
 because the information sharing tends to shrink large standard error
 estimates downwards and small estimates upwards. When the degree of
 statistical significance is due to an abnormally small standard error
@@ -771,7 +777,7 @@ is not much opportunity to generate pooled estimates, and the evidence
 of the data can easily outweigh the pooling.
 
 Shrinkage methods like these ones can be complex to implement and
-understand, but it's good to understand why these approaches may be more
+understand, but it is useful to develp an intuition why these approaches may be more
 precise and sensitive than the naive approach of fitting a model to each
 feature separately.
 
@@ -779,7 +785,7 @@ feature separately.
 >
 > 1.  Try to run the same kind of linear model with smoking status as
 >     covariate instead of age, and making a volcano plot. *Note:
->     smoking status is stored as `methylation$smoker`.*
+>     smoking status is stored as* `methylation$smoker`.
 > 2.  We saw in the example in the lesson that this information sharing
 >     can lead to larger p-values. Why might this be preferable?
 >
@@ -808,7 +814,9 @@ feature separately.
 > >     hypothesis is based more on a small standard error resulting
 > >     from abnormally low levels of variability for a given feature,
 > >     we might want to be a bit more conservative in our expectations.
-> >     {: .solution} {: .challenge}
+> {: .solution}
+{: .challenge}
+
 
 
 
@@ -831,11 +839,11 @@ feature separately.
 > information* about the effect size between schools and shink our
 > estimates towards a common value.
 >
-> For example in `DESeq2`, the authors used the observation that genes
+> For example in **`DESeq2`**, the authors used the observation that genes
 > with similar expression counts in RNAseq data have similar
 > *dispersion*, and a better estimate of these dispersion parameters
 > makes estimates of fold changes much more stable. Similarly, in
-> `limma` the authors made the assumption that in the absence of
+> **`limma`** the authors made the assumption that in the absence of
 > biological effects, we can often expect the technical variation in the
 > measurement of the expression of each of the genes to be broadly
 > similar. Again, better estimates of variability allow us to prioritise
@@ -848,7 +856,8 @@ feature separately.
 >     Mahr](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/)
 > -   [a book by David Robinson](https://gumroad.com/l/empirical-bayes)
 > -   [a (relatively technical) book by Gelman and
->     Hill](http://www.stat.columbia.edu/~gelman/arm/) {: .callout}
+>     Hill](http://www.stat.columbia.edu/~gelman/arm/)
+{: .callout}
 
 
 
@@ -856,14 +865,14 @@ feature separately.
 
 With such a large number of features, it would be useful to decide which
 features are "interesting" or "significant" for further study. However,
-if we were to apply a normal significance threshold of 0.05, it's likely
-that we'd end up with a lot of false positives. That's because a p-value
-threshold like this represents a $\frac{1}{20}$ chance that we'd observe
+if we were to apply a normal significance threshold of 0.05, it would be likely
+we end up with a lot of false positives. This is because a p-value
+threshold like this represents a $\frac{1}{20}$ chance that we observe
 results as extreme or more extreme under the null hypothesis (that there
-is no assocation between age and methylation level). If we do many more
-than 20 such tests, we can expect that for a lot of the tests, the null
-hypothesis is true, but we will still observe extreme results. To
-demonstrate this, it's useful to see what happens if we scramble age and
+is no assocation between age and methylation level). If we carry out many more
+than 20 such tests, we can expect to see situations where, despite the null
+hypothesis being true, we observe observe signifiant p-values due to random chance. To
+demonstrate this, it is useful to see what happens if we permute (scramble) the age values and
 run the same test again:
 
 
@@ -885,14 +894,14 @@ abline(h = -log10(0.05), lty = "dashed", col = "red")
 
 <img src="../fig/rmd-02-volcplotfake-1.png" title="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="432" style="display: block; margin: auto;" />
 
-Since we've generated a random sequence of ages, we have no reason to
+Since we have generated a random sequence of ages, we have no reason to
 suspect that there is a true association between methylation levels and
 this sequence of random numbers. However, you can see that the p-value
 for many features is still lower than a traditional significance level
 of $p=0.05$. In fact, here 235
 features are significant at p \< 0.05. If we were to use this fixed
-threshold in a real experiment, it's likely that we'd identify many
-features as associated with age, when the results we're observing are
+threshold in a real experiment, it is likely that we would identify many
+features as associated with age, when the results we are observing are
 simply due to chance.
 
 > ## Exercise
@@ -922,19 +931,21 @@ simply due to chance.
 > > 3.  One approach to controlling for the number of tests is to divide
 > >     our significance threshold by the number of tests performed.
 > >     This is termed "Bonferroni correction" and we'll discuss this
-> >     further now. {: .solution} {: .challenge}
+> >     further now.
+> {: .solution}
+{: .challenge}
 
 # Adjusting for multiple tests
 
-When performing many statistical tests to categorise features, we're
-effectively classifying features as "significant" - meaning those for
-which we reject the null hypothesis - and "non-significant". We also
+When performing many statistical tests to categorise features, we are
+effectively classifying features as "non-significant" or "significant", that latter meaning those for
+which we reject the null hypothesis. We also
 generally hope that there is a subset of features for which the null
 hypothesis is truly false, as well as many for which the null truly does
 hold. We hope that for all features for which the null hypothesis is
 true, we accept it, and for all features for which the null hypothesis
 is not true, we reject it. As we showed in the example with permuted
-age, with a large number of tests it's inevitable that we'll get some of
+age, with a large number of tests it is inevitable that we will get some of
 these wrong.
 
 We can think of these features as being "truly different" or "not truly
@@ -1078,7 +1089,8 @@ experiment over and over.
 > >     
 > >     <img src="../fig/rmd-02-plot-fdr-fwer-1.png" title="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
 > >
-> >     {: .solution} {: .challenge}
+> {: .solution}
+{: .challenge}
 
 
 
