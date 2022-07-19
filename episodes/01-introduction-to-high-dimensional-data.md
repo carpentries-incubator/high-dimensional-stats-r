@@ -39,11 +39,10 @@ math: yes
 $p$, are close to or larger than the number of observations (or data points), $n$.
 The opposite is *low-dimensional data* in which the number of observations,
 $n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which
-
-efers to data with numerous features irrespective of the number of observations (similarly, *tall data* is often used to denote data with a large number of observations)
+refers to data with numerous features irrespective of the number of observations (similarly,
+*tall data* is often used to denote data with a large number of observations)
 Analyses of high-dimensional data require consideration of potential problems that
 come from having more features than observations.
-
 
 High-dimensional data have become more common in many scientific fields as new
 automated data collection techniques have been developed. More and more datasets
@@ -54,7 +53,6 @@ regression, are no longer appropriate.
 
 High-dimensional datasets are common in the biological sciences. Subjects like
 genomics and medical sciences often use both tall (in terms of $n$) and wide
-
 (in terms of $p$) datasets that can be difficult to analyse or visualise using
 standard statistical tools. An example of high-dimensional data in biological
 sciences may include data collected from hospital patients recording symptoms,
@@ -92,7 +90,6 @@ is shown in the figure below.
 > > 1. No. The number of observations (100 patients) is far greater than the number of features (3).
 > > 2. Yes, this is an example of high-dimensional data. There are only 100 observations but 200,000+3 features.
 > > 3. No. There are many more observations (200 patients) than features (5). 
-
 > > 4. Yes. There is only one observation of more than 20,000 features.
 > {: .solution}
 {: .challenge}
@@ -129,18 +126,13 @@ of the challenges we are facing when working with high-dimensional data.
 > ## Challenge 2 
 > 
 > Load the `Prostate` dataset from the **`lasso2`** package.
-
 > names. Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
-
 > a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function) 
 > b) Examine what variables were measured (hint: see the `names()` and `head()` functions)
 > c) Plot the relationship between the variables (hint: see the `pairs()` function). 
-
-> become more difficult to plot relationships between pairs of variables with
-> increasing numbers of variables? Discuss in groups.
 > 
 > > ## Solution
 > > 
@@ -159,7 +151,7 @@ of the challenges we are facing when working with high-dimensional data.
 > >
 > > 
 > > ~~~
-> > >> names(Prostate) # examine the variable names
+> > names(Prostate) # examine the variable names
 > > head(Prostate)   #print the first 6 rows
 > > ~~~
 > > {: .language-r}
@@ -201,11 +193,9 @@ Imagine we are carrying out least squares regression on a dataset with 25
 observations. Fitting a best fit line through these data produces a plot shown
 in the left-hand panel of the figure below.
 
-However, imagine a situation in which the number of observations and features in a dataset are almost equal.
-
-In that situation the effective number of
-
-observations per features is low. The result of fitting a best fit line through
+However, imagine a situation in which the number of observations and features in a
+dataset are almost equal. In that situation the effective number of observations
+per features is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 <img src="../fig/intro-scatterplot.png" title="plot of chunk intro-figure" alt="plot of chunk intro-figure" style="display: block; margin: auto;" />
@@ -358,7 +348,7 @@ regression.
 # What statistical methods are used to analyse high-dimensional data? 
 
 As we found out in the above challenges, carrying out linear regression on
-datasets with large numbers of features is difficult due to: high correlation
+datasets with large numbers of features is difficult due to: high levels of correlation
 between variables; difficulty in identifying a clear response variable; and risk
 of overfitting. These problems are common to the analysis of many high-dimensional datasets,
 for example, those using genomics data with multiple genes, or species
@@ -443,7 +433,7 @@ plot(xgroups, col = selected, pch = 19)
 > > is possible to convince ourselves that there are clusters in the data just
 > > by colouring the data points by their respective groups! Formal cluster
 > > analysis and validation is necessary to determine whether visual clusters
-> > in data are 'real'.
+> > in data are likely 'real'.
 > > 
 > {: .solution}
 {: .challenge}
