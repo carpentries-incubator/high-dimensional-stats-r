@@ -114,7 +114,7 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add -A .
-          git commit --allow-empty -m "[Github Actions] render website (via ${{ github.sha }}")
+          git commit --allow-empty -m "[Github Actions] render website (via ${{ github.sha }})"
           git push origin gh-pages
           # return
           cd ..
