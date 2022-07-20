@@ -101,6 +101,11 @@ jobs:
       - name: Commit and Push
         if: ${{ github.event_name == 'push' && steps.check-rmd.outputs.count != 0 && github.ref != 'refs/heads/gh-pages'}}
         run: |
+          # clean up gh-pages (source: https://github.com/zkamvar/styles/blob/ed29df30623a68ae87e05811a01283f0452fae4e/.github/workflows/website.yml)
+          cd gh-pages
+          git rm -rf .           # remove all previous files
+          git restore --staged . # remove things from the stage
+          cd ..
           # copy everything into gh-pages site
           cp -r `ls -A | grep -v 'gh-pages' | grep -v '.git' | grep -v '.bundle/' | grep -v '_site'` gh-pages
           # move into gh-pages, add, commit, and push
@@ -109,7 +114,7 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add -A .
-          git commit --allow-empty -m "[Github Actions] render website (via ${{ github.sha }}"
+          git commit --allow-empty -m "[Github Actions] render website (via ${{ github.sha }})"
           git push origin gh-pages
           # return
           cd ..
