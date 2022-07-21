@@ -201,7 +201,7 @@ head(pros2)
 # Performing exploratory factor analysis
 
 EFA may be implemented in R using the `factanal()` function
-from the stats package (which is a built in package in base R). This
+from the **`stats`** package (which is a built in package in base R). This
 function fits a factor analysis by maximising the log-likelihood using a
 data matrix as input. The number of factors to be fitted in the analysis
 is specified by the user using the `factors` argument. Options for
@@ -349,17 +349,14 @@ Like PCA, the fewer factors that can explain most of the variation in the
 dataset, the better. It is easier to explore and interpret results using a
 smaller number of factors which represent underlying features in the data. 
 
-# Variance accounted for, communality and uniqueness
+# Variance accounted for by factors - communality and uniqueness
 
-An estimate of the total amount of variation in the original data,
-$\hat{\Sigma}$, is calculated by summing our estimate of total communality
-and uniqueness of each variable.
+The *communality* of a variable is the sum of its squared loadings. It
+represents the proportion of the variance in a variable that is accounted
+for by the FA model.
 
-- *Communality* represents the degree to which variables explain the same
-variation in the data and is calculated for each variable by summing the
-(squared) loadings. 
-- *Uniqueness* is the opposite of communality and represents the amount of
-variation in the data uniquely explained by one variable. Uniqueness is
+*Uniqueness* is the opposite of communality and represents the amount of
+variation in a variable that is not accounted for by the FA model. Uniqueness is
 calculated by subtracting the communality value from 1.
 
 
