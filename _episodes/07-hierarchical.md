@@ -105,6 +105,8 @@ library("here")
 library("ComplexHeatmap")
 
 methyl <- readRDS(here("data/methylation.rds"))
+
+methyl_mat <- t(assay(methyl))
 ~~~
 {: .language-r}
 
