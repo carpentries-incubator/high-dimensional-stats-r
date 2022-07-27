@@ -96,6 +96,7 @@ than observations.
 > of the matrix is zero, we are unable to find its inverse.
 > 
 > ```{r determinant}
+> # Do not run now as this will take several minutes!
 > xtx <- t(methyl_mat) %*% methyl_mat
 > det(xtx)
 > ```
