@@ -251,11 +251,9 @@ library("ggplot2")
 theme_set(theme_bw())
 set.seed(42)
 n <- 10
-x <- c(rnorm(n, 0), rnorm(n, 3))
-group <- (2 * x) + rnorm(n)
-ggplot() +
-    aes(x = group, y = x) +
-    geom_point() +
+sim_feat <- c(rnorm(n, 0), rnorm(n, 3))
+sim_phenotype <- (2 * x) + rnorm(n)
+qplot(x = sim_phenotype, y = sim_feat) +
     labs(x = "Age", y = "DNA methylation")
 ```
 
@@ -265,10 +263,9 @@ or equivalently for a discrete covariate:
 library("ggplot2")
 set.seed(42)
 n <- 10
-x <- c(rnorm(n, 0), rnorm(n, 5))
-group <- c(rep("A", n), rep("B", n))
-ggplot() +
-    aes(x = group, y = x, colour = group) +
+sim_feat2 <- c(rnorm(n, 0), rnorm(n, 5))
+sim_group <- c(rep("A", n), rep("B", n))
+qplot(x = sim_group, y = sim_feat2, colour = sim_group) +
     # geom_violin() +
     # geom_boxplot(width = 0.25) +
     geom_jitter(height = 0, width = 0.2) +
@@ -281,10 +278,10 @@ the problem is a bit more difficult:
 library("ggplot2")
 set.seed(66)
 n <- 5
-x <- c(rnorm(n, 0), rnorm(n, 1))
-group <- c(rep("A", n), rep("B", n))
+sim_feat3 <- c(rnorm(n, 0), rnorm(n, 1))
+sim_group3 <- c(rep("A", n), rep("B", n))
 ggplot() +
-    aes(x = group, y = x, colour = group) +
+    aes(x = sim_group3, y = sim_feat3, colour = sim_group3) +
     # geom_violin() +
     # geom_boxplot(width = 0.25) +
     geom_jitter(height = 0, width = 0.2) +
@@ -324,8 +321,10 @@ We now have estimates for the expected methylation level when age equals 0
 a unit change in age (the slope). We could plot this linear model:
 
 ```{r plot-lm-methyl1}
-plot(age, methyl_mat[1, ], xlab = "Age", ylab = "Methylation level", pch = 16)
-abline(lm_age_methyl1)
+
+qplot(x=age, y=methyl_mat[1, ], xlab = "Age", ylab = "Methylation level") +
+  geom_abline(intercept = coef(lm_age_methyl1)[1], slope = coef(lm_age_methyl1)[2], colour = "blue")
+
 ```
 
 For this feature, we can see that there isn't a strong relationship between
