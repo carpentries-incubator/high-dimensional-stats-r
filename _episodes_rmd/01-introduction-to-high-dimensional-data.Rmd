@@ -349,12 +349,19 @@ What if the data really do arise from separate groups?
 simgroupmeans <- matrix(rnorm(6, mean = 0, sd = 1), 3, 2)
 
 ## add simulated group means to the random data for each group
-## NOTE: I did this with dplyr::mutate which seems overly complicated
-## or it would be possible to make simgroupmeans a data frame too.
+## EITHER: Do with dplyr::mutate which seems overly complicated
 simrandom_2d_grouped_really <- 
     dplyr::mutate(simrandom_2d_grouped,
     x = x + simgroupmeans[group, 1],
     y = y + simgroupmeans[group, 2])
+    
+## OR: using base R syntax, with
+simrandom_2d_grouped_really <- 
+  with(simrandom_2d_grouped,
+    data.frame(group = group,
+               x = x + simgroupmeans[group, 1],
+               y = y + simgroupmeans[group, 2])
+    )
     
 ## plot separated data and colour by each of the three groups
 qplot(data = simrandom_2d_grouped_really, x = x, y = y, colour = group)
