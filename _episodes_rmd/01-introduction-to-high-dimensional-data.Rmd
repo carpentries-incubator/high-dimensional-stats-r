@@ -286,31 +286,78 @@ whether such clusters are 'real' or simply apparent interpretations of noise
 within the data.
 
 Let's create some random data and show how we can create clusters by changing
-parameters.
+parameters. First we create and plot the random data:
 
 ```{r plot-random}
+library("ggplot2")
 set.seed(80)     
 
-## create random data from a normal distribution and store as a matrix
-x <- matrix(rnorm(200, mean = 0, sd = 1), 100, 2)
+## simulate random data from a 2-d normal distribution, store as a data frame
+simrandom_2d <- data.frame(x = rnorm(100, mean = 0, sd = 1),
+                           y = rnorm(100, mean = 0, sd = 1))
 
-plot(x, pch = 19)
 
+qplot(data = simrandom_2d)
+```
+
+> ## Setting random seeds with `set.seed`
+> 
+> Several times in this lesson we generate "random" data that is
+> technically "pseudorandom" - a built-in R algorithm generates
+> data that is statistically indistinguishable from random but
+> is in fact generated deterministically from a "seed".
+> 
+> We use the `set.seed` function to give the same pseudorandom data
+> every time this code runs and the lesson is built. This
+> gives the statistical features of randomness, while making the code 
+> more reproducible. 
+{: .callout}
+
+> ## Plotting in this lesson: base R compared to ggplot2
+> 
+> There are different ways to plot data in R, either base graphics or the
+> popular and flexible [ggplot2 package](https://ggplot2.tidyverse.org).
+> In this workshop, we mostly use [`qplot`](https://ggplot2.tidyverse.org/reference/qplot.html) 
+> as a "quick plot" in ggplot2 that has a consistent interface to make nice graphs.
+> Sometimes we use base graphics when there are built-in methods available,
+> for example `pairs()`, the `plot()` method for linear models that returns
+> diagnostic plots, and for heatmaps the 
+> [ComplexHeatmap package](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html).
+> 
+> You can use the plotting approach that you prefer - don't forget help 
+> pages, for example type `?qplot` for how to use qplot.
+{: .callout}
+
+```{r plot-random-groups}
 ## create three groups for each row of x
-selected <- sample(1:3, 100, replace = TRUE)
+simrandom_2d_grouped <- 
+   colbind(simrandom_2d,
+           group = factor( sample(1:3, 100, replace = TRUE) )
 
-## plot x and colour by selected
-plot(x, col = selected, pch = 19)
-#note there are no clusters in these data
+## plot simrandom_2d and colour by selected
+qplot(data = simrandom_2d_grouped, x = x, y = y, colour = group)
+# note there are no clusters in these data
+```
 
+This example showed how data could visually appear to be "clustered" even 
+if there are no real clusters.
+
+What if the data really do arise from separate groups?
+
+```{r plot-random-groups}
 ## create random data representing mean of each of the three groups
-xsel <- matrix(rnorm(6, mean = 0, sd = 1), 3, 2)
-#Note how increasing the value of sd makes clusters clearer
+simgroupmeans <- matrix(rnorm(6, mean = 0, sd = 1), 3, 2)
 
-## add values of x to xsel for each of three defined groups
-xgroups <- x + xsel[selected, ]
-## plot xgroups and colour by each of the three groups
-plot(xgroups, col = selected, pch = 19)
+## add simulated group means to the random data for each group
+## NOTE: I did this with dplyr::mutate which seems overly complicated
+## or it would be possible to make simgroupmeans a data frame too.
+simrandom_2d_grouped_really <- 
+    dplyr::mutate(simrandom_2d_grouped,
+    x = x + simgroupmeans[group, 1],
+    y = y + simgroupmeans[group, 2])
+    
+## plot separated data and colour by each of the three groups
+qplot(data = simrandom_2d_grouped_really, x = x, y = y, colour = group)
 ```
 
 > ## Challenge 4
@@ -321,7 +368,8 @@ plot(xgroups, col = selected, pch = 19)
 > > ## Solution
 > > 
 > > When `sd = 1` in above example, clusters in randomly generated data are not
-> > obvious. Increasing the value of `sd` makes clusters clearer. Sometimes it
+> > obvious. Increasing the value of `sd` makes clusters clearer because they
+> > are likely to move further away from each other. Sometimes it
 > > is possible to convince ourselves that there are clusters in the data just
 > > by colouring the data points by their respective groups! Formal cluster
 > > analysis and validation is necessary to determine whether visual clusters
