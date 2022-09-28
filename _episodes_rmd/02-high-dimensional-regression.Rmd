@@ -84,7 +84,9 @@ methyl_mat <- assay(methylation)
 The distribution of these M-values looks like this:
 
 ```{r histx, fig.cap="Methylation levels are generally bimodally distributed.", fig.alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features."}
-hist(methyl_mat, breaks = "FD", xlab = "M-value")
+library("ggplot2")
+theme_set(theme_bw())
+qplot(x = methyl_mat, binwidth = 0.2, geom= "histogram")
 ```
 
 You can see that there are two peaks in this distribution, corresponding to
@@ -249,43 +251,42 @@ where there is a clear assocation, and we probably "don't need" statistics:
 ```{r example1, echo=FALSE, fig.cap="A scatter plot of age and a feature of interest.", fig.alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. A strong linear relationship with a positive slope exists between the two.", fig.width=6, fig.height=6}
 library("ggplot2")
 theme_set(theme_bw())
-set.seed(42)
-n <- 10
-sim_feat <- c(rnorm(n, 0), rnorm(n, 3))
-sim_phenotype <- (2 * x) + rnorm(n)
-qplot(x = sim_phenotype, y = sim_feat) +
-    labs(x = "Age", y = "DNA methylation")
+set.seed(42) # set seed for reproducible "random" points
+n <- 10 # number of points per group
+sim_feat <- c(rnorm(n, 0), rnorm(n, 3)) # simulate features
+sim_phenotype <- (2 * sim_feat) + rnorm(n) # simulate continuous phenotype
+
+# Plot feature against phenotype
+qplot(x = sim_phenotype, y = sim_feat,
+      xlab = "Age", ylab = "DNA methylation")
 ```
 
 or equivalently for a discrete covariate:
 
 ```{r example2, echo=FALSE, fig.cap="A scatter plot of a grouping and a feature of interest.", fig.alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. The two groups clearly differ with respect to DNA methylation.", fig.width=6, fig.height=6}
-library("ggplot2")
 set.seed(42)
 n <- 10
-sim_feat2 <- c(rnorm(n, 0), rnorm(n, 5))
+# simulate group and features with distinct mean per group
 sim_group <- c(rep("A", n), rep("B", n))
-qplot(x = sim_group, y = sim_feat2, colour = sim_group) +
-    # geom_violin() +
-    # geom_boxplot(width = 0.25) +
-    geom_jitter(height = 0, width = 0.2) +
-    labs(y = "DNA methylation")
+sim_feat2 <- c(rnorm(n, 0), rnorm(n, 5))
+
+# Plot feature against group
+qplot(x = sim_group, y = sim_feat2, colour = sim_group,
+      xlab = "Age", ylab = "DNA methylation",
+      geom = "jitter")
 ```
 
 However, often due to small differences and small sample sizes,
 the problem is a bit more difficult:
+
 ```{r example3, echo=FALSE, fig.cap="A scatter plot of a grouping and a feature of interest.", fig.alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. The two groups seem to differ with respect to DNA methylation, but the relationship is weak.", fig.width=6, fig.height=6}
-library("ggplot2")
 set.seed(66)
 n <- 5
-sim_feat3 <- c(rnorm(n, 0), rnorm(n, 1))
 sim_group3 <- c(rep("A", n), rep("B", n))
-ggplot() +
-    aes(x = sim_group3, y = sim_feat3, colour = sim_group3) +
-    # geom_violin() +
-    # geom_boxplot(width = 0.25) +
-    geom_jitter(height = 0, width = 0.2) +
-    labs(y = "DNA methylation")
+sim_feat3 <- c(rnorm(n, 0), rnorm(n, 1))
+qplot(x = sim_group3, y = sim_feat3, colour = sim_group3,
+      xlab = "Age", ylab = "DNA methylation",
+      geom = "jitter")
 ```
 
 And, of course, we often have an awful lot of features and need
@@ -426,10 +427,9 @@ coefs <- lapply(
 coef_df <- do.call(rbind, coefs)
 ## add a "feature name" column
 coef_df$feature <- rownames(methyl_mat)
-# plot(coef_df$estimate, -log10(coef_df$p.value),
-#     xlab = "Effect size", ylab = bquote(-log[10](p)),
-#     pch = 19
-# )
+# qplot(data = coef_df,
+#       x = estimate, y = -log10(p.value),
+#       xlab = "Effect size", ylab = "-log10(p)")
 ```
 
 
@@ -659,10 +659,9 @@ resemble an eruption.
 
 
 ```{r limmavolc1, fig.cap="Plotting p-values against effect sizes using limma; the results are similar to a standard linear model.", fig.alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma."}
-plot(toptab_age$logFC, -log10(toptab_age$P.Value),
-    xlab = "Effect size", ylab = bquote(-log[10](p-value)),
-    pch = 19
-)
+qplot(data = toptab_age,
+      x = logFC, y = -log10(P.Value),
+      xlab = "Effect size", ylab = "-log10(p)")
 ```
 
 In this figure, every point represents a feature of interest. The x-axis
@@ -711,15 +710,20 @@ or information sharing that `limma` performs has on our results. To do this,
 let's compare the effect sizes estimates and p-values from the two approaches.
 
 ```{r plot-limma-lm-effect, echo = FALSE}
-plot(
-    coef_df[["estimate"]],
-    toptab_age[coef_df[["feature"]], "logFC"],
-    pch = 16,
-    main = "Comparison of effect sizes from limma and lm",
-    xlab = "Effect size from lm",
-    ylab = "Effect size from limma"
-)
-abline(0:1, lty = "dashed")
+coefs_lm_vs_limma <-
+  data.frame(feature = coef_df$feature,
+             lm_estimate = coef_df$estimate,
+             lm_p.value = coef_df$p.value,
+             limma_estimate = toptab_age[coef_df$feature, "logFC"],
+             limma_p.value = toptab_age[coef_df$feature, "P.Value"])
+             
+qplot(data = coefs_lm_vs_limma,
+  x = lm_estimate, y = limma_estimate,
+  main = "Comparison of effect sizes from limma and lm",
+  xlab = "Effect size from lm",
+  ylab = "Effect size from limma"
+) + 
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed")
 ```
 
 These are exactly identical! This is because `limma` isn't performing any
@@ -731,16 +735,14 @@ between features about sample-to-sample variability.
 In contrast, let's look at the p-values from `limma` and `lm`:
 
 ```{r plot-limma-lm-pval, echo = FALSE}
-plot(
-    coef_df[["p.value"]],
-    toptab_age[coef_df[["feature"]], "P.Value"],
-    pch = 16,
-    main = "Comparison of p-values from limma and lm",
-    xlab = "p-value from lm",
-    ylab = "p-value from limma",
-    log = "xy"
-)
-abline(0:1, lty = "dashed")
+# Note: this is on raw p.value scale, not log-log
+qplot(data = coefs_lm_vs_limma,
+      x = lm_p.value, y = limma_p.value,
+      main = "Comparison of p-values from limma and lm",
+      xlab = "p-value from lm",
+      ylab = "p-value from limma"
+) + 
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed")
 ```
 
 You can see that for the vast majority of features, the results are broadly
@@ -785,10 +787,8 @@ separately.
 > >    fit_smoke <- lmFit(methyl_mat, design = design_smoke)
 > >    fit_smoke <- eBayes(fit_smoke)
 > >    toptab_smoke <- topTable(fit_smoke, coef = 2, number = nrow(fit_smoke))
-> >    plot(toptab_smoke$logFC, -log10(toptab_smoke$P.Value),
-> >        xlab = "Effect size", ylab = bquote(-log[10](p)),
-> >        pch = 19
-> >    )
+> >    qplot(data = toptab_smoke, x = logFC, y = -log10(P.Value),
+> >        xlab = "Effect size", ylab = "-log10(p)")
 > >    ```
 > > 2. Being a bit more conservative when identifying features can help to avoid
 > >    false discoveries. Furthermore, when rejecting the null hypothesis is
@@ -896,11 +896,9 @@ fit_age_perm <- lmFit(methyl_mat, design = design_age_perm)
 fit_age_perm <- eBayes(fit_age_perm)
 toptab_age_perm <- topTable(fit_age_perm, coef = 2, number = nrow(fit_age_perm))
 
-plot(toptab_age_perm$logFC, -log10(toptab_age_perm$P.Value),
-    xlab = "Effect size", ylab = bquote(-log[10](p)),
-    pch = 19
-)
-abline(h = -log10(0.05), lty = "dashed", col = "red")
+qplot(data = toptab_age_perm, x = logFC, y = -log10(P.Value),
+      xlab = "Effect size", ylab = "-log10(p)") +
+      geom_hline(yintercept = -log10(0.05), colour = "red", linetype = "dashed")
 ```
 
 Since we've generated a random sequence of ages, we have no reason to suspect
@@ -995,15 +993,16 @@ with a lot of features!
 ```{r p-fwer, fig.cap="Bonferroni correction often produces very large p-values, especially with low sample sizes.", fig.alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
 p_raw <- toptab_age$P.Value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
-library("ggplot2")
-ggplot() +
-    aes(p_raw, p_fwer) +
-    geom_point() +
-    scale_x_log10() + scale_y_log10() +
+
+base_bonferroni_plot <- 
+    qplot(x = p_raw, y = p_fwer,
+          xlab = "Raw p-value", ylab = "Bonferroni p-value")  +
+    scale_x_log10() + scale_y_log10()
+
+base_bonferroni_plot +
     geom_abline(slope = 1, linetype = "dashed") +
     geom_hline(yintercept = 0.05, linetype = "dashed", col = "red") +
-    geom_vline(xintercept = 0.05, linetype = "dashed", col = "red") +
-    labs(x = "Raw p-value", y = "Bonferroni p-value")
+    geom_vline(xintercept = 0.05, linetype = "dashed", col = "red")
 ```
 
 You can see that the p-values are exactly one for the vast majority of tests
@@ -1066,24 +1065,20 @@ the experiment over and over.
 > >    non-corrected values and to Bonferroni:
 > >    ```{r p-fdr, fig.cap="Benjamini-Hochberg correction is less conservative than Bonferroni", fig.alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
 > >    p_fdr <- p.adjust(p_raw, method = "BH")
-> >    ggplot() +
-> >        aes(p_raw, p_fdr) +
-> >        geom_point() +
+> >    qplot(x = p_raw, y = p_fdr,
+> >        xlab = "Raw p-value", ylab = "Benjamini-Hochberg p-value")  +
 > >        scale_x_log10() + scale_y_log10() +
 > >        geom_abline(slope = 1, linetype = "dashed") +
 > >        geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
-> >        geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
-> >        labs(x = "Raw p-value", y = "Benjamini-Hochberg p-value")
+> >        geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") 
 > >    ```
 > >    ```{r plot-fdr-fwer, fig.alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
-> >    ggplot() +
-> >        aes(p_fdr, p_fwer) +
-> >        geom_point() +
+> >    qplot(x = p_fdr, y = p_fwer,
+> >        xlab = "Benjamini-Hochberg p-value", ylab = "Bonferroni p-value")  +
 > >        scale_x_log10() + scale_y_log10() +
 > >        geom_abline(slope = 1, linetype = "dashed") +
 > >        geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
-> >        geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
-> >        labs(x = "Benjamini-Hochberg p-value", y = "Bonferroni p-value")
+> >        geom_vline(xintercept = 0.05, linetype = "dashed", color = "red")
 > >    ```
 > {: .solution}
 {: .challenge}
