@@ -1,5 +1,6 @@
 ---
 title: "K-means"
+source: Rmd
 teaching: 45
 exercises: 15
 questions:

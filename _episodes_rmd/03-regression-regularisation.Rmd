@@ -1,5 +1,6 @@
 ---
 title: "Regularised regression"
+source: Rmd
 teaching: 60
 exercises: 20
 questions:
