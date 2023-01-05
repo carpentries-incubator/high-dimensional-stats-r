@@ -353,7 +353,7 @@ Let's look at the relative importance of each component using `summary`.
 summary(pca.pros)
 ```
 
-```{R, echo = FALSE}
+```{r, echo = FALSE}
 # Get proportions of variance explained by each PC (rounded to 2 DP)
 prop.var <- round(summary(pca.pros)$importance["Proportion of Variance", ], 2) *
   100
