@@ -1,6 +1,7 @@
 ---
 title: "Principal component analysis"
 author: "GS Robertson"
+source: Rmd
 teaching: 90
 exercises: 30
 questions:
