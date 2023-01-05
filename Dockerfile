@@ -10,7 +10,7 @@ COPY . /home/build/package
 
 RUN echo 'options(Ncpus=parallel::detectCores())' >> .Rprofile
 RUN /home/build/package/bin/install_r_deps.sh
-RUN Rscript -e "BiocManager::install(c('remotes', 'rprojroot', 'renv', 'desc', 'rmarkdown', 'knitr'))"
+RUN Rscript -e "BiocManager::install('isglobal-brge/methylclock')"
 
 RUN git clone https://github.com/rbenv/ruby-build.git && \
   PREFIX=/usr/local ./ruby-build/install.sh && \
