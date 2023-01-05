@@ -135,21 +135,20 @@ We may expect a similar number of factors to exist in the data.
 Let's subset the data to just include the log-transformed clinical variables
 for the purposes of this episode:
 
-```{r lasso2}
-library(lasso2)
-data(Prostate)
+```{r prostate}
+prostate <- readRDS(here("data/prostate.rds"))
 ```
 
 ```{r view, eval=FALSE}
-View(Prostate)
+View(prostate)
 ```
 
 ```{r dims}
-nrow(Prostate)
-head(Prostate)
+nrow(prostate)
+head(prostate)
 
 #select five log-transformed clinical variables for further analysis
-pros2 <- Prostate[, c(1, 2, 4, 6, 9)]
+pros2 <- prostate[, c(1, 2, 4, 6, 9)]
 head(pros2)
 ```
 
