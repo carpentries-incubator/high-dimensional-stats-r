@@ -4,7 +4,7 @@ on:
     branches:
       # - gh-pages
       - main
-  # pull_request: []
+  pull_request: []
 jobs:
   build-website:
     if: ${{ !endsWith(github.repository, '/styles') }}
@@ -28,7 +28,7 @@ jobs:
 
       - name: Checkout github pages
         if: ${{ github.event_name == 'push' && steps.check-rmd.outputs.count != 0 && github.ref != 'refs/heads/gh-pages'}}
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
         with:
           ref: gh-pages
           path: gh-pages
