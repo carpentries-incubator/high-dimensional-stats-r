@@ -28,14 +28,14 @@ jobs:
         run: make site
 
       - name: Checkout github pages
-        if: ${{ github.event_name == 'push' && steps.check-rmd.outputs.count != 0 && github.ref != 'refs/heads/gh-pages'}}
+        if: ${{ github.event_name == 'push' && steps.check-rmd.outputs.count != 0 && github.ref == 'refs/heads/main' && github.ref != 'refs/heads/gh-pages'}}
         uses: actions/checkout@master
         with:
           ref: gh-pages
           path: gh-pages
 
       - name: Commit and Push
-        if: ${{ github.event_name == 'push' && steps.check-rmd.outputs.count != 0 && github.ref != 'refs/heads/gh-pages'}}
+        if: ${{ github.event_name == 'push' && steps.check-rmd.outputs.count != 0 && github.ref == 'refs/heads/main' && github.ref != 'refs/heads/gh-pages'}}
         run: |
           # clean up gh-pages (source: https://github.com/zkamvar/styles/blob/ed29df30623a68ae87e05811a01283f0452fae4e/.github/workflows/website.yml)
           cd gh-pages
