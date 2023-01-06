@@ -1,6 +1,7 @@
 ---
 title: "Introduction to high-dimensional data"
 author: "GS Robertson"
+source: Rmd
 teaching: 60
 exercises: 20
 questions:
@@ -130,8 +131,13 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `Prostate` dataset from the **`lasso2`** package.
-> names. Although technically not a high-dimensional dataset, the `Prostate` data
+> Load the `prostate` dataset as follows:
+
+> ```{r prostate}
+> prostate <- readRDS(here("data/prostate.rds"))
+> ```
+> 
+> Although technically not a high-dimensional dataset, the `prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
@@ -141,27 +147,23 @@ of the challenges we are facing when working with high-dimensional data.
 > 
 > > ## Solution
 > > 
-> > ```{r lasso2}
-> > library("lasso2")  #load lasso2 package
-> > data(Prostate)   #load the Prostate dataset
-> > ```
 > > 
 > > ```{r dim-prostate, eval = FALSE}
-> > dim(Prostate)   #print the number of rows and columns
+> > dim(prostate)   #print the number of rows and columns
 > > ```
 > >
 > > ```{r head-prostate, eval = FALSE}
-> > names(Prostate) # examine the variable names
-> > head(Prostate)   #print the first 6 rows
+> > names(prostate) # examine the variable names
+> > head(prostate)   #print the first 6 rows
 > > ```
 > > 
 > > ```{r pairs-prostate}
-> > names(Prostate)  #examine column names
+> > names(prostate)  #examine column names
 > >
-> > pairs(Prostate)  #plot each pair of variables against each other
+> > pairs(prostate)  #plot each pair of variables against each other
 > > ```
 > > The `pairs` function plots relationships between each of the variables in
-> > the `Prostate` dataset. This is possible for datasets with smaller numbers
+> > the `prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
@@ -201,23 +203,23 @@ in these datasets makes high correlations between variables more likely.
 > ## Challenge 3
 > 
 > Use the `cor()` function to examine correlations between all variables in the
-> Prostate dataset. Are some variables highly correlated (i.e. correlation
+> prostate dataset. Are some variables highly correlated (i.e. correlation
 > coefficients > 0.6)? Fit a multiple linear regression model predicting patient age
-> using all variables in the Prostate dataset.
+> using all variables in the prostate dataset.
 > 
 > > ## Solution
 > > 
 > > ```{r plot-lm}
-> > ## create a correlation matrix of all variables in the Prostate dataset
-> > cor(Prostate)
+> > ## create a correlation matrix of all variables in the prostate dataset
+> > cor(prostate)
 > > 
 > > ## correlation matrix for variables describing cancer/clinical variables
-> > cor(Prostate[, c(1, 2, 4, 6, 9)])
+> > cor(prostate[, c(1, 2, 4, 6, 9)])
 > > 
 > > ## use linear regression to predict patient age from cancer progression variables
 > > model <- lm(
 > >     age ~ lcavol + lweight + lbph + lcp + lpsa + svi + gleason + pgg45,
-> >     data = Prostate
+> >     data = prostate
 > > )
 > > summary(model)
 > >

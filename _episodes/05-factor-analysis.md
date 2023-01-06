@@ -3,6 +3,7 @@
 # Instead, please edit 05-factor-analysis.md in _episodes_rmd/
 title: "Factor analysis"
 author: "GS Robertson"
+source: Rmd
 teaching: 25
 exercises: 10
 questions:
@@ -60,7 +61,7 @@ to be represented by which latent factor(s). The fit of the CFA is then
 assessed.
 
 
-<img src="../fig/table_for_fa.png" title="plot of chunk table" alt="plot of chunk table" style="display: block; margin: auto;" />
+<img src="../fig/table_for_fa.png" alt="plot of chunk table" style="display: block; margin: auto;" />
 
 Another example of how FA can be used is creating new factors based on a
 researcher's knowledge of how genes group into clusters.
@@ -132,20 +133,19 @@ for the purposes of this episode:
 
 
 ~~~
-library(lasso2)
-data(Prostate)
+prostate <- readRDS(here("data/prostate.rds"))
 ~~~
 {: .language-r}
 
 
 ~~~
-View(Prostate)
+View(prostate)
 ~~~
 {: .language-r}
 
 
 ~~~
-nrow(Prostate)
+nrow(prostate)
 ~~~
 {: .language-r}
 
@@ -159,20 +159,20 @@ nrow(Prostate)
 
 
 ~~~
-head(Prostate)
+head(prostate)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-      lcavol  lweight age      lbph svi       lcp gleason pgg45       lpsa
-1 -0.5798185 2.769459  50 -1.386294   0 -1.386294       6     0 -0.4307829
-2 -0.9942523 3.319626  58 -1.386294   0 -1.386294       6     0 -0.1625189
-3 -0.5108256 2.691243  74 -1.386294   0 -1.386294       7    20 -0.1625189
-4 -1.2039728 3.282789  58 -1.386294   0 -1.386294       6     0 -0.1625189
-5  0.7514161 3.432373  62 -1.386294   0 -1.386294       6     0  0.3715636
-6 -1.0498221 3.228826  50 -1.386294   0 -1.386294       6     0  0.7654678
+  X     lcavol  lweight age      lbph svi       lcp gleason pgg45       lpsa
+1 1 -0.5798185 2.769459  50 -1.386294   0 -1.386294       6     0 -0.4307829
+2 2 -0.9942523 3.319626  58 -1.386294   0 -1.386294       6     0 -0.1625189
+3 3 -0.5108256 2.691243  74 -1.386294   0 -1.386294       7    20 -0.1625189
+4 4 -1.2039728 3.282789  58 -1.386294   0 -1.386294       6     0 -0.1625189
+5 5  0.7514161 3.432373  62 -1.386294   0 -1.386294       6     0  0.3715636
+6 6 -1.0498221 3.228826  50 -1.386294   0 -1.386294       6     0  0.7654678
 ~~~
 {: .output}
 
@@ -180,7 +180,7 @@ head(Prostate)
 
 ~~~
 #select five log-transformed clinical variables for further analysis
-pros2 <- Prostate[, c(1, 2, 4, 6, 9)]
+pros2 <- prostate[, c(1, 2, 4, 6, 9)]
 head(pros2)
 ~~~
 {: .language-r}
@@ -188,13 +188,13 @@ head(pros2)
 
 
 ~~~
-      lcavol  lweight      lbph       lcp       lpsa
-1 -0.5798185 2.769459 -1.386294 -1.386294 -0.4307829
-2 -0.9942523 3.319626 -1.386294 -1.386294 -0.1625189
-3 -0.5108256 2.691243 -1.386294 -1.386294 -0.1625189
-4 -1.2039728 3.282789 -1.386294 -1.386294 -0.1625189
-5  0.7514161 3.432373 -1.386294 -1.386294  0.3715636
-6 -1.0498221 3.228826 -1.386294 -1.386294  0.7654678
+  X     lcavol age svi pgg45
+1 1 -0.5798185  50   0     0
+2 2 -0.9942523  58   0     0
+3 3 -0.5108256  74   0    20
+4 4 -1.2039728  58   0     0
+5 5  0.7514161  62   0     0
+6 6 -1.0498221  50   0     0
 ~~~
 {: .output}
 
@@ -232,24 +232,24 @@ available via the `rotation` argument (default is 'none').
 > > factanal(x = pros2, factors = 1)
 > > 
 > > Uniquenesses:
-> >  lcavol lweight    lbph     lcp    lpsa 
-> >   0.149   0.936   0.994   0.485   0.362 
+> >      X lcavol    age    svi  pgg45 
+> >  0.279  0.321  0.933  0.548  0.689 
 > > 
 > > Loadings:
-> >         Factor1
-> > lcavol  0.923  
-> > lweight 0.253  
-> > lbph           
-> > lcp     0.718  
-> > lpsa    0.799  
+> >        Factor1
+> > X      0.849  
+> > lcavol 0.824  
+> > age    0.258  
+> > svi    0.673  
+> > pgg45  0.558  
 > > 
 > >                Factor1
-> > SS loadings      2.074
-> > Proportion Var   0.415
+> > SS loadings      2.229
+> > Proportion Var   0.446
 > > 
 > > Test of the hypothesis that 1 factor is sufficient.
-> > The chi square statistic is 29.81 on 5 degrees of freedom.
-> > The p-value is 1.61e-05 
+> > The chi square statistic is 6.2 on 5 degrees of freedom.
+> > The p-value is 0.287 
 > > ~~~
 > > {: .output}
 > > 
@@ -274,25 +274,25 @@ available via the `rotation` argument (default is 'none').
 > > factanal(x = pros2, factors = 2)
 > > 
 > > Uniquenesses:
-> >  lcavol lweight    lbph     lcp    lpsa 
-> >   0.121   0.422   0.656   0.478   0.317 
+> >      X lcavol    age    svi  pgg45 
+> >  0.256  0.319  0.912  0.554  0.005 
 > > 
 > > Loadings:
-> >         Factor1 Factor2
-> > lcavol   0.936         
-> > lweight  0.165   0.742 
-> > lbph             0.586 
-> > lcp      0.722         
-> > lpsa     0.768   0.307 
+> >        Factor1 Factor2
+> > X      0.825   0.254  
+> > lcavol 0.788   0.247  
+> > age    0.171   0.242  
+> > svi    0.584   0.324  
+> > pgg45  0.248   0.966  
 > > 
 > >                Factor1 Factor2
-> > SS loadings      2.015   0.992
-> > Proportion Var   0.403   0.198
-> > Cumulative Var   0.403   0.601
+> > SS loadings      1.732   1.222
+> > Proportion Var   0.346   0.244
+> > Cumulative Var   0.346   0.591
 > > 
 > > Test of the hypothesis that 2 factors are sufficient.
-> > The chi square statistic is 0.02 on 1 degree of freedom.
-> > The p-value is 0.878 
+> > The chi square statistic is 0.99 on 1 degree of freedom.
+> > The p-value is 0.32 
 > > ~~~
 > > {: .output}
 > > 
@@ -368,8 +368,8 @@ apply(pros_fa$loadings^2, 1, sum)  #communality
 
 
 ~~~
-   lcavol   lweight      lbph       lcp      lpsa 
-0.8793780 0.5782317 0.3438669 0.5223639 0.6832788 
+         X     lcavol        age        svi      pgg45 
+0.74437666 0.68122690 0.08759426 0.44575518 0.99500020 
 ~~~
 {: .output}
 
@@ -383,8 +383,8 @@ apply(pros_fa$loadings^2, 1, sum)  #communality
 
 
 ~~~
-   lcavol   lweight      lbph       lcp      lpsa 
-0.1206220 0.4217683 0.6561331 0.4776361 0.3167212 
+        X    lcavol       age       svi     pgg45 
+0.2556233 0.3187731 0.9124057 0.5542448 0.0049998 
 ~~~
 {: .output}
 
@@ -420,7 +420,7 @@ text(
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-biplot-1.png" title="plot of chunk biplot" alt="plot of chunk biplot" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-06-biplot-1.png" alt="plot of chunk biplot" width="432" style="display: block; margin: auto;" />
 
 
 > ## Challenge 2 (3 mins)
