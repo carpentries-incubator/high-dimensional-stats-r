@@ -18,7 +18,7 @@ jobs:
         shell: bash
     steps:
       - name: Checkout the lesson
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
