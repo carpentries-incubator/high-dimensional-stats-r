@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: csexton/action-debugger@master
+      - uses: mxschmitt/action-tmate@v3
       - name: Render the markdown and confirm that the site can be built
         run: make site
 
