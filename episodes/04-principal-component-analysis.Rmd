@@ -259,11 +259,11 @@ out using continuous variables only.
 First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
 
-```{r prostate}
+```{r prostate-load}
 prostate <- readRDS(here("data/prostate.rds"))
 ```
 
-```{r prostate}
+```{r prostate-head}
 head(prostate)
 ```
 
