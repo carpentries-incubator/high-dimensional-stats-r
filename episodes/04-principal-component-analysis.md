@@ -3,6 +3,7 @@
 # Instead, please edit 04-principal-component-analysis.md in _episodes_rmd/
 title: "Principal component analysis"
 author: "GS Robertson"
+source: Rmd
 teaching: 90
 exercises: 30
 questions:
@@ -201,7 +202,7 @@ components as there are variables in your dataset, but as we'll see, some are
 more useful at explaining your data than others. By definition, the first
 principal component explains more variation than other principal components.
 
-<img src="../fig/bio_index_vs_percentage_fallow.png" title="Alt" alt="Alt" style="display: block; margin: auto;" />
+<img src="../fig/bio_index_vs_percentage_fallow.png" alt="Alt" style="display: block; margin: auto;" />
 
 The animation below illustrates how principal components are calculated from
 data. You can imagine that the black line is a rod and each red dashed line is
@@ -213,13 +214,13 @@ equilibrium. We then use the length of the springs from the rod as the first
 principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
-<img src="../fig/pendulum.gif" title="Alt" alt="Alt" style="display: block; margin: auto;" />
+<img src="../fig/pendulum.gif" alt="Alt" style="display: block; margin: auto;" />
 
 # How do we perform a PCA?
 
 ## A prostate cancer dataset
 
-The `Prostate` dataset is freely available online and represents data from 97
+The `prostate` dataset represents data from 97
 men who have prostate cancer. The data come from a study which examined the
 correlation between the level of prostate specific antigen and a number of
 clinical measures in men who were about to receive a radical prostatectomy.
@@ -244,32 +245,31 @@ variables in the prostate dataset, so that we can create fewer variables
 representing clinical markers of cancer progression. Standard PCAs are carried
 out using continuous variables only.
 
-First, we will examine the `Prostate` dataset which can be downloaded as part
-of the **`lasso2`** package:
+First, we will examine the `prostate` dataset (originally part of the
+**`lasso2`** package):
 
 
 ~~~
-library("lasso2")
-data("Prostate")
-~~~
-{: .language-r}
-
-
-~~~
-head(Prostate)
+prostate <- readRDS(here("data/prostate.rds"))
 ~~~
 {: .language-r}
 
 
+~~~
+head(prostate)
+~~~
+{: .language-r}
+
+
 
 ~~~
-      lcavol  lweight age      lbph svi       lcp gleason pgg45       lpsa
-1 -0.5798185 2.769459  50 -1.386294   0 -1.386294       6     0 -0.4307829
-2 -0.9942523 3.319626  58 -1.386294   0 -1.386294       6     0 -0.1625189
-3 -0.5108256 2.691243  74 -1.386294   0 -1.386294       7    20 -0.1625189
-4 -1.2039728 3.282789  58 -1.386294   0 -1.386294       6     0 -0.1625189
-5  0.7514161 3.432373  62 -1.386294   0 -1.386294       6     0  0.3715636
-6 -1.0498221 3.228826  50 -1.386294   0 -1.386294       6     0  0.7654678
+  X     lcavol  lweight age      lbph svi       lcp gleason pgg45       lpsa
+1 1 -0.5798185 2.769459  50 -1.386294   0 -1.386294       6     0 -0.4307829
+2 2 -0.9942523 3.319626  58 -1.386294   0 -1.386294       6     0 -0.1625189
+3 3 -0.5108256 2.691243  74 -1.386294   0 -1.386294       7    20 -0.1625189
+4 4 -1.2039728 3.282789  58 -1.386294   0 -1.386294       6     0 -0.1625189
+5 5  0.7514161 3.432373  62 -1.386294   0 -1.386294       6     0  0.3715636
+6 6 -1.0498221 3.228826  50 -1.386294   0 -1.386294       6     0  0.7654678
 ~~~
 {: .output}
 
@@ -280,7 +280,7 @@ want to use in the PCA.
 
 
 ~~~
-pros2 <- Prostate[, c("lcavol", "lweight", "lbph", "lcp", "lpsa")]
+pros2 <- prostate[, c("lcavol", "lweight", "lbph", "lcp", "lpsa")]
 head(pros2)
 ~~~
 {: .language-r}
@@ -325,7 +325,7 @@ hist(pros2$lbph, breaks = "FD")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-var-hist-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-var-hist-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
 from this output that we need to scale each of these variables before including
@@ -390,11 +390,11 @@ Standard deviations (1, .., p=5):
 
 Rotation (n x k) = (5 x 5):
               PC1         PC2         PC3         PC4         PC5
-lcavol  0.5616465 -0.23664270  0.01486043 -0.22708502  0.75945046
-lweight 0.2985223  0.60174151 -0.66320198  0.32126853  0.07577123
-lbph    0.1681278  0.69638466  0.69313753 -0.04517286  0.06558369
-lcp     0.4962203 -0.31092357  0.26309227  0.72394666 -0.25253840
-lpsa    0.5665123 -0.01680231 -0.10141557 -0.56487128 -0.59111493
+lcavol  0.5616465 -0.23664270  0.01486043  0.22708502 -0.75945046
+lweight 0.2985223  0.60174151 -0.66320198 -0.32126853 -0.07577123
+lbph    0.1681278  0.69638466  0.69313753  0.04517286 -0.06558369
+lcp     0.4962203 -0.31092357  0.26309227 -0.72394666  0.25253840
+lpsa    0.5665123 -0.01680231 -0.10141557  0.56487128  0.59111493
 ~~~
 {: .output}
 
@@ -450,7 +450,7 @@ plot(varDF)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-vardf-plot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-vardf-plot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The screeplot shows that the first principal component explains most of the
 variance in the data (>50%) and each subsequent principal component explains
@@ -483,16 +483,16 @@ Standard deviations (1, .., p=5):
 
 Rotation (n x k) = (5 x 5):
               PC1         PC2         PC3         PC4         PC5
-lcavol  0.5616465 -0.23664270  0.01486043 -0.22708502  0.75945046
-lweight 0.2985223  0.60174151 -0.66320198  0.32126853  0.07577123
-lbph    0.1681278  0.69638466  0.69313753 -0.04517286  0.06558369
-lcp     0.4962203 -0.31092357  0.26309227  0.72394666 -0.25253840
-lpsa    0.5665123 -0.01680231 -0.10141557 -0.56487128 -0.59111493
+lcavol  0.5616465 -0.23664270  0.01486043  0.22708502 -0.75945046
+lweight 0.2985223  0.60174151 -0.66320198 -0.32126853 -0.07577123
+lbph    0.1681278  0.69638466  0.69313753  0.04517286 -0.06558369
+lcp     0.4962203 -0.31092357  0.26309227 -0.72394666  0.25253840
+lpsa    0.5665123 -0.01680231 -0.10141557  0.56487128  0.59111493
 ~~~
 {: .output}
 
 For each row in the original dataset PCA returns a principal component score
-for each of the principal components (PC1 to PC5 in the `Prostate` data example).
+for each of the principal components (PC1 to PC5 in the `prostate` data example).
 We can see how the principal component score ($Z_{i1}$ for rows $i$ to $n$) is
 calculated for the first principal component using the following equation from
 Figure 1:
@@ -503,7 +503,7 @@ $$
 
 $a_1$ and $a_2$ represent principal component loadings in this equation.
 A loading can be thought of as the 'weight' each variable has on the calculation
-of the principal component. Note that in our example using the `Prostate`
+of the principal component. Note that in our example using the `prostate`
 dataset `lcavol` and `lpsa` are the variables that contribute most to the first
 principal component.
 
@@ -522,7 +522,7 @@ biplot(pca.pros, xlim = c(-0.3, 0.3))
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-stats-biplot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-stats-biplot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 This biplot shows the position of each patient on a 2-dimensional plot where
 loadings can be observed via the red arrows associated with each of
@@ -765,7 +765,7 @@ represents.
 > >                    PC86        PC87          PC88         PC89         PC90
 > > 215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
 > >                   PC91
-> > 215281_x_at 0.01181236
+> > 215281_x_at -0.0196087
 > > ~~~
 > > {: .output}
 > > 
@@ -827,8 +827,8 @@ represents.
 > > 211122_s_at 0.004995447 -0.008404118 0.00442875 -0.001027912 0.006104406
 > >                    PC82        PC83         PC84       PC85       PC86
 > > 211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
-> >                     PC87        PC88        PC89        PC90       PC91
-> > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.01215707
+> >                     PC87        PC88        PC89        PC90        PC91
+> > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 -0.02709543
 > > ~~~
 > > {: .output}
 > > The function `pca()` is used to perform PCA, and uses as inputs a matrix
@@ -864,7 +864,7 @@ represents.
 
 ## Choosing how many components are important to explain the variance in the data
 
-As in the example using the `Prostate` dataset we can use a screeplot to
+As in the example using the `prostate` dataset we can use a screeplot to
 compare the proportion of variance in the data explained by each principal
 component. This allows us to understand how much information in the microarray
 dataset is lost by projecting the observations onto the first few principal
@@ -893,7 +893,7 @@ proportion of variance explained.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-scree-ex-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-scree-ex-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > Note that first principal component (PC1) explains more variation than
 > > other principal components (which is always the case in PCA). The screeplot
 > > shows that the first principal component only explains ~33% of the total
@@ -937,7 +937,7 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-biplot-ex-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-biplot-ex-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
 > > axis according to expressions of different genes while no separation can be
@@ -959,12 +959,12 @@ biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
 
 
 ~~~
-Warning: ggrepel: 6 unlabeled data points (too many overlaps). Consider
+Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-05-pca-biplot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-pca-biplot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 Sizes of labels, points and axes can be changed using arguments in `biplot`
 (see `help("biplot")`). We can see from the biplot that there appear to be two
@@ -980,12 +980,12 @@ plotloadings(pc, labSize = 3)
 
 
 ~~~
-Warning: ggrepel: 34 unlabeled data points (too many overlaps). Consider
+Warning: ggrepel: 39 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps
 ~~~
 {: .warning}
 
-<img src="../fig/rmd-05-pca-loadings-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-pca-loadings-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 Plotting the loadings shows the magnitude and direction of loadings for probes
 detecting genes on each principal component.
@@ -1011,12 +1011,12 @@ detecting genes on each principal component.
 > > 
 > > 
 > > ~~~
-> > Warning: ggrepel: 33 unlabeled data points (too many overlaps). Consider
+> > Warning: ggrepel: 35 unlabeled data points (too many overlaps). Consider
 > > increasing max.overlaps
 > > ~~~
 > > {: .warning}
 > > 
-> > <img src="../fig/rmd-05-pca-biplot-ex2-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-05-pca-biplot-ex2-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 > > It appears that one cluster has more ER+ samples than the other group.
 > {: .solution}
 {: .challenge}
@@ -1031,7 +1031,7 @@ pairsplot(pc)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-pairsplot-1.png" title="Alt" alt="Alt" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-05-pairsplot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The plots show two apparent clusters involving the first principal component
 only. No other clusters are found involving other principal components.
