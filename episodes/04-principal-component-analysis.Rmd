@@ -231,7 +231,7 @@ knitr::include_graphics("../fig/pendulum.gif")
 
 ## A prostate cancer dataset
 
-The `Prostate` dataset is freely available online and represents data from 97
+The `prostate` dataset represents data from 97
 men who have prostate cancer. The data come from a study which examined the
 correlation between the level of prostate specific antigen and a number of
 clinical measures in men who were about to receive a radical prostatectomy.
@@ -256,16 +256,15 @@ variables in the prostate dataset, so that we can create fewer variables
 representing clinical markers of cancer progression. Standard PCAs are carried
 out using continuous variables only.
 
-First, we will examine the `Prostate` dataset which can be downloaded as part
-of the **`lasso2`** package:
+First, we will examine the `prostate` dataset (originally part of the
+**`lasso2`** package):
 
-```{r lasso2}
-library("lasso2")
-data("Prostate")
+```{r prostate}
+prostate <- readRDS(here("data/prostate.rds"))
 ```
 
 ```{r prostate}
-head(Prostate)
+head(prostate)
 ```
 
 Note that each row of the dataset represents a single patient.
@@ -274,7 +273,7 @@ We will create a subset of the data including only the clinical variables we
 want to use in the PCA.
 
 ```{r pros2}
-pros2 <- Prostate[, c("lcavol", "lweight", "lbph", "lcp", "lpsa")]
+pros2 <- prostate[, c("lcavol", "lweight", "lbph", "lcp", "lpsa")]
 head(pros2)
 ```
 
@@ -403,7 +402,7 @@ pca.pros
 ```
 
 For each row in the original dataset PCA returns a principal component score
-for each of the principal components (PC1 to PC5 in the `Prostate` data example).
+for each of the principal components (PC1 to PC5 in the `prostate` data example).
 We can see how the principal component score ($Z_{i1}$ for rows $i$ to $n$) is
 calculated for the first principal component using the following equation from
 Figure 1:
@@ -414,7 +413,7 @@ $$
 
 $a_1$ and $a_2$ represent principal component loadings in this equation.
 A loading can be thought of as the 'weight' each variable has on the calculation
-of the principal component. Note that in our example using the `Prostate`
+of the principal component. Note that in our example using the `prostate`
 dataset `lcavol` and `lpsa` are the variables that contribute most to the first
 principal component.
 
@@ -594,7 +593,7 @@ represents.
 
 ## Choosing how many components are important to explain the variance in the data
 
-As in the example using the `Prostate` dataset we can use a screeplot to
+As in the example using the `prostate` dataset we can use a screeplot to
 compare the proportion of variance in the data explained by each principal
 component. This allows us to understand how much information in the microarray
 dataset is lost by projecting the observations onto the first few principal
