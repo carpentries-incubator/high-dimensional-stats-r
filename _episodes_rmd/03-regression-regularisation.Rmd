@@ -112,13 +112,12 @@ than observations.
 > To investigate the level of correlation between features, we can compute correlation coefficients
 > for all pairs of features in a dataset, for instance using Pearson's correlation
 > coefficient. This measures how similar the patterns of variation in these features.
-> We can see that in the `Prostate` data in the *`lasso2`* package, there are relatively
-> few features and they are largely independent. 
+> We can see that in the `prostate` data (originally from the *`lasso2`* package),
+> there are relatively few features and they are largely independent. 
 > 
 > ```{r corr-mat-prostate, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
 > library("ComplexHeatmap")
-> library("lasso2")
-> data("Prostate")
+> prostate <- readRDS(here("data/prostate.rds"))
 > 
 > cor_mat <- cor(Prostate[, -1])
 > col <- circlize::colorRamp2(
