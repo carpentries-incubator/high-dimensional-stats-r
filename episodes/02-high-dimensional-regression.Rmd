@@ -1,5 +1,6 @@
 ---
 title: "Regression with many features"
+source: Rmd
 teaching: 60
 exercises: 30
 questions:
