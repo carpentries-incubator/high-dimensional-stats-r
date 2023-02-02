@@ -451,6 +451,14 @@ on the top and right of the plot are used to interpret the loadings, where
 loadings are scaled by the standard deviation of the principal components
 (`pca.pros$sdev`) times the square root the number of observations.
 
+Finally, you need to know that PC scores and rotations may have different slot names, 
+depending on the PCA implementation you use. Here are some examples:
+
+| library::command()| PC scores | Loadings |
+|-------------------|-----------|----------|
+| stats::prcomp()   | $x         | $rotation |
+| stats::princomp() | $scores    | $loadings | 
+| PCAtools::pca()   | $rotated   | $loadings | 
 
 
 
