@@ -15,7 +15,7 @@ objectives:
 keypoints:
 - Factor analysis is a method used for reducing dimensionality in a dataset by reducing variation contained in multiple variables into a smaller number of uncorrelated factors.
 - PCA can be used to identify the number of factors to initially use in factor analysis.
-- The `factanal()` function in R can be used to fit a factor analysis where the number of factors is specified by the user.
+- The `factanal()` function in R can be used to fit a factor analysis, where the number of factors is specified by the user.
 - Factor analysis can take into account expert knowledge when deciding on the number of factors to use, but a disadvantage is that the output requires careful interpretation.
 math: yes
 ---
@@ -30,8 +30,8 @@ knitr_fig_path("06-")
 
 Biologists often encounter high-dimensional datasets from which they wish to
 extract underlying features -- they need to carry out dimensionality reduction.
-The last episode dealt with one method to achieve this this, called principal component analysis (PCA). Here, we
-introduce another methed called *factor analysis* (FA).
+The last episode dealt with one method to achieve this, called principal component analysis (PCA). Here, we
+introduce another method called *factor analysis* (FA).
 
 Factor analysis is used to identify *latent features* in a dataset from among a
 set of original variables. Like PCA, this method can be used to reduce a large
@@ -57,7 +57,7 @@ well by two factors, which we can then interpret. We have labelled these hypothe
 "mathematical ability" and "writing ability".
 
 If a researcher already has a hypothesis about what factors explain the
-variation in a dataset, they can run a CFA, specifying which features are though
+variation in a dataset, they can run a CFA, specifying which features are thought
 to be represented by which latent factor(s). The fit of the CFA is then
 assessed.
 
@@ -72,7 +72,7 @@ researcher's knowledge of how genes group into clusters.
 
 So, EFA is designed to identify a specified number of unobservable factors from
 observable features contained in the original dataset. This is slightly
-different from PCA which does not do this directly. Just to recap, PCA creates
+different from PCA, which does not do this directly. Just to recap, PCA creates
 as many principal components as there are features in the dataset, each
 component representing a different linear combination of features. The principal
 components are ordered by the amount of variance they account for.
@@ -114,19 +114,19 @@ about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 Columns are:
 
 
-- `lcavol`: log(cancer volume)
-- `lweight`: log(prostate weight)
+- `lcavol`: log (cancer volume)
+- `lweight`: log (prostate weight)
 - `age`: age (years)
-- `lbph`: log(benign prostatic hyperplasia amount)
+- `lbph`: log (benign prostatic hyperplasia amount)
 - `svi`: seminal vesicle invasion
 - `lcp`: log (capsular penetration); amount of spread of cancer in outer walls
   of prostate
 - `gleason`: [Gleason score](https://en.wikipedia.org/wiki/Gleason_grading_system)
 - `pgg45`: percentage Gleason scores 4 or 5
-- `lpsa`: log(prostate specific antigen)
+- `lpsa`: log (prostate specific antigen)
 
 
-In this example we use the clinical variables to identify factors representing
+In this example, we use the clinical variables to identify factors representing
 various clinical variables from prostate cancer patients. Two principal
 components have already been identified as explaining a large proportion
 of variance in the data when these data were analysed in the PCA episode.
@@ -156,7 +156,7 @@ head(pros2)
 # Performing exploratory factor analysis
 
 EFA may be implemented in R using the `factanal()` function
-from the **`stats`** package (which is a built in package in base R). This
+from the **`stats`** package (which is a built-in package in base R). This
 function fits a factor analysis by maximising the log-likelihood using a
 data matrix as input. The number of factors to be fitted in the analysis
 is specified by the user using the `factors` argument. Options for
@@ -203,9 +203,9 @@ factors, while negative values show a negative relationship between variables
 and factors. Loading values are missing for some variables because R does not
 print loadings less than 0.1. 
 
-To select the most appropriate number of factors we repeat the factor
+To select the most appropriate number of factors, we repeat the factor
 analysis using different values in the `factors` argument. If we have an
-idea of how many factors there will be before analysis we can start with
+idea of how many factors there will be before analysis, we can start with
 that number. The final section of the analysis output shows the results of
 a hypothesis test in which the null hypothesis is that the number of factors
 used in the model is sufficient to capture most of the variation in the
@@ -295,6 +295,6 @@ text(
 
 - Gundogdu et al. (2019) Comparison of performances of Principal Component Analysis (PCA) and Factor Analysis (FA) methods on the identification of cancerous and healthy colon tissues. International Journal of Mass Spectrometry 445:116204.
 - Kustra et al. (2006) A factor analysis model for functional genomics. BMC Bioinformatics 7: doi:10.1186/1471-2105-7-21.
-- Yong, A.G. & Pearce, S. (2013) A beginner's guide to factor analysis: focusing on exploratory factor analysis. Turotials in Quantitative Methods for Psychology 9(2):79-94.
+- Yong, A.G. & Pearce, S. (2013) A beginner's guide to factor analysis: focusing on exploratory factor analysis. Tutorials in Quantitative Methods for Psychology 9(2):79-94.
 
 {% include links.md %}
