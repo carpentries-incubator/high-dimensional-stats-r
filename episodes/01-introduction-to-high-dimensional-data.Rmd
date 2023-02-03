@@ -43,7 +43,7 @@ $p$, are close to or larger than the number of observations (or data points), $n
 The opposite is *low-dimensional data* in which the number of observations,
 $n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which
 refers to data with numerous features irrespective of the number of observations (similarly,
-*tall data* is often used to denote data with a large number of observations)
+*tall data* is often used to denote data with a large number of observations).
 Analyses of high-dimensional data require consideration of potential problems that
 come from having more features than observations.
 
@@ -131,13 +131,13 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `prostate` dataset as follows:
+> Load the `Prostate` dataset as follows:
 
 > ```{r prostate}
-> prostate <- readRDS(here("data/prostate.rds"))
+> Prostate <- readRDS(here("data/prostate.rds"))
 > ```
 > 
-> Although technically not a high-dimensional dataset, the `prostate` data
+> Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
@@ -149,18 +149,18 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ```{r dim-prostate, eval = FALSE}
-> > dim(prostate)   #print the number of rows and columns
+> > dim(Prostate)   #print the number of rows and columns
 > > ```
 > >
 > > ```{r head-prostate, eval = FALSE}
-> > names(prostate) # examine the variable names
-> > head(prostate)   #print the first 6 rows
+> > names(Prostate) # examine the variable names
+> > head(Prostate)   #print the first 6 rows
 > > ```
 > > 
 > > ```{r pairs-prostate}
-> > names(prostate)  #examine column names
+> > names(Prostate)  #examine column names
 > >
-> > pairs(prostate)  #plot each pair of variables against each other
+> > pairs(Prostate)  #plot each pair of variables against each other
 > > ```
 > > The `pairs` function plots relationships between each of the variables in
 > > the `prostate` dataset. This is possible for datasets with smaller numbers
@@ -202,40 +202,67 @@ in these datasets makes high correlations between variables more likely.
 
 > ## Challenge 3
 > 
-> Use the `cor()` function to examine correlations between all variables in the
-> prostate dataset. Are some variables highly correlated (i.e. correlation
-> coefficients > 0.6)? Fit a multiple linear regression model predicting patient age
-> using all variables in the prostate dataset.
+> Use the cor() function to examine correlations between all variables in the 
+> `Prostate` dataset. Are some pairs of variables highly correlated (i.e. 
+> correlation coefficients > 0.6)?
+>
+> Use the `lm()` function to fit univariate regression models to predict patient 
+> age using two variables that are highly correlated as predictors. Which of 
+> these variables are statistically significant predictors of age? Hint: the
+> `summary()` function can help here. 
+> 
+> Fit a multiple linear regression model predicting patient age using both
+> variables. What happened?
 > 
 > > ## Solution
-> > 
-> > ```{r plot-lm}
-> > ## create a correlation matrix of all variables in the prostate dataset
-> > cor(prostate)
-> > 
-> > ## correlation matrix for variables describing cancer/clinical variables
-> > cor(prostate[, c(1, 2, 4, 6, 9)])
-> > 
-> > ## use linear regression to predict patient age from cancer progression variables
-> > model <- lm(
-> >     age ~ lcavol + lweight + lbph + lcp + lpsa + svi + gleason + pgg45,
-> >     data = prostate
-> > )
-> > summary(model)
 > >
-> > ## examine model residuals
-> > plot(model)
+> > Create a correlation matrix of all variables in the Prostate dataset
+> >
+> > ```{r cor-prostate}
+> > cor(Prostate)
+> > round(cor(Prostate), 2) # rounding helps to visualise the correlations
 > > ```
+> > 
+> > As seen above, some variables are highly correlated. In particular, the 
+> > correlation between gleason and pgg45 is equal to 0.75.
+> > 
+> > Fitting univariate regression models to predict age using gleason and pgg45
+> > as predictors.
+> > 
+> > ```{r univariate-prostate}
+> > model1 <- lm(age ~ gleason, data = Prostate)
+> > model2 <- lm(age ~ pgg45, data = Prostate)
+> >```
+> >
+> > Check which covariates have a significant efffect
+> >
+> > ```{r summary-prostate}
+> > summary(model1)
+> > summary(model2)
+> > ```
+> >
+> > Based on these results we conclude that both gleason and pgg45 have a 
+> > statistically significan univariate effect (also referred to as a marginal
+> > effect) as predictors of age (5% significance level). 
+> >
+> > Fitting a multivariate regression model using both both gleason and pgg45 
+> > as predictors
+> >
+> > ```{r multivariate-prostate}
+> > model3 <- lm(age ~ gleason + pgg45, data = Prostate)
+> > summary(model3)
+> > ```
+> >
+> > Although gleason and pgg45 have statistically significant univariate effects,
+> > this is no longer the case when both variables are simultaneously included
+> > as covariates in a multivariate regression model. 
 > {: .solution}
 {: .challenge}
 
-The correlation matrix shows high correlation between some pairs of variables
-(e.g. between `lcavol` and `lpsa` and between `gleason` and `pgg45`). Including
-correlated variables in the same regression model can lead to problems in fitting
-a regression and interpreting the output. Some clinical variables
-(i.e. `lcavol`, `lweight`, `lbph`, `lcp`, `lpsa`) show high correlation between
-pairs of variables (e.g. between `lcavol` and `lpsa`). To allow variables to be
-included in the same model despite high levels of correlation we can use
+Including highly correlated variables such as `gleason` and `pgg45` 
+simultaneously the same regression model can lead to problems 
+in fitting a regression model and interpreting its output. To allow variables to 
+be included in the same model despite high levels of correlation, we can use
 dimensionality reduction methods to collapse multiple variables into a single
 new variable (we will explore this dataset further in the dimensionality
 reduction lesson). We can also use modifications to linear regression like
