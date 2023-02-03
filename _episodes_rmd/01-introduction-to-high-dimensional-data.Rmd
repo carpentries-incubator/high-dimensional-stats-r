@@ -303,50 +303,7 @@ identifying clusters visually may not be enough - we also need to determine
 whether such clusters are 'real' or simply apparent interpretations of noise
 within the data.
 
-Let's create some random data and show how we can create clusters by changing
-parameters.
 
-```{r plot-random}
-set.seed(80)     
-
-## create random data from a normal distribution and store as a matrix
-x <- matrix(rnorm(200, mean = 0, sd = 1), 100, 2)
-
-plot(x, pch = 19)
-
-## create three groups for each row of x
-selected <- sample(1:3, 100, replace = TRUE)
-
-## plot x and colour by selected
-plot(x, col = selected, pch = 19)
-#note there are no clusters in these data
-
-## create random data representing mean of each of the three groups
-xsel <- matrix(rnorm(6, mean = 0, sd = 1), 3, 2)
-#Note how increasing the value of sd makes clusters clearer
-
-## add values of x to xsel for each of three defined groups
-xgroups <- x + xsel[selected, ]
-## plot xgroups and colour by each of the three groups
-plot(xgroups, col = selected, pch = 19)
-```
-
-> ## Challenge 4
-> 
-> Change the value of `sd` in the above example. What happens to the data when
-> `sd` is increased?
-> 
-> > ## Solution
-> > 
-> > When `sd = 1` in above example, clusters in randomly generated data are not
-> > obvious. Increasing the value of `sd` makes clusters clearer. Sometimes it
-> > is possible to convince ourselves that there are clusters in the data just
-> > by colouring the data points by their respective groups! Formal cluster
-> > analysis and validation is necessary to determine whether visual clusters
-> > in data are likely 'real'.
-> > 
-> {: .solution}
-{: .challenge}
 
 
 > ## Using Bioconductor to access high-dimensional data in the biosciences
