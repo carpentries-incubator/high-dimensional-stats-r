@@ -40,7 +40,8 @@ knitr_fig_path("02-")
 For the following few episodes, we will be working with human DNA
 methylation data from flow-sorted blood samples. DNA methylation assays
 measure, for each of many sites in the genome, the proportion of DNA
-that carries a methyl mark (a chemical modification that does not alter the DNA sequence). In this case, the methylation data come in
+that carries a methyl mark (a chemical modification that does not alter the 
+DNA sequence). In this case, the methylation data come in
 the form of a matrix of normalised methylation levels (M-values), where negative
 values correspond to unmethylated DNA and positive values correspond to
 methylated DNA. Along with this, we have a number of sample phenotypes
@@ -108,7 +109,7 @@ application of some high-dimensional regression techniques, with the
 idea of "epigenetic age" having been derived using these techniques. The
 methylation levels for these data can be presented in a heatmap:
 
-```{r heatmap, echo=FALSE, fig.cap="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
+```{r heatmap, fig.cap="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
 age <- methylation$Age
 
 library("ComplexHeatmap")
