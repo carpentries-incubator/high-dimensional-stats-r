@@ -62,24 +62,7 @@ inclusion in further analysis (e.g. linear regression). An example of PCA might
 be reducing several variables representing aspects of patient health
 (blood pressure, heart rate, respiratory rate) into a single feature.
 
-The principal components are single variables that are calculated using a
-linear combination of the variables from the original dataset
-(e.g. the clinical variables mentioned in the above example). Many principal
-components are calculated, each representing different combinations of variables
-from the original dataset. Principal component scores for each principal
-component are calculated for each data point in the original dataset. The
-contributions that original variables make to the calculation of principal 
-components are represented in *principal component loadings*.  
 
-PCA is a useful exploratory analysis tool. While plotting each variable against
-the other may help when exploring correlations between variables, when $p$ is
-large the number of plots needed to examine the data in this way quickly become
-unfeasible, and the amount of total variation in the data represented in each
-plot is small. PCA allows us to reduce a large number of variables into a few
-features which represent most of the variation in the original variables. This
-makes exploration of the original variables easier, although results of PCA
-require some interpretation first. Graphical tools are available which help us
-to understand the output of the PCA. 
 
 
 # Advantages and disadvantages of PCA
@@ -90,21 +73,10 @@ Advantages:
 * The calculations used in a PCA are easy to understand for statisticians and
   non-statisticians alike.
 
-The first principal component ($Z_1$) is calculated using the equation:
-
-$$  
-  Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p
-$$
-
-$X_1...X_p$ represents variables in the original dataset and $a_{11}...a_p$
-represent principal component loadings, which can be thought of as the degree to
-which each variable contributes to the calculation of the principal component.
-
 Disadvantages:
 * It assumes that variables in a dataset are correlated.
 * It is sensitive to the scale at which input variables are measured.
-  If input variables are measured at different scales, loadings will be largest
-  for the variables with the greatest variance. This means that variables
+  If input variables are measured at different scales, the variables
   with large variance relative to the scale of measurement will have
   greater impact on the principal components relative to variables with smaller
   variance. In many cases, this is not desirable.
@@ -215,6 +187,18 @@ principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
 <img src="../fig/pendulum.gif" alt="Alt" style="display: block; margin: auto;" />
+
+
+The first principal component's scores ($Z_1$) are calculated using the equation:
+
+$$  
+  Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p
+$$
+
+$X_1...X_p$ represents variables in the original dataset and $a_{11}...a_{p1}$
+represent principal component loadings, which can be thought of as the degree to
+which each variable contributes to the calculation of the principal component.
+We will come back to principal component scores and loadings further below.
 
 # How do we perform a PCA?
 
@@ -431,8 +415,17 @@ This returns the proportion of variance in the data explained by each of the
 PC3 a further 11%, PC4 approximately 8% and PC5
 around 5%.
 
-We can use a screeplot to see how much variation in the data is explained by
-each principal component. Let's calculate the screeplot for our PCA.
+Let us visualise this. A plot of the amount of variance accounted for by each PC
+is also called a scree plot. Note that the amount of variance accounted for by a principal
+component is also called eigenvalue and thus the y-axis in scree plots if often
+labelled “eigenvalue”.
+
+Often, scree plots show a characteristic pattern where initially, the variance drops
+rapidly with each additional principal component. But then there is an “elbow” after which the
+variance decreases more slowly. The total variance explained up to the elbow point is sometimes
+interpreted as structural variance that is relevant and should be retained versus noise
+which may be discarded after the elbow. 
+
 
 
 ~~~
@@ -461,13 +454,15 @@ components mean?
 
 ## What are loadings and principal component scores?
 
-The output from a PCA returns a matrix of principal component loadings in which
-the columns show the principal component loading vectors. Note that the square
-of values in each column sums to 1 as each loading is scaled so as to prevent a
-blow up in variance. Larger values in the columns suggest a greater contribution
-of that variable to the principal component. 
+Most PCA functions will produce two main output matrices: the
+*principal component scores* and the *loadings*. The matrix of principal component scores
+has as many rows as there were observations in the input matrix. These
+scores are what is usually visualised or used for down-stream analyses.
+The matrix of loadings (also called rotation matrix) has as many rows as there
+are features in the original data. It contains information about how the
+(usually centered and scaled) original data relate to the PC scores.
 
-We can examine the output of our PCA by writing the following in `R`:
+When calling a PCA object generated with `prcomp()`, the loadings are printed by default:
 
 
 ~~~
@@ -491,34 +486,60 @@ lpsa    0.5665123 -0.01680231 -0.10141557  0.56487128  0.59111493
 ~~~
 {: .output}
 
-For each row in the original dataset PCA returns a principal component score
-for each of the principal components (PC1 to PC5 in the `prostate` data example).
-We can see how the principal component score ($Z_{i1}$ for rows $i$ to $n$) is
-calculated for the first principal component using the following equation from
-Figure 1:
+The principal component scores are obtained by carrying out matrix multiplication of the
+(usually centered and scaled) original data times the loadings. The following
+callout demonstrates this.
 
-$$
-  Z_{i1} = a_1 \times (fallow_i - \overline{fallow}) + a_2 \times (bio index_i - \overline{bio index})
-$$
+> ## Computing a PCA "by hand"
+> The rotation matrix obtained in a PCA is identical to the eigenvectors
+> of the covariance matrix of the data. Multiplying these with the (centered and scaled)
+> data yields the PC scores:
+> 
+> ~~~
+> pros2.scaled <- scale(pros2) # centre and scale the Prostate data
+> pros2.cov <- cov(pros2.scaled)   #generate covariance matrix
+> pros2.cov
+> pros2.eigen <- eigen(pros2.cov) # preform eigen decomposition
+> pros2.eigen # The slot $vectors = rotation of the PCA
+> # generate PC scores by by hand, using matrix multiplication
+> my.pros2.pcs <- pros2.scaled %*% pros.eigen$vectors
+> # compare results
+> par(mfrow=c(1,2)
+> plot(pca.pros$x[,1:2], main="prcomp()")
+> abline(h=0, v=0, lty=2)
+> plot(my.pros2.pcs[,1:2], main="\"By hand\"", xlab="PC1", ylab="PC2")
+> abline(h=0, v=0, lty=2)
+> par(mfrow=c(1,1)
+> # Note that the axis orientations may be swapped but the relative positions of the dots should be the same in both plots.
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error: <text>:10:1: unexpected symbol
+> 9: par(mfrow=c(1,2)
+> 10: plot
+>     ^
+> ~~~
+> {: .error}
+{: .callout}
 
-$a_1$ and $a_2$ represent principal component loadings in this equation.
-A loading can be thought of as the 'weight' each variable has on the calculation
-of the principal component. Note that in our example using the `prostate`
-dataset `lcavol` and `lpsa` are the variables that contribute most to the first
-principal component.
 
-We can better understand what the principal components represent in terms of
-the original variables by plotting the first two principal components against
-each other and labelling points by patient number. Clusters of points which
-have similar principal component scores can be observed using a biplot and the
-strength and direction of influence different variables have on the calculation
-of the principal component scores can be observed by plotting arrows
-representing the loadings onto the graph.
-A biplot of the first two principal components can be created as follows:
+
+One way to visualise how principal components relate to the original variables
+is by creating a biplot. Biplots usually show two principal components plotted
+against each other. Observations are sometimes labelled with numbers. The
+contribution of each original variable to the principal components displayed
+is then shown by arrows (generated from those two columns of the rotation matrix that
+correspond to the principal components shown). NB, there are several biplot
+implementations in different R libraries. It is thus a good idea to specify
+the desired package when calling `biplot()`. A biplot of the first two principal
+components can be generated as follows:
 
 
 ~~~
-biplot(pca.pros, xlim = c(-0.3, 0.3))
+stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ~~~
 {: .language-r}
 
@@ -536,13 +557,25 @@ on the top and right of the plot are used to interpret the loadings, where
 loadings are scaled by the standard deviation of the principal components
 (`pca.pros$sdev`) times the square root the number of observations.
 
+Finally, you need to know that PC scores and rotations may have different slot names, 
+depending on the PCA implementation you use. Here are some examples:
+
+| library::command()| PC scores | Loadings |
+|-------------------|-----------|----------|
+| stats::prcomp()   | $x         | $rotation |
+| stats::princomp() | $scores    | $loadings | 
+| PCAtools::pca()   | $rotated   | $loadings | 
+
+
 
 # Using PCA to analyse gene expression data 
 
 In this section you will carry out your own PCA using the Bioconductor package **`PCAtools`** 
 applied to gene expression data to explore the topics covered above. 
 **`PCAtools`** provides functions that can be used to explore data via PCA and
-produce useful figures and analysis tools.
+produce useful figures and analysis tools. The package is made for the somewhat unusual
+Bioconductor style of data tables (observations in columns, features in rows). When
+using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
 
 ##  A gene expression dataset of cancer patients
 
@@ -653,9 +686,9 @@ represents.
 > **`PCAtools`**. You can use the help files in PCAtools to find out about the `pca()`
 > function (type `help("pca")` or `?pca` in R).
 > 
-> Remove the lower 20% of principal components
-> from your PCA using the `removeVar` argument in the `pca()` function.
->
+> Let us assume we only care about the principal components accounting for the top
+> 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
+> the PCs accounting for the bottom 20%.
 > 
 > As in the example using prostate data above, examine the first 5 rows and
 > columns of rotated data and loadings from your PCA.
@@ -926,8 +959,10 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > ## Challenge 5
 > 
 > Create a biplot of the first two principal components from your PCA
-> (using `biplot()` function in **`PCAtools`** - see `help("PCAtools::biplot")` for arguments) 
-> and examine whether the data appear to form clusters. Explain your results.
+> using `biplot()` function in **`PCAtools`**. See `help("PCAtools::biplot")` for
+> arguments and their meaning. For instance, `lab` or `colBy` may be useful.
+> 
+> Examine whether the data appear to form clusters. Explain your results.
 > 
 > > ## Solution
 > > 
@@ -951,56 +986,21 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 Let's consider this biplot in more detail, and also display the loadings:
 
 
-~~~
-biplot(pc, lab = rownames(pc$metadata), pointSize = 1, labSize = 1)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
-increasing max.overlaps
-~~~
-{: .warning}
-
-<img src="../fig/rmd-05-pca-biplot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
-
-Sizes of labels, points and axes can be changed using arguments in `biplot`
-(see `help("biplot")`). We can see from the biplot that there appear to be two
-separate groups of points that separate on the PC1 axis, but that no other
-grouping is apparent on other PC axes.
-
-
-~~~
-plotloadings(pc, labSize = 3)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: ggrepel: 39 unlabeled data points (too many overlaps). Consider
-increasing max.overlaps
-~~~
-{: .warning}
-
-<img src="../fig/rmd-05-pca-loadings-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
-
-Plotting the loadings shows the magnitude and direction of loadings for probes
-detecting genes on each principal component.
-
 > ## Challenge 6
 > 
 > Use `colby` and `lab` arguments in `biplot()` to explore whether these two
 > groups may cluster by patient age or by whether or not the sample expresses
 > the oestrogen receptor gene (ER+ or ER-).
 > 
+> Note: You may see a warning about `ggrepel`. This happens when there are many
+> labels but little space for plotting. This is not usually a serious problem - 
+> not all labels will be shown.
+> 
 > > ## Solution
 > > 
 > > 
 > > ~~~
-> >   biplot(pc,
+> >   PCAtools::biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
 > >     hline = 0, vline = 0,
@@ -1021,7 +1021,7 @@ detecting genes on each principal component.
 > {: .solution}
 {: .challenge}
 
-So far we have only looked at a biplot of PC1 versus PC2 which only gives part
+So far, we have only looked at a biplot of PC1 versus PC2 which only gives part
 of the picture. The `pairplots()` function in **`PCAtools`** can be used to create
 multiple biplots including different principal components.
 
@@ -1034,7 +1034,43 @@ pairsplot(pc)
 <img src="../fig/rmd-05-pairsplot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 The plots show two apparent clusters involving the first principal component
-only. No other clusters are found involving other principal components.
+only. No other clusters are found involving other principal components. Each dot
+is coloured differently along a gradient of blues. This can potentially help identifying
+the same observation/individual in several panels. Here too, the argument `colby` allows
+you to set custom colours.
+
+
+Finally, it can sometimes be of interest to compare how certain variables contribute
+to different principal components. This can be visualised with `plotloadings()` from
+the **`PCAtools`** package. The function checks the range of loadings for each
+principal component specified (default: first five PCs). It then selects the features
+in the top and bottom 5% of these ranges and displays their loadings. This behaviour
+can be adjusted with the `rangeRetain` argument, which has 0.1 as the default value (i.e.
+5% on each end of the range). NB, if there are too many labels to be plotted, you will see
+a warning. This is not a serious problem.
+
+
+~~~
+plotloadings(pc, c(“PC1”), rangeRetain = 0.1)
+plotloadings(pc, c(“PC2”), rangeRetain = 0.1)
+plotloadings(pc, c(“PC1”, “PC2”), rangeRetain = 0.1)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error: <text>:1:20: unexpected input
+1: plotloadings(pc, c(“
+                       ^
+~~~
+{: .error}
+
+You can see how the third code line prooces more dots, some of which do not have
+extreme loadings. This is because all loadings selected for any PC are shown for all
+other PCs. For instance, it is plausible that features which have high loadings on
+PC1 may have lower ones on PC2.
+
 
 # Using PCA output in further analysis
 
