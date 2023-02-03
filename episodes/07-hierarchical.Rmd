@@ -1,5 +1,6 @@
 ---
 title: "Hierarchical clustering"
+source: Rmd
 teaching: 60
 exercises: 10
 questions:

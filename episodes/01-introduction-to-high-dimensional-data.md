@@ -3,6 +3,7 @@
 # Instead, please edit 01-introduction-to-high-dimensional-data.md in _episodes_rmd/
 title: "Introduction to high-dimensional data"
 author: "GS Robertson"
+source: Rmd
 teaching: 60
 exercises: 20
 questions:
@@ -62,7 +63,7 @@ specific patient outcomes (e.g. survival, length of time spent in hospital).
 An example of what high-dimensional data might look like in a biomedical study
 is shown in the figure below. 
 
-<img src="../fig/intro-table.png" title="plot of chunk table-intro" alt="plot of chunk table-intro" style="display: block; margin: auto;" />
+<img src="../fig/intro-table.png" alt="plot of chunk table-intro" style="display: block; margin: auto;" />
 
 
 
@@ -125,8 +126,15 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `Prostate` dataset from the **`lasso2`** package.
-> names. Although technically not a high-dimensional dataset, the `Prostate` data
+> Load the `prostate` dataset as follows:
+
+> 
+> ~~~
+> prostate <- readRDS(here("data/prostate.rds"))
+> ~~~
+> {: .language-r}
+> 
+> Although technically not a high-dimensional dataset, the `prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
@@ -137,49 +145,43 @@ of the challenges we are facing when working with high-dimensional data.
 > > ## Solution
 > > 
 > > 
-> > ~~~
-> > library("lasso2")  #load lasso2 package
-> > data(Prostate)   #load the Prostate dataset
-> > ~~~
-> > {: .language-r}
-> > 
 > > 
 > > ~~~
-> > dim(Prostate)   #print the number of rows and columns
+> > dim(prostate)   #print the number of rows and columns
 > > ~~~
 > > {: .language-r}
 > >
 > > 
 > > ~~~
-> > names(Prostate) # examine the variable names
-> > head(Prostate)   #print the first 6 rows
+> > names(prostate) # examine the variable names
+> > head(prostate)   #print the first 6 rows
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > ~~~
-> > names(Prostate)  #examine column names
+> > names(prostate)  #examine column names
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> > [1] "lcavol"  "lweight" "age"     "lbph"    "svi"     "lcp"     "gleason"
-> > [8] "pgg45"   "lpsa"   
+> >  [1] "X"       "lcavol"  "lweight" "age"     "lbph"    "svi"     "lcp"    
+> >  [8] "gleason" "pgg45"   "lpsa"   
 > > ~~~
 > > {: .output}
 > > 
 > > 
 > > 
 > > ~~~
-> > pairs(Prostate)  #plot each pair of variables against each other
+> > pairs(prostate)  #plot each pair of variables against each other
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-01-pairs-prostate-1.png" title="plot of chunk pairs-prostate" alt="plot of chunk pairs-prostate" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-01-pairs-prostate-1.png" alt="plot of chunk pairs-prostate" width="432" style="display: block; margin: auto;" />
 > > The `pairs` function plots relationships between each of the variables in
-> > the `Prostate` dataset. This is possible for datasets with smaller numbers
+> > the `prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
@@ -198,7 +200,7 @@ dataset are almost equal. In that situation the effective number of observations
 per features is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
-<img src="../fig/intro-scatterplot.png" title="plot of chunk intro-figure" alt="plot of chunk intro-figure" style="display: block; margin: auto;" />
+<img src="../fig/intro-scatterplot.png" alt="plot of chunk intro-figure" style="display: block; margin: auto;" />
 
 In the first situation, the least squares regression line does not fit the data
 perfectly and there is some error around the regression line. But, when there are
@@ -216,42 +218,44 @@ in these datasets makes high correlations between variables more likely.
 > ## Challenge 3
 > 
 > Use the `cor()` function to examine correlations between all variables in the
-> Prostate dataset. Are some variables highly correlated (i.e. correlation
+> prostate dataset. Are some variables highly correlated (i.e. correlation
 > coefficients > 0.6)? Fit a multiple linear regression model predicting patient age
-> using all variables in the Prostate dataset.
+> using all variables in the prostate dataset.
 > 
 > > ## Solution
 > > 
 > > 
 > > ~~~
-> > ## create a correlation matrix of all variables in the Prostate dataset
-> > cor(Prostate)
+> > ## create a correlation matrix of all variables in the prostate dataset
+> > cor(prostate)
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> >            lcavol      lweight       age         lbph         svi          lcp
-> > lcavol  1.0000000  0.194128286 0.2249999  0.027349703  0.53884500  0.675310484
-> > lweight 0.1941283  1.000000000 0.3075286  0.434934636  0.10877851  0.100237795
-> > age     0.2249999  0.307528614 1.0000000  0.350185896  0.11765804  0.127667752
-> > lbph    0.0273497  0.434934636 0.3501859  1.000000000 -0.08584324 -0.006999431
-> > svi     0.5388450  0.108778505 0.1176580 -0.085843238  1.00000000  0.673111185
-> > lcp     0.6753105  0.100237795 0.1276678 -0.006999431  0.67311118  1.000000000
-> > gleason 0.4324171 -0.001275658 0.2688916  0.077820447  0.32041222  0.514830063
-> > pgg45   0.4336522  0.050846821 0.2761124  0.078460018  0.45764762  0.631528245
-> > lpsa    0.7344603  0.354120390 0.1695928  0.179809410  0.56621822  0.548813169
-> >              gleason      pgg45      lpsa
-> > lcavol   0.432417056 0.43365225 0.7344603
-> > lweight -0.001275658 0.05084682 0.3541204
-> > age      0.268891599 0.27611245 0.1695928
-> > lbph     0.077820447 0.07846002 0.1798094
-> > svi      0.320412221 0.45764762 0.5662182
-> > lcp      0.514830063 0.63152825 0.5488132
-> > gleason  1.000000000 0.75190451 0.3689868
-> > pgg45    0.751904512 1.00000000 0.4223159
-> > lpsa     0.368986803 0.42231586 1.0000000
+> >                 X    lcavol      lweight       age         lbph         svi
+> > X       1.0000000 0.7111363  0.350443662 0.1965557  0.167928486  0.56678035
+> > lcavol  0.7111363 1.0000000  0.194128286 0.2249999  0.027349703  0.53884500
+> > lweight 0.3504437 0.1941283  1.000000000 0.3075286  0.434934636  0.10877851
+> > age     0.1965557 0.2249999  0.307528614 1.0000000  0.350185896  0.11765804
+> > lbph    0.1679285 0.0273497  0.434934636 0.3501859  1.000000000 -0.08584324
+> > svi     0.5667803 0.5388450  0.108778505 0.1176580 -0.085843238  1.00000000
+> > lcp     0.5336960 0.6753105  0.100237795 0.1276678 -0.006999431  0.67311118
+> > gleason 0.3936079 0.4324171 -0.001275658 0.2688916  0.077820447  0.32041222
+> > pgg45   0.4497267 0.4336522  0.050846821 0.2761124  0.078460018  0.45764762
+> > lpsa    0.9581149 0.7344603  0.354120390 0.1695928  0.179809410  0.56621822
+> >                  lcp      gleason      pgg45      lpsa
+> > X        0.533696039  0.393607939 0.44972672 0.9581149
+> > lcavol   0.675310484  0.432417056 0.43365225 0.7344603
+> > lweight  0.100237795 -0.001275658 0.05084682 0.3541204
+> > age      0.127667752  0.268891599 0.27611245 0.1695928
+> > lbph    -0.006999431  0.077820447 0.07846002 0.1798094
+> > svi      0.673111185  0.320412221 0.45764762 0.5662182
+> > lcp      1.000000000  0.514830063 0.63152825 0.5488132
+> > gleason  0.514830063  1.000000000 0.75190451 0.3689868
+> > pgg45    0.631528245  0.751904512 1.00000000 0.4223159
+> > lpsa     0.548813169  0.368986803 0.42231586 1.0000000
 > > ~~~
 > > {: .output}
 > > 
@@ -259,19 +263,19 @@ in these datasets makes high correlations between variables more likely.
 > > 
 > > ~~~
 > > ## correlation matrix for variables describing cancer/clinical variables
-> > cor(Prostate[, c(1, 2, 4, 6, 9)])
+> > cor(prostate[, c(1, 2, 4, 6, 9)])
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> >            lcavol   lweight         lbph          lcp      lpsa
-> > lcavol  1.0000000 0.1941283  0.027349703  0.675310484 0.7344603
-> > lweight 0.1941283 1.0000000  0.434934636  0.100237795 0.3541204
-> > lbph    0.0273497 0.4349346  1.000000000 -0.006999431 0.1798094
-> > lcp     0.6753105 0.1002378 -0.006999431  1.000000000 0.5488132
-> > lpsa    0.7344603 0.3541204  0.179809410  0.548813169 1.0000000
+> >                X    lcavol       age       svi     pgg45
+> > X      1.0000000 0.7111363 0.1965557 0.5667803 0.4497267
+> > lcavol 0.7111363 1.0000000 0.2249999 0.5388450 0.4336522
+> > age    0.1965557 0.2249999 1.0000000 0.1176580 0.2761124
+> > svi    0.5667803 0.5388450 0.1176580 1.0000000 0.4576476
+> > pgg45  0.4497267 0.4336522 0.2761124 0.4576476 1.0000000
 > > ~~~
 > > {: .output}
 > > 
@@ -281,7 +285,7 @@ in these datasets makes high correlations between variables more likely.
 > > ## use linear regression to predict patient age from cancer progression variables
 > > model <- lm(
 > >     age ~ lcavol + lweight + lbph + lcp + lpsa + svi + gleason + pgg45,
-> >     data = Prostate
+> >     data = prostate
 > > )
 > > summary(model)
 > > ~~~
@@ -293,7 +297,7 @@ in these datasets makes high correlations between variables more likely.
 > > 
 > > Call:
 > > lm(formula = age ~ lcavol + lweight + lbph + lcp + lpsa + svi + 
-> >     gleason + pgg45, data = Prostate)
+> >     gleason + pgg45, data = prostate)
 > > 
 > > Residuals:
 > >      Min       1Q   Median       3Q      Max 
@@ -327,7 +331,7 @@ in these datasets makes high correlations between variables more likely.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-01-plot-lm-1.png" title="plot of chunk plot-lm" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-2.png" title="plot of chunk plot-lm" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-3.png" title="plot of chunk plot-lm" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-4.png" title="plot of chunk plot-lm" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-01-plot-lm-1.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-2.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-3.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-4.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -392,7 +396,7 @@ plot(x, pch = 19)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-01-plot-random-1.png" title="plot of chunk plot-random" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-01-plot-random-1.png" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
 
 ~~~
 ## create three groups for each row of x
@@ -403,7 +407,7 @@ plot(x, col = selected, pch = 19)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-01-plot-random-2.png" title="plot of chunk plot-random" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-01-plot-random-2.png" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
 
 ~~~
 #note there are no clusters in these data
@@ -419,7 +423,7 @@ plot(xgroups, col = selected, pch = 19)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-01-plot-random-3.png" title="plot of chunk plot-random" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
+<img src="../fig/rmd-01-plot-random-3.png" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
 
 > ## Challenge 4
 > 

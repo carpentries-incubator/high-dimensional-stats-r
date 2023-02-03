@@ -1,6 +1,7 @@
 ---
 title: "Factor analysis"
 author: "GS Robertson"
+source: Rmd
 teaching: 25
 exercises: 10
 questions:
@@ -15,7 +16,7 @@ objectives:
 keypoints:
 - Factor analysis is a method used for reducing dimensionality in a dataset by reducing variation contained in multiple variables into a smaller number of uncorrelated factors.
 - PCA can be used to identify the number of factors to initially use in factor analysis.
-- The `factanal()` function in R can be used to fit a factor analysis where the number of factors is specified by the user.
+- The `factanal()` function in R can be used to fit a factor analysis, where the number of factors is specified by the user.
 - Factor analysis can take into account expert knowledge when deciding on the number of factors to use, but a disadvantage is that the output requires careful interpretation.
 math: yes
 ---
@@ -28,38 +29,33 @@ knitr_fig_path("06-")
 
 # Introduction
 
-Biologists often encounter high-dimensional datasets from which they wish to
-extract underlying features -- they need to carry out dimensionality reduction.
-The last episode dealt with one method to achieve this this, called principal component analysis (PCA). Here, we
-introduce another methed called *factor analysis* (FA).
-
-Factor analysis is used to identify *latent features* in a dataset from among a
-set of original variables. Like PCA, this method can be used to reduce a large
-set of variables in the original dataset to a smaller set of variables that
-represent most of the variance in the original variables. FA does this in a
-similar way to PCA, by creating a linear combination of factors that represent
-similarity between variables.
-
+ Biologists often encounter high-dimensional datasets from which they wish
+ to extract underlying features – they need to carry out dimensionality
+ reduction. The last episode dealt with one method to achieve this this,
+ called principal component analysis (PCA). Here, we introduce more general
+ set of methods called factor analysis (FA).
+ 
 There are two types of FA, called exploratory and confirmatory factor analysis
-(EFA and CFA). We will mainly focus on EFA here, which is used to group features
-into a specified number of latent factors.
+(EFA and CFA). We will mainly focus on EFA here, which is used to group
+features into a specified number of latent factors.
 
 Unlike with PCA, researchers using FA have to specify the number of latent
-variables (factors) at the point of running the analysis. Researchers may use exploratory
-data analysis methods (including PCA) to provide an initial estimate of how many
-factors adequately explain the variation observed in a dataset. In practice, a
-range of different values is usually tested.
+variables (factors) at the point of running the analysis. Researchers may use
+exploratory data analysis methods (including PCA) to provide an initial estimate
+of how many factors adequately explain the variation observed in a dataset.
+In practice, a range of different values is usually tested.
+
+## An example
 
 One scenario for using FA would be whether student scores in different subjects
 can be summarised by certain subject categories. Take a look at the hypothetical
-dataset below. If we were to run and EFA on this, we might find that the scores can be summarised
-well by two factors, which we can then interpret. We have labelled these hypothetical factors
-"mathematical ability" and "writing ability".
+dataset below. If we were to run and EFA on this, we might find that the scores
+can be summarised well by two factors, which we can then interpret. We have
+labelled these hypothetical factors “mathematical ability” and “writing ability”.
 
-If a researcher already has a hypothesis about what factors explain the
-variation in a dataset, they can run a CFA, specifying which features are though
-to be represented by which latent factor(s). The fit of the CFA is then
-assessed.
+If a researcher already has a hypothesis about what factors explain the variation
+in a dataset, they can run a CFA, specifying which features are though to be
+represented by which latent factor(s). The fit of the CFA is then assessed.
 
 
 ```{r table, echo = FALSE}
@@ -67,12 +63,12 @@ knitr::include_graphics("../fig/table_for_fa.png")
 # ![Figure 1: Student exam scores per subject. Subjects can be split into two factors representing mathematical ability and writing ability](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for FA.png)
 ```
 
-Another example of how FA can be used is creating new factors based on a
+Another example of how CFA can be used is creating new factors based on a
 researcher's knowledge of how genes group into clusters.
 
 So, EFA is designed to identify a specified number of unobservable factors from
 observable features contained in the original dataset. This is slightly
-different from PCA which does not do this directly. Just to recap, PCA creates
+different from PCA, which does not do this directly. Just to recap, PCA creates
 as many principal components as there are features in the dataset, each
 component representing a different linear combination of features. The principal
 components are ordered by the amount of variance they account for.
@@ -90,6 +86,7 @@ Advantages:
   the number of factors to use, and can be used to identify latent or hidden
   variables which may not be apparent from using other analysis methods.
 * It is easy to implement with many software tools available to carry out FA.
+* Confirmatory FA can be used to test hypotheses.
 
 Disadvantages:
 
@@ -98,8 +95,6 @@ Disadvantages:
   structure of the data before analysis is carried out.
 * Sometimes, it can be difficult to interpret what factors mean after
   analysis has been completed. 
-* FA is not a commonly used method in some areas of biology
-  (including genomics), although this is changing.
 * Like PCA, standard methods of carrying out FA assume that input variables
   are continuous, although extensions to FA allow ordinal and binary
   variables to be included (after transforming the input matrix).
@@ -114,19 +109,19 @@ about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 Columns are:
 
 
-- `lcavol`: log(cancer volume)
-- `lweight`: log(prostate weight)
+- `lcavol`: log (cancer volume)
+- `lweight`: log (prostate weight)
 - `age`: age (years)
-- `lbph`: log(benign prostatic hyperplasia amount)
+- `lbph`: log (benign prostatic hyperplasia amount)
 - `svi`: seminal vesicle invasion
 - `lcp`: log (capsular penetration); amount of spread of cancer in outer walls
   of prostate
 - `gleason`: [Gleason score](https://en.wikipedia.org/wiki/Gleason_grading_system)
 - `pgg45`: percentage Gleason scores 4 or 5
-- `lpsa`: log(prostate specific antigen)
+- `lpsa`: log (prostate specific antigen)
 
 
-In this example we use the clinical variables to identify factors representing
+In this example, we use the clinical variables to identify factors representing
 various clinical variables from prostate cancer patients. Two principal
 components have already been identified as explaining a large proportion
 of variance in the data when these data were analysed in the PCA episode.
@@ -135,28 +130,27 @@ We may expect a similar number of factors to exist in the data.
 Let's subset the data to just include the log-transformed clinical variables
 for the purposes of this episode:
 
-```{r lasso2}
-library(lasso2)
-data(Prostate)
+```{r prostate}
+prostate <- readRDS(here("data/prostate.rds"))
 ```
 
 ```{r view, eval=FALSE}
-View(Prostate)
+View(prostate)
 ```
 
 ```{r dims}
-nrow(Prostate)
-head(Prostate)
+nrow(prostate)
+head(prostate)
 
 #select five log-transformed clinical variables for further analysis
-pros2 <- Prostate[, c(1, 2, 4, 6, 9)]
+pros2 <- prostate[, c(1, 2, 4, 6, 9)]
 head(pros2)
 ```
 
 # Performing exploratory factor analysis
 
 EFA may be implemented in R using the `factanal()` function
-from the **`stats`** package (which is a built in package in base R). This
+from the **`stats`** package (which is a built-in package in base R). This
 function fits a factor analysis by maximising the log-likelihood using a
 data matrix as input. The number of factors to be fitted in the analysis
 is specified by the user using the `factors` argument. Options for
@@ -203,9 +197,11 @@ factors, while negative values show a negative relationship between variables
 and factors. Loading values are missing for some variables because R does not
 print loadings less than 0.1. 
 
-To select the most appropriate number of factors we repeat the factor
+There are numerous ways to select the “best” number of factors. One is to use
+the minimum number of features that does not leave a significant amount of
+variance unaccounted for. In practise, we repeat the factor
 analysis using different values in the `factors` argument. If we have an
-idea of how many factors there will be before analysis we can start with
+idea of how many factors there will be before analysis, we can start with
 that number. The final section of the analysis output shows the results of
 a hypothesis test in which the null hypothesis is that the number of factors
 used in the model is sufficient to capture most of the variation in the
@@ -226,7 +222,9 @@ for by the FA model.
 
 *Uniqueness* is the opposite of communality and represents the amount of
 variation in a variable that is not accounted for by the FA model. Uniqueness is
-calculated by subtracting the communality value from 1.
+calculated by subtracting the communality value from 1. If uniqueness is high for
+a given variable, that means this variable is not well explaind/accounted for
+by the factors identified.
 
 ```{r common-unique}
 apply(pros_fa$loadings^2, 1, sum)  #communality
@@ -234,9 +232,9 @@ apply(pros_fa$loadings^2, 1, sum)  #communality
 ```
 
 # Visualising the contribution of each variable to the factors
-
-We can plot the loadings in a biplot and label points by variable names
-showing the contribution of each variable to the factors.
+Similar to a biplot as we produced in the PCA episode, we can “plot the
+loadings”. This shows how each original variable contributes to each of
+the factors we chose to visualise.
 
 ```{r biplot}
 #First, carry out factor analysis using two factors
@@ -295,6 +293,8 @@ text(
 
 - Gundogdu et al. (2019) Comparison of performances of Principal Component Analysis (PCA) and Factor Analysis (FA) methods on the identification of cancerous and healthy colon tissues. International Journal of Mass Spectrometry 445:116204.
 - Kustra et al. (2006) A factor analysis model for functional genomics. BMC Bioinformatics 7: doi:10.1186/1471-2105-7-21.
-- Yong, A.G. & Pearce, S. (2013) A beginner's guide to factor analysis: focusing on exploratory factor analysis. Turotials in Quantitative Methods for Psychology 9(2):79-94.
+- Yong, A.G. & Pearce, S. (2013) A beginner's guide to factor analysis: focusing on exploratory factor analysis. Tutorials in Quantitative Methods for Psychology 9(2):79-94.
+- Confirmatory factor analysis can be carried out, for instance with the packages [Lavaan](https://www.lavaan.ugent.be/index.html) and [psych](https://personality-project.org/r/psych/)
+- A more sophisticated implementation of EFA is available in [EFA.dimensions](https://cran.r-project.org/web/packages/EFA.dimensions/index.html)
 
 {% include links.md %}
