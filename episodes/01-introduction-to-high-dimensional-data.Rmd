@@ -173,13 +173,13 @@ of the challenges we are facing when working with high-dimensional data.
 > {: .solution}
 {: .challenge}
 
-> ## Locating data with R - the `here` package
+> ## Locating data with R - the **`here`** package
 > 
 > It is often desirable to access external datasets from inside R and to write 
 > code that does this reliably on different computers. While R has an inbulit 
 > function `setwd()` that can be used to denote where external datasets are 
 > stored, this usually requires the user to adjust the code to their specific 
-> system and folder structure. The `here` package is meant to be used in R 
+> system and folder structure. The **`here`** package is meant to be used in R 
 > projects. It allows users to specify the data location relative to the R 
 > project directory. This makes R code more portable and can contribute to 
 > improve the reproducibility of an analysis.
