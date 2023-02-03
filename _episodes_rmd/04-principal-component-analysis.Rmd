@@ -78,8 +78,7 @@ Advantages:
 Disadvantages:
 * It assumes that variables in a dataset are correlated.
 * It is sensitive to the scale at which input variables are measured.
-  If input variables are measured at different scales, loadings will be largest
-  for the variables with the greatest variance. This means that variables
+  If input variables are measured at different scales, the variables
   with large variance relative to the scale of measurement will have
   greater impact on the principal components relative to variables with smaller
   variance. In many cases, this is not desirable.
@@ -351,14 +350,15 @@ PC3 a further `r prop.var[[3]]`%, PC4 approximately `r prop.var[[4]]`% and PC5
 around `r prop.var[[5]]`%.
 
 Let us visualise this. A plot of the amount of variance accounted for by each PC
-is also called a scree plot. NB, the amount of variance accounted for by a principal
+is also called a scree plot. Note that the amount of variance accounted for by a principal
 component is also called eigenvalue and thus the y-axis in scree plots if often
 labelled “eigenvalue”.
 
 Often, scree plots show a characteristic pattern where initially, the variance drops
-rapidly with each additional PC. But then there is an “elbow” after which the
-variance decreases more slowly. This is sometimes interpreted as structural variance
-that is relevant and should be retained versus noise which may be discarded. 
+rapidly with each additional principal component. But then there is an “elbow” after which the
+variance decreases more slowly. The total variance explained up to the elbow point is sometimes
+interpreted as structural variance that is relevant and should be retained versus noise
+which may be discarded after the elbow. 
 
 
 ```{r varexp}
@@ -383,12 +383,12 @@ components mean?
 ## What are loadings and principal component scores?
 
 Most PCA functions will produce two main output matrices: the
-*principal component scores* and the *loadings*. The matrix of PC scores
+*principal component scores* and the *loadings*. The matrix of principal component scores
 has as many rows as there were observations in the input matrix. These
 scores are what is usually visualised or used for down-stream analyses.
-The rotation matrix has as many rows as there are features in the original data.
-It contains information about how the (usually centered and scaled) original
-data relate to the PC scores.
+The matrix of loadings (also called rotation matrix) has as many rows as there
+are features in the original data. It contains information about how the
+(usually centered and scaled) original data relate to the PC scores.
 
 When calling a PCA object generated with `prcomp()`, the loadings are printed by default:
 
@@ -396,8 +396,8 @@ When calling a PCA object generated with `prcomp()`, the loadings are printed by
 pca.pros
 ```
 
-The PC scores are obtained by carrying out matrix multiplication of the
-(usually centered and scaled) original data time the loadings. The following
+The principal component scores are obtained by carrying out matrix multiplication of the
+(usually centered and scaled) original data times the loadings. The following
 callout demonstrates this.
 
 > ## Computing a PCA "by hand"
@@ -419,7 +419,7 @@ callout demonstrates this.
 > plot(my.pros2.pcs[,1:2], main="\"By hand\"", xlab="PC1", ylab="PC2")
 > abline(h=0, v=0, lty=2)
 > par(mfrow=c(1,1)
-> # NB, axis orientations may be swapped but the relative positions of the dots should be the same in both plots.
+> # Note that the axis orientations may be swapped but the relative positions of the dots should be the same in both plots.
 > ```
 {: .callout}
 
@@ -708,7 +708,7 @@ Let's consider this biplot in more detail, and also display the loadings:
 > > ## Solution
 > > 
 > > ```{r pca-biplot-ex2, fig.cap="Caption", fig.cap="Alt"}
-> >   biplot(pc,
+> >   PCAtools::biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
 > >     hline = 0, vline = 0,
