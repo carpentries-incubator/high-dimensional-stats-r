@@ -134,6 +134,7 @@ of the challenges we are facing when working with high-dimensional data.
 > Load the `Prostate` dataset as follows:
 
 > ```{r prostate}
+> library("here")
 > Prostate <- readRDS(here("data/prostate.rds"))
 > ```
 > 

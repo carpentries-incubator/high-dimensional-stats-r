@@ -1,11 +1,11 @@
 ---
-title: "Regression with many features"
+title: "Regression with many outcomes"
 source: Rmd
 teaching: 60
 exercises: 30
 questions:
 - "How can we apply linear regression in a high-dimensional setting?"
-- "How can we benefit from the fact that we have many variables?"
+- "How can we benefit from the fact that we have many outcomes?"
 - "How can we control for the fact that we do many tests?"
 objectives:
 - "Perform and critically analyse high dimensional regression."
@@ -103,11 +103,8 @@ knitr::kable(head(colData(methylation)), row.names = FALSE)
 ```
 
 In this episode, we will focus on the association between age and
-methylation. The association between age and methylation status in blood
-samples has been studied extensively, and is actually a well-known
-application of some high-dimensional regression techniques, with the
-idea of "epigenetic age" having been derived using these techniques. The
-methylation levels for these data can be presented in a heatmap:
+methylation. The following heatmap summarises age and methylation levels 
+available in the Prostate dataset:
 
 ```{r heatmap, fig.cap="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
 age <- methylation$Age
@@ -137,10 +134,19 @@ Heatmap(methyl_mat_ord,
     use_raster = FALSE
 )
 ```
+Depending on the scientific question of interest, two types of high-dimensional 
+problems could be explored in this context:
 
-We would like to identify features that are related to our outcome of
-interest (age). It is clear from the heatmap that there are too many
-features to do so manually.
+1. To predict age using methylation leves as predictors. In this case, we would 
+have a single outcome (age) which will be predicted using 5000 covariates 
+(methylation levels across the genome). 
+
+2. To predict methylation levels using age as a predictor. In this case, we 
+would have 5000 outcomes (methylation levels across the genome) and a single 
+covariate (age). 
+
+The examples in this episode will focus on the second type of problem, whilst 
+the next episode will focus on the first.
 
 > ## Exercise
 >
@@ -203,7 +209,7 @@ features to do so manually.
 > therefore can be easier to work with in statistical models.
 {: .callout}
 
-# Identifying associations using linear regression
+# Regression with many outcomes
 
 In high-throughput studies, it is common to have one or more phenotypes
 or groupings that we want to relate to features of interest (eg, gene
@@ -211,7 +217,8 @@ expression, DNA methylation levels). In general, we want to identify
 differences in the features of interest that are related to a phenotype
 or grouping of our samples. Identifying features of interest that vary
 along with phenotypes or groupings can allow us to understand how
-phenotypes arise or manifest.
+phenotypes arise or manifest. Analysis of this type are sometimes referred 
+to using the term *differential analysis*. 
 
 For example, we might want to identify genes that are expressed at a
 higher level in mutant mice relative to wild-type mice to understand the
@@ -306,6 +313,7 @@ from the model object:
 
 ```{r fit1}
 age <- methylation$Age
+# methyl_mat[1, ] indicates that the 1st CpG will be used as outcome variable
 lm_age_methyl1 <- lm(methyl_mat[1, ] ~ age)
 lm_age_methyl1
 ```
@@ -345,16 +353,16 @@ relationship between the predictor variable(s) and the outcome. This may
 not always be the most realistic or useful null hypothesis, but it is
 the one we have!
 
-For this linear model, we can use `tidy()` from the **`broom`** package to extract detailed
-information about the coefficients and the associated hypothesis tests
-in this model:
+For this linear model, we can use `tidy()` from the **`broom`** package to 
+extract detailed information about the coefficients and the associated 
+hypothesis tests in this model:
 
 ```{r tidyfit}
 library("broom")
 tidy(lm_age_methyl1)
 ```
 
-The standard errors (`std.error`) represent the uncertainty in our
+The standard errors (`std.error`) represent the statistical uncertainty in our
 effect size estimate. The test statistics and p-values represent
 measures of how (un)likely it would be to observe results like this
 under the "null hypothesis".
@@ -489,7 +497,9 @@ the test statistic under the null hypothesis that is equal or greater to
 the value we observe for the intercept term. This shaded region is small
 relative to the total area of the null distribution; therefore, the
 p-value is small ($p=`r round(table_age_methyl1$p.value[[1]], digits =
-3)`$). The blue-ish shaded region represents the same measure for the slope  term; this is larger, relative to the total area of the distribution, therefore the p-value is larger than the one for the intercept term 
+3)`$). The blue-ish shaded region represents the same measure for the slope term; 
+this is larger, relative to the total area of the distribution, therefore the 
+p-value is larger than the one for the intercept term 
 ($p=`round(table_age_methyl1$p.value[[2]], digits = 3)`$). You can see that
 the p-value is a function of the size of the effect we're estimating and
 the uncertainty we have in that effect. A large effect with large
@@ -529,7 +539,7 @@ small uncertainty may lead to a small p-value.
 >
 >{: .callout}
 
-# Sharing information between features
+# Sharing information across outcome variables
 
 Now that we understand how hypothesis tests work in the 
 linear model framework, we are going to introduce an idea that allows us to
@@ -577,8 +587,8 @@ statistic by shrinking the estimates of standard errors towards a common
 value. This results in a *moderated t-statistic*.
 
 The process of running a model in **`limma`** is somewhat different to what you
-may have seen when running linear models. Here, we define a *model
-matrix* or *design matrix*, which is a way of representing the
+may have seen when running linear models. Here, we define a *model matrix* or 
+*design matrix*, which is a way of representing the
 coefficients that should be fit in each linear model. These are used in
 similar ways in many different modelling libraries.
 
@@ -588,6 +598,27 @@ design_age <- model.matrix(~age)
 dim(design_age)
 head(design_age)
 ```
+
+> ## What is a model matrix?
+> When R fits a regression model, it chooses a vector of regression coefficients 
+> that minimises the differences between outcome values and those values 
+> predicted by using the covariates (or predictor variables). But how do we get 
+> from a set of predictors and regression coefficients to predicted values? This 
+> is done via matrix multipliciation. The matrix of predictors is (matrix) 
+> multiplied by the vector of coefficients. That matrix is called the 
+> **model matrix** (or design matrix). It has one row for each observation and 
+> one column for each predictor plus (by default) one aditional column of ones 
+> (the intercept column). Many R libraries (but not **`limma`** ) contruct the 
+> model matrix behind the scenes. Usually, it can be extracted from a model fit 
+> using the function `model.matrix()`. Here is an example:
+> 
+> ```{r}
+> data(cars)
+> head(cars)
+> mod1 <- lm(dist ~ speed, data=cars) # fit regression model using speed as a predictor
+> head(model.matrix(mod1)) # the model matrix contains two columns: intercept and speed
+> ```
+{: .callout}
 
 As you can see, the design matrix has the same number of rows as our
 methylation data has samples. It also has two columns - one for the
@@ -1091,10 +1122,11 @@ experiment over and over.
 
 ## Further reading
 
--   [limma tutorial by Kasper D.
+-   [**`limma`** tutorial by Kasper D.
     Hansen](https://kasperdanielhansen.github.io/genbioconductor/html/limma.html)
--   [limma user
+-   [**`limma`** user
     manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf).
+-   [The **`VariancaPartition`** package](https://bioconductor.org/packages/release/bioc/vignettes/variancePartition/inst/doc/dream.html) has similar functionality than **`limma`** but allows the inclusion of random effects. 
 
 ## Footnotes
 
