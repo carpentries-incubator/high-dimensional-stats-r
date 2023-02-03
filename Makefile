@@ -32,7 +32,7 @@ endif
 
 
 # Controls
-.PHONY : commands clean files
+.PHONY : commands clean files docker
 
 # Default target
 .DEFAULT_GOAL := commands
@@ -209,3 +209,6 @@ lesson-fixme:
 ## * commands         : show all commands.
 commands:
 	@sed -n -e '/^##/s|^##[[:space:]]*||p' $(MAKEFILE_LIST)
+
+docker:
+	docker build -t alanocallaghan/high-dimensional-stats-r:latest . && docker push alanocallaghan/high-dimensional-stats-r:latest
