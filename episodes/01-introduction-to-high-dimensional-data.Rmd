@@ -307,6 +307,7 @@ such as experimental condition or age. In this case, multiple univariate
 regression models (one per each outcome, using the covariate of interest as 
 predictor) could be fitted independently. In the context of high-dimensional 
 molecular data, a typical example are *differential gene expression* analyses. 
+We will explore this type of analysis in the *Regression with many outcomes* episode.
 
 (2) Regularisation (also known as regularised regression or penalised regression) 
 is typically used to fit regression models when there is a single outcome 
@@ -316,15 +317,19 @@ over-fitting and may be used to identify a small subset of predictors that are
 associated with the outcome of interest. For example, regularised regression has
 been often used when building *epigenetic clocks*, where methylation values 
 across several thousands of genomic sites are used to predict chronological age. 
+We will explore this in more detail in the *Regularised regression* episode. 
 
 (3) Dimensionality reduction is commonly used on high dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
 For instance, a low dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
+This course contains two episodes that explore dimensionality reduction
+techniques: *Principal component analysis* and *Factor analysis*. 
 
 (4) Clustering methods can be used to identify potential grouping patterns 
 within a dataset. A popular example is the *identification of distinct cell types*
-through clustering cells with similar gene expression patterns. 
+through clustering cells with similar gene expression patterns. The *K-means*
+episode will explore a specific method to perform clustering analysis. 
 
 
 > ## Using Bioconductor to access high-dimensional data in the biosciences
