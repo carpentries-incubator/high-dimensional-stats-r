@@ -63,7 +63,7 @@ knitr::include_graphics("../fig/table_for_fa.png")
 # ![Figure 1: Student exam scores per subject. Subjects can be split into two factors representing mathematical ability and writing ability](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for FA.png)
 ```
 
-Another example of how FA can be used is creating new factors based on a
+Another example of how CFA can be used is creating new factors based on a
 researcher's knowledge of how genes group into clusters.
 
 So, EFA is designed to identify a specified number of unobservable factors from
@@ -95,8 +95,6 @@ Disadvantages:
   structure of the data before analysis is carried out.
 * Sometimes, it can be difficult to interpret what factors mean after
   analysis has been completed. 
-* FA is not a commonly used method in some areas of biology
-  (including genomics), although this is changing.
 * Like PCA, standard methods of carrying out FA assume that input variables
   are continuous, although extensions to FA allow ordinal and binary
   variables to be included (after transforming the input matrix).
@@ -234,7 +232,7 @@ apply(pros_fa$loadings^2, 1, sum)  #communality
 ```
 
 # Visualising the contribution of each variable to the factors
-Similar to a biplot as we produced in the PCR episode, we can “plot the
+Similar to a biplot as we produced in the PCA episode, we can “plot the
 loadings”. This shows how each original variable contributes to each of
 the factors we chose to visualise.
 
