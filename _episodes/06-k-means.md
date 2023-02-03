@@ -202,11 +202,11 @@ here?
 > {: .solution}
 {: .challenge}
 
-> ## K-medioids (PAM)
+> ## K-medoids (PAM)
 > 
 > One problem with K-means is that using the mean to define cluster centroids
 > means that clusters can be very sensitive to outlying observations.
-> K-medioids, also known as "partitioning around medioids (PAM)" is similar to 
+> K-medoids, also known as "partitioning around medoids (PAM)" is similar to 
 > K-means, but uses the median rather than the mean as the method for defining
 > cluster centroids. Using the median rather than the mean reduces sensitivity of
 > clusters to outliers in the data. K-medioids has had popular application in
@@ -227,24 +227,37 @@ here?
 > {: .language-r}
 > 
 > <img src="../fig/rmd-08-unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" width="432" style="display: block; margin: auto;" />
+> PAM can be carried out using `pam()` form the **`cluster`** package.
 > 
 {: .callout}
 
 
 # Cluster separation
+When performing clustering, it is important for us to be able to measure
+how well our clusters are separated. One measure to test this is silhouette width.
+This is a number that is computed for every observation. It can range from -1 to 1.
+A high silhouette width means an observation is closer to other observations
+within the same cluster. For each cluster, the silhouette widths can then be
+averaged or an overall average can be taken.
 
-When performing clustering, it's important for us to be able to measure how
-well our clusters are separated. One measure to test this is *silhouette width*.
-For each data point, the silhouette width is the average distance
-between this point and all other points in its cluster, relative to
-the average distance of that point to the next closest cluster.
+
+> ## More detail on silhouette widths
+> In more detail, each observation’s silhouette width is computed as follows:  
+> 1. Compute the average distance between the focal observation and all other
+> observations in the same cluster.
+> 2. For each of the other clusters, compute the average distance between
+> focal observation and all observations in the other cluster. Keep the
+> smallest of these average distances.
+> 3. Subtract (1.)-(2.) then divivde by whichever is smaller (1.) or (2).
+{: .callout}
+
 Ideally, we would have only large positive silhouette widths, indicating
-that each data point is much more similar to points within its cluster than it is to the points in 
-any other cluster. However, this is rarely the case. Often, clusters are very fuzzy, and even if we are relatively sure about
-the existence of discrete groupings in the data, observations on the boundaries
-can be difficult to confidently place in either cluster.
+that each data point is much more similar to points within its cluster than it
+is to the points in any other cluster. However, this is rarely the case. Often,
+clusters are very fuzzy, and even if we are relatively sure about the existence
+of discrete groupings in the data, observations on the boundaries can be difficult
+to confidently place in either cluster.
 
-  
 Here we use the `silhouette` function from the `cluster` package to calculate the
 silhouette width of our K-means clustering using a distance matrix of distances
 between points in the clusters.
@@ -516,6 +529,9 @@ pheatmap(ratios,
 {: .language-r}
 
 <img src="../fig/rmd-08-bs-heatmap-1.png" alt="plot of chunk bs-heatmap" width="432" style="display: block; margin: auto;" />
+
+Yellow boxes indicate values slightly greater than 1, which may be observed.
+These are “good” (despite missing in the colour bar).
 
 > ## Exercise
 >
