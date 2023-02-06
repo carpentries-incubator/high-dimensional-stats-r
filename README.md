@@ -51,6 +51,7 @@ Current maintainers of this lesson are
 * Alan O'Callaghan
 * Ailith Ewing
 * Catalina Vallejos
+* Hannes Becher
 
 
 ## Authors

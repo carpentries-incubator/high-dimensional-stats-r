@@ -1,3 +1,6 @@
+# This follows the download instructions available here:
+# https://bioconductor.org/packages/release/data/experiment/vignettes/FlowSorted.Blood.EPIC/inst/doc/FlowSorted.Blood.EPIC.html 
+
 pkgs <- c("FlowSorted.Blood.EPIC", "ExperimentHub", "here")
 BiocManager::install(pkgs, upgrade = FALSE, ask = FALSE)
 for (pkg in pkgs) {
