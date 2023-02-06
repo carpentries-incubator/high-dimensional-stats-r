@@ -162,7 +162,7 @@ of the challenges we are facing when working with high-dimensional data.
 > >
 > > pairs(Prostate)  #plot each pair of variables against each other
 > > ```
-> > The `pairs` function plots relationships between each of the variables in
+> > The `pairs()` function plots relationships between each of the variables in
 > > the `prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
