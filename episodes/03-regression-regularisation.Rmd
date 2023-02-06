@@ -60,6 +60,8 @@ Then, we try to fit a model of age using all of the 5,000 features in this
 dataset (average methylation levels, M-values, across different sites in the genome).
 
 ```{r fitall, R.options=list(max.print=20)}
+# by using methyl_mat in the formula below, R will run a multivariate regression
+# model in which each of the columns in methyl_mat is used as a predictor. 
 fit <- lm(age ~ methyl_mat)
 summary(fit)
 ```

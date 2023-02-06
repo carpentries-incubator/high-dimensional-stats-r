@@ -140,7 +140,7 @@ covariate (age).
 The examples in this episode will focus on the second type of problem, whilst 
 the next episode will focus on the first.
 
-> ## Exercise
+> ## Challenge 1
 >
 > Why can we not just fit many linear regression models, one for each of the columns
 > in the `colData` above against each of the features in the matrix of
@@ -359,7 +359,7 @@ effect size estimate. The test statistics and p-values represent
 measures of how (un)likely it would be to observe results like this
 under the "null hypothesis".
 
-> ## Exercise
+> ## Challenge 2
 >
 > In the model we fitted, the p-value for the intercept term is
 > significant at $p < 0.05$. What does this mean?
@@ -695,7 +695,7 @@ continuous measures like these, it is often convenient to obtain a list
 of features which we are confident have non-zero effect sizes. This is
 made more difficult by the number of tests we perform.
 
-> ## Exercise
+> ## Challenge 3
 >
 > The effect size estimates are very small, and yet many of the p-values
 > are well below a usual significance level of p \< 0.05. Why is this?
@@ -779,7 +779,7 @@ understand, but it is useful to develp an intuition why these approaches may be 
 precise and sensitive than the naive approach of fitting a model to each
 feature separately.
 
-> ## Exercise
+> ## Challenge 4
 >
 > 1.  Try to run the same kind of linear model with smoking status as
 >     covariate instead of age, and making a volcano plot. *Note:
@@ -922,7 +922,7 @@ threshold in a real experiment, it is likely that we would identify many
 features as associated with age, when the results we are observing are
 simply due to chance.
 
-> ## Exercise
+> ## Challenge 5
 >
 > 1.  If we run `r nrow(methylation)` tests under the null hypothesis,
 >     how many of them (on average) will be statistically significant at
@@ -1046,7 +1046,7 @@ experiment over and over.
 | \- Very conservative                                    | \- Does not control probability of making errors |
 | \- Requires larger statistical power                    | \- May result in false discoveries               |
 
-> ## Exercise
+> ## Challenge 6
 >
 > 1.  At a significance level of 0.05, with 100 tests performed, what is
 >     the Bonferroni significance threshold?
