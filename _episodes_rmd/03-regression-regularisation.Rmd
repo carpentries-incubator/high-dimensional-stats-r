@@ -103,8 +103,6 @@ than observations.
 > det(xtx)
 > ```
 
-
-
 > ## Correlated features -- common in high-dimensional data
 > 
 > So, we can't fit a standard linear model to high-dimensional data. But there
@@ -114,12 +112,12 @@ than observations.
 > To investigate the level of correlation between features, we can compute correlation coefficients
 > for all pairs of features in a dataset, for instance using Pearson's correlation
 > coefficient. This measures how similar the patterns of variation in these features.
-> We can see that in the `prostate` data (originally from the *`lasso2`* package),
+> We can see that in the `Prostate` data (originally from the *`lasso2`* package),
 > there are relatively few features and they are largely independent. 
 > 
 > ```{r corr-mat-prostate, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
 > library("ComplexHeatmap")
-> prostate <- readRDS(here("data/prostate.rds"))
+> Prostate <- readRDS(here("data/prostate.rds"))
 > 
 > cor_mat <- cor(Prostate[, -1])
 > col <- circlize::colorRamp2(
@@ -127,10 +125,9 @@ than observations.
 >     colors = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))
 > )
 > Heatmap(cor_mat,
->     column_title = "Feature-feature correlation in prostate data",
+>     column_title = "Feature-feature correlation in Prostate data",
 >     name = "Pearson correlation",
 >     col = col,
->     # cluster_rows = FALSE, cluster_columns = FALSE,
 >     show_row_dend = FALSE, show_column_dend = FALSE,
 >     show_row_names = FALSE, show_column_names = FALSE
 > )
@@ -142,21 +139,13 @@ than observations.
 > techniques we will use to calculate a linear regression model.
 > 
 > ```{r corr-mat-meth, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
-> library("minfi")
-> library("here")
-> library("ComplexHeatmap")
-> 
-> methylation <- readRDS(here("data/methylation.rds"))
-> 
-> age <- methylation$Age
-> methyl_mat <- t(assay(methylation))
+> # To facilitate visualisation we select the first 500 features only
 > small <- methyl_mat[, 1:500]
 > cor_mat <- cor(small)
 > Heatmap(cor_mat,
 >     column_title = "Feature-feature correlation in methylation data",
 >     name = "Pearson correlation",
 >     col = col,
->     # cluster_rows = FALSE, cluster_columns = FALSE,
 >     show_row_dend = FALSE, show_column_dend = FALSE,
 >     show_row_names = FALSE, show_column_names = FALSE
 > )
