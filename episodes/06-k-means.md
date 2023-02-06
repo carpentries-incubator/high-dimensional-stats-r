@@ -130,7 +130,7 @@ number of clusters that the data should be partitioned into.
 # K-means clustering applied to single-cell RNAseq data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
-We're going to work with single-cell RNAseq data in these clustering exercises,
+We're going to work with single-cell RNAseq data in these clustering challenges,
 which is often *very* high-dimensional. Commonly, experiments profile the
 expression level of 10,000+ genes in thousands of cells. Even after filtering
 the data to remove low quality observations, the dataset we're using in this
@@ -180,7 +180,7 @@ We can see that this produces a sensible-looking partition of the data.
 However, is it totally clear whether there might be more or fewer clusters
 here?
 
-> ## Exercise
+> ## Challenge 1
 > 
 > Cluster the data using a $K$ of 5, and plot it using `plotReducedDim`.
 > Save this with a variable name that's different to what we just used,
@@ -318,7 +318,7 @@ This makes sense, as points that are "between" two clusters may be more similar
 to points in another cluster than they are to the points in the cluster one they
 belong to.
 
-> ## Exercise
+> ## Challenge 2
 > 
 > Calculate the silhouette width for the K of 5 clustering we did earlier.
 > Is it better or worse than before?
@@ -533,7 +533,7 @@ pheatmap(ratios,
 Yellow boxes indicate values slightly greater than 1, which may be observed.
 These are “good” (despite missing in the colour bar).
 
-> ## Exercise
+> ## Challenge 3
 >
 > Repeat the bootstrapping process with K=5. Are the results better or worse?
 > Can you identify where the differences occur on the `plotReducedDim`?
