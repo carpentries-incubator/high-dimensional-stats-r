@@ -448,9 +448,9 @@ generalisability. This can be done with *regularisation*. The idea to add anothe
 condition to the problem we're solving with linear regression. This condition
 controls the total size of the  coefficients that come out. 
 For example, we might say that the point representing the slope and intercept
-must fall within a certain distance of the origin, $(0, 0)$. Note that we are still trying to
-solve for the line that minimises the square of the residuals; we are just
-adding this extra constraint to our solution. 
+must fall within a certain distance of the origin, $(0, 0)$. Note that we are 
+still trying to solve for the line that minimises the square of the residuals; 
+we are just adding this extra constraint to our solution. 
 
 For the 2-parameter model (slope and intercept), we could
 visualise this constraint as a circle with a given radius. We 
@@ -508,7 +508,7 @@ we try to minimise a function that includes our $L^2$ norm scaled by a
 factor that is usually written $\lambda$.
 
 $$
-     \sum_{i=1}^N \biggl( y_i - X_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
+     \sum_{i=1}^N \biggl( y_i - x'_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
 $$
 
 Another way of thinking about this is that when finding the best model, we're
