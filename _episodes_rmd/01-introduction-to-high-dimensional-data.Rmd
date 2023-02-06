@@ -236,7 +236,7 @@ in these datasets makes high correlations between variables more likely.
 > > ```
 > > 
 > > As seen above, some variables are highly correlated. In particular, the 
-> > correlation between gleason and pgg45 is equal to 0.75.
+> > correlation between `gleason` and `pgg45` is equal to 0.75.
 > > 
 > > Fitting univariate regression models to predict age using gleason and pgg45
 > > as predictors.
