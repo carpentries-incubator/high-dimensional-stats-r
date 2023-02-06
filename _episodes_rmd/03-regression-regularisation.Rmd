@@ -160,7 +160,7 @@ than observations.
 
 
 
-> ## Exercise
+> ## Challenge 1
 > 
 > Discuss in  groups:
 > 
@@ -268,22 +268,28 @@ points(
 Mathematically, we can write the sum of squared residuals as
 
 $$
-    \sum_{i=1}^N ( y_i-X_i\beta)^2
+    \sum_{i=1}^N ( y_i-x'_i\beta)^2
 $$
 
-where $\hat{y}_i$ is the predicted y value for each input data
-point $X_i$, and $y_i$ is the true observed value.
-This line is the line of best fit through our data when considering this
-goal of minimising the sum of squared error. However, it is not the only 
+where $\hat{y}_i$ is the predicted outcome value for each vector of covariate 
+values $x_i$, and $y_i$ is the true observed value. Note: the notation 
+$x'_i\beta$ indicates matrix multiplication. In this case, the result is 
+equivalent to multiplying each element of $x_i$ by its corresponding element in
+$\beta$ and then calculating the sum across all of those values. 
+
+
+Finding the value of $\beta$ that minimises
+the sum above is the line of best fit through our data when considering 
+this goal of minimising the sum of squared error. However, it is not the only 
 possible line we could use! For example, we might want to err on the side of
-caution when estimating effect sizes (coefficients). That is, we might want to avoid estimating
-very large effect sizes. This can help us to create *generalisable*
+caution when estimating effect sizes (coefficients). That is, we might want to 
+avoid estimating very large effect sizes. This can help us to create *generalisable*
 models. This is important when models that are fitted (trained) on one dataset
 and then used to predict outcomes from a new dataset. Restricting parameter
 estimates is particularly important when analysing high-dimensional data.
 
 
-> ## Exercise
+> ## Challenge 2
 > 
 > Discuss in groups:
 > 
@@ -356,13 +362,14 @@ set.seed(42)
 train_ind <- sample(nrow(methyl_mat), 25)
 ```
 
-> ## Exercise
+> ## Challenge 3
 > 
 > 1. Split the methylation data matrix and the age vector
 >    into training and test sets.
 > 2. Fit a model on the training data matrix and training age 
 >    vector.
 > 3. Check the mean squared error on this model.
+>
 > 
 > > ## Solution
 > >
@@ -376,12 +383,20 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    test_mat <- horvath_mat[-train_ind, ]
 > >    test_age <- age[-train_ind]
 > >    ```
+> > The solution to this exercise is important because the generated objects 
+> > (`train_mat`, `train_age`, `test_mat` and `test_age`) will be used later in 
+> > this episode. Please make sure that you use the same object names. 
 > > 
 > > 2. To 
 > >    
 > >    ```{r trainfit}
 > >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 > >    ```
+> > 
+> > Using the `.` syntax above together with a `data` argument will lead to
+> > the same result as usign `train_age ~ tran_mat`: R will fit a multivariate 
+> > regression model in > > which each of the colums in `train_mat` is used as 
+> > a predictor. 
 > > 
 > > 3. The mean squared error of the model is the mean of the square of the
 > >    residuals. This seems very low here -- on average we're only off by 
