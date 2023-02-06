@@ -61,6 +61,8 @@ dataset (average methylation levels, M-values, across different sites in the gen
 
 
 ~~~
+# by using methyl_mat in the formula below, R will run a multivariate regression
+# model in which each of the columns in methyl_mat is used as a predictor. 
 fit <- lm(age ~ methyl_mat)
 summary(fit)
 ~~~

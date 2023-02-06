@@ -41,7 +41,7 @@ $p$, are close to or larger than the number of observations (or data points), $n
 The opposite is *low-dimensional data* in which the number of observations,
 $n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which
 refers to data with numerous features irrespective of the number of observations (similarly,
-*tall data* is often used to denote data with a large number of observations)
+*tall data* is often used to denote data with a large number of observations).
 Analyses of high-dimensional data require consideration of potential problems that
 come from having more features than observations.
 
@@ -126,15 +126,16 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `prostate` dataset as follows:
+> Load the `Prostate` dataset as follows:
 
 > 
 > ~~~
-> prostate <- readRDS(here("data/prostate.rds"))
+> library("here")
+> Prostate <- readRDS(here("data/prostate.rds"))
 > ~~~
 > {: .language-r}
 > 
-> Although technically not a high-dimensional dataset, the `prostate` data
+> Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
@@ -147,20 +148,20 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > dim(prostate)   #print the number of rows and columns
+> > dim(Prostate)   #print the number of rows and columns
 > > ~~~
 > > {: .language-r}
 > >
 > > 
 > > ~~~
-> > names(prostate) # examine the variable names
-> > head(prostate)   #print the first 6 rows
+> > names(Prostate) # examine the variable names
+> > head(Prostate)   #print the first 6 rows
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > ~~~
-> > names(prostate)  #examine column names
+> > names(Prostate)  #examine column names
 > > ~~~
 > > {: .language-r}
 > > 
@@ -175,13 +176,13 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > pairs(prostate)  #plot each pair of variables against each other
+> > pairs(Prostate)  #plot each pair of variables against each other
 > > ~~~
 > > {: .language-r}
 > > 
 > > <img src="../fig/rmd-01-pairs-prostate-1.png" alt="plot of chunk pairs-prostate" width="432" style="display: block; margin: auto;" />
-> > The `pairs` function plots relationships between each of the variables in
-> > the `prostate` dataset. This is possible for datasets with smaller numbers
+> > The `pairs()` function plots relationships between each of the variables in
+> > the `Prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
@@ -190,6 +191,18 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > {: .solution}
 {: .challenge}
+
+> ## Locating data with R - the **`here`** package
+> 
+> It is often desirable to access external datasets from inside R and to write 
+> code that does this reliably on different computers. While R has an inbulit 
+> function `setwd()` that can be used to denote where external datasets are 
+> stored, this usually requires the user to adjust the code to their specific 
+> system and folder structure. The **`here`** package is meant to be used in R 
+> projects. It allows users to specify the data location relative to the R 
+> project directory. This makes R code more portable and can contribute to 
+> improve the reproducibility of an analysis.
+{: .callout}
 
 Imagine we are carrying out least squares regression on a dataset with 25
 observations. Fitting a best fit line through these data produces a plot shown
@@ -217,17 +230,25 @@ in these datasets makes high correlations between variables more likely.
 
 > ## Challenge 3
 > 
-> Use the `cor()` function to examine correlations between all variables in the
-> prostate dataset. Are some variables highly correlated (i.e. correlation
-> coefficients > 0.6)? Fit a multiple linear regression model predicting patient age
-> using all variables in the prostate dataset.
+> Use the `cor()` function to examine correlations between all variables in the 
+> `Prostate` dataset. Are some pairs of variables highly correlated (i.e. 
+> correlation coefficients > 0.6)?
+>
+> Use the `lm()` function to fit univariate regression models to predict patient 
+> age using two variables that are highly correlated as predictors. Which of 
+> these variables are statistically significant predictors of age? Hint: the
+> `summary()` function can help here. 
+> 
+> Fit a multiple linear regression model predicting patient age using both
+> variables. What happened?
 > 
 > > ## Solution
-> > 
+> >
+> > Create a correlation matrix of all variables in the Prostate dataset
+> >
 > > 
 > > ~~~
-> > ## create a correlation matrix of all variables in the prostate dataset
-> > cor(prostate)
+> > cor(Prostate)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -262,32 +283,45 @@ in these datasets makes high correlations between variables more likely.
 > > 
 > > 
 > > ~~~
-> > ## correlation matrix for variables describing cancer/clinical variables
-> > cor(prostate[, c(1, 2, 4, 6, 9)])
+> > round(cor(Prostate), 2) # rounding helps to visualise the correlations
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> >                X    lcavol       age       svi     pgg45
-> > X      1.0000000 0.7111363 0.1965557 0.5667803 0.4497267
-> > lcavol 0.7111363 1.0000000 0.2249999 0.5388450 0.4336522
-> > age    0.1965557 0.2249999 1.0000000 0.1176580 0.2761124
-> > svi    0.5667803 0.5388450 0.1176580 1.0000000 0.4576476
-> > pgg45  0.4497267 0.4336522 0.2761124 0.4576476 1.0000000
+> >            X lcavol lweight  age  lbph   svi   lcp gleason pgg45 lpsa
+> > X       1.00   0.71    0.35 0.20  0.17  0.57  0.53    0.39  0.45 0.96
+> > lcavol  0.71   1.00    0.19 0.22  0.03  0.54  0.68    0.43  0.43 0.73
+> > lweight 0.35   0.19    1.00 0.31  0.43  0.11  0.10    0.00  0.05 0.35
+> > age     0.20   0.22    0.31 1.00  0.35  0.12  0.13    0.27  0.28 0.17
+> > lbph    0.17   0.03    0.43 0.35  1.00 -0.09 -0.01    0.08  0.08 0.18
+> > svi     0.57   0.54    0.11 0.12 -0.09  1.00  0.67    0.32  0.46 0.57
+> > lcp     0.53   0.68    0.10 0.13 -0.01  0.67  1.00    0.51  0.63 0.55
+> > gleason 0.39   0.43    0.00 0.27  0.08  0.32  0.51    1.00  0.75 0.37
+> > pgg45   0.45   0.43    0.05 0.28  0.08  0.46  0.63    0.75  1.00 0.42
+> > lpsa    0.96   0.73    0.35 0.17  0.18  0.57  0.55    0.37  0.42 1.00
 > > ~~~
 > > {: .output}
 > > 
+> > As seen above, some variables are highly correlated. In particular, the 
+> > correlation between `gleason` and `pgg45` is equal to 0.75.
+> > 
+> > Fitting univariate regression models to predict age using gleason and pgg45
+> > as predictors.
 > > 
 > > 
 > > ~~~
-> > ## use linear regression to predict patient age from cancer progression variables
-> > model <- lm(
-> >     age ~ lcavol + lweight + lbph + lcp + lpsa + svi + gleason + pgg45,
-> >     data = prostate
-> > )
-> > summary(model)
+> > model1 <- lm(age ~ gleason, data = Prostate)
+> > model2 <- lm(age ~ pgg45, data = Prostate)
+> > ~~~
+> > {: .language-r}
+> >
+> > Check which covariates have a significant efffect
+> >
+> > 
+> > ~~~
+> > summary(model1)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -296,52 +330,105 @@ in these datasets makes high correlations between variables more likely.
 > > ~~~
 > > 
 > > Call:
-> > lm(formula = age ~ lcavol + lweight + lbph + lcp + lpsa + svi + 
-> >     gleason + pgg45, data = prostate)
+> > lm(formula = age ~ gleason, data = Prostate)
 > > 
 > > Residuals:
-> >      Min       1Q   Median       3Q      Max 
-> > -19.6192  -4.1898   0.1754   4.8268  13.4274 
+> >     Min      1Q  Median      3Q     Max 
+> > -20.780  -3.552   1.448   4.220  13.448 
 > > 
 > > Coefficients:
 > >             Estimate Std. Error t value Pr(>|t|)    
-> > (Intercept) 41.82017   11.33028   3.691 0.000387 ***
-> > lcavol       2.04919    0.98817   2.074 0.041028 *  
-> > lweight      3.31717    1.61968   2.048 0.043536 *  
-> > lbph         1.40721    0.53796   2.616 0.010474 *  
-> > lcp         -1.35385    0.84781  -1.597 0.113877    
-> > lpsa        -1.72700    0.98259  -1.758 0.082293 .  
-> > svi          2.18332    2.40451   0.908 0.366353    
-> > gleason      1.35628    1.47029   0.922 0.358810    
-> > pgg45        0.05856    0.04124   1.420 0.159111    
+> > (Intercept)   45.146      6.918   6.525 3.29e-09 ***
+> > gleason        2.772      1.019   2.721  0.00774 ** 
 > > ---
 > > Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > > 
-> > Residual standard error: 6.643 on 88 degrees of freedom
-> > Multiple R-squared:  0.2701,	Adjusted R-squared:  0.2038 
-> > F-statistic: 4.071 on 8 and 88 DF,  p-value: 0.0003699
+> > Residual standard error: 7.209 on 95 degrees of freedom
+> > Multiple R-squared:  0.0723,	Adjusted R-squared:  0.06254 
+> > F-statistic: 7.404 on 1 and 95 DF,  p-value: 0.007741
 > > ~~~
 > > {: .output}
 > > 
 > > 
 > > 
 > > ~~~
-> > ## examine model residuals
-> > plot(model)
+> > summary(model2)
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-01-plot-lm-1.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-2.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-3.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-01-plot-lm-4.png" alt="plot of chunk plot-lm" width="432" style="display: block; margin: auto;" />
+> > 
+> > 
+> > ~~~
+> > 
+> > Call:
+> > lm(formula = age ~ pgg45, data = Prostate)
+> > 
+> > Residuals:
+> >      Min       1Q   Median       3Q      Max 
+> > -21.0889  -3.4533   0.9111   4.4534  15.1822 
+> > 
+> > Coefficients:
+> >             Estimate Std. Error t value Pr(>|t|)    
+> > (Intercept) 62.08890    0.96758   64.17  < 2e-16 ***
+> > pgg45        0.07289    0.02603    2.80  0.00619 ** 
+> > ---
+> > Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+> > 
+> > Residual standard error: 7.193 on 95 degrees of freedom
+> > Multiple R-squared:  0.07624,	Adjusted R-squared:  0.06651 
+> > F-statistic:  7.84 on 1 and 95 DF,  p-value: 0.006189
+> > ~~~
+> > {: .output}
+> >
+> > Based on these results we conclude that both `gleason` and `pgg45` have a 
+> > statistically significan univariate effect (also referred to as a marginal
+> > effect) as predictors of age (5% significance level). 
+> >
+> > Fitting a multivariate regression model using both both `gleason` and `pgg45` 
+> > as predictors
+> >
+> > 
+> > ~~~
+> > model3 <- lm(age ~ gleason + pgg45, data = Prostate)
+> > summary(model3)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > 
+> > Call:
+> > lm(formula = age ~ gleason + pgg45, data = Prostate)
+> > 
+> > Residuals:
+> >     Min      1Q  Median      3Q     Max 
+> > -20.927  -3.677   1.323   4.323  14.420 
+> > 
+> > Coefficients:
+> >             Estimate Std. Error t value Pr(>|t|)    
+> > (Intercept) 52.95548    9.74316   5.435  4.3e-07 ***
+> > gleason      1.45363    1.54299   0.942    0.349    
+> > pgg45        0.04490    0.03951   1.137    0.259    
+> > ---
+> > Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+> > 
+> > Residual standard error: 7.198 on 94 degrees of freedom
+> > Multiple R-squared:  0.08488,	Adjusted R-squared:  0.06541 
+> > F-statistic: 4.359 on 2 and 94 DF,  p-value: 0.01547
+> > ~~~
+> > {: .output}
+> >
+> > Although `gleason` and `pgg45` have statistically significant univariate effects,
+> > this is no longer the case when both variables are simultaneously included
+> > as covariates in a multivariate regression model. 
 > {: .solution}
 {: .challenge}
 
-The correlation matrix shows high correlation between some pairs of variables
-(e.g. between `lcavol` and `lpsa` and between `gleason` and `pgg45`). Including
-correlated variables in the same regression model can lead to problems in fitting
-a regression and interpreting the output. Some clinical variables
-(i.e. `lcavol`, `lweight`, `lbph`, `lcp`, `lpsa`) show high correlation between
-pairs of variables (e.g. between `lcavol` and `lpsa`). To allow variables to be
-included in the same model despite high levels of correlation we can use
+Including highly correlated variables such as `gleason` and `pgg45` 
+simultaneously the same regression model can lead to problems 
+in fitting a regression model and interpreting its output. To allow variables to 
+be included in the same model despite high levels of correlation, we can use
 dimensionality reduction methods to collapse multiple variables into a single
 new variable (we will explore this dataset further in the dimensionality
 reduction lesson). We can also use modifications to linear regression like
@@ -358,89 +445,45 @@ of overfitting. These problems are common to the analysis of many high-dimension
 for example, those using genomics data with multiple genes, or species
 composition data in an environment where the relative abundance of different species
 within a community is of interest. For such datasets, other statistical methods
-may be used to examine whether groups of observations show similar features
+may be used to examine whether groups of observations show similar characteristics
 and whether these groups may relate to other features in the data (e.g.
-phenotype in genetics data). While straight-forward linear regression cannot
-be used in datasets with many features, high-dimensional regression methods
-are available with methods to deal with overfitting and fitting models including
-many explanatory variables.
+phenotype in genetics data). 
 
-In situations where the response variable is difficult to identify or where
-explanatory variables are highly correlated, dimensionality reduction may be
-used to create fewer variables that represent the variation in the original dataset.
-Various dimensionality reduction methods are available, including principal
-component analysis (PCA), factor analysis, and multidimensional scaling, which
-are used to address different types of research questions. Dimensionality
-reduction methods such as PCA can also be used to visualise data in fewer
-dimensions, making patterns and clusters within the data easier to
-visualise. Exploring data via clustering is a good way of understanding
-relationships within observations in complex datasets.
+In this course we will cover four topics: (1) regression with numerous outcome 
+variables, (2) regularised regression, (3) dimensionality reduction, and (4) 
+clustering. Here are some examples for when each of these approaches may be used:
 
-Statistical methods (such as hierarchical clustering and k-means clustering)
-are often used to identify clusters within complex datasets. However, simply
-identifying clusters visually may not be enough - we also need to determine
-whether such clusters are 'real' or simply apparent interpretations of noise
-within the data.
+(1) Regression with numerous outcomes refers to situations in which there are 
+many variables of a similar kind (expression values for many genes, methylation 
+levels for many sites in the genome) and when one is interested in assessing 
+whether these variables are associated with a specific covariate of interest, 
+such as experimental condition or age. In this case, multiple univariate 
+regression models (one per each outcome, using the covariate of interest as 
+predictor) could be fitted independently. In the context of high-dimensional 
+molecular data, a typical example are *differential gene expression* analyses. 
+We will explore this type of analysis in the *Regression with many outcomes* episode.
 
-Let's create some random data and show how we can create clusters by changing
-parameters.
+(2) Regularisation (also known as *regularised regression* or *penalised regression*) 
+is typically used to fit regression models when there is a single outcome 
+variable or interest but the number of potential predictors is large, e.g. 
+there are more predictors than observations. Regularisation can help to prevent 
+over-fitting and may be used to identify a small subset of predictors that are
+associated with the outcome of interest. For example, regularised regression has
+been often used when building *epigenetic clocks*, where methylation values 
+across several thousands of genomic sites are used to predict chronological age. 
+We will explore this in more detail in the *Regularised regression* episode. 
 
+(3) Dimensionality reduction is commonly used on high dimensional datasets for 
+data exploration or as a preprocessing step prior to other downstream analyses. 
+For instance, a low-dimensional visualisation of a gene expression dataset may
+be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
+This course contains two episodes that explore dimensionality reduction
+techniques: *Principal component analysis* and *Factor analysis*. 
 
-~~~
-set.seed(80)     
-
-## create random data from a normal distribution and store as a matrix
-x <- matrix(rnorm(200, mean = 0, sd = 1), 100, 2)
-
-plot(x, pch = 19)
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-01-plot-random-1.png" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
-
-~~~
-## create three groups for each row of x
-selected <- sample(1:3, 100, replace = TRUE)
-
-## plot x and colour by selected
-plot(x, col = selected, pch = 19)
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-01-plot-random-2.png" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
-
-~~~
-#note there are no clusters in these data
-
-## create random data representing mean of each of the three groups
-xsel <- matrix(rnorm(6, mean = 0, sd = 1), 3, 2)
-#Note how increasing the value of sd makes clusters clearer
-
-## add values of x to xsel for each of three defined groups
-xgroups <- x + xsel[selected, ]
-## plot xgroups and colour by each of the three groups
-plot(xgroups, col = selected, pch = 19)
-~~~
-{: .language-r}
-
-<img src="../fig/rmd-01-plot-random-3.png" alt="plot of chunk plot-random" width="432" style="display: block; margin: auto;" />
-
-> ## Challenge 4
-> 
-> Change the value of `sd` in the above example. What happens to the data when
-> `sd` is increased?
-> 
-> > ## Solution
-> > 
-> > When `sd = 1` in above example, clusters in randomly generated data are not
-> > obvious. Increasing the value of `sd` makes clusters clearer. Sometimes it
-> > is possible to convince ourselves that there are clusters in the data just
-> > by colouring the data points by their respective groups! Formal cluster
-> > analysis and validation is necessary to determine whether visual clusters
-> > in data are likely 'real'.
-> > 
-> {: .solution}
-{: .challenge}
+(4) Clustering methods can be used to identify potential grouping patterns 
+within a dataset. A popular example is the *identification of distinct cell types*
+through clustering cells with similar gene expression patterns. The *K-means*
+episode will explore a specific method to perform clustering analysis. 
 
 
 > ## Using Bioconductor to access high-dimensional data in the biosciences
