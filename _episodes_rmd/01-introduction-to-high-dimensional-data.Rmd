@@ -321,7 +321,7 @@ We will explore this in more detail in the *Regularised regression* episode.
 
 (3) Dimensionality reduction is commonly used on high dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
-For instance, a low dimensional visualisation of a gene expression dataset may
+For instance, a low-dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
 This course contains two episodes that explore dimensionality reduction
 techniques: *Principal component analysis* and *Factor analysis*. 
