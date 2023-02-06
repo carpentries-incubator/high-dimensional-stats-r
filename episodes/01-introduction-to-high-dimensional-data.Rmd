@@ -214,7 +214,7 @@ in these datasets makes high correlations between variables more likely.
 
 > ## Challenge 3
 > 
-> Use the cor() function to examine correlations between all variables in the 
+> Use the `cor()` function to examine correlations between all variables in the 
 > `Prostate` dataset. Are some pairs of variables highly correlated (i.e. 
 > correlation coefficients > 0.6)?
 >
