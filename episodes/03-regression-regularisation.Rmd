@@ -33,6 +33,11 @@ knitr_fig_path("03-")
 
 # Introduction
 
+
+This episode is about **regularisation**, also called **regularised regression** 
+or **penalised regression**. This approach can be used for prediction and for 
+feature selection and it is particularly useful when dealing with high-dimensional data.
+
 One reason that we need special statistical tools for high-dimensional data is
 that standard linear models cannot handle high-dimensional data sets -- one cannot fit
 a linear model where there are more features (predictor variables) than there are observations
@@ -108,38 +113,17 @@ than observations.
 > So, we can't fit a standard linear model to high-dimensional data. But there
 > is another issue. In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
+>
+> We have seen in the first episode that correlated features can make it hard 
+> (or impossible) to correctly infer parameters. If we visualise the level of 
+> correlation between sites in the methylation dataset, we can see that many 
+> of the features essentially represent the same information - there are many 
+> off-diagonal cells, which are deep red or blue. For example, the following
+> heatmap visualises the correlations for the first 500 features in the 
+> `methylation` dataset (we selected 500 features only as it can be hard to
+> visualise patterns when there are too many features!). 
 > 
-> To investigate the level of correlation between features, we can compute correlation coefficients
-> for all pairs of features in a dataset, for instance using Pearson's correlation
-> coefficient. This measures how similar the patterns of variation in these features.
-> We can see that in the `Prostate` data (originally from the *`lasso2`* package),
-> there are relatively few features and they are largely independent. 
-> 
-> ```{r corr-mat-prostate, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
-> library("ComplexHeatmap")
-> Prostate <- readRDS(here("data/prostate.rds"))
-> 
-> cor_mat <- cor(Prostate[, -1])
-> col <- circlize::colorRamp2(
->     breaks = seq(-1, 1, length.out = 9),
->     colors = rev(RColorBrewer::brewer.pal(9, "RdYlBu"))
-> )
-> Heatmap(cor_mat,
->     column_title = "Feature-feature correlation in Prostate data",
->     name = "Pearson correlation",
->     col = col,
->     show_row_dend = FALSE, show_column_dend = FALSE,
->     show_row_names = FALSE, show_column_names = FALSE
-> )
-> ```
-> 
-> If we do the same for the methylation dataset, in contrast, we can see that many
-> of the features essentially represent the same information (there are many off-diagonal
-> cells which are deep red or blue). This can present problems for a lot of the mathematical
-> techniques we will use to calculate a linear regression model.
-> 
-> ```{r corr-mat-meth, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
-> # To facilitate visualisation we select the first 500 features only
+> ```{r corr-mat-meth, fig.cap="Cap", fig.alt="Alt"}
 > small <- methyl_mat[, 1:500]
 > cor_mat <- cor(small)
 > Heatmap(cor_mat,
