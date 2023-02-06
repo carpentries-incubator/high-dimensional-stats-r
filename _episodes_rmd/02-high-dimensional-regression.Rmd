@@ -55,6 +55,9 @@ library("minfi")
 methylation <- readRDS(here("data/methylation.rds"))
 ```
 
+Note: the code that we used to download these data from its source is available
+[here](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/data/methylation.R)
+
 This `methylation` object is a `GenomicRatioSet`, a Bioconductor data
 object derived from the `SummarizedExperiment` class. These
 `SummarizedExperiment` objects contain `assay`s, in this case
