@@ -67,7 +67,6 @@ is shown in the figure below.
 
 ```{r table-intro, echo = FALSE}
 knitr::include_graphics("../fig/intro-table.png")
-# ![Figure 1: Example of high-dimensional biomedical data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for Intro.png)
 ```
 
 
