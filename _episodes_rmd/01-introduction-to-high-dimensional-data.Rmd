@@ -67,7 +67,6 @@ is shown in the figure below.
 
 ```{r table-intro, echo = FALSE}
 knitr::include_graphics("../fig/intro-table.png")
-# ![Figure 1: Example of high-dimensional biomedical data](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Table for Intro.png)
 ```
 
 
@@ -163,8 +162,8 @@ of the challenges we are facing when working with high-dimensional data.
 > >
 > > pairs(Prostate)  #plot each pair of variables against each other
 > > ```
-> > The `pairs` function plots relationships between each of the variables in
-> > the `prostate` dataset. This is possible for datasets with smaller numbers
+> > The `pairs()` function plots relationships between each of the variables in
+> > the `Prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
@@ -215,7 +214,7 @@ in these datasets makes high correlations between variables more likely.
 
 > ## Challenge 3
 > 
-> Use the cor() function to examine correlations between all variables in the 
+> Use the `cor()` function to examine correlations between all variables in the 
 > `Prostate` dataset. Are some pairs of variables highly correlated (i.e. 
 > correlation coefficients > 0.6)?
 >
@@ -237,7 +236,7 @@ in these datasets makes high correlations between variables more likely.
 > > ```
 > > 
 > > As seen above, some variables are highly correlated. In particular, the 
-> > correlation between gleason and pgg45 is equal to 0.75.
+> > correlation between `gleason` and `pgg45` is equal to 0.75.
 > > 
 > > Fitting univariate regression models to predict age using gleason and pgg45
 > > as predictors.
@@ -254,11 +253,11 @@ in these datasets makes high correlations between variables more likely.
 > > summary(model2)
 > > ```
 > >
-> > Based on these results we conclude that both gleason and pgg45 have a 
+> > Based on these results we conclude that both `gleason` and `pgg45` have a 
 > > statistically significan univariate effect (also referred to as a marginal
 > > effect) as predictors of age (5% significance level). 
 > >
-> > Fitting a multivariate regression model using both both gleason and pgg45 
+> > Fitting a multivariate regression model using both both `gleason` and `pgg45` 
 > > as predictors
 > >
 > > ```{r multivariate-prostate}
@@ -266,7 +265,7 @@ in these datasets makes high correlations between variables more likely.
 > > summary(model3)
 > > ```
 > >
-> > Although gleason and pgg45 have statistically significant univariate effects,
+> > Although `gleason` and `pgg45` have statistically significant univariate effects,
 > > this is no longer the case when both variables are simultaneously included
 > > as covariates in a multivariate regression model. 
 > {: .solution}
@@ -300,7 +299,7 @@ In this course we will cover four topics: (1) regression with numerous outcome
 variables, (2) regularised regression, (3) dimensionality reduction, and (4) 
 clustering. Here are some examples for when each of these approaches may be used:
 
-(1) Regression with numerous outcome refers to situations in which there are 
+(1) Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
 levels for many sites in the genome) and when one is interested in assessing 
 whether these variables are associated with a specific covariate of interest, 
@@ -310,7 +309,7 @@ predictor) could be fitted independently. In the context of high-dimensional
 molecular data, a typical example are *differential gene expression* analyses. 
 We will explore this type of analysis in the *Regression with many outcomes* episode.
 
-(2) Regularisation (also known as regularised regression or penalised regression) 
+(2) Regularisation (also known as *regularised regression* or *penalised regression*) 
 is typically used to fit regression models when there is a single outcome 
 variable or interest but the number of potential predictors is large, e.g. 
 there are more predictors than observations. Regularisation can help to prevent 
@@ -322,7 +321,7 @@ We will explore this in more detail in the *Regularised regression* episode.
 
 (3) Dimensionality reduction is commonly used on high dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
-For instance, a low dimensional visualisation of a gene expression dataset may
+For instance, a low-dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
 This course contains two episodes that explore dimensionality reduction
 techniques: *Principal component analysis* and *Factor analysis*. 
