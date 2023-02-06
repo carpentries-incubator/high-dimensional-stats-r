@@ -425,6 +425,12 @@ plot(test_age, pred_lm, pch = 19)
 abline(coef = 0:1, lty = "dashed")
 ```
 
+This figure shows the predicted ages obtained from a linear model fit plotted 
+against the true ages, which we kept in the test dataset. If the prediction were 
+good, the dots should follow a line. Regularisation can help us to make the 
+model more generalisable, improving predictions for the test dataset (or any 
+other dataset that is not used when fitting our model). 
+
 # Using regularisation to impove generalisability
 
 As stated above, restricting model parameter estimates can improve a model's
