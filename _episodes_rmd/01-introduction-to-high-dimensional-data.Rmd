@@ -401,4 +401,9 @@ methods that could be used to analyse high-dimensional data. See
 Some related (an important!) content is also available in 
 [Responsible machine learning](https://carpentries-incubator.github.io/machine-learning-responsible-python/). 
 
+# Other resources suggested by former students
+
+- [Josh Starmer's](https://www.youtube.com/c/joshstarmer) youtube channel. 
+
+
 {% include links.md %}
