@@ -271,11 +271,16 @@ $$
     \sum_{i=1}^N ( y_i-x'_i\beta)^2
 $$
 
-where $\hat{y}_i$ is the predicted outcome value for each vector of covariate 
-values $x_i$, and $y_i$ is the true observed value. Note: the notation 
+where $\beta$ is a vector of (unknown) covariate effects which we want to learn
+by fitting a regression model: the $j$-th element of $\beta$, which we denote as 
+$\beta_j$ quantifies the effect of the $j$-th covariate. For each individual 
+$i$, $x_i$ is a vector of covariate values, $y_i$ is the true observed value for 
+the outcome and $\hat{y}_i$ is the predicted outcome value. The notation 
 $x'_i\beta$ indicates matrix multiplication. In this case, the result is 
-equivalent to multiplying each element of $x_i$ by its corresponding element in
-$\beta$ and then calculating the sum across all of those values. 
+equivalent to multiplying each element of $x_i$ by its corresponding element in 
+$\beta$ and then calculating the sum across all of those values. To quantify 
+the total error across all individuals, we sum the square residuals 
+$( y_i-x'_i\beta)^2$ across all the individuals in our data. 
 
 
 Finding the value of $\beta$ that minimises
