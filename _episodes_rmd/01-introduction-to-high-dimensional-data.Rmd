@@ -393,5 +393,17 @@ episode will explore a specific method to perform clustering analysis.
 - [Buhlman, P., Kalisch, M. & Meier, L. (2014) High-dimensional statistics with a view toward applications in biology. Annual Review of Statistics and Its Application](https://doi.org/10.1146/annurev-statistics-022513-115545).
 - Johnstone, I.M. & Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Philosophical Transactions of the Royal Society A 367:4237-4253.
 - [Bioconductor ethylation array analysis vignette](https://www.bioconductor.org/packages/release/workflows/vignettes/methylationArrayAnalysis/inst/doc/methylationArrayAnalysis.html).
+- The *Introduction to Machine Learning with Python* course covers additional 
+methods that could be used to analyse high-dimensional data. See 
+[Introduction to machine learning](https://carpentries-incubator.github.io/machine-learning-novice-python/),
+[Tree models](https://carpentries-incubator.github.io/machine-learning-trees-python/) and
+[Neural networks](https://carpentries-incubator.github.io/machine-learning-neural-python/). 
+Some related (an important!) content is also available in 
+[Responsible machine learning](https://carpentries-incubator.github.io/machine-learning-responsible-python/). 
+
+# Other resources suggested by former students
+
+- [Josh Starmer's](https://www.youtube.com/c/joshstarmer) youtube channel. 
+
 
 {% include links.md %}

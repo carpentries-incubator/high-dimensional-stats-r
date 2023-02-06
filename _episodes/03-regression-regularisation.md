@@ -31,6 +31,11 @@ math: yes
 
 # Introduction
 
+
+This episode is about **regularisation**, also called **regularised regression** 
+or **penalised regression**. This approach can be used for prediction and for 
+feature selection and it is particularly useful when dealing with high-dimensional data.
+
 One reason that we need special statistical tools for high-dimensional data is
 that standard linear models cannot handle high-dimensional data sets -- one cannot fit
 a linear model where there are more features (predictor variables) than there are observations
@@ -139,39 +144,41 @@ than observations.
 > ~~~
 > {: .output}
 
-
-
 > ## Correlated features -- common in high-dimensional data
 > 
 > So, we can't fit a standard linear model to high-dimensional data. But there
 > is another issue. In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
-> 
-> To investigate the level of correlation between features, we can compute correlation coefficients
-> for all pairs of features in a dataset, for instance using Pearson's correlation
-> coefficient. This measures how similar the patterns of variation in these features.
-> We can see that in the `prostate` data (originally from the *`lasso2`* package),
-> there are relatively few features and they are largely independent. 
+>
+> We have seen in the first episode that correlated features can make it hard 
+> (or impossible) to correctly infer parameters. If we visualise the level of 
+> correlation between sites in the methylation dataset, we can see that many 
+> of the features essentially represent the same information - there are many 
+> off-diagonal cells, which are deep red or blue. For example, the following
+> heatmap visualises the correlations for the first 500 features in the 
+> `methylation` dataset (we selected 500 features only as it can be hard to
+> visualise patterns when there are too many features!). 
 > 
 > 
 > ~~~
-> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'cor': object 'Prostate' not found
+> small <- methyl_mat[, 1:500]
+> cor_mat <- cor(small)
+> Heatmap(cor_mat,
+>     column_title = "Feature-feature correlation in methylation data",
+>     name = "Pearson correlation",
+>     col = col,
+>     show_row_dend = FALSE, show_column_dend = FALSE,
+>     show_row_names = FALSE, show_column_names = FALSE
+> )
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> Error in Heatmap(cor_mat, column_title = "Feature-feature correlation in methylation data", : could not find function "Heatmap"
 > ~~~
 > {: .error}
-> 
-> 
-> 
-> ~~~
-> Error in is.data.frame(matrix): object 'cor_mat' not found
-> ~~~
-> {: .error}
-> 
-> If we do the same for the methylation dataset, in contrast, we can see that many
-> of the features essentially represent the same information (there are many off-diagonal
-> cells which are deep red or blue). This can present problems for a lot of the mathematical
-> techniques we will use to calculate a linear regression model.
-> 
-> <img src="../fig/rmd-03-corr-mat-meth-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 > 
 > Correlation between features can be problematic for technical reasons. If it is 
 > very severe, it may even make it impossible to fit a model! This is in addition to
@@ -182,7 +189,7 @@ than observations.
 
 
 
-> ## Exercise
+> ## Challenge 1
 > 
 > Discuss in  groups:
 > 
@@ -223,22 +230,33 @@ different combinations of slope and intercept accomplish this objective.
 Mathematically, we can write the sum of squared residuals as
 
 $$
-    \sum_{i=1}^N ( y_i-X_i\beta)^2
+    \sum_{i=1}^N ( y_i-x'_i\beta)^2
 $$
 
-where $\hat{y}_i$ is the predicted y value for each input data
-point $X_i$, and $y_i$ is the true observed value.
-This line is the line of best fit through our data when considering this
-goal of minimising the sum of squared error. However, it is not the only 
+where $\beta$ is a vector of (unknown) covariate effects which we want to learn
+by fitting a regression model: the $j$-th element of $\beta$, which we denote as 
+$\beta_j$ quantifies the effect of the $j$-th covariate. For each individual 
+$i$, $x_i$ is a vector of covariate values, $y_i$ is the true observed value for 
+the outcome and $\hat{y}_i$ is the predicted outcome value. The notation 
+$x'_i\beta$ indicates matrix multiplication. In this case, the result is 
+equivalent to multiplying each element of $x_i$ by its corresponding element in 
+$\beta$ and then calculating the sum across all of those values. To quantify 
+the total error across all individuals, we sum the square residuals 
+$( y_i-x'_i\beta)^2$ across all the individuals in our data. 
+
+
+Finding the value of $\beta$ that minimises
+the sum above is the line of best fit through our data when considering 
+this goal of minimising the sum of squared error. However, it is not the only 
 possible line we could use! For example, we might want to err on the side of
-caution when estimating effect sizes (coefficients). That is, we might want to avoid estimating
-very large effect sizes. This can help us to create *generalisable*
+caution when estimating effect sizes (coefficients). That is, we might want to 
+avoid estimating very large effect sizes. This can help us to create *generalisable*
 models. This is important when models that are fitted (trained) on one dataset
 and then used to predict outcomes from a new dataset. Restricting parameter
 estimates is particularly important when analysing high-dimensional data.
 
 
-> ## Exercise
+> ## Challenge 2
 > 
 > Discuss in groups:
 > 
@@ -287,7 +305,7 @@ coefficient values minimise the training error, but they don't minimise the
 test error on unseen data. First, we'll go through an example of what exactly 
 this means.
 
-For the next few exercises, we'll work with a set of features
+For the next few challenges, we'll work with a set of features
 known to be associated with age from a paper by Horvath et al.[^2]. Horvath et al
 use methylation markers alone to predict the biological age of an individual.
 This is useful in studying age-related disease amongst many other things.
@@ -311,13 +329,14 @@ train_ind <- sample(nrow(methyl_mat), 25)
 ~~~
 {: .language-r}
 
-> ## Exercise
+> ## Challenge 3
 > 
 > 1. Split the methylation data matrix and the age vector
 >    into training and test sets.
 > 2. Fit a model on the training data matrix and training age 
 >    vector.
 > 3. Check the mean squared error on this model.
+>
 > 
 > > ## Solution
 > >
@@ -333,14 +352,24 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    test_age <- age[-train_ind]
 > >    ~~~
 > >    {: .language-r}
+> > The solution to this exercise is important because the generated objects 
+> > (`train_mat`, `train_age`, `test_mat` and `test_age`) will be used later in 
+> > this episode. Please make sure that you use the same object names. 
 > > 
 > > 2. To 
 > >    
 > >    
 > >    ~~~
+> >    # as.data.frame() converts train_mat into a data.frame
 > >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 > >    ~~~
 > >    {: .language-r}
+> > 
+> > Using the `.` syntax above together with a `data` argument will lead to
+> > the same result as usign `train_age ~ tran_mat`: R will fit a multivariate 
+> > regression model in which each of the colums in `train_mat` is used as 
+> > a predictor. We opted to use the `.` syntax because it will help us to 
+> > obtain model predictions using the `predict()` function. 
 > > 
 > > 3. The mean squared error of the model is the mean of the square of the
 > >    residuals. This seems very low here -- on average we're only off by 
@@ -400,6 +429,12 @@ abline(coef = 0:1, lty = "dashed")
 
 <img src="../fig/rmd-03-test-plot-lm-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
+This figure shows the predicted ages obtained from a linear model fit plotted 
+against the true ages, which we kept in the test dataset. If the prediction were 
+good, the dots should follow a line. Regularisation can help us to make the 
+model more generalisable, improving predictions for the test dataset (or any 
+other dataset that is not used when fitting our model). 
+
 # Using regularisation to impove generalisability
 
 As stated above, restricting model parameter estimates can improve a model's
@@ -407,9 +442,9 @@ generalisability. This can be done with *regularisation*. The idea to add anothe
 condition to the problem we're solving with linear regression. This condition
 controls the total size of the  coefficients that come out. 
 For example, we might say that the point representing the slope and intercept
-must fall within a certain distance of the origin, $(0, 0)$. Note that we are still trying to
-solve for the line that minimises the square of the residuals; we are just
-adding this extra constraint to our solution. 
+must fall within a certain distance of the origin, $(0, 0)$. Note that we are 
+still trying to solve for the line that minimises the square of the residuals; 
+we are just adding this extra constraint to our solution. 
 
 For the 2-parameter model (slope and intercept), we could
 visualise this constraint as a circle with a given radius. We 
@@ -434,7 +469,7 @@ we try to minimise a function that includes our $L^2$ norm scaled by a
 factor that is usually written $\lambda$.
 
 $$
-     \sum_{i=1}^N \biggl( y_i - X_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
+     \sum_{i=1}^N \biggl( y_i - x'_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
 $$
 
 Another way of thinking about this is that when finding the best model, we're
@@ -447,12 +482,13 @@ just using ordinary least squares. This type of regularisation is called *ridge 
 
 # Why would we want to restrict our model?
 
-It may seem an odd thing to do, to restrict the possible values of our model
-parameters! Why would we want to do this? Well firstly, when we have many 
-correlated features our model estimates can be very unstable or even difficult
-to calculate. Secondly, this type of approach can make our model more 
-generalisable. To show this,
-we'll fit a model using the Horvath methylation predictors, using both
+It may seem an odd thing to do: to restrict the possible values of our model
+parameters! Why would we want to do this? Firstly, as discussed earlier, our 
+model estimates can be very unstable or even difficult to calculate when we have 
+many correlated features. Secondly, this type of approach can make our model more 
+generalisable to new data. To show this, we'll fit a model using the same set
+of 20 features (stored as `features`) selected earlier in this episode (these
+are a subset of the features identified by Horvarth et al), using both 
 regularised and ordinary least squares.
 
 
@@ -544,7 +580,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 <img src="../fig/rmd-03-chooselambda-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
 
 
-> ## Exercise
+> ## Challenge 4
 > 
 > 1. Which performs better, ridge or OLS?
 > 2. Plot predicted ages for each method against the true ages.
@@ -624,7 +660,7 @@ diagonal (i.e., one or more coefficient is exactly zero).
 <img src="../fig/rmd-03-shrink-lasso-1.png" alt="Alt" width="720" style="display: block; margin: auto;" />
 
 
-> ## Exercise
+> ## Challenge 5
 > 
 > 1. Use `glmnet` to fit a LASSO model (hint: set `alpha = 1`).
 > 2. Plot the model object. Remember that for ridge regression,
@@ -699,7 +735,11 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ~~~
 {: .output}
 
-<img src="../fig/rmd-03-heatmap-lasso-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+
+~~~
+Error in Heatmap(hmat_ord, name = "Scaled\nmethylation level", top_annotation = columnAnnotation(age = age_ord, : could not find function "Heatmap"
+~~~
+{: .error}
 
 # Blending ridge regression and the LASSO - elastic nets
 
@@ -733,7 +773,7 @@ like for different values of `alpha`.
 
 <img src="../fig/rmd-03-elastic-contour-1.png" alt="plot of chunk elastic-contour" width="1152" style="display: block; margin: auto;" />
 
-> ## Exercise
+> ## Challenge 6
 > 
 > 1. Fit an elastic net model (hint: alpha = 0.5) without cross-validation and plot the model
 >    object.
