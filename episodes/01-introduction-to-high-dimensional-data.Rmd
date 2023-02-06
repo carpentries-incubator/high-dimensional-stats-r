@@ -253,11 +253,11 @@ in these datasets makes high correlations between variables more likely.
 > > summary(model2)
 > > ```
 > >
-> > Based on these results we conclude that both gleason and pgg45 have a 
+> > Based on these results we conclude that both `gleason` and `pgg45` have a 
 > > statistically significan univariate effect (also referred to as a marginal
 > > effect) as predictors of age (5% significance level). 
 > >
-> > Fitting a multivariate regression model using both both gleason and pgg45 
+> > Fitting a multivariate regression model using both both `gleason` and `pgg45` 
 > > as predictors
 > >
 > > ```{r multivariate-prostate}
@@ -265,7 +265,7 @@ in these datasets makes high correlations between variables more likely.
 > > summary(model3)
 > > ```
 > >
-> > Although gleason and pgg45 have statistically significant univariate effects,
+> > Although `gleason` and `pgg45` have statistically significant univariate effects,
 > > this is no longer the case when both variables are simultaneously included
 > > as covariates in a multivariate regression model. 
 > {: .solution}
@@ -299,7 +299,7 @@ In this course we will cover four topics: (1) regression with numerous outcome
 variables, (2) regularised regression, (3) dimensionality reduction, and (4) 
 clustering. Here are some examples for when each of these approaches may be used:
 
-(1) Regression with numerous outcome refers to situations in which there are 
+(1) Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
 levels for many sites in the genome) and when one is interested in assessing 
 whether these variables are associated with a specific covariate of interest, 
@@ -309,7 +309,7 @@ predictor) could be fitted independently. In the context of high-dimensional
 molecular data, a typical example are *differential gene expression* analyses. 
 We will explore this type of analysis in the *Regression with many outcomes* episode.
 
-(2) Regularisation (also known as regularised regression or penalised regression) 
+(2) Regularisation (also known as *regularised regression* or *penalised regression*) 
 is typically used to fit regression models when there is a single outcome 
 variable or interest but the number of potential predictors is large, e.g. 
 there are more predictors than observations. Regularisation can help to prevent 
