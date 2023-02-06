@@ -329,7 +329,7 @@ coefficient values minimise the training error, but they don't minimise the
 test error on unseen data. First, we'll go through an example of what exactly 
 this means.
 
-For the next few exercises, we'll work with a set of features
+For the next few challenges, we'll work with a set of features
 known to be associated with age from a paper by Horvath et al.[^2]. Horvath et al
 use methylation markers alone to predict the biological age of an individual.
 This is useful in studying age-related disease amongst many other things.
