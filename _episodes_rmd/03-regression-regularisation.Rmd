@@ -567,7 +567,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 ```
 
 
-> ## Exercise
+> ## Challenge 4
 > 
 > 1. Which performs better, ridge or OLS?
 > 2. Plot predicted ages for each method against the true ages.
@@ -692,7 +692,7 @@ drawplot()
 ```
 
 
-> ## Exercise
+> ## Challenge 5
 > 
 > 1. Use `glmnet` to fit a LASSO model (hint: set `alpha = 1`).
 > 2. Plot the model object. Remember that for ridge regression,
@@ -876,7 +876,7 @@ plot_elastic(0.5)
 plot_elastic(0.75)
 ```
 
-> ## Exercise
+> ## Challenge 6
 > 
 > 1. Fit an elastic net model (hint: alpha = 0.5) without cross-validation and plot the model
 >    object.
