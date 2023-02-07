@@ -344,7 +344,7 @@ downstream of the cut).
 # Highlighting dendrogram branches
 
 In addition to visualising cluster identity in scatter plots, it is also possible to
-highlight brances in dentrograms. In this example, we calculate a distance matrix between
+highlight branches in dentrograms. In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
 ```{r plot-clust-method}
@@ -376,8 +376,8 @@ plot(color_branches(avg_dend_obj, h = 50))
 # The effect of different linkage methods
 Now let us look into changing the default behaviour of `hclust()`. Imagine we have two crescent-shaped point clouds as shown below.
 ```{r crescents}
-# These two functions to help us make crescents. Don't worry it you do not understand all the code.
-# The importent bit is the object "cres", which consists of two columns (x and y coordinates).
+# These two functions are to help us make crescents. Don't worry it you do not understand all this code.
+# The importent bit is the object "cres", which consists of two columns (x and y coordinates of two crescents).
 is.insideCircle <- function(co, r=0.5, offs=c(0,0)){
   sqrt((co[,1]+offs[1])^2 + (co[,2]+offs[2])^2) <= r
 }
@@ -396,7 +396,7 @@ cres <- rbind(cres1, cres2) # concatente x/y values
 plot(cres)
 ```
 We might expect that the crescents are resolved into separate clusters. But if we
-run hierarchical clusterign with the default arguments, we get this:
+run hierarchical clustering with the default arguments, we get this:
 
 ```{r cresClustDefault}
 cresClass <- cutree(hclust(dist(cres)), k=2) # save partition for colouring
@@ -419,7 +419,7 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 > >
 > > ```{r plot-clust-comp}
 > > #?hclust
-> > # "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
+> > # "complete", "single", "ward.D", "ward.D2", "average", "mcquitty", "median" or "centroid"
 > > cresClassSingle <- cutree(hclust(dist(cres),method = "single"), k=2)
 > > plot(cres, col=cresClassSingle, main="single")
 > > ```
