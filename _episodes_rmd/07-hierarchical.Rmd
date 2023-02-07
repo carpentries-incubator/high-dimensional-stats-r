@@ -421,7 +421,7 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 > > #?hclust
 > > # "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
 > > cresClassSingle <- cutree(hclust(dist(cres),method = "single"), k=2)
-> > plot(cres, cresClassSingle, main="single")
+> > plot(cres, col=cresClassSingle, main="single")
 > > ```
 > > ```{r plot-clust-wardD}
 > > cresClassWard.D <- cutree(hclust(dist(cres), method="ward.D"), k=2)
