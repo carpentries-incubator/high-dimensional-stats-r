@@ -341,17 +341,17 @@ downstream of the cut).
 > {: .solution}
 {: .challenge}
 
-# What happens if we use different linkage methods?
+# Highlighting dendrogram branches
 
-Here we carry out hierarchical clustering using `hclust()` and the `complete`
-linkage method. In this example, we calculate a distance matrix between
-samples in the `methyl_mat` dataset. 
+In addition to visualising cluster identity in scatter plots, it is also possible to
+highlight brances in dentrograms. In this example, we calculate a distance matrix between
+samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
 ```{r plot-clust-method}
 ## create a distance matrix using euclidean method
 distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
-clust <- hclust(distmat, method = "complete")
+clust <- hclust(distmat)
 ## plot resulting dendrogram
 plot(clust)
 
@@ -359,7 +359,11 @@ plot(clust)
 rect.hclust(clust, k = 3, border = 2:6)
 ## draw border around two clusters
 rect.hclust(clust, k = 2, border = 2:6)
+```
+We can also colour clusters downstream of a specified cut using `color_branches()`
+from the **`dendextend`** package.
 
+```{r plot-coloured-branches}
 ## cut tree at height = 4
 cut <- cutree(clust, h = 50)
 
@@ -369,63 +373,82 @@ avg_dend_obj <- as.dendrogram(clust)
 plot(color_branches(avg_dend_obj, h = 50))
 ```
 
-We can colour clusters downstream of a specified cut using `color_branches()`
-function from the **`dendextend`** package.
+# The effect of different linkage methods
+Now let us look into changing the default behaviour of `hclust()`. Imagine we have two crescent-shaped point clouds as shown below.
+```{r crescents}
+# These two functions to help us make crescents. Don't worry it you do not understand all the code.
+# The importent bit is the object "cres", which consists of two columns (x and y coordinates).
+is.insideCircle <- function(co, r=0.5, offs=c(0,0)){
+  sqrt((co[,1]+offs[1])^2 + (co[,2]+offs[2])^2) <= r
+}
+make.crescent <- function(n){
+  raw <- cbind(x=runif(n)-0.5, y=runif(n)-0.5)
+  raw[is.insideCircle(raw) & !is.insideCircle(raw, offs=c(0, -0.2)),]
+}
+# make x/y data in shape of two crescents
+set.seed(123)
+cres1 <- make.crescent(1000) # 1st crescent
+cres2 <- make.crescent(1000) # 2nd crescent
+cres2[,2] <- -cres2[,2] -0.1 # flip 2nd crescent upside-down and shift down
+cres2[,1] <- cres2[,1] + 0.5 # shift second crescent to the right
 
-Other methods use different metrics to decide which clusters should be fused
-and when.
-For example, Ward’s method uses increases in the error sum of squares to
-determine which clusters should be fused. 
-Next we use Ward's linkage method in hierarchical clustering of the
-`methyl_mat` dataset.
+cres <- rbind(cres1, cres2) # concatente x/y values
+plot(cres)
+```
+We might expect that the crescents are resolved into separate clusters. But if we
+run hierarchical clusterign with the default arguments, we get this:
 
-```{r plot-clust-ward}
-clust <- hclust(distmat, method = "ward.D")
-plot(clust)
+```{r cresClustDefault}
+cresClass <- cutree(hclust(dist(cres)), k=2) # save partition for colouring
+plot(cres, col=cresClass) # colour scatterplot by partition
 ```
 
-We can see that the resulting dendrogram is different from that produced
-using the complete linkage method.
 
 > ## Challenge 3
 >
-> Carry out hierarchical clustering on the small version of the
-> `methyl_mat` dataset using other different linkage methods and compare
-> resulting dendrograms.
-> Do any of the methods produce similar dendrograms?
-> Do some methods appear to
-> produce more realistic dendrograms than others? Discuss in groups
+> Carry out hierarchical clustering on the `cres` data that we generated above.
+> Try out different linkage methods and use `cutree()` to split each resulting
+> dendrogram into two clusters. Plot the results colouring the dots according to
+> their inferred cluster identity.
+> 
+> Which method(s) give you the expected clustering outcome?
+> 
+> Hint: Check `?hclust` to see the possible values of the argument `method` (the linkage method used).
 >
 > > ## Solution:
 > >
 > > ```{r plot-clust-comp}
-> > clust1 <- hclust(distmat, method = "complete") 
-> > plot(clust1)
+> > #?hclust
+> > # "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski"
+> > cresClassSingle <- cutree(hclust(dist(cres),method = "single"), k=2)
+> > plot(cres, cressClassSingle, main="single")
 > > ```
-> > ```{r plot-clust-single}
-> > clust2 <- hclust(distmat, method = "single")
-> > plot(clust2)
+> > ```{r plot-clust-wardD}
+> > cresClassWard.D <- cutree(hclust(dist(cres), method="ward.D"), k=2)
+> > plot(cres, col=cresClassWard.D, main="ward.D")
+> > ```
+> > ```{r plot-clust-wardD2}
+> > cresClassWard.D2 <- cutree(hclust(dist(cres), method="ward.D2"), k=2)
+> > plot(cres, col=cresClassWard.D2, main="ward.D2")
 > > ```
 > > ```{r plot-clust-average}
-> > clust3 <- hclust(distmat, method = "average")
-> > plot(clust3)
+> > cresClassAverage <- cutree(hclust(dist(cres), method="average"), k=2)
+> > plot(cres, col=cresClassAverage, main="average")
 > > ```
 > > ```{r plot-clust-mcq}
-> > clust4 <- hclust(distmat, method = "mcquitty")
-> > plot(clust4)
+> > cresClassMcquitty <- cutree(hclust(dist(cres), method="mcquitty"), k=2)
+> > plot(cres, col=cresClassMcquitty, main="mcquitty")
 > > ```
 > > ```{r plot-clust-median}
-> > clust5 <- hclust(distmat, method = "median")
-> > plot(clust5)
+> > cresClassMedian<- cutree(hclust(dist(cres), method="median"), k=2) 
+> > plot(cres, col=cresClassMedian, main="median")
 > > ```
 > > ```{r plot-clust-centroid}
-> > clust6 <- hclust(distmat, method = "centroid")
-> > plot(clust6)
+> > cresClassCentroid<- cutree(hclust(dist(cres), method="centroid"), k=2)
+> > plot(cres, col=cresClassCentroid, main="centroid")
 > > ```
 > > 
-> > The linkage methods `average` and `mcquitty` produce apparently similar
-> > dendrograms. The methods `single`, `median` and `centroid` produce unusual
-> > looking dendrograms. The 'complete' method is most commonly used in practice.
+> > The linkage methods `single`, `ward.D`, and `average` resolve each crescent as a separate cluster.
 > > 
 > {: .solution}
 {: .challenge}
