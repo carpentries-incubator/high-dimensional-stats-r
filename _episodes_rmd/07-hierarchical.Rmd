@@ -43,20 +43,20 @@ to identify groups of similar data points to understand more about the relations
 within the dataset. In *hierarchical clustering* an algorithm groups similar
 data points (or observations) into groups (or clusters). This results in a set
 of clusters, where each cluster is distinct, and the data points within each
-cluster have similar features. The clustering algorithm works by iteratively
+cluster have similar characteristics. The clustering algorithm works by iteratively
 grouping data points so that different clusters may exist at different stages
 of the algorithm's progression.
 
 Unlike K-means clustering, *hierarchical clustering* does not require the
-number of clusters $k$ to be specified by the user before analysis is carried
+number of clusters $k$ to be specified by the user before the analysis is carried
 out. Hierarchical clustering also provides an attractive *dendrogram*, a
 tree-like diagram showing the degree of similarity between clusters. 
 
 The dendrogram is a key feature of hierarchical clustering. This tree-shaped graph allows
-relationships between data points in a dataset to be easily observed and the
-arrangement of clusters produced by the analysis to be illustrated. Dendrograms are
-created using a distance (or dissimilarity) matrix fitted to the data and a
-clustering algorithm to fuse different groups of data points together.
+the similarity between data points in a dataset to be visualised and the
+arrangement of clusters produced by the analysis to be illustrated. Dendrograms are created
+using a distance (or dissimilarity) that quantify how different are pairs of observations,
+and a clustering algorithm to fuse groups of similar data points together.
 
 In this episode we will explore hierarchical clustering for identifying
 clusters in high-dimensional data. We will use *agglomerative* hierarchical
@@ -76,14 +76,13 @@ clustering (see box) in this episode.
 {: .callout}
 
 
-# The hierarchical clustering algorithm 
+# The agglomerative hierarchical clustering algorithm 
 
-The algorithm for hierarchical clustering is comparatively simple. First, we measure distance
+To start with, we measure distance
 (or dissimilarity) between pairs of observations. Initially, and at the bottom
 of the dendrogram, each observation is considered to be in its own individual
 cluster. We start the clustering procedure by fusing the two observations that
-are most similar according to a distance matrix (e.g. that are closest
-together in *n*D space). Next, the next-most similar observations are fused
+are most similar according to a distance matrix. Next, the next-most similar observations are fused
 so that the total number of clusters is *number of observations* - 2 (see
 panel below). Groups of observations may then be merged into a larger cluster
 (see next panel below, green box). This process continues until all the observations are included
@@ -91,13 +90,11 @@ in a single cluster.
 
 ```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Figure 1a: Example data showing two clusters of observation pairs"}
 knitr::include_graphics("../fig/hierarchical_clustering_1.png")
-# ![Figure 1a: Example data showing two clusters of observation pairs](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1a hierarchical clustering.png)
 ```
 
 
 ```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Figure 1b: Example data showing fusing of one observation into larger cluster"}
 knitr::include_graphics("../fig/hierarchical_clustering_2.png")
-# ![Figure 1b: Example data showing fusing of one observation into larger cluster](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 1b hierarchical clustering.png)
 ```
 
 # A motivating example
@@ -114,6 +111,7 @@ library("ComplexHeatmap")
 
 methyl <- readRDS(here("data/methylation.rds"))
 
+# transpose this Bioconductor dataset to show features in columns
 methyl_mat <- t(assay(methyl))
 ```
 
