@@ -623,18 +623,36 @@ between sets of clusters with larger values being preferred.
 > > clust <- hclust(distmat, method = "complete")
 > > plot(clust)
 > >
-> > cut_h <- cutree(clust, h = 10)
-> > cut_k <- cutree(clust, k = 15)
-> >
-> > dunn(distance = distmat, cut_h)
-> > dunn(distance = distmat, cut_k)
+> > #Varying h
+> > ## Obtaining the clusters
+> > cut_h_20 <- cutree(clust, h = 20)
+> > cut_h_30 <- cutree(clust, h = 30)
+> > 
+> > ## How many clusters?
+> > length(table(cut_h_20))
+> > length(table(cut_h_30))
+> > 
+> > dunn(distance = distmat, cut_h_20)
+> > dunn(distance = distmat, cut_h_30)
+> > 
+> > #Varying k
+> > ## Obtaining the clusters
+> > cut_k_10 <- cutree(clust, k = 10)
+> > cut_k_5 <- cutree(clust, k = 5)
+> > 
+> > ## How many clusters?
+> > length(table(cut_k_5))
+> > length(table(cut_k_10))
+> > 
+> > dunn(distance = distmat, cut_k_5)
+> > dunn(distance = distmat, cut_k_10)
 > > ```
 > {: .solution}
 {: .challenge}
 
 Note how making the values of `h` smaller and making the values of `k`
-bigger increases the value of the Dunn index in this example. In this example,
-decreasing `h` below 0.5 gives an infinite Dunn index.
+greater increases the value of the Dunn index in this example. In this example,
+decreasing `h` below 20 can give an infinite Dunn index.
 
 The figures below show how increasing the value of `k` and reducing the value of
 `h` using `cutree()` each result in higher values of the Dunn index.
