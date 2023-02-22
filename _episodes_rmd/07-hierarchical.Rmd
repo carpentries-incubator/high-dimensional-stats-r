@@ -475,11 +475,10 @@ rownames(cor_example) <- paste(
 ```
 
 Now, let's create a new sample that has exactly the same pattern across all
-our features as `sample_a`, just offset by 5. Then we convert the dataframe into a matrix:
+our features as `sample_a`, just offset by 5:
 
 ```{r sample-c}
 cor_example$sample_c <- cor_example$sample_a + 5
-cor_example <- as.matrix(cor_example)
 ```
 
 You can see that this is a lot like the `assay()` of our methylation object
@@ -496,7 +495,7 @@ In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
 
 ```{r heatmap-cor-example}
-Heatmaps(cor_example)
+Heatmap(as.matrix(cor_example))
 ```
 
 We can see that more clearly if we do a line plot:
@@ -554,10 +553,10 @@ distance functions to functions that perform hierarchical clustering, such as
 
 ```{r heatmap-cor-cor-example}
 ## pheatmap allows you to select correlation directly
-Heatmap(cor_example, clustering_distance_cols = "correlation")
+pheatmap(cor_example, clustering_distance_cols = "correlation")
 ## Using the built-in stats::heatmap 
 heatmap(
-  cor_example,
+  as.matrix(cor_example),
   distfun = function(x) as.dist(1 - cor(t(x)))
 )
 ```
