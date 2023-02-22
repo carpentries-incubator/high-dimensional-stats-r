@@ -553,7 +553,7 @@ distance functions to functions that perform hierarchical clustering, such as
 
 ```{r heatmap-cor-cor-example}
 ## pheatmap allows you to select correlation directly
-pheatmap(cor_example, clustering_distance_cols = "correlation")
+pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 ## Using the built-in stats::heatmap 
 heatmap(
   as.matrix(cor_example),
