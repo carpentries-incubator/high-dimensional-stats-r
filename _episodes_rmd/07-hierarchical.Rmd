@@ -660,20 +660,25 @@ between sets of clusters with larger values being preferred.
 The figures below show in a more systematic way how changing the values of `k` and
 `h` using `cutree()` affect the Dunn index.
 
-```{r hclust-fig3, echo=TRUE, fig.cap="Figure 3: Dunn index increases with increasing number of clusters"}
+```{r hclust-fig3, echo=TRUE, fig.cap="Figure 3: Dunn index"}
 h_seq <- 70:10
 h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x)))
 k_seq <- seq(2, 10)
 k_dunn <- sapply(k_seq, function(x) dunn(distance = distmat, cutree(clust, k = x)))
 plot(h_seq, h_dunn, xlab = "Height (h)", ylab = "Dunn index")
 grid()
-plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
-grid()
 ```
 You can see that at low values of `h`, the Dunn index can be high. But this
 is not very useful - cutting the given tree at a low `h` value like 15 leads to allmost all observations
 ending up each in its own cluster. More relevant is the second maximum in the plot, around `h=55`.
 Looking at the dendrogram, this corresponds to `k=4`.
+
+```{r hclust-fig4, echo=TRUE, fig.cap="Figure 4: Dunn index continued"}
+plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
+grid()
+```
+For the given range of `k` values explored, we obtain the highest Dunn index with `k=4`.
+This is in agreement with the previous plot.
 
 There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
