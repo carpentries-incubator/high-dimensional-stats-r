@@ -570,21 +570,19 @@ many clusters are optimal for the dataset?
 Hierarchical clustering carried out on any dataset will produce clusters,
 even when there are no 'real' clusters in the data! We need to be able to
 determine whether identified clusters represent true groups in the data, or
-whether clusters have been identified just due to chance. There are some
-statistical tests that can help determine the optimal number of clusters in
-the data by assessing whether there is more evidence for a cluster than we
-would expect due to chance. Such tests can be used to compare different
-clustering algorithms, for example, those fitted using different linkage
+whether clusters have been identified just due to chance. In the last episode,
+we have introduced silhouette scores as a measure of cluster compactness and
+bootstrapping to assess cluster robustness. Such tests can be used to compare
+different clustering algorithms, for example, those fitted using different linkage
 methods. 
 
-The Dunn index is a ratio of the smallest distance between observations
-not located within the same cluster to the largest intra-cluster distance
-found within any cluster. The index is used as a metric for evaluating the
-output of hierarchical clustering, where the result is based on the clustered
-data itself and does not rely on any external data. The Dunn index is a metric
-that penalises clusters that have larger intra-cluster variance and smaller
-inter-cluster variance. The higher the Dunn index, the better defined the
-clusters.
+Here, we introduce the Dunn index, which is a measure of cluster compactness. The
+Dunn index is the ratio of the smallest distance between any two clusters
+and to the largest intra-cluster distance found within any cluster. This can be 
+seen as a family of indices which differ depending on the method used to compute
+distances. The Dunn index is a metric that penalises clusters that have
+larger intra-cluster variance and smaller inter-cluster variance. The higher the
+Dunn index, the better defined the clusters.
 
 Let's calculate the Dunn index for clustering carried out on the
 `methyl_mat` dataset using the **`clValid`** package.
@@ -649,33 +647,32 @@ between sets of clusters with larger values being preferred.
 > {: .solution}
 {: .challenge}
 
-Note how making the values of `h` smaller and making the values of `k`
-greater increases the value of the Dunn index in this example. In this example,
-decreasing `h` below 20 can give an infinite Dunn index.
 
-The figures below show how increasing the value of `k` and reducing the value of
-`h` using `cutree()` each result in higher values of the Dunn index.
+The figures below show in a more systematic way how changing the values of `k` and
+`h` using `cutree()` affect the Dunn index.
 
-```{r hclust-fig3, echo=FALSE, fig.cap="Figure 3: Dunn index increases with increasing number of clusters"}
-h_seq <- seq(10, 60, by = 10)
+```{r hclust-fig3, echo=TRUE, fig.cap="Figure 3: Dunn index increases with increasing number of clusters"}
+h_seq <- 70:10
 h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x)))
 k_seq <- seq(2, 10)
 k_dunn <- sapply(k_seq, function(x) dunn(distance = distmat, cutree(clust, k = x)))
-plot(h_seq, h_dunn, xlab = "Height", ylab = "Dunn index")
-plot(k_seq, k_dunn, xlab = "Number of clusters", ylab = "Dunn index")
+plot(h_seq, h_dunn, xlab = "Height (h)", ylab = "Dunn index")
+grid()
+plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
+grid()
 ```
+You can see that at low values of `h`, the Dunn index can be high. But this
+is not very useful - cutting the given tree at a low `h` value like 15 leads to allmost all observations
+ending up each in its own cluster. More relevant is the second maximum in the plot, around `h=55`.
+Looking at the dendrogram, this corresponds to `k=4`.
 
 There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
-Another method of validating identified clusters is the silhouette score 
-which uses the average distance between clusters and the points within them;
-see the k-means clustering episode for more information on this measure.
+An alternative is to use silhouette scores (see the k-means clustering episode).
 
-Another more robust method of validating clusters identified using hierarchical
-clustering is splitting the data into test and training datasets and comparing
-clusters in the test dataset with those identified in the training dataset.
-However, there is no common consensus on the best method to use to validate
-clusters identified using hierarchical clustering.
+As we said before (see previous episode), clustering is a non-trivial task.
+It is important to think about the nature of your data and your expactations
+rather than blindly using a some algorithm for clustering or cluster validation.
 
 # Further reading 
 
