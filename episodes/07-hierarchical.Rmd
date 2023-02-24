@@ -454,6 +454,15 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 > {: .solution}
 {: .challenge}
 
+The help page of `hclust()` gives some intuition on linkage methods. It describes `complete`
+(the default) and `single` as opposite ends of a spectrum with all other methods in between.
+When using complete linkage, the distance between two clusters is assumed to be the distance
+between both clusters' most distant points. This opposite it true for single linkage, where
+the minimum distance between any two points, one from each of two clusters is used. Single
+linkage is described as friends-of-friends appporach - and really, it groups all close-together
+points into the same cluster (thus resolving one cluster per crescent). Complete linkage on the
+other hand recognises that some points a the tip of a crescent are much closer to points in the
+other crescent and so it splits both crescents.
 
 # Using different distance methods
 
