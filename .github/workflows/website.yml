@@ -23,6 +23,12 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Make DESCRIPTION
+        run: |
+          Rscript -e 'install.packages(c("BiocManager", "renv"))'
+          Rscript -e 'source("bin/dependencies.R"); create_description(identify_dependencies())'
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
       - name: Render the markdown and confirm that the site can be built
         run: make site
 
