@@ -9,7 +9,7 @@ jobs:
   build-website:
     if: ${{ !endsWith(github.repository, '/styles') }}
     runs-on: ubuntu-20.04
-    container: alanocallaghan/high-dimensional-stats-r
+    container: ${{github.repository}}
     env:
       RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
