@@ -41,20 +41,20 @@ to identify groups of similar data points to understand more about the relations
 within the dataset. In *hierarchical clustering* an algorithm groups similar
 data points (or observations) into groups (or clusters). This results in a set
 of clusters, where each cluster is distinct, and the data points within each
-cluster have similar features. The clustering algorithm works by iteratively
+cluster have similar characteristics. The clustering algorithm works by iteratively
 grouping data points so that different clusters may exist at different stages
 of the algorithm's progression.
 
 Unlike K-means clustering, *hierarchical clustering* does not require the
-number of clusters $k$ to be specified by the user before analysis is carried
+number of clusters $k$ to be specified by the user before the analysis is carried
 out. Hierarchical clustering also provides an attractive *dendrogram*, a
 tree-like diagram showing the degree of similarity between clusters. 
 
 The dendrogram is a key feature of hierarchical clustering. This tree-shaped graph allows
-relationships between data points in a dataset to be easily observed and the
-arrangement of clusters produced by the analysis to be illustrated. Dendrograms are
-created using a distance (or dissimilarity) matrix fitted to the data and a
-clustering algorithm to fuse different groups of data points together.
+the similarity between data points in a dataset to be visualised and the
+arrangement of clusters produced by the analysis to be illustrated. Dendrograms are created
+using a distance (or dissimilarity) that quantify how different are pairs of observations,
+and a clustering algorithm to fuse groups of similar data points together.
 
 In this episode we will explore hierarchical clustering for identifying
 clusters in high-dimensional data. We will use *agglomerative* hierarchical
@@ -74,23 +74,28 @@ clustering (see box) in this episode.
 {: .callout}
 
 
-# The hierarchical clustering algorithm 
+# The agglomerative hierarchical clustering algorithm 
 
-The algorithm for hierarchical clustering is comparatively simple. First, we measure distance
+To start with, we measure distance
 (or dissimilarity) between pairs of observations. Initially, and at the bottom
 of the dendrogram, each observation is considered to be in its own individual
 cluster. We start the clustering procedure by fusing the two observations that
-are most similar according to a distance matrix (e.g. that are closest
-together in *n*D space). Next, the next-most similar observations are fused
+are most similar according to a distance matrix. Next, the next-most similar observations are fused
 so that the total number of clusters is *number of observations* - 2 (see
 panel below). Groups of observations may then be merged into a larger cluster
 (see next panel below, green box). This process continues until all the observations are included
 in a single cluster.
 
-<img src="../fig/hierarchical_clustering_1.png" alt="Figure 1a: Example data showing two clusters of observation pairs" width="500px" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/hierarchical_clustering_1.png" alt="Figure 1a: Example data showing two clusters of observation pairs" width="500px" />
+<p class="caption">Figure 1a: Example data showing two clusters of observation pairs</p>
+</div>
 
 
-<img src="../fig/hierarchical_clustering_2.png" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/hierarchical_clustering_2.png" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" />
+<p class="caption">Figure 1b: Example data showing fusing of one observation into larger cluster</p>
+</div>
 
 # A motivating example
 
@@ -107,6 +112,7 @@ library("ComplexHeatmap")
 
 methyl <- readRDS(here("data/methylation.rds"))
 
+# transpose this Bioconductor dataset to show features in columns
 methyl_mat <- t(assay(methyl))
 ~~~
 {: .language-r}
@@ -115,7 +121,10 @@ Looking at a heatmap of these data, we may spot some patterns -- many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
-<img src="../fig/rmd-09-heatmap-noclust-1.png" alt="plot of chunk heatmap-noclust" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-heatmap-noclust-1.png" alt="plot of chunk heatmap-noclust" width="432" />
+<p class="caption">plot of chunk heatmap-noclust</p>
+</div>
 
 We can order these data to make the patterns more clear using hierarchical
 clustering. To do this, we can change the arguments we pass to 
@@ -130,12 +139,16 @@ Heatmap(methyl_mat,
   cluster_rows = TRUE, cluster_columns = TRUE,
   row_dend_width = unit(0.2, "npc"),
   column_dend_height = unit(0.2, "npc"),
-  show_row_names = FALSE, show_column_names = FALSE
+  show_row_names = FALSE, show_column_names = FALSE,
+  row_title="Individuals", column_title = "Methylation sites"
 )
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-heatmap-clust-1.png" alt="plot of chunk heatmap-clust" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-heatmap-clust-1.png" alt="plot of chunk heatmap-clust" width="432" />
+<p class="caption">plot of chunk heatmap-clust</p>
+</div>
 
 We can see that clustering the features (CpG sites) results in an overall
 gradient of high to low methylation levels from left to right. Maybe more
@@ -147,15 +160,15 @@ cause of this is -- it could be a batch effect, or a known grouping (e.g., old
 vs young samples). However, clustering like this can be a useful part of
 exploratory analysis of data to build hypotheses.
 
-Now, let's cover the inner workings of hierachiacl clustering in more detail.
+Now, let's cover the inner workings of hierarchical clustering in more detail.
 There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
 
 # Creating the distance matrix
-
-Hierarchical clustering is performed in two steps: calculating the distance
-matrix and applying clustering using this matrix. 
+Agglomerative hierarchical clustering is performed in two steps: calculating
+the distance matrix (containing distances between pairs of observations) and
+iteratively grouping observations into clusters using this matrix.
 
 There are different ways to
 specify a distance matrix for clustering:
@@ -196,9 +209,10 @@ and therefore different clustering decisions are made depending on the linkage
 method used.
 
 Complete linkage (the default in `hclust()`) works by computing all pairwise
-dissimilarities between data points in different clusters, using the largest
-pairwise dissimilarity ($d$) to decide which cluster will be fused. Clusters
-with smallest value of $d$ are fused.
+dissimilarities between data points in different clusters. For each pair of two clusters,
+it sets their dissimilarity ($d$) to the maximum dissimilarity value observed
+between any of these clusters' constituent points. The two clusters
+with smallest value of $d$ are then fused.
 
 # Computing a dendrogram
 
@@ -236,7 +250,10 @@ text(
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-plotexample-1.png" alt="plot of chunk plotexample" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-plotexample-1.png" alt="plot of chunk plotexample" width="432" />
+<p class="caption">plot of chunk plotexample</p>
+</div>
 
 ~~~
 ## calculate distance matrix using euclidean distance
@@ -260,7 +277,10 @@ dist_m <- dist(example_data, method = "euclidean")
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-plotclustex-1.png" alt="plot of chunk plotclustex" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plotclustex-1.png" alt="plot of chunk plotclustex" width="432" />
+> > <p class="caption">plot of chunk plotclustex</p>
+> > </div>
 > {: .solution}
 {: .challenge}
 
@@ -357,7 +377,10 @@ ggplot(example_cl, aes(x = x2, y = x1, color = factor(cluster))) + geom_point()
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-cutree-1.png" alt="plot of chunk cutree" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-cutree-1.png" alt="plot of chunk cutree" width="432" />
+<p class="caption">plot of chunk cutree</p>
+</div>
 
 Note that this cut produces 8 clusters (two before the cut and another six
 downstream of the cut).
@@ -377,7 +400,10 @@ downstream of the cut).
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-h-k-ex-plot-1.png" alt="plot of chunk h-k-ex-plot" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-h-k-ex-plot-1.png" alt="plot of chunk h-k-ex-plot" width="432" />
+> > <p class="caption">plot of chunk h-k-ex-plot</p>
+> > </div>
 > > 
 > > ~~~
 > > cutree(clust, h = 5)
@@ -438,7 +464,10 @@ downstream of the cut).
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-h-k-ex-plot-2.png" alt="plot of chunk h-k-ex-plot" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-h-k-ex-plot-2.png" alt="plot of chunk h-k-ex-plot" width="432" />
+> > <p class="caption">plot of chunk h-k-ex-plot</p>
+> > </div>
 > > 
 > > Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a
 > > horizontal line on the dendrogram at `h = 5` to help identify
@@ -446,18 +475,18 @@ downstream of the cut).
 > {: .solution}
 {: .challenge}
 
-# What happens if we use different linkage methods?
+# Highlighting dendrogram branches
 
-Here we carry out hierarchical clustering using `hclust()` and the `complete`
-linkage method. In this example, we calculate a distance matrix between
-samples in the `methyl_mat` dataset. 
+In addition to visualising cluster identity in scatter plots, it is also possible to
+highlight branches in dentrograms. In this example, we calculate a distance matrix between
+samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
 
 ~~~
 ## create a distance matrix using euclidean method
 distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
-clust <- hclust(distmat, method = "complete")
+clust <- hclust(distmat)
 ## plot resulting dendrogram
 plot(clust)
 
@@ -468,7 +497,13 @@ rect.hclust(clust, k = 2, border = 2:6)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-plot-clust-method-1.png" alt="plot of chunk plot-clust-method" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-plot-clust-method-1.png" alt="plot of chunk plot-clust-method" width="432" />
+<p class="caption">plot of chunk plot-clust-method</p>
+</div>
+We can also colour clusters downstream of a specified cut using `color_branches()`
+from the **`dendextend`** package.
+
 
 ~~~
 ## cut tree at height = 4
@@ -481,97 +516,163 @@ plot(color_branches(avg_dend_obj, h = 50))
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-plot-clust-method-2.png" alt="plot of chunk plot-clust-method" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-plot-coloured-branches-1.png" alt="plot of chunk plot-coloured-branches" width="432" />
+<p class="caption">plot of chunk plot-coloured-branches</p>
+</div>
 
-We can colour clusters downstream of a specified cut using `color_branches()`
-function from the **`dendextend`** package.
-
-Other methods use different metrics to decide which clusters should be fused
-and when.
-For example, Ward’s method uses increases in the error sum of squares to
-determine which clusters should be fused. 
-Next we use Ward's linkage method in hierarchical clustering of the
-`methyl_mat` dataset.
-
+# The effect of different linkage methods
+Now let us look into changing the default behaviour of `hclust()`. Imagine we have two crescent-shaped point clouds as shown below.
 
 ~~~
-clust <- hclust(distmat, method = "ward.D")
-plot(clust)
+# These two functions are to help us make crescents. Don't worry it you do not understand all this code.
+# The importent bit is the object "cres", which consists of two columns (x and y coordinates of two crescents).
+is.insideCircle <- function(co, r=0.5, offs=c(0,0)){
+  sqrt((co[,1]+offs[1])^2 + (co[,2]+offs[2])^2) <= r
+}
+make.crescent <- function(n){
+  raw <- cbind(x=runif(n)-0.5, y=runif(n)-0.5)
+  raw[is.insideCircle(raw) & !is.insideCircle(raw, offs=c(0, -0.2)),]
+}
+# make x/y data in shape of two crescents
+set.seed(123)
+cres1 <- make.crescent(1000) # 1st crescent
+cres2 <- make.crescent(1000) # 2nd crescent
+cres2[,2] <- -cres2[,2] -0.1 # flip 2nd crescent upside-down and shift down
+cres2[,1] <- cres2[,1] + 0.5 # shift second crescent to the right
+
+cres <- rbind(cres1, cres2) # concatente x/y values
+plot(cres)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-plot-clust-ward-1.png" alt="plot of chunk plot-clust-ward" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-crescents-1.png" alt="plot of chunk crescents" width="432" />
+<p class="caption">plot of chunk crescents</p>
+</div>
+We might expect that the crescents are resolved into separate clusters. But if we
+run hierarchical clustering with the default arguments, we get this:
 
-We can see that the resulting dendrogram is different from that produced
-using the complete linkage method.
+
+~~~
+cresClass <- cutree(hclust(dist(cres)), k=2) # save partition for colouring
+plot(cres, col=cresClass) # colour scatterplot by partition
+~~~
+{: .language-r}
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-cresClustDefault-1.png" alt="plot of chunk cresClustDefault" width="432" />
+<p class="caption">plot of chunk cresClustDefault</p>
+</div>
+
 
 > ## Challenge 3
 >
-> Carry out hierarchical clustering on the small version of the
-> `methyl_mat` dataset using other different linkage methods and compare
-> resulting dendrograms.
-> Do any of the methods produce similar dendrograms?
-> Do some methods appear to
-> produce more realistic dendrograms than others? Discuss in groups
+> Carry out hierarchical clustering on the `cres` data that we generated above.
+> Try out different linkage methods and use `cutree()` to split each resulting
+> dendrogram into two clusters. Plot the results colouring the dots according to
+> their inferred cluster identity.
+> 
+> Which method(s) give you the expected clustering outcome?
+> 
+> Hint: Check `?hclust` to see the possible values of the argument `method` (the linkage method used).
 >
 > > ## Solution:
 > >
 > > 
 > > ~~~
-> > clust1 <- hclust(distmat, method = "complete") 
-> > plot(clust1)
+> > #?hclust
+> > # "complete", "single", "ward.D", "ward.D2", "average", "mcquitty", "median" or "centroid"
+> > cresClassSingle <- cutree(hclust(dist(cres),method = "single"), k=2)
+> > plot(cres, col=cresClassSingle, main="single")
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-plot-clust-comp-1.png" alt="plot of chunk plot-clust-comp" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plot-clust-comp-1.png" alt="plot of chunk plot-clust-comp" width="432" />
+> > <p class="caption">plot of chunk plot-clust-comp</p>
+> > </div>
 > > 
 > > ~~~
-> > clust2 <- hclust(distmat, method = "single")
-> > plot(clust2)
-> > ~~~
-> > {: .language-r}
-> > 
-> > <img src="../fig/rmd-09-plot-clust-single-1.png" alt="plot of chunk plot-clust-single" width="432" style="display: block; margin: auto;" />
-> > 
-> > ~~~
-> > clust3 <- hclust(distmat, method = "average")
-> > plot(clust3)
+> > cresClassWard.D <- cutree(hclust(dist(cres), method="ward.D"), k=2)
+> > plot(cres, col=cresClassWard.D, main="ward.D")
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-plot-clust-average-1.png" alt="plot of chunk plot-clust-average" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plot-clust-wardD-1.png" alt="plot of chunk plot-clust-wardD" width="432" />
+> > <p class="caption">plot of chunk plot-clust-wardD</p>
+> > </div>
 > > 
 > > ~~~
-> > clust4 <- hclust(distmat, method = "mcquitty")
-> > plot(clust4)
-> > ~~~
-> > {: .language-r}
-> > 
-> > <img src="../fig/rmd-09-plot-clust-mcq-1.png" alt="plot of chunk plot-clust-mcq" width="432" style="display: block; margin: auto;" />
-> > 
-> > ~~~
-> > clust5 <- hclust(distmat, method = "median")
-> > plot(clust5)
+> > cresClassWard.D2 <- cutree(hclust(dist(cres), method="ward.D2"), k=2)
+> > plot(cres, col=cresClassWard.D2, main="ward.D2")
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-plot-clust-median-1.png" alt="plot of chunk plot-clust-median" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plot-clust-wardD2-1.png" alt="plot of chunk plot-clust-wardD2" width="432" />
+> > <p class="caption">plot of chunk plot-clust-wardD2</p>
+> > </div>
 > > 
 > > ~~~
-> > clust6 <- hclust(distmat, method = "centroid")
-> > plot(clust6)
+> > cresClassAverage <- cutree(hclust(dist(cres), method="average"), k=2)
+> > plot(cres, col=cresClassAverage, main="average")
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-plot-clust-centroid-1.png" alt="plot of chunk plot-clust-centroid" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plot-clust-average-1.png" alt="plot of chunk plot-clust-average" width="432" />
+> > <p class="caption">plot of chunk plot-clust-average</p>
+> > </div>
 > > 
-> > The linkage methods `average` and `mcquitty` produce apparently similar
-> > dendrograms. The methods `single`, `median` and `centroid` produce unusual
-> > looking dendrograms. The 'complete' method is most commonly used in practice.
+> > ~~~
+> > cresClassMcquitty <- cutree(hclust(dist(cres), method="mcquitty"), k=2)
+> > plot(cres, col=cresClassMcquitty, main="mcquitty")
+> > ~~~
+> > {: .language-r}
+> > 
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plot-clust-mcq-1.png" alt="plot of chunk plot-clust-mcq" width="432" />
+> > <p class="caption">plot of chunk plot-clust-mcq</p>
+> > </div>
+> > 
+> > ~~~
+> > cresClassMedian<- cutree(hclust(dist(cres), method="median"), k=2) 
+> > plot(cres, col=cresClassMedian, main="median")
+> > ~~~
+> > {: .language-r}
+> > 
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plot-clust-median-1.png" alt="plot of chunk plot-clust-median" width="432" />
+> > <p class="caption">plot of chunk plot-clust-median</p>
+> > </div>
+> > 
+> > ~~~
+> > cresClassCentroid<- cutree(hclust(dist(cres), method="centroid"), k=2)
+> > plot(cres, col=cresClassCentroid, main="centroid")
+> > ~~~
+> > {: .language-r}
+> > 
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-plot-clust-centroid-1.png" alt="plot of chunk plot-clust-centroid" width="432" />
+> > <p class="caption">plot of chunk plot-clust-centroid</p>
+> > </div>
+> > 
+> > The linkage methods `single`, `ward.D`, and `average` resolve each crescent as a separate cluster.
 > > 
 > {: .solution}
 {: .challenge}
 
+The help page of `hclust()` gives some intuition on linkage methods. It describes `complete`
+(the default) and `single` as opposite ends of a spectrum with all other methods in between.
+When using complete linkage, the distance between two clusters is assumed to be the distance
+between both clusters' most distant points. This opposite it true for single linkage, where
+the minimum distance between any two points, one from each of two clusters is used. Single
+linkage is described as friends-of-friends appporach - and really, it groups all close-together
+points into the same cluster (thus resolving one cluster per crescent). Complete linkage on the
+other hand recognises that some points a the tip of a crescent are much closer to points in the
+other crescent and so it splits both crescents.
 
 # Using different distance methods
 
@@ -633,18 +734,14 @@ In contrast, `sample_a` and `sample_c` are very distant, despite having
 
 
 ~~~
-pheatmap(cor_example)
+Heatmap(as.matrix(cor_example))
 ~~~
 {: .language-r}
 
-
-
-~~~
-Warning: The input is a data frame, convert it to the matrix.
-~~~
-{: .warning}
-
-<img src="../fig/rmd-09-heatmap-cor-example-1.png" alt="plot of chunk heatmap-cor-example" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-heatmap-cor-example-1.png" alt="plot of chunk heatmap-cor-example" width="432" />
+<p class="caption">plot of chunk heatmap-cor-example</p>
+</div>
 
 We can see that more clearly if we do a line plot:
 
@@ -666,7 +763,10 @@ lines(cor_example$sample_c, col = "forestgreen")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-lineplot-cor-example-1.png" alt="plot of chunk lineplot-cor-example" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-lineplot-cor-example-1.png" alt="plot of chunk lineplot-cor-example" width="432" />
+<p class="caption">plot of chunk lineplot-cor-example</p>
+</div>
 
 We can see that `sample_a` and `sample_c` have exactly the same pattern across
 all of the different features. However, due to the overall difference between
@@ -681,7 +781,10 @@ plot(clust_dist)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-clust-euc-cor-example-1.png" alt="plot of chunk clust-euc-cor-example" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-clust-euc-cor-example-1.png" alt="plot of chunk clust-euc-cor-example" width="432" />
+<p class="caption">plot of chunk clust-euc-cor-example</p>
+</div>
 
 In some cases, we might want to ensure that samples that have similar patterns,
 whether that be of gene expression, or DNA methylation, have small distances
@@ -701,7 +804,10 @@ plot(clust_cor)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-clust-cor-cor-example-1.png" alt="plot of chunk clust-cor-cor-example" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-clust-cor-cor-example-1.png" alt="plot of chunk clust-cor-cor-example" width="432" />
+<p class="caption">plot of chunk clust-cor-cor-example</p>
+</div>
 
 Now, `sample_a` and `sample_c` that have identical patterns across the features
 are grouped together, while `sample_b` is seen as distant because it has a
@@ -714,21 +820,17 @@ distance functions to functions that perform hierarchical clustering, such as
 
 ~~~
 ## pheatmap allows you to select correlation directly
-pheatmap(cor_example, clustering_distance_cols = "correlation")
+pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 ~~~
 {: .language-r}
 
-
-
-~~~
-Warning: The input is a data frame, convert it to the matrix.
-~~~
-{: .warning}
-
-<img src="../fig/rmd-09-heatmap-cor-cor-example-1.png" alt="plot of chunk heatmap-cor-cor-example" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-heatmap-cor-cor-example-1.png" alt="plot of chunk heatmap-cor-cor-example" width="432" />
+<p class="caption">plot of chunk heatmap-cor-cor-example</p>
+</div>
 
 ~~~
-## stats::heatmap requires matrix input
+## Using the built-in stats::heatmap 
 heatmap(
   as.matrix(cor_example),
   distfun = function(x) as.dist(1 - cor(t(x)))
@@ -736,7 +838,10 @@ heatmap(
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-heatmap-cor-cor-example-2.png" alt="plot of chunk heatmap-cor-cor-example" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-heatmap-cor-cor-example-2.png" alt="plot of chunk heatmap-cor-cor-example" width="432" />
+<p class="caption">plot of chunk heatmap-cor-cor-example</p>
+</div>
 
 
 # Validating clusters
@@ -747,21 +852,19 @@ many clusters are optimal for the dataset?
 Hierarchical clustering carried out on any dataset will produce clusters,
 even when there are no 'real' clusters in the data! We need to be able to
 determine whether identified clusters represent true groups in the data, or
-whether clusters have been identified just due to chance. There are some
-statistical tests that can help determine the optimal number of clusters in
-the data by assessing whether there is more evidence for a cluster than we
-would expect due to chance. Such tests can be used to compare different
-clustering algorithms, for example, those fitted using different linkage
+whether clusters have been identified just due to chance. In the last episode,
+we have introduced silhouette scores as a measure of cluster compactness and
+bootstrapping to assess cluster robustness. Such tests can be used to compare
+different clustering algorithms, for example, those fitted using different linkage
 methods. 
 
-The Dunn index is a ratio of the smallest distance between observations
-not located within the same cluster to the largest intra-cluster distance
-found within any cluster. The index is used as a metric for evaluating the
-output of hierarchical clustering, where the result is based on the clustered
-data itself and does not rely on any external data. The Dunn index is a metric
-that penalises clusters that have larger intra-cluster variance and smaller
-inter-cluster variance. The higher the Dunn index, the better defined the
-clusters.
+Here, we introduce the Dunn index, which is a measure of cluster compactness. The
+Dunn index is the ratio of the smallest distance between any two clusters
+and to the largest intra-cluster distance found within any cluster. This can be 
+seen as a family of indices which differ depending on the method used to compute
+distances. The Dunn index is a metric that penalises clusters that have
+larger intra-cluster variance and smaller inter-cluster variance. The higher the
+Dunn index, the better defined the clusters.
 
 Let's calculate the Dunn index for clustering carried out on the
 `methyl_mat` dataset using the **`clValid`** package.
@@ -779,7 +882,10 @@ plot(clust)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-09-plot-clust-dunn-1.png" alt="plot of chunk plot-clust-dunn" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-plot-clust-dunn-1.png" alt="plot of chunk plot-clust-dunn" width="432" />
+<p class="caption">plot of chunk plot-clust-dunn</p>
+</div>
 
 ~~~
 cut <- cutree(clust, h = 50)
@@ -816,59 +922,180 @@ between sets of clusters with larger values being preferred.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-09-dunn-ex-1.png" alt="plot of chunk dunn-ex" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-09-dunn-ex-1.png" alt="plot of chunk dunn-ex" width="432" />
+> > <p class="caption">plot of chunk dunn-ex</p>
+> > </div>
 > > 
 > > ~~~
-> > cut_h <- cutree(clust, h = 10)
-> > cut_k <- cutree(clust, k = 15)
+> > #Varying h
+> > ## Obtaining the clusters
+> > cut_h_20 <- cutree(clust, h = 20)
+> > cut_h_30 <- cutree(clust, h = 30)
 > > 
-> > dunn(distance = distmat, cut_h)
+> > ## How many clusters?
+> > length(table(cut_h_20))
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> > [1] Inf
+> > [1] 36
 > > ~~~
 > > {: .output}
 > > 
 > > 
 > > 
 > > ~~~
-> > dunn(distance = distmat, cut_k)
+> > length(table(cut_h_30))
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> > [1] 0.8377104
+> > [1] 14
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > dunn(distance = distmat, cut_h_20)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 1.61789
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > dunn(distance = distmat, cut_h_30)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 0.8181846
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > #Varying k
+> > ## Obtaining the clusters
+> > cut_k_10 <- cutree(clust, k = 10)
+> > cut_k_5 <- cutree(clust, k = 5)
+> > 
+> > ## How many clusters?
+> > length(table(cut_k_5))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 5
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > length(table(cut_k_10))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 10
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > dunn(distance = distmat, cut_k_5)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 0.8441528
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > dunn(distance = distmat, cut_k_10)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 0.7967132
 > > ~~~
 > > {: .output}
 > {: .solution}
 {: .challenge}
 
-Note how making the values of `h` smaller and making the values of `k`
-bigger increases the value of the Dunn index in this example. In this example,
-decreasing `h` below 0.5 gives an infinite Dunn index.
 
-The figures below show how increasing the value of `k` and reducing the value of
-`h` using `cutree()` each result in higher values of the Dunn index.
+The figures below show in a more systematic way how changing the values of `k` and
+`h` using `cutree()` affect the Dunn index.
 
-<img src="../fig/rmd-09-hclust-fig3-1.png" alt="Figure 3: Dunn index increases with increasing number of clusters" width="432" style="display: block; margin: auto;" /><img src="../fig/rmd-09-hclust-fig3-2.png" alt="Figure 3: Dunn index increases with increasing number of clusters" width="432" style="display: block; margin: auto;" />
+
+~~~
+h_seq <- 70:10
+h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x)))
+k_seq <- seq(2, 10)
+k_dunn <- sapply(k_seq, function(x) dunn(distance = distmat, cutree(clust, k = x)))
+plot(h_seq, h_dunn, xlab = "Height (h)", ylab = "Dunn index")
+grid()
+~~~
+{: .language-r}
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-hclust-fig3-1.png" alt="Figure 3: Dunn index" width="432" />
+<p class="caption">Figure 3: Dunn index</p>
+</div>
+You can see that at low values of `h`, the Dunn index can be high. But this
+is not very useful - cutting the given tree at a low `h` value like 15 leads to allmost all observations
+ending up each in its own cluster. More relevant is the second maximum in the plot, around `h=55`.
+Looking at the dendrogram, this corresponds to `k=4`.
+
+
+~~~
+plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
+grid()
+~~~
+{: .language-r}
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-hclust-fig4-1.png" alt="Figure 4: Dunn index continued" width="432" />
+<p class="caption">Figure 4: Dunn index continued</p>
+</div>
+For the given range of `k` values explored, we obtain the highest Dunn index with `k=4`.
+This is in agreement with the previous plot.
 
 There have been criticisms of the use of the Dunn index in validating
 clustering results, due to its high sensitivity to noise in the dataset.
-Another method of validating identified clusters is the silhouette score 
-which uses the average distance between clusters and the points within them;
-see the k-means clustering episode for more information on this measure.
+An alternative is to use silhouette scores (see the k-means clustering episode).
 
-Another more robust method of validating clusters identified using hierarchical
-clustering is splitting the data into test and training datasets and comparing
-clusters in the test dataset with those identified in the training dataset.
-However, there is no common consensus on the best method to use to validate
-clusters identified using hierarchical clustering.
+As we said before (see previous episode), clustering is a non-trivial task.
+It is important to think about the nature of your data and your expactations
+rather than blindly using a some algorithm for clustering or cluster validation.
 
 # Further reading 
 
