@@ -25,10 +25,10 @@ jobs:
 
       - name: Make DESCRIPTION
         run: |
-          Rscript -e 'install.packages(c("BiocManager", "renv"))'
+          Rscript -e 'install.packages(c("renv"))'
           Rscript -e 'source("bin/dependencies.R"); create_description(identify_dependencies())'
       - uses: r-lib/actions/setup-r-dependencies@v2
-
+      - uses: actions/setup-ruby@v1
       - name: Render the markdown and confirm that the site can be built
         run: make site
 
