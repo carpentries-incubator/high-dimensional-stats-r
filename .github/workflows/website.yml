@@ -8,8 +8,7 @@ on:
 jobs:
   build-website:
     if: ${{ !endsWith(github.repository, '/styles') }}
-    runs-on: ubuntu-20.04
-    container: bioconductor/bioconductor_docker:latest
+    runs-on: ubuntu-latest
     env:
       RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -18,14 +17,14 @@ jobs:
         shell: bash
     steps:
       - name: Checkout the lesson
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Make DESCRIPTION
         run: |
-          Rscript -e 'install.packages(c("renv"))'
+          Rscript -e 'install.packages(c("BiocManager", "renv"))'
           Rscript -e 'source("bin/dependencies.R"); create_description(identify_dependencies())'
       - uses: r-lib/actions/setup-r-dependencies@v2
       - uses: actions/setup-ruby@v1
