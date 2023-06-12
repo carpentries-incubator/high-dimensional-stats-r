@@ -713,9 +713,37 @@ represents.
 > > 
 > > ~~~
 > > pc <- pca(mat, metadata = metadata)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
+> > or useNames = TRUE.
+> > ~~~
+> > {: .warning}
+> > 
+> > 
+> > 
+> > ~~~
 > > #Many PCs explain a very small amount of the total variance in the data
 > > #Remove the lower 20% of PCs with lower variance
 > > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
+> > or useNames = TRUE.
+> > ~~~
+> > {: .warning}
+> > 
+> > 
+> > 
+> > ~~~
 > > #Explore other arguments provided in pca
 > > pc$rotated[1:5, 1:5]
 > > ~~~
