@@ -17,3 +17,4 @@ vendor/
 .docker-vendor/
 Gemfile.lock
 .*history
+DESCRIPTION

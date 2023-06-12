@@ -6,10 +6,29 @@ on:
       - main
   pull_request: []
 jobs:
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          push: true # Will only build if this is not here
+          tags: |
+              ghcr.io/${{ github.repository }}:${{ github.sha }}
+              ghcr.io/${{ github.repository }}:latest
   build-website:
-    if: ${{ !endsWith(github.repository, '/styles') }}
-    runs-on: ubuntu-20.04
-    container: alanocallaghan/high-dimensional-stats-r
+    needs: container
+    runs-on: ubuntu-latest
+    container: ghcr.io/${{github.repository}}:latest
     env:
       RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -18,11 +37,10 @@ jobs:
         shell: bash
     steps:
       - name: Checkout the lesson
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-
       - name: Render the markdown and confirm that the site can be built
         run: make site
 
