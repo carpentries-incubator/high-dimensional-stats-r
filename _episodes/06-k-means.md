@@ -75,7 +75,10 @@ according to data values. We then plot these data and their allocated clusters
 and put ellipses around the clusters using the `stat_ellipse` function
 in `ggplot`.
 
-<img src="../fig/rmd-08-fake-cluster-1.png" alt="plot of chunk fake-cluster" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-fake-cluster-1.png" alt="plot of chunk fake-cluster" width="432" />
+<p class="caption">plot of chunk fake-cluster</p>
+</div>
 The randomly created data used here appear to form three clusters when we
 plot the data. Putting ellipses around the clusters can further convince us
 that the clusters are 'real'. But how do we tell if clusters identified
@@ -102,7 +105,10 @@ We then follow these two steps until convergence:
 
 We can see this process in action in this animation:
 
-<img src="../fig/kmeans.gif" alt="Alt" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/kmeans.gif" alt="Alt"  />
+<p class="caption">Cap</p>
+</div>
 While K-means has some advantages over other clustering methods (easy to implement and
 to understand), it does have some disadvantages, namely difficulties in identifying 
 initial clusters which observations belong to and the need for the user to specifiy the
@@ -154,6 +160,20 @@ library("scater")
 
 scrnaseq <- readRDS(here::here("data/scrnaseq.rds"))
 scrnaseq <- runPCA(scrnaseq, ncomponents = 15)
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
+or useNames = TRUE.
+~~~
+{: .warning}
+
+
+
+~~~
 pcs <- reducedDim(scrnaseq)[, 1:2]
 ~~~
 {: .language-r}
@@ -174,7 +194,10 @@ plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-kmeans-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-kmeans-1.png" alt="Alt" width="432" />
+<p class="caption">Title</p>
+</div>
 
 We can see that this produces a sensible-looking partition of the data. 
 However, is it totally clear whether there might be more or fewer clusters
@@ -197,7 +220,10 @@ here?
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-kmeans-ex-1.png" alt="plot of chunk kmeans-ex" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-08-kmeans-ex-1.png" alt="plot of chunk kmeans-ex" width="432" />
+> > <p class="caption">plot of chunk kmeans-ex</p>
+> > </div>
 > > 
 > {: .solution}
 {: .challenge}
@@ -226,7 +252,10 @@ here?
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-08-unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" width="432" style="display: block; margin: auto;" />
+> <div class="figure" style="text-align: center">
+> <img src="../fig/rmd-08-unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" width="432" />
+> <p class="caption">plot of chunk unnamed-chunk-1</p>
+> </div>
 > PAM can be carried out using `pam()` form the **`cluster`** package.
 > 
 {: .callout}
@@ -271,7 +300,10 @@ plot(sil, border = NA)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-silhouette-1.png" alt="plot of chunk silhouette" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-silhouette-1.png" alt="plot of chunk silhouette" width="432" />
+<p class="caption">plot of chunk silhouette</p>
+</div>
 
 
 Let's plot the silhouette score on the original dimensions used to cluster
@@ -310,7 +342,10 @@ ggplot(pc) +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-plot-silhouette-1.png" alt="plot of chunk plot-silhouette" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-plot-silhouette-1.png" alt="plot of chunk plot-silhouette" width="432" />
+<p class="caption">plot of chunk plot-silhouette</p>
+</div>
 
 This plot shows that silhouette values for individual observations tends to be
 very high in the centre of clusters, but becomes quite low towards the edges.
@@ -335,7 +370,10 @@ belong to.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-silhouette-ex-1.png" alt="plot of chunk silhouette-ex" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-08-silhouette-ex-1.png" alt="plot of chunk silhouette-ex" width="432" />
+> > <p class="caption">plot of chunk silhouette-ex</p>
+> > </div>
 > > 
 > > ~~~
 > > mean(sil5[, "sil_width"])
@@ -356,7 +394,10 @@ belong to.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/silhouette5.png" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/silhouette5.png" alt="plot of chunk unnamed-chunk-4"  />
+> > <p class="caption">plot of chunk unnamed-chunk-4</p>
+> > </div>
 > > This seems to be because some observations in clusters 3 and 5 seem to be
 > > more similar to other clusters than the one they have been assigned to.
 > > This may indicate that K is too high.
@@ -488,7 +529,10 @@ replicate(10, sample(data, 5, replace = TRUE))
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-08-boots-1.png" alt="plot of chunk boots" width="432" style="display: block; margin: auto;" />
+> <div class="figure" style="text-align: center">
+> <img src="../fig/rmd-08-boots-1.png" alt="plot of chunk boots" width="432" />
+> <p class="caption">plot of chunk boots</p>
+> </div>
 > 
 > In this case, the example is simple, but it's possible to
 > devise more complex statistical tests using this kind of approach.
@@ -528,7 +572,10 @@ pheatmap(ratios,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-08-bs-heatmap-1.png" alt="plot of chunk bs-heatmap" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-bs-heatmap-1.png" alt="plot of chunk bs-heatmap" width="432" />
+<p class="caption">plot of chunk bs-heatmap</p>
+</div>
 
 Yellow boxes indicate values slightly greater than 1, which may be observed.
 These are “good” (despite missing in the colour bar).
@@ -555,7 +602,10 @@ These are “good” (despite missing in the colour bar).
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-08-bs-ex-1.png" alt="plot of chunk bs-ex" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-08-bs-ex-1.png" alt="plot of chunk bs-ex" width="432" />
+> > <p class="caption">plot of chunk bs-ex</p>
+> > </div>
 > > When K=5, we can see that the values on the diagonal of the matrix are 
 > > smaller, indicating that the clusters aren't exactly reproducible in the
 > > bootstrap samples. 
