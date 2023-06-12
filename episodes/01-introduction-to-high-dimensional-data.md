@@ -63,7 +63,10 @@ specific patient outcomes (e.g. survival, length of time spent in hospital).
 An example of what high-dimensional data might look like in a biomedical study
 is shown in the figure below. 
 
-<img src="../fig/intro-table.png" alt="plot of chunk table-intro" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/intro-table.png" alt="plot of chunk table-intro"  />
+<p class="caption">plot of chunk table-intro</p>
+</div>
 
 
 
@@ -180,7 +183,10 @@ of the challenges we are facing when working with high-dimensional data.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-01-pairs-prostate-1.png" alt="plot of chunk pairs-prostate" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-01-pairs-prostate-1.png" alt="plot of chunk pairs-prostate" width="432" />
+> > <p class="caption">plot of chunk pairs-prostate</p>
+> > </div>
 > > The `pairs()` function plots relationships between each of the variables in
 > > the `Prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
@@ -213,7 +219,10 @@ dataset are almost equal. In that situation the effective number of observations
 per features is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
-<img src="../fig/intro-scatterplot.png" alt="plot of chunk intro-figure" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/intro-scatterplot.png" alt="plot of chunk intro-figure"  />
+<p class="caption">plot of chunk intro-figure</p>
+</div>
 
 In the first situation, the least squares regression line does not fit the data
 perfectly and there is some error around the regression line. But, when there are

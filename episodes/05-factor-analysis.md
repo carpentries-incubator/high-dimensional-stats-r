@@ -27,15 +27,21 @@ math: yes
 
 # Introduction
 
- Biologists often encounter high-dimensional datasets from which they wish
- to extract underlying features – they need to carry out dimensionality
- reduction. The last episode dealt with one method to achieve this this,
- called principal component analysis (PCA). Here, we introduce more general
- set of methods called factor analysis (FA).
+Biologists often encounter high-dimensional datasets from which they wish
+to extract underlying features – they need to carry out dimensionality
+reduction. The last episode dealt with one method to achieve this this,
+called principal component analysis (PCA). Here, we introduce more general
+set of methods called factor analysis (FA).
  
 There are two types of FA, called exploratory and confirmatory factor analysis
-(EFA and CFA). We will mainly focus on EFA here, which is used to group
-features into a specified number of latent factors.
+(EFA and CFA). Both EFA and CFA aim to reproduce the observed relationships
+among a group of features with a smaller set of latent variables. EFA
+is used in a descriptive, data-driven manner to uncover which
+measured variables are reasonable indicators of the various latent dimensions.
+In contrast, CFA is conducted in an a-priori,
+hypothesis-testing manner that requires strong empirical or theoretical foundations.
+We will mainly focus on EFA here, which is used to group features into a specified
+number of latent factors.
 
 Unlike with PCA, researchers using FA have to specify the number of latent
 variables (factors) at the point of running the analysis. Researchers may use
@@ -51,16 +57,11 @@ dataset below. If we were to run and EFA on this, we might find that the scores
 can be summarised well by two factors, which we can then interpret. We have
 labelled these hypothetical factors “mathematical ability” and “writing ability”.
 
-If a researcher already has a hypothesis about what factors explain the variation
-in a dataset, they can run a CFA, specifying which features are though to be
-represented by which latent factor(s). The fit of the CFA is then assessed.
 
-
-<img src="../fig/table_for_fa.png" alt="plot of chunk table" style="display: block; margin: auto;" />
-
-Another example of how CFA can be used is creating new factors based on a
-researcher's knowledge of how genes group into clusters.
-
+<div class="figure" style="text-align: center">
+<img src="../fig/table_for_fa.png" alt="plot of chunk table"  />
+<p class="caption">plot of chunk table</p>
+</div>
 So, EFA is designed to identify a specified number of unobservable factors from
 observable features contained in the original dataset. This is slightly
 different from PCA, which does not do this directly. Just to recap, PCA creates
@@ -418,7 +419,10 @@ text(
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-06-biplot-1.png" alt="plot of chunk biplot" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-06-biplot-1.png" alt="plot of chunk biplot" width="432" />
+<p class="caption">plot of chunk biplot</p>
+</div>
 
 
 > ## Challenge 2 (3 mins)
@@ -453,7 +457,7 @@ text(
 - Gundogdu et al. (2019) Comparison of performances of Principal Component Analysis (PCA) and Factor Analysis (FA) methods on the identification of cancerous and healthy colon tissues. International Journal of Mass Spectrometry 445:116204.
 - Kustra et al. (2006) A factor analysis model for functional genomics. BMC Bioinformatics 7: doi:10.1186/1471-2105-7-21.
 - Yong, A.G. & Pearce, S. (2013) A beginner's guide to factor analysis: focusing on exploratory factor analysis. Tutorials in Quantitative Methods for Psychology 9(2):79-94.
-- Confirmatory factor analysis can be carried out, for instance with the packages [Lavaan](https://www.lavaan.ugent.be/index.html) and [psych](https://personality-project.org/r/psych/)
-- A more sophisticated implementation of EFA is available in [EFA.dimensions](https://cran.r-project.org/web/packages/EFA.dimensions/index.html)
+- Confirmatory factor analysis can be carried out with the package [Lavaan](https://www.lavaan.ugent.be/index.html).
+- A more sophisticated implementation of EFA is available in the packages [EFA.dimensions](https://cran.r-project.org/web/packages/EFA.dimensions/index.html) and [psych](https://personality-project.org/r/psych/).
 
 {% include links.md %}

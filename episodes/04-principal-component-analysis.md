@@ -174,7 +174,10 @@ components as there are variables in your dataset, but as we'll see, some are
 more useful at explaining your data than others. By definition, the first
 principal component explains more variation than other principal components.
 
-<img src="../fig/bio_index_vs_percentage_fallow.png" alt="Alt" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/bio_index_vs_percentage_fallow.png" alt="Alt"  />
+<p class="caption">Cap</p>
+</div>
 
 The animation below illustrates how principal components are calculated from
 data. You can imagine that the black line is a rod and each red dashed line is
@@ -186,7 +189,10 @@ equilibrium. We then use the length of the springs from the rod as the first
 principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
-<img src="../fig/pendulum.gif" alt="Alt" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/pendulum.gif" alt="Alt"  />
+<p class="caption">Cap</p>
+</div>
 
 
 The first principal component's scores ($Z_1$) are calculated using the equation:
@@ -309,7 +315,10 @@ hist(pros2$lbph, breaks = "FD")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-var-hist-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-var-hist-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
 
 Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
 from this output that we need to scale each of these variables before including
@@ -443,7 +452,10 @@ plot(varDF)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-vardf-plot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-vardf-plot-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
 
 The screeplot shows that the first principal component explains most of the
 variance in the data (>50%) and each subsequent principal component explains
@@ -543,7 +555,10 @@ stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-stats-biplot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-stats-biplot-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
 
 This biplot shows the position of each patient on a 2-dimensional plot where
 loadings can be observed via the red arrows associated with each of
@@ -698,9 +713,37 @@ represents.
 > > 
 > > ~~~
 > > pc <- pca(mat, metadata = metadata)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
+> > or useNames = TRUE.
+> > ~~~
+> > {: .warning}
+> > 
+> > 
+> > 
+> > ~~~
 > > #Many PCs explain a very small amount of the total variance in the data
 > > #Remove the lower 20% of PCs with lower variance
 > > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
+> > or useNames = TRUE.
+> > ~~~
+> > {: .warning}
+> > 
+> > 
+> > 
+> > ~~~
 > > #Explore other arguments provided in pca
 > > pc$rotated[1:5, 1:5]
 > > ~~~
@@ -797,8 +840,8 @@ represents.
 > > 215281_x_at 0.003923775 0.003179556 -0.0004388192 9.664648e-05 0.003501335
 > >                    PC86        PC87          PC88         PC89         PC90
 > > 215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
-> >                    PC91
-> > 215281_x_at -0.02050187
+> >                   PC91
+> > 215281_x_at -0.0196087
 > > ~~~
 > > {: .output}
 > > 
@@ -861,7 +904,7 @@ represents.
 > >                    PC82        PC83         PC84       PC85       PC86
 > > 211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
 > >                     PC87        PC88        PC89        PC90        PC91
-> > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 -0.02105733
+> > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 -0.02709543
 > > ~~~
 > > {: .output}
 > > The function `pca()` is used to perform PCA, and uses as inputs a matrix
@@ -926,7 +969,10 @@ proportion of variance explained.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-scree-ex-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-05-scree-ex-1.png" alt="Alt" width="432" />
+> > <p class="caption">Alt</p>
+> > </div>
 > > Note that first principal component (PC1) explains more variation than
 > > other principal components (which is always the case in PCA). The screeplot
 > > shows that the first principal component only explains ~33% of the total
@@ -972,7 +1018,10 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-05-biplot-ex-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-05-biplot-ex-1.png" alt="Alt" width="432" />
+> > <p class="caption">Alt</p>
+> > </div>
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
 > > axis according to expressions of different genes while no separation can be
@@ -1016,7 +1065,10 @@ Let's consider this biplot in more detail, and also display the loadings:
 > > ~~~
 > > {: .warning}
 > > 
-> > <img src="../fig/rmd-05-pca-biplot-ex2-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+> > <div class="figure" style="text-align: center">
+> > <img src="../fig/rmd-05-pca-biplot-ex2-1.png" alt="Alt" width="432" />
+> > <p class="caption">Alt</p>
+> > </div>
 > > It appears that one cluster has more ER+ samples than the other group.
 > {: .solution}
 {: .challenge}
@@ -1031,7 +1083,10 @@ pairsplot(pc)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-05-pairsplot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-pairsplot-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
 
 The plots show two apparent clusters involving the first principal component
 only. No other clusters are found involving other principal components. Each dot

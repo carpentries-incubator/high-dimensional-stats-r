@@ -225,7 +225,10 @@ that represents this line in terms of its slope and intercept among many
 different possible models, where the background colour represents how well
 different combinations of slope and intercept accomplish this objective.
 
-<img src="../fig/rmd-03-regplot-1.png" alt="Alt" width="720" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-regplot-1.png" alt="Alt" width="720" />
+<p class="caption">Cap</p>
+</div>
 
 Mathematically, we can write the sum of squared residuals as
 
@@ -298,7 +301,10 @@ To get an idea of how well our model generalises, we can split the data into
 two - a "training" and a "test" set. We use the "training" data to fit the model,
 and then see its performance on the "test" data.
 
-<img src="../fig/validation.png" alt="Alt" width="500px" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/validation.png" alt="Alt" width="500px" />
+<p class="caption">Title</p>
+</div>
 
 One thing that often happens in this context is that large 
 coefficient values minimise the training error, but they don't minimise the 
@@ -427,7 +433,10 @@ abline(coef = 0:1, lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-test-plot-lm-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-test-plot-lm-1.png" alt="Alt" width="432" />
+<p class="caption">Cap</p>
+</div>
 
 This figure shows the predicted ages obtained from a linear model fit plotted 
 against the true ages, which we kept in the test dataset. If the prediction were 
@@ -452,7 +461,10 @@ want to find the "best" solution (in terms of minimising the
 residuals) that also falls within a circle of a given radius 
 (in this case, 2).
 
-<img src="../fig/rmd-03-ridgeplot-1.png" alt="Alt" width="720" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-ridgeplot-1.png" alt="Alt" width="720" />
+<p class="caption">Cap</p>
+</div>
 
 There are multiple ways to define the distance that our solution must fall in,
 though. The one we've plotted above controls the squared sum of the 
@@ -508,7 +520,10 @@ abline(h = 0, lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-plot-ridge-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-plot-ridge-1.png" alt="Alt" width="432" />
+<p class="caption">Cap</p>
+</div>
 
 This plot shows how the estimated coefficients for each methrylated site  change
 as we increase the penalty, $\lambda$. That is,
@@ -577,7 +592,10 @@ abline(v = log(chosen_lambda), lty = "dashed")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-chooselambda-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-chooselambda-1.png" alt="Alt" width="432" />
+<p class="caption">Cap</p>
+</div>
 
 
 > ## Challenge 4
@@ -636,7 +654,10 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-03-plot-ridge-prediction-1.png" alt="Alt" width="720" style="display: block; margin: auto;" />
+> >    <div class="figure" style="text-align: center">
+> >    <img src="../fig/rmd-03-plot-ridge-prediction-1.png" alt="Alt" width="720" />
+> >    <p class="caption">Cap</p>
+> >    </div>
 > {: .solution}
 {: .challenge}
 
@@ -657,7 +678,10 @@ So, when we increase the penalty (reduce the norm), it's more likely that
 the best solution that falls in this region will be at the corner of this
 diagonal (i.e., one or more coefficient is exactly zero).
 
-<img src="../fig/rmd-03-shrink-lasso-1.png" alt="Alt" width="720" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-shrink-lasso-1.png" alt="Alt" width="720" />
+<p class="caption">Title</p>
+</div>
 
 
 > ## Challenge 5
@@ -682,7 +706,10 @@ diagonal (i.e., one or more coefficient is exactly zero).
 > >    to the coefficients. When we instead plot the L1 norm on the x-axis,
 > >    increasing L1 norm means that we are allowing our
 > >    coefficients to take on increasingly large values.
-> >    <img src="../fig/rmd-03-plotlas-1.png" alt="plot of chunk plotlas" width="720" style="display: block; margin: auto;" />
+> >    <div class="figure" style="text-align: center">
+> >    <img src="../fig/rmd-03-plotlas-1.png" alt="plot of chunk plotlas" width="720" />
+> >    <p class="caption">plot of chunk plotlas</p>
+> >    </div>
 > > 3. The paths tend to go to exactly zero much more when sparsity increases when we use a LASSO model. 
 > >    In the ridge case, the paths tend towards zero but less commonly reach exactly zero.
 > > 
@@ -702,7 +729,10 @@ data. This is called cross-validation, and doing this repeated test/train split
 gives us a better estimate of how generalisable our model is. Cross-validation
 is a really deep topic that we're not going to cover in more detail today, though!
 
-<img src="../fig/cross_validation.png" alt="Alt" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/cross_validation.png" alt="Alt"  />
+<p class="caption">Title</p>
+</div>
 
 We can use this new idea to choose a lambda value, by finding the lambda
 that minimises the error across each of the test and training splits.
@@ -714,7 +744,10 @@ plot(lasso)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-03-lasso-cv-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-lasso-cv-1.png" alt="Alt" width="432" />
+<p class="caption">Lasso</p>
+</div>
 
 ~~~
 coefl <- coef(lasso, lasso$lambda.min)
@@ -771,7 +804,10 @@ in between gives us something in between.
 The contour plots we looked at previously to visualise what this penalty looks
 like for different values of `alpha`.
 
-<img src="../fig/rmd-03-elastic-contour-1.png" alt="plot of chunk elastic-contour" width="1152" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-elastic-contour-1.png" alt="plot of chunk elastic-contour" width="1152" />
+<p class="caption">plot of chunk elastic-contour</p>
+</div>
 
 > ## Challenge 6
 > 
@@ -797,7 +833,10 @@ like for different values of `alpha`.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-03-elastic-1.png" alt="plot of chunk elastic" width="432" style="display: block; margin: auto;" />
+> >    <div class="figure" style="text-align: center">
+> >    <img src="../fig/rmd-03-elastic-1.png" alt="plot of chunk elastic" width="432" />
+> >    <p class="caption">plot of chunk elastic</p>
+> >    </div>
 > > 2. The process of model selection is similar for elastic net models as for
 > >    LASSO models.
 > >    
@@ -807,7 +846,10 @@ like for different values of `alpha`.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-03-elastic-cv-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <div class="figure" style="text-align: center">
+> >    <img src="../fig/rmd-03-elastic-cv-1.png" alt="Alt" width="432" />
+> >    <p class="caption">Elastic</p>
+> >    </div>
 > > 3. You can see that the coefficients from these two methods are broadly
 > >    similar, but the elastic net coefficients are a bit more conservative.
 > >    Further, more coefficients are exactly zero in the LASSO model.
@@ -852,7 +894,10 @@ like for different values of `alpha`.
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <img src="../fig/rmd-03-elastic-plot-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+> >    <div class="figure" style="text-align: center">
+> >    <img src="../fig/rmd-03-elastic-plot-1.png" alt="Alt" width="432" />
+> >    <p class="caption">LASSO-Elastic</p>
+> >    </div>
 > > 4. You could pick an arbitrary value of `alpha`, because arguably pure ridge
 > >    regression or pure LASSO regression are also arbitrary model choices.
 > >    To be rigorous and to get the best-performing model and the best 
@@ -991,7 +1036,10 @@ like for different values of `alpha`.
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-03-binomial-1.png" alt="Alt" width="432" style="display: block; margin: auto;" />
+> <div class="figure" style="text-align: center">
+> <img src="../fig/rmd-03-binomial-1.png" alt="Alt" width="432" />
+> <p class="caption">Title</p>
+> </div>
 > In this case, the results aren't very interesting! We select an intercept-only
 > model.
 {: .callout}

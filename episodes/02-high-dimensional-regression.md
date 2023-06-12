@@ -121,7 +121,10 @@ hist(methyl_mat, breaks = "FD", xlab = "M-value")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-histx-1.png" alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-histx-1.png" alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features." width="432" />
+<p class="caption">Methylation levels are generally bimodally distributed.</p>
+</div>
 
 You can see that there are two peaks in this distribution, corresponding
 to features which are largely unmethylated and methylated, respectively.
@@ -172,7 +175,10 @@ Heatmap(methyl_mat_ord,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-heatmap-1.png" alt="Heatmap of methylation values across all features. Samples are ordered according to age." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-heatmap-1.png" alt="Heatmap of methylation values across all features. Samples are ordered according to age." width="432" />
+<p class="caption">Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.</p>
+</div>
 Depending on the scientific question of interest, two types of high-dimensional 
 problems could be explored in this context:
 
@@ -283,16 +289,25 @@ Ideally when performing regression, we want to identify cases like this,
 where there is a clear association, and we probably "don't need"
 statistics:
 
-<img src="../fig/rmd-02-example1-1.png" alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-example1-1.png" alt="An example of a strong linear association between a continuous phenotype (age) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. A strong linear relationship with a positive slope exists between the two." width="432" />
+<p class="caption">A scatter plot of age and a feature of interest.</p>
+</div>
 
 or equivalently for a discrete covariate:
 
-<img src="../fig/rmd-02-example2-1.png" alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. The two groups clearly differ with respect to DNA methylation." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-example2-1.png" alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. The two groups clearly differ with respect to DNA methylation." width="432" />
+<p class="caption">A scatter plot of a grouping and a feature of interest.</p>
+</div>
 
 However, often due to small differences and small sample sizes, the
 problem is more difficult:
 
-<img src="../fig/rmd-02-example3-1.png" alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. The two groups seem to differ with respect to DNA methylation, but the relationship is weak." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-example3-1.png" alt="An example of a strong linear association between a discrete phenotype (group) on the x-axis and a feature of interest (DNA methylation at a given locus) on the y-axis. The two groups seem to differ with respect to DNA methylation, but the relationship is weak." width="432" />
+<p class="caption">A scatter plot of a grouping and a feature of interest.</p>
+</div>
 
 And, of course, we often have an awful lot of features and need to
 prioritise a subset of them! We need a rigorous way to prioritise genes
@@ -348,7 +363,10 @@ abline(lm_age_methyl1)
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-plot-lm-methyl1-1.png" alt="plot of chunk plot-lm-methyl1" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-plot-lm-methyl1-1.png" alt="plot of chunk plot-lm-methyl1" width="432" />
+<p class="caption">plot of chunk plot-lm-methyl1</p>
+</div>
 
 For this feature, we can see that there is no strong relationship
 between methylation and age. We could try to repeat this for every
@@ -504,7 +522,10 @@ hypothesis that is *as extreme or more extreme* than the observed value
 of the test statistic. This is easy to observe visually, by plotting the
 distribution:
 
-<img src="../fig/rmd-02-tdist-1.png" alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-tdist-1.png" alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" />
+<p class="caption">The p-value for a regression coefficient represents how often it'd be observed under the null.</p>
+</div>
 
 The red-ish shaded region represents the portion of the distribution of
 the test statistic under the null hypothesis that is equal or greater to
@@ -786,7 +807,10 @@ plot(toptab_age$logFC, -log10(toptab_age$P.Value),
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-limmavolc1-1.png" alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-limmavolc1-1.png" alt="A plot of -log10(p) against effect size estimates for a regression of age against methylation using limma." width="432" />
+<p class="caption">Plotting p-values against effect sizes using limma; the results are similar to a standard linear model.</p>
+</div>
 
 In this figure, every point represents a feature of interest. The x-axis
 represents the effect size observed for that feature in a linear model,
@@ -835,7 +859,10 @@ or information sharing that **`limma`** performs has on our results. To do
 this, let us compare the effect sizes estimates and p-values from the two
 approaches.
 
-<img src="../fig/rmd-02-plot-limma-lm-effect-1.png" alt="plot of chunk plot-limma-lm-effect" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-plot-limma-lm-effect-1.png" alt="plot of chunk plot-limma-lm-effect" width="432" />
+<p class="caption">plot of chunk plot-limma-lm-effect</p>
+</div>
 
 These are exactly identical! This is because **`limma`** does not perform
 any sharing of information when estimating effect sizes. This is in
@@ -845,7 +872,10 @@ or moderate the effect size estimates, in the case of **`DESeq2`** by again
 sharing information between features about sample-to-sample variability.
 In contrast, let us look at the p-values from **`limma`** and R's built-in `lm()` function:
 
-<img src="../fig/rmd-02-plot-limma-lm-pval-1.png" alt="plot of chunk plot-limma-lm-pval" width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-plot-limma-lm-pval-1.png" alt="plot of chunk plot-limma-lm-pval" width="432" />
+<p class="caption">plot of chunk plot-limma-lm-pval</p>
+</div>
 
 we can see that for the vast majority of features, the results are
 broadly similar. There seems to be a minor general tendency for **`limma`**
@@ -897,7 +927,10 @@ feature separately.
 > >     ~~~
 > >     {: .language-r}
 > >     
-> >     <img src="../fig/rmd-02-limmavolc2-1.png" alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." width="432" style="display: block; margin: auto;" />
+> >     <div class="figure" style="text-align: center">
+> >     <img src="../fig/rmd-02-limmavolc2-1.png" alt="A plot of -log10(p) against effect size estimates for a regression of smoking status against methylation using limma." width="432" />
+> >     <p class="caption">A plot of significance against effect size for a regression of smoking against methylation.</p>
+> >     </div>
 > >
 > > 2.  Being a bit more conservative when identifying features can help
 > >     to avoid false discoveries. Furthermore, when rejecting the null
@@ -982,7 +1015,10 @@ abline(h = -log10(0.05), lty = "dashed", col = "red")
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-volcplotfake-1.png" alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-volcplotfake-1.png" alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level." width="432" />
+<p class="caption">Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results.</p>
+</div>
 
 Since we have generated a random sequence of ages, we have no reason to
 suspect that there is a true association between methylation levels and
@@ -1089,7 +1125,10 @@ ggplot() +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-p-fwer-1.png" alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-p-fwer-1.png" alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" />
+<p class="caption">Bonferroni correction often produces very large p-values, especially with low sample sizes.</p>
+</div>
 
 You can see that the p-values are exactly one for the vast majority of
 tests we performed! This is not ideal sometimes, because unfortunately
@@ -1162,7 +1201,10 @@ experiment over and over.
 > >     ~~~
 > >     {: .language-r}
 > >     
-> >     <img src="../fig/rmd-02-p-fdr-1.png" alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
+> >     <div class="figure" style="text-align: center">
+> >     <img src="../fig/rmd-02-p-fdr-1.png" alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" />
+> >     <p class="caption">Benjamini-Hochberg correction is less conservative than Bonferroni</p>
+> >     </div>
 > >
 > >     
 > >     ~~~
@@ -1177,7 +1219,10 @@ experiment over and over.
 > >     ~~~
 > >     {: .language-r}
 > >     
-> >     <img src="../fig/rmd-02-plot-fdr-fwer-1.png" alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" style="display: block; margin: auto;" />
+> >     <div class="figure" style="text-align: center">
+> >     <img src="../fig/rmd-02-plot-fdr-fwer-1.png" alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." width="432" />
+> >     <p class="caption">plot of chunk plot-fdr-fwer</p>
+> >     </div>
 > >
 > {: .solution}
 {: .challenge}
