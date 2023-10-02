@@ -26,8 +26,7 @@ data_files <- c(
     "cancer_expression.rds",
     "coefHorvath.rds",
     "methylation.rds",
-    "scrnaseq.rds",
-    "small_methylation.rds"
+    "scrnaseq.rds"
 )
 for (file in data_files) {
     download.file(
