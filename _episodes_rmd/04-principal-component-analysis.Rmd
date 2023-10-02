@@ -411,7 +411,7 @@ callout demonstrates this.
 > pros2.eigen <- eigen(pros2.cov) # preform eigen decomposition
 > pros2.eigen # The slot $vectors = rotation of the PCA
 > # generate PC scores by by hand, using matrix multiplication
-> my.pros2.pcs <- pros2.scaled %*% pros.eigen$vectors
+> my.pros2.pcs <- pros2.scaled %*% pros2.eigen$vectors
 > # compare results
 > par(mfrow=c(1,2))
 > plot(pca.pros$x[,1:2], main="prcomp()")
