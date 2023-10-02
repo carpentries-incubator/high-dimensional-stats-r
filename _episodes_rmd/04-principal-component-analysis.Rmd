@@ -418,7 +418,7 @@ callout demonstrates this.
 > abline(h=0, v=0, lty=2)
 > plot(my.pros2.pcs[,1:2], main="\"By hand\"", xlab="PC1", ylab="PC2")
 > abline(h=0, v=0, lty=2)
-> par(mfrow=c(1,1)
+> par(mfrow=c(1,1))
 > # Note that the axis orientations may be swapped but the relative positions of the dots should be the same in both plots.
 > ```
 {: .callout}
