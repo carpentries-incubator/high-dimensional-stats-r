@@ -527,9 +527,7 @@ small uncertainty may lead to a small p-value.
 > pvals <- 2 * pt(abs(tvals), df = lm_age_methyl1$df, lower.tail = FALSE)
 > all.equal(table_age_methyl1$p.value, pvals)
 > ```
->
->
->{: .callout}
+{: .callout}
 
 # Sharing information across outcome variables
 
@@ -1118,7 +1116,7 @@ experiment over and over.
     Hansen](https://kasperdanielhansen.github.io/genbioconductor/html/limma.html)
 -   [**`limma`** user
     manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf).
--   [The **`VariancePartition`** package](https://bioconductor.org/packages/release/bioc/vignettes/variancePartition/inst/doc/dream.html) has similar functionality than **`limma`** but allows the inclusion of random effects. 
+-   [The **`VariancePartition`** package](https://bioconductor.org/packages/release/bioc/vignettes/variancePartition/inst/doc/dream.html) has similar functionality as **`limma`** but allows the inclusion of random effects. 
 
 ## Footnotes
 
