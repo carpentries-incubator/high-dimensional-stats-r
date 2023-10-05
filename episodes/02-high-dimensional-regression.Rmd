@@ -577,7 +577,7 @@ $$
 
 It is clear that large effect sizes will likely lead to small p-values,
 as long as the standard error for the coefficent is not large. However,
-the standard error is affected by the amuont of noise, as we saw
+the standard error is affected by the amount of noise, as we saw
 earlier. If we have a small number of observations, it is common for the
 noise for some features to be extremely small simply by chance. This, in turn,
 causes small p-values for these features, which may give us unwarranted
