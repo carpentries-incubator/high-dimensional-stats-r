@@ -324,7 +324,7 @@ To get an idea of how well our model generalises, we can split the data into
 two - a "training" and a "test" set. We use the "training" data to fit the model,
 and then see its performance on the "test" data.
 
-```{r validation, echo = FALSE, out.width = "500px", fig.cap = "Title", fig.alt = "Alt"}
+```{r validation, echo = FALSE, out.width = "500px", fig.cap = "Schematic representation of how a dataset can be divided into a training and a test set.", fig.alt = "Schematic representation of how a dataset can be divided into a training (the portion of the data used to fit a model) and a test set (the portion of the data used to assess external generalisability)."}
 knitr::include_graphics("../fig/validation.png")
 ```
 
