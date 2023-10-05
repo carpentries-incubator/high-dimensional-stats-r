@@ -183,7 +183,7 @@ that represents this line in terms of its slope and intercept among many
 different possible models, where the background colour represents how well
 different combinations of slope and intercept accomplish this objective.
 
-```{r regplot, echo = FALSE, fig.cap="Cap", fig.alt="Alt", fig.width=10}
+```{r regplot, echo = FALSE, fig.cap="Illustrative example demonstrated how regression coefficients are inferred under a linear model framework.", fig.alt="For each observation, the left panel shows the residuals with respect to the optimal line (the one that minimises the sum of square errors). These are calculated as the difference between the value predicted by the line and the observed outcome. Right panel shows the sum of squared residuals across all possible linear regression models (as defined by different values of the regression coefficients).", fig.width=10}
 library("viridis")
 set.seed(42)
 noise_sd <- 1
@@ -266,9 +266,9 @@ the outcome. The notation $x'_i\beta$ indicates matrix multiplication. In this c
 result is equivalent to multiplying each element of $x_i$ by its corresponding element in 
 $\beta$ and then calculating the sum across all of those values. The result of this 
 product (often denoted by $\hat{y}_i$) is the predicted value of the outcome generated
-by the model. As such, $y_i-x'_i\beta$ can be interpreted as the prediction error.
-To quantify the total error across all individuals, we sum the square residuals 
-$( y_i-x'_i\beta)^2$ across all the individuals in our data. 
+by the model. As such, $y_i-x'_i\beta$ can be interpreted as the prediction error, also 
+referred to as model residual. To quantify the total error across all individuals, we sum 
+the square residuals $( y_i-x'_i\beta)^2$ across all the individuals in our data. 
 
 
 Finding the value of $\beta$ that minimises
@@ -452,7 +452,9 @@ want to find the "best" solution (in terms of minimising the
 residuals) that also falls within a circle of a given radius 
 (in this case, `r l2`).
 
-```{r ridgeplot, echo = FALSE, fig.cap = "Cap", fig.alt = "Alt", fig.width = 10}
+
+
+```{r ridgeplot, echo = FALSE, fig.cap = "Illustrative example demonstrated how regression coefficients are inferred under a linear model framework, with (blue line) and without (red line) regularisation.", fig.alt = "For each observation, the left panel shows the residuals with respect to the optimal lines obtained with and without regularisation. Right panel shows the sum of squared residuals across all possible linear regression models. Regularisation moves the line away from the optimal (in terms of minimising the sum of squared residuals). ", fig.width = 10}
 set.seed(42)
 par(mfrow = 1:2)
 plot(x, y, pch = 19)
