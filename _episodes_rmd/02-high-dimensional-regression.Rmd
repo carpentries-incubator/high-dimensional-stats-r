@@ -330,20 +330,25 @@ model are statistically significant.
 
 # Hypothesis testing in linear regression
 
-Using the linear model we defined above, we can assess if the
-coefficients we have fitted are worthy of further investigation, or if
-they would be likely to arise by chance. For linear regression, we
-usually do this using null hypothesis significance testing. This
-framework compares the results that we observed (here, linear model
-coefficients) to the results you would expect under the null hypothesis.
-To be more specific, null hypothesis significance testing compares our
-observed results with a set of hypothetical counter-examples of what we
-would expect to observe if we repeated the same experiment and analysis
-over and over again under the null hypothesis. In the case of linear
-regression, the null hypothesis is that there is absolutely no
-relationship between the predictor variable(s) and the outcome. This may
-not always be the most realistic or useful null hypothesis, but it is
-the one we have!
+Using the linear model we defined above, we can ask questions based on the 
+estimated value for the regression coefficients. For example, do individuals
+with different age have different methylation values for a given CpG? We usually 
+do this via *hypothesis testing*. This framework compares the results that we 
+observed (here, estimated linear model coefficients) to the results you would 
+expect under a *null hypothesis* associated to our question. In the example above, 
+a suitable null hypothesis would test whether the regression coefficient associated
+to age ($\beta_1$) is equal to zero or not. If $\beta_1$ is equal to zero,
+the linear model indicates that there is no linear relationship between age
+and the methylation level for the CpG  (remember: as its name suggests, linear 
+regression can only be used to model linear relationships between predictors and 
+outcomes!). In other words, there answer to our question would be: no!
+
+The output of a linear model typically returns the results associated 
+to the null hypothesis described above (this may not always be the most realistic 
+or useful null hypothesis, but it is the one we have by default!). To be 
+more specific, the test compares our observed results with a set of 
+hypothetical counter-examples of what we would expect to observe if we repeated 
+the same experiment and analysis over and over again under the null hypothesis. 
 
 For this linear model, we can use `tidy()` from the **`broom`** package to 
 extract detailed information about the coefficients and the associated 
@@ -355,22 +360,29 @@ tidy(lm_age_methyl1)
 ```
 
 The standard errors (`std.error`) represent the statistical uncertainty in our
-effect size estimate. The test statistics and p-values represent
-measures of how (un)likely it would be to observe results like this
-under the "null hypothesis".
+regression coefficient estimates (often referred to as *effect size*). The test 
+statistics and p-values represent measures of how (un)likely it would be to observe 
+results like this under the "null hypothesis".
 
 > ## Challenge 2
 >
-> In the model we fitted, the p-value for the intercept term is
-> significant at $p < 0.05$. What does this mean?
+> In the model we fitted, the estimate for the intercept is 0.902 and its associated 
+> p-value is 0.0129. What does this mean?
 >
 > > ## Solution
 > >
 > > The intercept for this model indicates that the mean of methylation,
 > > when age is zero, is 0.902. However, this is not a particularly
-> > noteworthy finding! Also, regardless of the p-value, it is unlikely
-> > to be a reliable finding, as we do not have any observations with age
-> > zero (nor even any with age \< 20).
+> > noteworthy finding as we do not have any observations with age
+> > zero (nor even any with age \< 20!). 
+> >
+> > The reported p-value is associated to the following null hypothesis:
+> > the intercept ($\beta_0$ above) is equal to zero. Using the usual
+> > significant threshold of 0.05, we reject the null hypothesis as
+> > the p-value is smaller than 0.05. As mentioned above, this finding
+> > is not particularly noteworthy. In this example, we are more interested
+> > in the regression coefficient associated to age, as that can tell us 
+> > whether there is a linear relationship between age and methylation for the CpG. 
 > >
 > {: .solution}
 {: .challenge}
