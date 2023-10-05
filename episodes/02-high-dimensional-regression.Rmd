@@ -300,8 +300,9 @@ $$
 
 where $\text{Age}_j$ is the age of sample $j$. In this model, $\beta_1$
 represents the unit change in mean methylation level for each unit
-(year) change in age. We can fit this model and get more information
-from the model object:
+(year) change in age. For a specific CpG, we can fit this model and get more 
+information from the model object. For illustration purposes, here we 
+arbitrarily select the first CpG in the `methyl_mat` matrix (the one on its first row).
 
 ```{r fit1}
 age <- methylation$Age
