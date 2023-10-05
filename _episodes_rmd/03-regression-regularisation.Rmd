@@ -261,12 +261,13 @@ $$
 where $\beta$ is a vector of (unknown) covariate effects which we want to learn
 by fitting a regression model: the $j$-th element of $\beta$, which we denote as 
 $\beta_j$ quantifies the effect of the $j$-th covariate. For each individual 
-$i$, $x_i$ is a vector of covariate values, $y_i$ is the true observed value for 
-the outcome and $\hat{y}_i$ is the predicted outcome value. The notation 
-$x'_i\beta$ indicates matrix multiplication. In this case, the result is 
-equivalent to multiplying each element of $x_i$ by its corresponding element in 
-$\beta$ and then calculating the sum across all of those values. To quantify 
-the total error across all individuals, we sum the square residuals 
+$i$, $x_i$ is a vector of $j$ covariate values and $y_i$ is the true observed value for 
+the outcome. The notation $x'_i\beta$ indicates matrix multiplication. In this case, the 
+result is equivalent to multiplying each element of $x_i$ by its corresponding element in 
+$\beta$ and then calculating the sum across all of those values. The result of this 
+product (often denoted by $\hat{y}_i$) is the predicted value of the outcome generated
+by the model. As such, $y_i-x'_i\beta$ can be interpreted as the prediction error.
+To quantify the total error across all individuals, we sum the square residuals 
 $( y_i-x'_i\beta)^2$ across all the individuals in our data. 
 
 
