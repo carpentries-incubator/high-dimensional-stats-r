@@ -423,7 +423,7 @@ Further, if we plot true age against predicted age for the samples in the test
 set, we can see how well we're really doing - ideally these would line up
 exactly!
 
-```{r test-plot-lm, fig.cap="Cap", fig.alt="Alt"}
+```{r test-plot-lm, fig.cap="A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted).", fig.alt="A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted). In this case we observe high prediction error in the test set."}
 par(mfrow = c(1, 1))
 plot(test_age, pred_lm, pch = 19)
 abline(coef = 0:1, lty = "dashed")
