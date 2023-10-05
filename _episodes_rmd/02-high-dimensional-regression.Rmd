@@ -371,16 +371,19 @@ results like this under the "null hypothesis".
 >
 > > ## Solution
 > >
-> > The intercept for this model indicates that the mean of methylation,
-> > when age is zero, is 0.902. However, this is not a particularly
-> > noteworthy finding as we do not have any observations with age
-> > zero (nor even any with age \< 20!). 
+> > The first coefficient in a linear model like this is the intercept, which measures 
+> > the mean of the outcome (in this case, the methylation value for the first CpG)
+> > when age is zero. In this case, the intercept estimate is 0.902. However, this is 
+> > not a particularly noteworthy finding as we do not have any observations with age
+> > zero (nor even any with age \< 20!).  
 > >
 > > The reported p-value is associated to the following null hypothesis:
 > > the intercept ($\beta_0$ above) is equal to zero. Using the usual
 > > significant threshold of 0.05, we reject the null hypothesis as
-> > the p-value is smaller than 0.05. As mentioned above, this finding
-> > is not particularly noteworthy. In this example, we are more interested
+> > the p-value is smaller than 0.05. However, it is not really interesting
+> > if this intercept is zero or not, since we probably do not care what the
+> > methylation level is when age is zero. In fact, this question does not
+> > even make much sense! In this example, we are more interested
 > > in the regression coefficient associated to age, as that can tell us 
 > > whether there is a linear relationship between age and methylation for the CpG. 
 > >
@@ -390,12 +393,7 @@ results like this under the "null hypothesis".
 # Fitting a lot of linear models
 
 If we wanted to repeat this process for each feature in our data, we
-need to narrow our focus. In particular, The first coefficient in a
-linear model like this is the intercept, which measures the overall
-offset between age and methylation levels. It is not really interesting
-if this intercept is zero or not, since we probably do not care what the
-methylation level is when age is zero. In fact, this question does not
-even make much sense! Instead, we are more interested in whether there
+need to narrow our focus. In particular,Instead, we are more interested in whether there
 is a relationship between age and methylation levels. Therefore, we will
 focus only on the second coefficient.
 
