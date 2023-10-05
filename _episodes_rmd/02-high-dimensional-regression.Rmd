@@ -473,12 +473,13 @@ Calculating the p-values is a bit more tricky. Specifically, it is the
 proportion of the distribution of the test statistic under the null
 hypothesis that is *as extreme or more extreme* than the observed value
 of the test statistic. This is easy to observe visually, by plotting the
-distribution:
+theoretical distribution of the test statistic under the null hypothesis 
+(see next call-out box for more details about it):
 
 ```{r tdist, echo = FALSE, fig.cap="The p-value for a regression coefficient represents how often it'd be observed under the null.", fig.alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines."}
 ggplot() +
     geom_function(fun = function(x) dt(x, df = lm_age_methyl1$df)) +
-    xlim(0, 4) +
+    xlim(-4, 4) +
     geom_vline(
         aes(xintercept = abs(tvals), color = c("Intercept", "Slope")),
         lty = "dashed"
@@ -501,15 +502,19 @@ ggplot() +
 
 The red-ish shaded region represents the portion of the distribution of
 the test statistic under the null hypothesis that is equal or greater to
-the value we observe for the intercept term. This shaded region is small
-relative to the total area of the null distribution; therefore, the
+the value we observe for the intercept term. As our null hypothesis 
+relates to a 2-tail test (as the null hypothesis states that the regression
+coefficient is equal to zero, we would reject it if the regression
+coefficient is substantially larger **or** smaller than zero), the p-value for
+the test is twice the value of the shaded region. In this case, the shaded region 
+is small relative to the total area of the null distribution; therefore, the
 p-value is small ($p=`r round(table_age_methyl1$p.value[[1]], digits =
 3)`$). The blue-ish shaded region represents the same measure for the slope term; 
 this is larger, relative to the total area of the distribution, therefore the 
 p-value is larger than the one for the intercept term 
-($p=`round(table_age_methyl1$p.value[[2]], digits = 3)`$). You can see that
-the p-value is a function of the size of the effect we're estimating and
-the uncertainty we have in that effect. A large effect with large
+($p=`r round(table_age_methyl1$p.value[[2]], digits = 3)`$). The
+the p-value is a function of the test statistic: the ratio between the effect size 
+we're estimating and the uncertainty we have in that effect. A large effect with large
 uncertainty may not lead to a small p-value, and a small effect with
 small uncertainty may lead to a small p-value.
 
@@ -533,8 +538,9 @@ small uncertainty may lead to a small p-value.
 > Since we're not sure if the coefficient will be larger or smaller than
 > zero, we want to do a 2-tail test. Therefore we take the absolute
 > value of the t-statistic, and look at the upper rather than lower
-> tailed. Because in a 2-tailed test we're looking at "half" of the
-> t-distribution, we also multiply the p-value by 2.
+> tailed. In the figure above the shaded areas are only looking at "half" of the
+> t-distribution (which is symmetric around zero), therefore we multiply the 
+> shaded area by 2 in order to calculate the p-value. 
 >
 > Combining all of this gives us:
 >
