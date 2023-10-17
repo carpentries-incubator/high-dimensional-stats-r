@@ -756,7 +756,7 @@ knitr::include_graphics("../fig/cross_validation.png")
 We can use this new idea to choose a lambda value, by finding the lambda
 that minimises the error across each of the test and training splits.
 
-```{r lasso-cv, fig.cap="Cross-validated mean squared error for different values of $\lambda$ under a LASSO penalty.", fig.alt="Alt"}
+```{r lasso-cv, fig.cap="Cross-validated mean squared error for different values of lambda under a LASSO penalty.", fig.alt="Alt"}
 lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 plot(lasso)
 coefl <- coef(lasso, lasso$lambda.min)
