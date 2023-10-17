@@ -315,7 +315,7 @@ We now have estimates for the expected methylation level when age equals
 0 (the intercept) and the change in methylation level for a unit change
 in age (the slope). We could plot this linear model:
 
-```{r plot-lm-methyl1, fig.cap="A scatter plot of age versus the methylation level for an arbitrarily selected CpG side (the one stored as the first column of methyl_mat). Each dot represents an individual. The black line represents the estimated linear model.”, fig.alt="An example of the relationship between age (x-axis) and methylation levels (y-axis) for an arbitrarily selected CpG. In this case, the y-axis shows methylation levels for the first CpG in our data. The black line shows the fitted regression line (based on the intercept and slope estimates shown above). For this feature, we can see that there is no strong relationship between methylation and age." }
+```{r plot-lm-methyl1, fig.cap="A scatter plot of age versus the methylation level for an arbitrarily selected CpG side (the one stored as the first column of methyl_mat). Each dot represents an individual. The black line represents the estimated linear model.", fig.alt="An example of the relationship between age (x-axis) and methylation levels (y-axis) for an arbitrarily selected CpG. In this case, the y-axis shows methylation levels for the first CpG in our data. The black line shows the fitted regression line (based on the intercept and slope estimates shown above). For this feature, we can see that there is no strong relationship between methylation and age." }
 plot(age, methyl_mat[1, ], xlab = "Age", ylab = "Methylation level", pch = 16)
 abline(lm_age_methyl1)
 ```
