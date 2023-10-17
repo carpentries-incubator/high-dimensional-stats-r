@@ -822,7 +822,7 @@ in between gives us something in between.
 The contour plots we looked at previously to visualise what this penalty looks
 like for different values of `alpha`.
 
-```{r elastic-contour, fig.width = 16, echo = FALSE, fig.cap="For an elastic net, the panels show the effect of the regularisation across different values of alpha". fig.alt="For lower values of alpha, the penalty resembles ridge regression. For higher values of alpha, the penalty resembles LASSO regression."}
+```{r elastic-contour, fig.width = 16, echo = FALSE, fig.cap="For an elastic net, the panels show the effect of the regularisation across different values of alpha", fig.alt="For lower values of alpha, the penalty resembles ridge regression. For higher values of alpha, the penalty resembles LASSO regression."}
 plot_elastic <- function(alpha) {
     set.seed(42)
     noise_sd <- 1
