@@ -1,6 +1,6 @@
 ---
 title: "Instructor Notes"
 ---
-FIXME
+Coming soon.
 
 {% include links.md %}

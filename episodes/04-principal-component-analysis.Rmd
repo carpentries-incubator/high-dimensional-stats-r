@@ -411,14 +411,14 @@ callout demonstrates this.
 > pros2.eigen <- eigen(pros2.cov) # preform eigen decomposition
 > pros2.eigen # The slot $vectors = rotation of the PCA
 > # generate PC scores by by hand, using matrix multiplication
-> my.pros2.pcs <- pros2.scaled %*% pros.eigen$vectors
+> my.pros2.pcs <- pros2.scaled %*% pros2.eigen$vectors
 > # compare results
-> par(mfrow=c(1,2)
+> par(mfrow=c(1,2))
 > plot(pca.pros$x[,1:2], main="prcomp()")
 > abline(h=0, v=0, lty=2)
 > plot(my.pros2.pcs[,1:2], main="\"By hand\"", xlab="PC1", ylab="PC2")
 > abline(h=0, v=0, lty=2)
-> par(mfrow=c(1,1)
+> par(mfrow=c(1,1))
 > # Note that the axis orientations may be swapped but the relative positions of the dots should be the same in both plots.
 > ```
 {: .callout}
@@ -743,9 +743,9 @@ can be adjusted with the `rangeRetain` argument, which has 0.1 as the default va
 a warning. This is not a serious problem.
 
 ```{r loadingsplots}
-plotloadings(pc, c(“PC1”), rangeRetain = 0.1)
-plotloadings(pc, c(“PC2”), rangeRetain = 0.1)
-plotloadings(pc, c(“PC1”, “PC2”), rangeRetain = 0.1)
+plotloadings(pc, c("PC1"), rangeRetain = 0.1)
+plotloadings(pc, c("PC2"), rangeRetain = 0.1)
+plotloadings(pc, c("PC1", "PC2"), rangeRetain = 0.1)
 ```
 
 You can see how the third code line prooces more dots, some of which do not have
