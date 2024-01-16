@@ -4,6 +4,6 @@ layout: reference
 
 ## Glossary
 
-FIXME
+Coming soon. Feel free to suggest entries via GitHub Issues!
 
 {% include links.md %}
