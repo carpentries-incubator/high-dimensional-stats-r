@@ -3,11 +3,13 @@ FROM bioconductor/bioconductor_docker:devel
 LABEL authors="alan.ocallaghan@@outlook.com" \
     description="Docker image containing dependencies for the Carpentries Incubator lesson 'High dimensional statistics with R' in a Bioconductor-devel container."
 
-RUN \curl -L https://get.rvm.io | bash -s stable
-RUN /bin/bash -l -c "rvm requirements"
-RUN /bin/bash -l -c "rvm install 3.2.3"
-RUN /bin/bash -l -c "gem install github-pages bundler kramdown"
+RUN apt-get update && apt-get install -y libyaml-dev
 
+RUN git clone https://github.com/rbenv/ruby-build.git && \
+  PREFIX=/usr/local ./ruby-build/install.sh && \
+  ruby-build -v 3.1.2 /usr/local
+
+RUN gem install github-pages bundler kramdown
 
 RUN python3 -m pip install --upgrade pip setuptools wheel pyyaml==5.3.1 requests
 
