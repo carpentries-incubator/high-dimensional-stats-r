@@ -300,8 +300,9 @@ $$
 
 where $\text{Age}_j$ is the age of sample $j$. In this model, $\beta_1$
 represents the unit change in mean methylation level for each unit
-(year) change in age. We can fit this model and get more information
-from the model object:
+(year) change in age. For a specific CpG, we can fit this model and get more 
+information from the model object. For illustration purposes, here we 
+arbitrarily select the first CpG in the `methyl_mat` matrix (the one on its first row).
 
 ```{r fit1}
 age <- methylation$Age
@@ -314,7 +315,7 @@ We now have estimates for the expected methylation level when age equals
 0 (the intercept) and the change in methylation level for a unit change
 in age (the slope). We could plot this linear model:
 
-```{r plot-lm-methyl1}
+```{r plot-lm-methyl1, fig.cap="A scatter plot of age versus the methylation level for an arbitrarily selected CpG side (the one stored as the first column of methyl_mat). Each dot represents an individual. The black line represents the estimated linear model.", fig.alt="An example of the relationship between age (x-axis) and methylation levels (y-axis) for an arbitrarily selected CpG. In this case, the y-axis shows methylation levels for the first CpG in our data. The black line shows the fitted regression line (based on the intercept and slope estimates shown above). For this feature, we can see that there is no strong relationship between methylation and age." }
 plot(age, methyl_mat[1, ], xlab = "Age", ylab = "Methylation level", pch = 16)
 abline(lm_age_methyl1)
 ```
@@ -330,20 +331,25 @@ model are statistically significant.
 
 # Hypothesis testing in linear regression
 
-Using the linear model we defined above, we can assess if the
-coefficients we have fitted are worthy of further investigation, or if
-they would be likely to arise by chance. For linear regression, we
-usually do this using null hypothesis significance testing. This
-framework compares the results that we observed (here, linear model
-coefficients) to the results you would expect under the null hypothesis.
-To be more specific, null hypothesis significance testing compares our
-observed results with a set of hypothetical counter-examples of what we
-would expect to observe if we repeated the same experiment and analysis
-over and over again under the null hypothesis. In the case of linear
-regression, the null hypothesis is that there is absolutely no
-relationship between the predictor variable(s) and the outcome. This may
-not always be the most realistic or useful null hypothesis, but it is
-the one we have!
+Using the linear model we defined above, we can ask questions based on the 
+estimated value for the regression coefficients. For example, do individuals
+with different age have different methylation values for a given CpG? We usually 
+do this via *hypothesis testing*. This framework compares the results that we 
+observed (here, estimated linear model coefficients) to the results you would 
+expect under a *null hypothesis* associated to our question. In the example above, 
+a suitable null hypothesis would test whether the regression coefficient associated
+to age ($\beta_1$) is equal to zero or not. If $\beta_1$ is equal to zero,
+the linear model indicates that there is no linear relationship between age
+and the methylation level for the CpG  (remember: as its name suggests, linear 
+regression can only be used to model linear relationships between predictors and 
+outcomes!). In other words, there answer to our question would be: no!
+
+The output of a linear model typically returns the results associated 
+to the null hypothesis described above (this may not always be the most realistic 
+or useful null hypothesis, but it is the one we have by default!). To be 
+more specific, the test compares our observed results with a set of 
+hypothetical counter-examples of what we would expect to observe if we repeated 
+the same experiment and analysis over and over again under the null hypothesis. 
 
 For this linear model, we can use `tidy()` from the **`broom`** package to 
 extract detailed information about the coefficients and the associated 
@@ -355,49 +361,58 @@ tidy(lm_age_methyl1)
 ```
 
 The standard errors (`std.error`) represent the statistical uncertainty in our
-effect size estimate. The test statistics and p-values represent
-measures of how (un)likely it would be to observe results like this
-under the "null hypothesis".
+regression coefficient estimates (often referred to as *effect size*). The test 
+statistics and p-values represent measures of how (un)likely it would be to observe 
+results like this under the "null hypothesis".
 
 > ## Challenge 2
 >
-> In the model we fitted, the p-value for the intercept term is
-> significant at $p < 0.05$. What does this mean?
+> In the model we fitted, the estimate for the intercept is 0.902 and its associated 
+> p-value is 0.0129. What does this mean?
 >
 > > ## Solution
 > >
-> > The intercept for this model indicates that the mean of methylation,
-> > when age is zero, is 0.902. However, this is not a particularly
-> > noteworthy finding! Also, regardless of the p-value, it is unlikely
-> > to be a reliable finding, as we do not have any observations with age
-> > zero (nor even any with age \< 20).
+> > The first coefficient in a linear model like this is the intercept, which measures 
+> > the mean of the outcome (in this case, the methylation value for the first CpG)
+> > when age is zero. In this case, the intercept estimate is 0.902. However, this is 
+> > not a particularly noteworthy finding as we do not have any observations with age
+> > zero (nor even any with age \< 20!).  
+> >
+> > The reported p-value is associated to the following null hypothesis:
+> > the intercept ($\beta_0$ above) is equal to zero. Using the usual
+> > significant threshold of 0.05, we reject the null hypothesis as
+> > the p-value is smaller than 0.05. However, it is not really interesting
+> > if this intercept is zero or not, since we probably do not care what the
+> > methylation level is when age is zero. In fact, this question does not
+> > even make much sense! In this example, we are more interested
+> > in the regression coefficient associated to age, as that can tell us 
+> > whether there is a linear relationship between age and methylation for the CpG. 
 > >
 > {: .solution}
 {: .challenge}
 
 # Fitting a lot of linear models
 
-If we wanted to repeat this process for each feature in our data, we
-need to narrow our focus. In particular, The first coefficient in a
-linear model like this is the intercept, which measures the overall
-offset between age and methylation levels. It is not really interesting
-if this intercept is zero or not, since we probably do not care what the
-methylation level is when age is zero. In fact, this question does not
-even make much sense! Instead, we are more interested in whether there
-is a relationship between age and methylation levels. Therefore, we will
-focus only on the second coefficient.
+In the linear model above, we are generally interested in the second regression
+coefficient (often referred to as *slope*) which measures the linear relationship
+between age and methylation levels. For the first CpG, here is its estimate:
 
 ```{r tidyfit2}
 coef_age_methyl1 <- tidy(lm_age_methyl1)[2, ]
 coef_age_methyl1
 ```
 
-Now, we could do this for every feature in the dataset and rank the
-results. However, fitting models in this way to `r nrow(methylation)`
-features is not very computationally efficient, and it would also be
-laborious to do programmatically. There are ways to get around this, but
-first let us talk about what exactly we are doing when we look at
-significance tests in this context.
+In this case, the p-value is equal to 0.381 and therefore we cannot reject the null
+hypothesis: there is no statistical evidence to suggest that the regression 
+coefficient associated to age is not equal to zero. 
+
+Now, we could do this for every feature (CpG) in the dataset and rank the
+results based on their test statistic or associated p-value. However, fitting
+models in this way to `r nrow(methylation)` features is not very computationally 
+efficient, and it would also be laborious to do programmatically. There are ways 
+to get around this, but first let us talk about what exactly we are doing when 
+we look at significance tests in this context.
+
 
 ```{r rbindfits, echo=FALSE}
 # Instead of repeating this model fitting and coefficient extraction by hand, we
@@ -458,12 +473,13 @@ Calculating the p-values is a bit more tricky. Specifically, it is the
 proportion of the distribution of the test statistic under the null
 hypothesis that is *as extreme or more extreme* than the observed value
 of the test statistic. This is easy to observe visually, by plotting the
-distribution:
+theoretical distribution of the test statistic under the null hypothesis 
+(see next call-out box for more details about it):
 
 ```{r tdist, echo = FALSE, fig.cap="The p-value for a regression coefficient represents how often it'd be observed under the null.", fig.alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines."}
 ggplot() +
     geom_function(fun = function(x) dt(x, df = lm_age_methyl1$df)) +
-    xlim(0, 4) +
+    xlim(-4, 4) +
     geom_vline(
         aes(xintercept = abs(tvals), color = c("Intercept", "Slope")),
         lty = "dashed"
@@ -486,15 +502,19 @@ ggplot() +
 
 The red-ish shaded region represents the portion of the distribution of
 the test statistic under the null hypothesis that is equal or greater to
-the value we observe for the intercept term. This shaded region is small
-relative to the total area of the null distribution; therefore, the
+the value we observe for the intercept term. As our null hypothesis 
+relates to a 2-tail test (as the null hypothesis states that the regression
+coefficient is equal to zero, we would reject it if the regression
+coefficient is substantially larger **or** smaller than zero), the p-value for
+the test is twice the value of the shaded region. In this case, the shaded region 
+is small relative to the total area of the null distribution; therefore, the
 p-value is small ($p=`r round(table_age_methyl1$p.value[[1]], digits =
 3)`$). The blue-ish shaded region represents the same measure for the slope term; 
 this is larger, relative to the total area of the distribution, therefore the 
 p-value is larger than the one for the intercept term 
-($p=`round(table_age_methyl1$p.value[[2]], digits = 3)`$). You can see that
-the p-value is a function of the size of the effect we're estimating and
-the uncertainty we have in that effect. A large effect with large
+($p=`r round(table_age_methyl1$p.value[[2]], digits = 3)`$). The
+the p-value is a function of the test statistic: the ratio between the effect size 
+we're estimating and the uncertainty we have in that effect. A large effect with large
 uncertainty may not lead to a small p-value, and a small effect with
 small uncertainty may lead to a small p-value.
 
@@ -518,8 +538,9 @@ small uncertainty may lead to a small p-value.
 > Since we're not sure if the coefficient will be larger or smaller than
 > zero, we want to do a 2-tail test. Therefore we take the absolute
 > value of the t-statistic, and look at the upper rather than lower
-> tailed. Because in a 2-tailed test we're looking at "half" of the
-> t-distribution, we also multiply the p-value by 2.
+> tailed. In the figure above the shaded areas are only looking at "half" of the
+> t-distribution (which is symmetric around zero), therefore we multiply the 
+> shaded area by 2 in order to calculate the p-value. 
 >
 > Combining all of this gives us:
 >
@@ -527,9 +548,7 @@ small uncertainty may lead to a small p-value.
 > pvals <- 2 * pt(abs(tvals), df = lm_age_methyl1$df, lower.tail = FALSE)
 > all.equal(table_age_methyl1$p.value, pvals)
 > ```
->
->
->{: .callout}
+{: .callout}
 
 # Sharing information across outcome variables
 
@@ -558,7 +577,7 @@ $$
 
 It is clear that large effect sizes will likely lead to small p-values,
 as long as the standard error for the coefficent is not large. However,
-the standard error is affected by the amuont of noise, as we saw
+the standard error is affected by the amount of noise, as we saw
 earlier. If we have a small number of observations, it is common for the
 noise for some features to be extremely small simply by chance. This, in turn,
 causes small p-values for these features, which may give us unwarranted
@@ -1118,7 +1137,7 @@ experiment over and over.
     Hansen](https://kasperdanielhansen.github.io/genbioconductor/html/limma.html)
 -   [**`limma`** user
     manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf).
--   [The **`VariancePartition`** package](https://bioconductor.org/packages/release/bioc/vignettes/variancePartition/inst/doc/dream.html) has similar functionality than **`limma`** but allows the inclusion of random effects. 
+-   [The **`VariancePartition`** package](https://bioconductor.org/packages/release/bioc/vignettes/variancePartition/inst/doc/dream.html) has similar functionality as **`limma`** but allows the inclusion of random effects. 
 
 ## Footnotes
 
