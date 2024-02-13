@@ -244,7 +244,7 @@ in these datasets makes high correlations between variables more likely.
 > > ```{r univariate-prostate}
 > > model1 <- lm(age ~ gleason, data = Prostate)
 > > model2 <- lm(age ~ pgg45, data = Prostate)
-> >```
+> > ```
 > >
 > > Check which covariates have a significant efffect
 > >
