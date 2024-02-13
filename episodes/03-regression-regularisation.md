@@ -61,8 +61,9 @@ age <- methylation$Age
 ~~~
 {: .language-r}
 
-Then, we try to fit a model of age using all of the 5,000 features in this
-dataset (average methylation levels, M-values, across different sites in the genome).
+Then, we try to fit a model with outcome age and all 5,000 features in this
+dataset as predictors (average methylation levels, M-values, across different
+sites in the genome).
 
 
 ~~~
@@ -143,6 +144,7 @@ than observations.
 > [1] 0
 > ~~~
 > {: .output}
+{: .callout}
 
 > ## Correlated features -- common in high-dimensional data
 > 
@@ -176,7 +178,7 @@ than observations.
 > 
 > 
 > ~~~
-> Error in Heatmap(cor_mat, column_title = "Feature-feature correlation in methylation data", : could not find function "Heatmap"
+> Error in col_fun(le): a matrix-like object is required as argument to 'col'
 > ~~~
 > {: .error}
 > 
@@ -226,8 +228,8 @@ different possible models, where the background colour represents how well
 different combinations of slope and intercept accomplish this objective.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-03-regplot-1.png" alt="Alt" width="720" />
-<p class="caption">Cap</p>
+<img src="../fig/rmd-03-regplot-1.png" alt="For each observation, the left panel shows the residuals with respect to the optimal line (the one that minimises the sum of square errors). These are calculated as the difference between the value predicted by the line and the observed outcome. Right panel shows the sum of squared residuals across all possible linear regression models (as defined by different values of the regression coefficients)." width="720" />
+<p class="caption">Illustrative example demonstrated how regression coefficients are inferred under a linear model framework.</p>
 </div>
 
 Mathematically, we can write the sum of squared residuals as
@@ -239,13 +241,14 @@ $$
 where $\beta$ is a vector of (unknown) covariate effects which we want to learn
 by fitting a regression model: the $j$-th element of $\beta$, which we denote as 
 $\beta_j$ quantifies the effect of the $j$-th covariate. For each individual 
-$i$, $x_i$ is a vector of covariate values, $y_i$ is the true observed value for 
-the outcome and $\hat{y}_i$ is the predicted outcome value. The notation 
-$x'_i\beta$ indicates matrix multiplication. In this case, the result is 
-equivalent to multiplying each element of $x_i$ by its corresponding element in 
-$\beta$ and then calculating the sum across all of those values. To quantify 
-the total error across all individuals, we sum the square residuals 
-$( y_i-x'_i\beta)^2$ across all the individuals in our data. 
+$i$, $x_i$ is a vector of $j$ covariate values and $y_i$ is the true observed value for 
+the outcome. The notation $x'_i\beta$ indicates matrix multiplication. In this case, the 
+result is equivalent to multiplying each element of $x_i$ by its corresponding element in 
+$\beta$ and then calculating the sum across all of those values. The result of this 
+product (often denoted by $\hat{y}_i$) is the predicted value of the outcome generated
+by the model. As such, $y_i-x'_i\beta$ can be interpreted as the prediction error, also 
+referred to as model residual. To quantify the total error across all individuals, we sum 
+the square residuals $( y_i-x'_i\beta)^2$ across all the individuals in our data. 
 
 
 Finding the value of $\beta$ that minimises
@@ -302,8 +305,8 @@ two - a "training" and a "test" set. We use the "training" data to fit the model
 and then see its performance on the "test" data.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/validation.png" alt="Alt" width="500px" />
-<p class="caption">Title</p>
+<img src="../fig/validation.png" alt="Schematic representation of how a dataset can be divided into a training (the portion of the data used to fit a model) and a test set (the portion of the data used to assess external generalisability)." width="500px" />
+<p class="caption">Schematic representation of how a dataset can be divided into a training and a test set.</p>
 </div>
 
 One thing that often happens in this context is that large 
@@ -434,8 +437,8 @@ abline(coef = 0:1, lty = "dashed")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-03-test-plot-lm-1.png" alt="Alt" width="432" />
-<p class="caption">Cap</p>
+<img src="../fig/rmd-03-test-plot-lm-1.png" alt="A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted). In this case we observe high prediction error in the test set." width="432" />
+<p class="caption">A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted).</p>
 </div>
 
 This figure shows the predicted ages obtained from a linear model fit plotted 
@@ -461,9 +464,11 @@ want to find the "best" solution (in terms of minimising the
 residuals) that also falls within a circle of a given radius 
 (in this case, 2).
 
+
+
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-03-ridgeplot-1.png" alt="Alt" width="720" />
-<p class="caption">Cap</p>
+<img src="../fig/rmd-03-ridgeplot-1.png" alt="For each observation, the left panel shows the residuals with respect to the optimal lines obtained with and without regularisation. Right panel shows the sum of squared residuals across all possible linear regression models. Regularisation moves the line away from the optimal (in terms of minimising the sum of squared residuals). " width="720" />
+<p class="caption">Illustrative example demonstrated how regression coefficients are inferred under a linear model framework, with (blue line) and without (red line) regularisation. A ridge penalty is used in this example</p>
 </div>
 
 There are multiple ways to define the distance that our solution must fall in,
@@ -525,7 +530,7 @@ abline(h = 0, lty = "dashed")
 <p class="caption">Cap</p>
 </div>
 
-This plot shows how the estimated coefficients for each methrylated site  change
+This plot shows how the estimated coefficients for each CpG site change
 as we increase the penalty, $\lambda$. That is,
 as we decrease the size of the region that solutions can fall into, the values
 of the coefficients that we get back tend to decrease. In this case,
@@ -679,8 +684,8 @@ the best solution that falls in this region will be at the corner of this
 diagonal (i.e., one or more coefficient is exactly zero).
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-03-shrink-lasso-1.png" alt="Alt" width="720" />
-<p class="caption">Title</p>
+<img src="../fig/rmd-03-shrink-lasso-1.png" alt="For each observation, the left panel shows the residuals with respect to the optimal lines obtained with and without regularisation. Right panel shows the sum of squared residuals across all possible linear regression models. Regularisation moves the line away from the optimal (in terms of minimising the sum of squared residuals)" width="720" />
+<p class="caption">Illustrative example demonstrated how regression coefficients are inferred under a linear model framework, with (blue line) and without (red line) regularisation. A LASSO penalty is used in this example.</p>
 </div>
 
 
@@ -730,8 +735,8 @@ gives us a better estimate of how generalisable our model is. Cross-validation
 is a really deep topic that we're not going to cover in more detail today, though!
 
 <div class="figure" style="text-align: center">
-<img src="../fig/cross_validation.png" alt="Alt"  />
-<p class="caption">Title</p>
+<img src="../fig/cross_validation.png" alt="The data is divided into $K$ chunks. For each cross-validation iteration, one data chunk is used as the test set. The remaining $K-1$ chunks are combined into a training set."  />
+<p class="caption">Schematic representiation of a $K$-fold cross-validation procedure.</p>
 </div>
 
 We can use this new idea to choose a lambda value, by finding the lambda
@@ -746,7 +751,7 @@ plot(lasso)
 
 <div class="figure" style="text-align: center">
 <img src="../fig/rmd-03-lasso-cv-1.png" alt="Alt" width="432" />
-<p class="caption">Lasso</p>
+<p class="caption">Cross-validated mean squared error for different values of lambda under a LASSO penalty.</p>
 </div>
 
 ~~~
@@ -768,11 +773,10 @@ intersect(names(selected_coefs), coef_horvath$CpGmarker)
 ~~~
 {: .output}
 
-
-~~~
-Error in Heatmap(hmat_ord, name = "Scaled\nmethylation level", top_annotation = columnAnnotation(age = age_ord, : could not find function "Heatmap"
-~~~
-{: .error}
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-heatmap-lasso-1.png" alt="Overall, we observe either increasing or decreasing methylation patterns as a function of age." width="432" />
+<p class="caption">Heatmap showing methylation values for the selected CpG and how the vary with age.</p>
+</div>
 
 # Blending ridge regression and the LASSO - elastic nets
 
@@ -788,7 +792,7 @@ Formally, the objective function of elastic net regression is to optimise the
 following function:
 
 $$
-    \left(\sum_{i=1}^N y_i - X_i\beta\right)
+    \left(\sum_{i=1}^N y_i - x'_i\beta\right)
         + \lambda \left(
             \alpha \left\lVert \beta \right\lVert_1 +
             (1-\alpha)  \left\lVert \beta \right\lVert_2
@@ -805,8 +809,8 @@ The contour plots we looked at previously to visualise what this penalty looks
 like for different values of `alpha`.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-03-elastic-contour-1.png" alt="plot of chunk elastic-contour" width="1152" />
-<p class="caption">plot of chunk elastic-contour</p>
+<img src="../fig/rmd-03-elastic-contour-1.png" alt="For lower values of alpha, the penalty resembles ridge regression. For higher values of alpha, the penalty resembles LASSO regression." width="1152" />
+<p class="caption">For an elastic net, the panels show the effect of the regularisation across different values of alpha</p>
 </div>
 
 > ## Challenge 6
@@ -1041,7 +1045,10 @@ like for different values of `alpha`.
 > <p class="caption">Title</p>
 > </div>
 > In this case, the results aren't very interesting! We select an intercept-only
-> model.
+> model. However, as highlighted by the warnings above, we should not trust this
+> result too much as the data was too small to obtain reliable results! We only 
+> included it here to provide the code that *could* be used to perform penalised
+> regression for binary outcomes (i.e. penalised logistic regression). 
 {: .callout}
 
 

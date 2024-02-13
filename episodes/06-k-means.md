@@ -160,20 +160,6 @@ library("scater")
 
 scrnaseq <- readRDS(here::here("data/scrnaseq.rds"))
 scrnaseq <- runPCA(scrnaseq, ncomponents = 15)
-~~~
-{: .language-r}
-
-
-
-~~~
-Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-or useNames = TRUE.
-~~~
-{: .warning}
-
-
-
-~~~
 pcs <- reducedDim(scrnaseq)[, 1:2]
 ~~~
 {: .language-r}
