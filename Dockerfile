@@ -1,12 +1,12 @@
 FROM bioconductor/bioconductor_docker:devel
 
-MAINTAINER alan.ocallaghan@outlook.com
 LABEL authors="alan.ocallaghan@@outlook.com" \
     description="Docker image containing dependencies for the Carpentries Incubator lesson 'High dimensional statistics with R' in a Bioconductor-devel container."
 
-RUN git clone https://github.com/rbenv/ruby-build.git && \
-  PREFIX=/usr/local ./ruby-build/install.sh && \
-  ruby-build -v 3.2.3 /usr/local
+RUN \curl -L https://get.rvm.io | bash -s stable
+RUN /bin/bash -l -c "rvm requirements"
+RUN /bin/bash -l -c "rvm install 3.2.3"
+RUN /bin/bash -l -c "gem install bundler --no-ri --no-rdoc"
 
 RUN gem install github-pages bundler kramdown
 
