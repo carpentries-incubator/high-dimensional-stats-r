@@ -30,7 +30,7 @@ jobs:
               ghcr.io/${{ github.repository }}:latest
 
   build-website:
-    # needs: container
+    needs: container
     runs-on: ubuntu-latest
     container: ghcr.io/${{github.repository}}:latest
     env:
