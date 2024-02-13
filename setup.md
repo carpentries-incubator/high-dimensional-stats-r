@@ -27,7 +27,7 @@ data_files <- c(
     "coefHorvath.rds",
     "methylation.rds",
     "scrnaseq.rds",
-    "small_methylation.rds"
+    "prostate.rds"
 )
 for (file in data_files) {
     download.file(
@@ -39,6 +39,5 @@ for (file in data_files) {
     )
 }
 ```
-
 
 {% include links.md %}

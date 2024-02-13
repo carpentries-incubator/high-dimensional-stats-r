@@ -1,12 +1,13 @@
 FROM bioconductor/bioconductor_docker:devel
 
-MAINTAINER alan.ocallaghan@outlook.com
 LABEL authors="alan.ocallaghan@@outlook.com" \
     description="Docker image containing dependencies for the Carpentries Incubator lesson 'High dimensional statistics with R' in a Bioconductor-devel container."
 
+RUN apt-get update && apt-get install -y libyaml-dev
+
 RUN git clone https://github.com/rbenv/ruby-build.git && \
   PREFIX=/usr/local ./ruby-build/install.sh && \
-  ruby-build -v 2.7.7 /usr/local
+  ruby-build -v 3.1.2 /usr/local
 
 RUN gem install github-pages bundler kramdown
 
