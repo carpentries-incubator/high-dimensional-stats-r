@@ -15,4 +15,4 @@ RUN wget https://raw.githubusercontent.com/carpentries-incubator/high-dimensiona
 RUN Rscript -e 'pkgs <- read.csv("dependencies.csv", header=FALSE); BiocManager::install(pkgs[[1]])'
 RUN Rscript -e "BiocManager::install('isglobal-brge/methylclock')"
 
-RUN echo 'source /usr/local/rvm/scripts/rvm' >> /home/rstudio/.bashrc
+RUN echo 'source /usr/local/rvm/scripts/rvm' >> /root/.bashrc
