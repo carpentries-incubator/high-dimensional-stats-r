@@ -6,9 +6,8 @@ LABEL authors="alan.ocallaghan@@outlook.com" \
 RUN \curl -L https://get.rvm.io | bash -s stable
 RUN /bin/bash -l -c "rvm requirements"
 RUN /bin/bash -l -c "rvm install 3.2.3"
-RUN /bin/bash -l -c "gem install bundler --no-ri --no-rdoc"
+RUN /bin/bash -l -c "gem install github-pages bundler kramdown --no-rdoc"
 
-RUN gem install github-pages bundler kramdown
 
 RUN python3 -m pip install --upgrade pip setuptools wheel pyyaml==5.3.1 requests
 
