@@ -2,7 +2,7 @@
 title: "Introduction to high-dimensional data"
 author: "GS Robertson"
 source: Rmd
-teaching: 60
+teaching: 20
 exercises: 20
 questions:
 - What are high-dimensional data and what do these data look like in the
@@ -131,7 +131,7 @@ of the challenges we are facing when working with high-dimensional data.
 > ## Challenge 2 
 > 
 > Load the `Prostate` dataset as follows:
-
+>
 > ```{r prostate}
 > library("here")
 > Prostate <- readRDS(here("data/prostate.rds"))
@@ -244,7 +244,7 @@ in these datasets makes high correlations between variables more likely.
 > > ```{r univariate-prostate}
 > > model1 <- lm(age ~ gleason, data = Prostate)
 > > model2 <- lm(age ~ pgg45, data = Prostate)
-> >```
+> > ```
 > >
 > > Check which covariates have a significant efffect
 > >

@@ -4,7 +4,7 @@
 title: "Introduction to high-dimensional data"
 author: "GS Robertson"
 source: Rmd
-teaching: 60
+teaching: 20
 exercises: 20
 questions:
 - What are high-dimensional data and what do these data look like in the
@@ -130,7 +130,7 @@ of the challenges we are facing when working with high-dimensional data.
 > ## Challenge 2 
 > 
 > Load the `Prostate` dataset as follows:
-
+>
 > 
 > ~~~
 > library("here")
