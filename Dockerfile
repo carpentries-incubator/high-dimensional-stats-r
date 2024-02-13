@@ -6,10 +6,9 @@ LABEL authors="alan.ocallaghan@@outlook.com" \
 
 RUN git clone https://github.com/rbenv/ruby-build.git && \
   PREFIX=/usr/local ./ruby-build/install.sh && \
-  ruby-build -v 2.7.7 /usr/local
+  ruby-build -v 3.2.3 /usr/local
 
-RUN gem install bundler -v 2.4.22
-RUN gem install github-pages kramdown
+RUN gem install github-pages bundler kramdown
 
 RUN python3 -m pip install --upgrade pip setuptools wheel pyyaml==5.3.1 requests
 
