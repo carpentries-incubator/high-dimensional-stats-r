@@ -1059,7 +1059,7 @@ plot_elastic(0.75)
 >     add_model(glmnet_model)
 > 
 > ## 5-fold cross-validation repeated 5 times
-> folds <- vfold_cv(training(split_data), v = 5, repetitions = 5)
+> folds <- vfold_cv(training(split_data), v = 5, repeats = 5)
 > 
 > ## define a grid of lambda and alpha parameters to search
 > glmn_set <- parameters(
