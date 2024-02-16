@@ -40,4 +40,13 @@ for (file in data_files) {
 }
 ```
 
+On Linux systems, part of the above may fail due to the **`bluster`** package. If you received error messages after running `BiocManager::install(table[[1]])` indicating that this package was not installed successfully, you may need to run the following workaround code after the code above:
+
+```r
+install.packages('igraph', repos=c(igraph = 'https://igraph.r-universe.dev', 
+                                   CRAN = 'https://cloud.r-project.org'))
+                                   
+BiocManager::install('bluster')
+```
+
 {% include links.md %}
