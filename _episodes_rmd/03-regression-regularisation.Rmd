@@ -132,7 +132,6 @@ than observations.
 > Heatmap(cor_mat,
 >     column_title = "Feature-feature correlation in methylation data",
 >     name = "Pearson correlation",
->     col = col,
 >     show_row_dend = FALSE, show_column_dend = FALSE,
 >     show_row_names = FALSE, show_column_names = FALSE
 > )
