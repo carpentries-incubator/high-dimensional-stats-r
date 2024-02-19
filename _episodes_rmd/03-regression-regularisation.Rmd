@@ -127,6 +127,7 @@ than observations.
 > visualise patterns when there are too many features!). 
 > 
 > ```{r corr-mat-meth, fig.cap="Cap", fig.alt="Alt"}
+library("ComplexHeatmap")
 > small <- methyl_mat[, 1:500]
 > cor_mat <- cor(small)
 > Heatmap(cor_mat,
