@@ -129,6 +129,7 @@ Let's subset the data to just include the log-transformed clinical variables
 for the purposes of this episode:
 
 ```{r prostate}
+library("here")
 prostate <- readRDS(here("data/prostate.rds"))
 ```
 
