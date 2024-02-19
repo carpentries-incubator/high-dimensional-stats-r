@@ -1047,8 +1047,7 @@ plot_elastic(0.75)
 >     update_role(age, new_role = "outcome") %>%
 >     ## center and scale all the predictors
 >     step_center(all_predictors()) %>%
->     step_scale(all_predictors()) %>%
->     prep(training = training(split_data), retain = TRUE)
+>     step_scale(all_predictors()) 
 > 
 > ## set the "engine" to be a linear model with tunable alpha and lambda
 > glmnet_model <- linear_reg(penalty = tune(), mixture = tune()) %>% 
