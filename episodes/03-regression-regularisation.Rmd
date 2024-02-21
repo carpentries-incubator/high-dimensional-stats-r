@@ -1028,13 +1028,15 @@ plot_elastic(0.75)
 > 
 > A lot of the packages for fitting predictive models like regularised
 > regression have different user interfaces. To do predictive modelling, it's
-> important to consider things like choosing a good performance metric,
-> how to run normalisation, and . It's also useful to compare different
+> important to consider things like choosing a good performance metric and 
+> how to run normalisation. It's also useful to compare different 
 > model "engines". 
 > 
-> To this end, the tidymodels framework exists. The code below would be
-> useful to perform repeated cross-validation. We're not doing a course on 
-> advanced topics in predictive modelling so we are not covering this framework.
+> To this end, the **`tidymodels`** R framework exists. We're not doing a course on 
+> advanced topics in predictive modelling so we are not covering this framework 
+> in detail. However, the code below would be useful to perform repeated 
+> cross-validation. More information about **`tidymodels`**, including installation 
+> instructions, can be found [here](https://www.rdocumentation.org/packages/tidymodels/versions/1.1.1).
 > 
 > ```{r tidymodels, eval = FALSE}
 > library("tidymodels")
