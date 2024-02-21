@@ -163,24 +163,22 @@ than observations.
 > 
 > 
 > ~~~
+> library("ComplexHeatmap")
 > small <- methyl_mat[, 1:500]
 > cor_mat <- cor(small)
 > Heatmap(cor_mat,
 >     column_title = "Feature-feature correlation in methylation data",
 >     name = "Pearson correlation",
->     col = col,
 >     show_row_dend = FALSE, show_column_dend = FALSE,
 >     show_row_names = FALSE, show_column_names = FALSE
 > )
 > ~~~
 > {: .language-r}
 > 
-> 
-> 
-> ~~~
-> Error in col_fun(le): a matrix-like object is required as argument to 'col'
-> ~~~
-> {: .error}
+> <div class="figure" style="text-align: center">
+> <img src="../fig/rmd-03-corr-mat-meth-1.png" alt="Alt" width="432" />
+> <p class="caption">Cap</p>
+> </div>
 > 
 > Correlation between features can be problematic for technical reasons. If it is 
 > very severe, it may even make it impossible to fit a model! This is in addition to
@@ -1056,13 +1054,15 @@ like for different values of `alpha`.
 > 
 > A lot of the packages for fitting predictive models like regularised
 > regression have different user interfaces. To do predictive modelling, it's
-> important to consider things like choosing a good performance metric,
-> how to run normalisation, and . It's also useful to compare different
+> important to consider things like choosing a good performance metric and 
+> how to run normalisation. It's also useful to compare different 
 > model "engines". 
 > 
-> To this end, the tidymodels framework exists. The code below would be
-> useful to perform repeated cross-validation. We're not doing a course on 
-> advanced topics in predictive modelling so we are not covering this framework.
+> To this end, the **`tidymodels`** R framework exists. We're not doing a course on 
+> advanced topics in predictive modelling so we are not covering this framework 
+> in detail. However, the code below would be useful to perform repeated 
+> cross-validation. More information about **`tidymodels`**, including installation 
+> instructions, can be found [here](https://www.rdocumentation.org/packages/tidymodels/versions/1.1.1).
 > 
 > 
 > ~~~
@@ -1076,8 +1076,7 @@ like for different values of `alpha`.
 >     update_role(age, new_role = "outcome") %>%
 >     ## center and scale all the predictors
 >     step_center(all_predictors()) %>%
->     step_scale(all_predictors()) %>%
->     prep(training = training(split_data), retain = TRUE)
+>     step_scale(all_predictors()) 
 > 
 > ## set the "engine" to be a linear model with tunable alpha and lambda
 > glmnet_model <- linear_reg(penalty = tune(), mixture = tune()) %>% 
@@ -1089,7 +1088,7 @@ like for different values of `alpha`.
 >     add_model(glmnet_model)
 > 
 > ## 5-fold cross-validation repeated 5 times
-> folds <- vfold_cv(training(split_data), v = 5, repetitions = 5)
+> folds <- vfold_cv(training(split_data), v = 5, repeats = 5)
 > 
 > ## define a grid of lambda and alpha parameters to search
 > glmn_set <- parameters(
