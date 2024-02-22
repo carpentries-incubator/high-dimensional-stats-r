@@ -1,0 +1,1008 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2024-02-22 13:22:06 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+     <link rel="stylesheet" type="text/css" href="../assets/css/fonts.css" />
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/katex.min.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/incubator/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/incubator/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/incubator/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/incubator/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/incubator/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/incubator/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/incubator/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/incubator/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries Incubator - High dimensional statistics with R"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/incubator/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/incubator/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/incubator/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/incubator/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/incubator/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+  <title>
+  Introduction to high-dimensional data &ndash; High dimensional statistics with R
+  </title>
+
+  </head>
+  <body>
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body alpha">
+    This lesson is in the early stages of development (Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="../index.html" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/incubator-logo-blue.svg" alt="The Carpentries Incubator logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="../01-introduction-to-high-dimensional-data/index.html">Introduction to high-dimensional data</a></li>
+            
+            
+            <li><a href="../02-high-dimensional-regression/index.html">Regression with many outcomes</a></li>
+            
+            
+            <li><a href="../03-regression-regularisation/index.html">Regularised regression</a></li>
+            
+            
+            <li><a href="../04-principal-component-analysis/index.html">Principal component analysis</a></li>
+            
+            
+            <li><a href="../05-factor-analysis/index.html">Factor analysis</a></li>
+            
+            
+            <li><a href="../06-k-means/index.html">K-means</a></li>
+            
+            
+            <li><a href="../07-hierarchical/index.html">Hierarchical clustering</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference.html">Reference</a></li>
+            
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+            
+            <li><a href="../slides/index.html">Lecture slides</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	
+	<li><a href="/edit//_episodes_rmd/01-introduction-to-high-dimensional-data.Rmd" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+      
+
+
+<div class="alert alert-info text-center" role="alert">
+  This lesson is part of
+  <a href="https://github.com/carpentries-incubator/proposals/#the-carpentries-incubator" data-checker-ignore>
+    The Carpentries Incubator</a>, a place to share and use each other's
+  Carpentries-style lessons. <strong>This lesson has not been reviewed by and is
+  not endorsed by The Carpentries</strong>.
+</div>
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">High dimensional statistics with R</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../02-high-dimensional-regression/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Introduction to high-dimensional data</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 20 min
+      <br/>
+      <strong>Exercises:</strong> 20 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>What are high-dimensional data and what do these data look like in the biosciences?</p>
+</li>
+	
+	<li><p>What are the challenges when analysing high-dimensional data?</p>
+</li>
+	
+	<li><p>What statistical methods are suitable for analysing these data?</p>
+</li>
+	
+	<li><p>How can Bioconductor be used to access high-dimensional data in the biosciences?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Explore examples of high-dimensional data in the biosciences.</p>
+</li>
+	
+	<li><p>Appreciate challenges involved in analysing high-dimensional data.</p>
+</li>
+	
+	<li><p>Explore different statistical methods used for analysing high-dimensional data.</p>
+</li>
+	
+	<li><p>Work with example data created from biological studies.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="what-are-high-dimensional-data">What are high-dimensional data?</h1>
+
+<p><em>High-dimensional data</em> are defined as data in which the number of features (variables observed),
+$p$, are close to or larger than the number of observations (or data points), $n$.
+The opposite is <em>low-dimensional data</em> in which the number of observations,
+$n$, far outnumbers the number of features, $p$. A related concept is <em>wide data</em>, which
+refers to data with numerous features irrespective of the number of observations (similarly,
+<em>tall data</em> is often used to denote data with a large number of observations).
+Analyses of high-dimensional data require consideration of potential problems that
+come from having more features than observations.</p>
+
+<p>High-dimensional data have become more common in many scientific fields as new
+automated data collection techniques have been developed. More and more datasets
+have a large number of features and some have as many features as there are rows
+in the dataset. Datasets in which $p$&gt;=$n$ are becoming more common. Such datasets
+pose a challenge for data analysis as standard methods of analysis, such as linear
+regression, are no longer appropriate.</p>
+
+<p>High-dimensional datasets are common in the biological sciences. Subjects like
+genomics and medical sciences often use both tall (in terms of $n$) and wide
+(in terms of $p$) datasets that can be difficult to analyse or visualise using
+standard statistical tools. An example of high-dimensional data in biological
+sciences may include data collected from hospital patients recording symptoms,
+blood test results, behaviours, and general health, resulting in datasets with
+large numbers of features. Researchers often want to relate these features to
+specific patient outcomes (e.g. survival, length of time spent in hospital).
+An example of what high-dimensional data might look like in a biomedical study
+is shown in the figure below.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/intro-table.png" alt="plot of chunk table-intro" />
+<p class="caption">plot of chunk table-intro</p>
+</div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-1">Challenge 1</h2>
+
+  <p>Descriptions of three research questions and their datasets are given below.
+Which of these are considered to have high-dimensional data?</p>
+
+  <ol>
+    <li>Predicting patient blood pressure using: cholesterol level in blood, age,
+and BMI measurements, collected from 100 patients.</li>
+    <li>Predicting patient blood pressure using: cholesterol level in blood, age,
+and BMI, as well as information on 200,000 single nucleotide polymorphisms
+from 100 patients.</li>
+    <li>Predicting the length of time patients spend in hospital with pneumonia infection
+using: measurements on age, BMI, length of time with symptoms,
+number of symptoms, and percentage of neutrophils in blood, using data
+from 200 patients.</li>
+    <li>Predicting probability of a patient’s cancer progressing using gene
+expression data from 20,000 genes, as well as data associated with general patient health
+(age, weight, BMI, blood pressure) and cancer growth (tumour size,
+localised spread, blood test results).</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+
+    <ol>
+      <li>No. The number of observations (100 patients) is far greater than the number of features (3).</li>
+      <li>Yes, this is an example of high-dimensional data. There are only 100 observations but 200,000+3 features.</li>
+      <li>No. There are many more observations (200 patients) than features (5).</li>
+      <li>Yes. There is only one observation of more than 20,000 features.</li>
+    </ol>
+  </blockquote>
+</blockquote>
+
+<p>Now that we have an idea of what high-dimensional data look like we can think
+about the challenges we face in analysing them.</p>
+
+<h1 id="challenges-in-dealing-with-high-dimensional-data">Challenges in dealing with high-dimensional data</h1>
+
+<p>Most classical statistical methods are set up for use on low-dimensional data
+(i.e. data where the number of observations $n$ is much larger than the number
+of features $p$). This is because low-dimensional data were much more common in
+the past when data collection was more difficult and time consuming. In recent
+years advances in information technology have allowed large amounts of data to
+be collected and stored with relative ease. This has allowed large numbers of
+features to be collected, meaning that datasets in which $p$ matches or exceeds
+$n$ are common (collecting observations is often more difficult or expensive
+than collecting many features from a single observation).</p>
+
+<p>Datasets with large numbers of features are difficult to visualise. When
+exploring low-dimensional datasets, it is possible to plot the response variable
+against each of the limited number of explanatory variables to get an idea which
+of these are important predictors of the response. With high-dimensional data
+the large number of explanatory variables makes doing this difficult. In some
+high-dimensional datasets it can also be difficult to identify a single response
+variable, making standard data exploration and analysis techniques less useful.</p>
+
+<p>Let’s have a look at a simple dataset with lots of features to understand some
+of the challenges we are facing when working with high-dimensional data.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-2">Challenge 2</h2>
+
+  <p>Load the <code class="language-plaintext highlighter-rouge">Prostate</code> dataset as follows:</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"here"</span><span class="p">)</span><span class="w">
+</span><span class="n">Prostate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/prostate.rds"</span><span class="p">))</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <p>Although technically not a high-dimensional dataset, the <code class="language-plaintext highlighter-rouge">Prostate</code> data
+will allow us explore the problems encountered when working with many features.</p>
+
+  <p>Examine the dataset (in which each row represents a single patient) to:
+a) Determine how many observations ($n$) and features ($p$) are available (hint: see the <code class="language-plaintext highlighter-rouge">dim()</code> function) 
+b) Examine what variables were measured (hint: see the <code class="language-plaintext highlighter-rouge">names()</code> and <code class="language-plaintext highlighter-rouge">head()</code> functions)
+c) Plot the relationship between the variables (hint: see the <code class="language-plaintext highlighter-rouge">pairs()</code> function).</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-1">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dim</span><span class="p">(</span><span class="n">Prostate</span><span class="p">)</span><span class="w">   </span><span class="c1">#print the number of rows and columns</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">names</span><span class="p">(</span><span class="n">Prostate</span><span class="p">)</span><span class="w"> </span><span class="c1"># examine the variable names</span><span class="w">
+</span><span class="n">head</span><span class="p">(</span><span class="n">Prostate</span><span class="p">)</span><span class="w">   </span><span class="c1">#print the first 6 rows</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">names</span><span class="p">(</span><span class="n">Prostate</span><span class="p">)</span><span class="w">  </span><span class="c1">#examine column names</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [1] "X"       "lcavol"  "lweight" "age"     "lbph"    "svi"     "lcp"    
+ [8] "gleason" "pgg45"   "lpsa"   
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pairs</span><span class="p">(</span><span class="n">Prostate</span><span class="p">)</span><span class="w">  </span><span class="c1">#plot each pair of variables against each other</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/rmd-01-pairs-prostate-1.png" alt="plot of chunk pairs-prostate" width="432" />
+<p class="caption">plot of chunk pairs-prostate</p>
+</div>
+    <p>The <code class="language-plaintext highlighter-rouge">pairs()</code> function plots relationships between each of the variables in
+the <code class="language-plaintext highlighter-rouge">Prostate</code> dataset. This is possible for datasets with smaller numbers
+of variables, but for datasets in which $p$ is larger it becomes difficult
+(and time consuming) to visualise relationships between all variables in the
+dataset. Even where visualisation is possible, fitting models to datasets
+with many variables is difficult due to the potential for
+overfitting and difficulties in identifying a response variable.</p>
+
+  </blockquote>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="locating-data-with-r---the-here-package">Locating data with R - the <strong><code class="language-plaintext highlighter-rouge">here</code></strong> package</h2>
+
+  <p>It is often desirable to access external datasets from inside R and to write 
+code that does this reliably on different computers. While R has an inbulit 
+function <code class="language-plaintext highlighter-rouge">setwd()</code> that can be used to denote where external datasets are 
+stored, this usually requires the user to adjust the code to their specific 
+system and folder structure. The <strong><code class="language-plaintext highlighter-rouge">here</code></strong> package is meant to be used in R 
+projects. It allows users to specify the data location relative to the R 
+project directory. This makes R code more portable and can contribute to 
+improve the reproducibility of an analysis.</p>
+</blockquote>
+
+<p>Imagine we are carrying out least squares regression on a dataset with 25
+observations. Fitting a best fit line through these data produces a plot shown
+in the left-hand panel of the figure below.</p>
+
+<p>However, imagine a situation in which the number of observations and features in a
+dataset are almost equal. In that situation the effective number of observations
+per features is low. The result of fitting a best fit line through
+few observations can be seen in the right-hand panel below.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/intro-scatterplot.png" alt="plot of chunk intro-figure" />
+<p class="caption">plot of chunk intro-figure</p>
+</div>
+
+<p>In the first situation, the least squares regression line does not fit the data
+perfectly and there is some error around the regression line. But, when there are
+only two observations the regression line will fit through the points exactly,
+resulting in overfitting of the data. This suggests that carrying out least
+squares regression on a dataset with few data points per feature would result
+in difficulties in applying the resulting model to further datsets. This is a
+common problem when using regression on high-dimensional datasets.</p>
+
+<p>Another problem in carrying out regression on high-dimensional data is dealing
+with correlations between explanatory variables. The large numbers of features
+in these datasets makes high correlations between variables more likely.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-3">Challenge 3</h2>
+
+  <p>Use the <code class="language-plaintext highlighter-rouge">cor()</code> function to examine correlations between all variables in the 
+<code class="language-plaintext highlighter-rouge">Prostate</code> dataset. Are some pairs of variables highly correlated (i.e. 
+correlation coefficients &gt; 0.6)?</p>
+
+  <p>Use the <code class="language-plaintext highlighter-rouge">lm()</code> function to fit univariate regression models to predict patient 
+age using two variables that are highly correlated as predictors. Which of 
+these variables are statistically significant predictors of age? Hint: the
+<code class="language-plaintext highlighter-rouge">summary()</code> function can help here.</p>
+
+  <p>Fit a multiple linear regression model predicting patient age using both
+variables. What happened?</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-2">Solution</h2>
+
+    <p>Create a correlation matrix of all variables in the Prostate dataset</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cor</span><span class="p">(</span><span class="n">Prostate</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                X    lcavol      lweight       age         lbph         svi
+X       1.0000000 0.7111363  0.350443662 0.1965557  0.167928486  0.56678035
+lcavol  0.7111363 1.0000000  0.194128286 0.2249999  0.027349703  0.53884500
+lweight 0.3504437 0.1941283  1.000000000 0.3075286  0.434934636  0.10877851
+age     0.1965557 0.2249999  0.307528614 1.0000000  0.350185896  0.11765804
+lbph    0.1679285 0.0273497  0.434934636 0.3501859  1.000000000 -0.08584324
+svi     0.5667803 0.5388450  0.108778505 0.1176580 -0.085843238  1.00000000
+lcp     0.5336960 0.6753105  0.100237795 0.1276678 -0.006999431  0.67311118
+gleason 0.3936079 0.4324171 -0.001275658 0.2688916  0.077820447  0.32041222
+pgg45   0.4497267 0.4336522  0.050846821 0.2761124  0.078460018  0.45764762
+lpsa    0.9581149 0.7344603  0.354120390 0.1695928  0.179809410  0.56621822
+                 lcp      gleason      pgg45      lpsa
+X        0.533696039  0.393607939 0.44972672 0.9581149
+lcavol   0.675310484  0.432417056 0.43365225 0.7344603
+lweight  0.100237795 -0.001275658 0.05084682 0.3541204
+age      0.127667752  0.268891599 0.27611245 0.1695928
+lbph    -0.006999431  0.077820447 0.07846002 0.1798094
+svi      0.673111185  0.320412221 0.45764762 0.5662182
+lcp      1.000000000  0.514830063 0.63152825 0.5488132
+gleason  0.514830063  1.000000000 0.75190451 0.3689868
+pgg45    0.631528245  0.751904512 1.00000000 0.4223159
+lpsa     0.548813169  0.368986803 0.42231586 1.0000000
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">round</span><span class="p">(</span><span class="n">cor</span><span class="p">(</span><span class="n">Prostate</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="c1"># rounding helps to visualise the correlations</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>           X lcavol lweight  age  lbph   svi   lcp gleason pgg45 lpsa
+X       1.00   0.71    0.35 0.20  0.17  0.57  0.53    0.39  0.45 0.96
+lcavol  0.71   1.00    0.19 0.22  0.03  0.54  0.68    0.43  0.43 0.73
+lweight 0.35   0.19    1.00 0.31  0.43  0.11  0.10    0.00  0.05 0.35
+age     0.20   0.22    0.31 1.00  0.35  0.12  0.13    0.27  0.28 0.17
+lbph    0.17   0.03    0.43 0.35  1.00 -0.09 -0.01    0.08  0.08 0.18
+svi     0.57   0.54    0.11 0.12 -0.09  1.00  0.67    0.32  0.46 0.57
+lcp     0.53   0.68    0.10 0.13 -0.01  0.67  1.00    0.51  0.63 0.55
+gleason 0.39   0.43    0.00 0.27  0.08  0.32  0.51    1.00  0.75 0.37
+pgg45   0.45   0.43    0.05 0.28  0.08  0.46  0.63    0.75  1.00 0.42
+lpsa    0.96   0.73    0.35 0.17  0.18  0.57  0.55    0.37  0.42 1.00
+</code></pre></div>    </div>
+
+    <p>As seen above, some variables are highly correlated. In particular, the 
+correlation between <code class="language-plaintext highlighter-rouge">gleason</code> and <code class="language-plaintext highlighter-rouge">pgg45</code> is equal to 0.75.</p>
+
+    <p>Fitting univariate regression models to predict age using gleason and pgg45
+as predictors.</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">gleason</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Prostate</span><span class="p">)</span><span class="w">
+</span><span class="n">model2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">pgg45</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Prostate</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p>Check which covariates have a significant efffect</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">summary</span><span class="p">(</span><span class="n">model1</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Call:
+lm(formula = age ~ gleason, data = Prostate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-20.780  -3.552   1.448   4.220  13.448 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   45.146      6.918   6.525 3.29e-09 ***
+gleason        2.772      1.019   2.721  0.00774 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.209 on 95 degrees of freedom
+Multiple R-squared:  0.0723,	Adjusted R-squared:  0.06254 
+F-statistic: 7.404 on 1 and 95 DF,  p-value: 0.007741
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">summary</span><span class="p">(</span><span class="n">model2</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Call:
+lm(formula = age ~ pgg45, data = Prostate)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-21.0889  -3.4533   0.9111   4.4534  15.1822 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 62.08890    0.96758   64.17  &lt; 2e-16 ***
+pgg45        0.07289    0.02603    2.80  0.00619 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.193 on 95 degrees of freedom
+Multiple R-squared:  0.07624,	Adjusted R-squared:  0.06651 
+F-statistic:  7.84 on 1 and 95 DF,  p-value: 0.006189
+</code></pre></div>    </div>
+
+    <p>Based on these results we conclude that both <code class="language-plaintext highlighter-rouge">gleason</code> and <code class="language-plaintext highlighter-rouge">pgg45</code> have a 
+statistically significan univariate effect (also referred to as a marginal
+effect) as predictors of age (5% significance level).</p>
+
+    <p>Fitting a multivariate regression model using both both <code class="language-plaintext highlighter-rouge">gleason</code> and <code class="language-plaintext highlighter-rouge">pgg45</code> 
+as predictors</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">gleason</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pgg45</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Prostate</span><span class="p">)</span><span class="w">
+</span><span class="n">summary</span><span class="p">(</span><span class="n">model3</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Call:
+lm(formula = age ~ gleason + pgg45, data = Prostate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-20.927  -3.677   1.323   4.323  14.420 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 52.95548    9.74316   5.435  4.3e-07 ***
+gleason      1.45363    1.54299   0.942    0.349    
+pgg45        0.04490    0.03951   1.137    0.259    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.198 on 94 degrees of freedom
+Multiple R-squared:  0.08488,	Adjusted R-squared:  0.06541 
+F-statistic: 4.359 on 2 and 94 DF,  p-value: 0.01547
+</code></pre></div>    </div>
+
+    <p>Although <code class="language-plaintext highlighter-rouge">gleason</code> and <code class="language-plaintext highlighter-rouge">pgg45</code> have statistically significant univariate effects,
+this is no longer the case when both variables are simultaneously included
+as covariates in a multivariate regression model.</p>
+  </blockquote>
+</blockquote>
+
+<p>Including highly correlated variables such as <code class="language-plaintext highlighter-rouge">gleason</code> and <code class="language-plaintext highlighter-rouge">pgg45</code> 
+simultaneously the same regression model can lead to problems 
+in fitting a regression model and interpreting its output. To allow variables to 
+be included in the same model despite high levels of correlation, we can use
+dimensionality reduction methods to collapse multiple variables into a single
+new variable (we will explore this dataset further in the dimensionality
+reduction lesson). We can also use modifications to linear regression like
+regularisation, which we will discuss in the lesson on high-dimensional
+regression.</p>
+
+<h1 id="what-statistical-methods-are-used-to-analyse-high-dimensional-data">What statistical methods are used to analyse high-dimensional data?</h1>
+
+<p>As we found out in the above challenges, carrying out linear regression on
+datasets with large numbers of features is difficult due to: high levels of correlation
+between variables; difficulty in identifying a clear response variable; and risk
+of overfitting. These problems are common to the analysis of many high-dimensional datasets,
+for example, those using genomics data with multiple genes, or species
+composition data in an environment where the relative abundance of different species
+within a community is of interest. For such datasets, other statistical methods
+may be used to examine whether groups of observations show similar characteristics
+and whether these groups may relate to other features in the data (e.g.
+phenotype in genetics data).</p>
+
+<p>In this course we will cover four topics: (1) regression with numerous outcome 
+variables, (2) regularised regression, (3) dimensionality reduction, and (4) 
+clustering. Here are some examples for when each of these approaches may be used:</p>
+
+<p>(1) Regression with numerous outcomes refers to situations in which there are 
+many variables of a similar kind (expression values for many genes, methylation 
+levels for many sites in the genome) and when one is interested in assessing 
+whether these variables are associated with a specific covariate of interest, 
+such as experimental condition or age. In this case, multiple univariate 
+regression models (one per each outcome, using the covariate of interest as 
+predictor) could be fitted independently. In the context of high-dimensional 
+molecular data, a typical example are <em>differential gene expression</em> analyses. 
+We will explore this type of analysis in the <em>Regression with many outcomes</em> episode.</p>
+
+<p>(2) Regularisation (also known as <em>regularised regression</em> or <em>penalised regression</em>) 
+is typically used to fit regression models when there is a single outcome 
+variable or interest but the number of potential predictors is large, e.g. 
+there are more predictors than observations. Regularisation can help to prevent 
+over-fitting and may be used to identify a small subset of predictors that are
+associated with the outcome of interest. For example, regularised regression has
+been often used when building <em>epigenetic clocks</em>, where methylation values 
+across several thousands of genomic sites are used to predict chronological age. 
+We will explore this in more detail in the <em>Regularised regression</em> episode.</p>
+
+<p>(3) Dimensionality reduction is commonly used on high dimensional datasets for 
+data exploration or as a preprocessing step prior to other downstream analyses. 
+For instance, a low-dimensional visualisation of a gene expression dataset may
+be used to inform <em>quality control</em> steps (e.g. are there any anomalous samples?). 
+This course contains two episodes that explore dimensionality reduction
+techniques: <em>Principal component analysis</em> and <em>Factor analysis</em>.</p>
+
+<p>(4) Clustering methods can be used to identify potential grouping patterns 
+within a dataset. A popular example is the <em>identification of distinct cell types</em>
+through clustering cells with similar gene expression patterns. The <em>K-means</em>
+episode will explore a specific method to perform clustering analysis.</p>
+
+<blockquote class="callout">
+  <h2 id="using-bioconductor-to-access-high-dimensional-data-in-the-biosciences">Using Bioconductor to access high-dimensional data in the biosciences</h2>
+
+  <p>In this workshop, we will look at statistical methods that can be used to
+visualise and analyse high-dimensional biological data using packages available
+from Bioconductor, open source software for analysing high throughput genomic
+data. Bioconductor contains useful packages and example datasets as shown on the
+website <a href="https://www.bioconductor.org/">https://www.bioconductor.org/</a>.</p>
+
+  <p>Bioconductor packages can be installed and used in <code class="language-plaintext highlighter-rouge">R</code> using the <strong><code class="language-plaintext highlighter-rouge">BiocManager</code></strong>
+package. Let’s load the <strong><code class="language-plaintext highlighter-rouge">minfi</code></strong> package from Bioconductor (a package for
+analysing Illumina Infinium DNA methylation arrays).</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"minfi"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">browseVignettes</span><span class="p">(</span><span class="s2">"minfi"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <p>We can explore these packages by browsing the vignettes provided in
+Bioconductor. Bioconductor has various packages that can be used to load and
+examine datasets in <code class="language-plaintext highlighter-rouge">R</code> that have been made available in Bioconductor, usually
+along with an associated paper or package.</p>
+
+  <p>Next, we load the <code class="language-plaintext highlighter-rouge">methylation</code> dataset which represents data collected using
+Illumina Infinium methylation arrays which are used to examine methylation
+across the human genome. These data include information collected from the
+assay as well as associated metadata from individuals from whom samples were
+taken.</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"minfi"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"here"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"ComplexHeatmap"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">methylation</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/methylation.rds"</span><span class="p">))</span><span class="w">
+</span><span class="n">head</span><span class="p">(</span><span class="n">colData</span><span class="p">(</span><span class="n">methylation</span><span class="p">))</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DataFrame with 6 rows and 14 columns
+                    Sample_Well Sample_Name    purity         Sex       Age
+                    &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;character&gt; &lt;integer&gt;
+201868500150_R01C01         A07     PCA0612        94           M        39
+201868500150_R03C01         C07   NKpan2510        95           M        49
+201868500150_R05C01         E07      WB1148        95           M        20
+201868500150_R07C01         G07       B0044        97           M        49
+201868500150_R08C01         H07   NKpan1869        95           F        33
+201868590193_R02C01         B03   NKpan1850        93           F        21
+                    weight_kg  height_m       bmi    bmi_clas Ethnicity_wide
+                    &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;
+201868500150_R01C01   88.4505    1.8542   25.7269  Overweight          Mixed
+201868500150_R03C01   81.1930    1.6764   28.8911  Overweight  Indo-European
+201868500150_R05C01   80.2858    1.7526   26.1381  Overweight  Indo-European
+201868500150_R07C01   82.5538    1.7272   27.6727  Overweight  Indo-European
+201868500150_R08C01   87.5433    1.7272   29.3452  Overweight  Indo-European
+201868590193_R02C01   87.5433    1.6764   31.1507       Obese          Mixed
+                       Ethnic_self      smoker       Array       Slide
+                       &lt;character&gt; &lt;character&gt; &lt;character&gt;   &lt;numeric&gt;
+201868500150_R01C01       Hispanic          No      R01C01 2.01869e+11
+201868500150_R03C01      Caucasian          No      R03C01 2.01869e+11
+201868500150_R05C01        Persian          No      R05C01 2.01869e+11
+201868500150_R07C01      Caucasian          No      R07C01 2.01869e+11
+201868500150_R08C01      Caucasian          No      R08C01 2.01869e+11
+201868590193_R02C01 Finnish/Creole          No      R02C01 2.01869e+11
+</code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">methyl_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="n">assay</span><span class="p">(</span><span class="n">methylation</span><span class="p">))</span><span class="w">
+</span><span class="c1">## calculate correlations between cells in matrix</span><span class="w">
+</span><span class="n">cor_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor</span><span class="p">(</span><span class="n">methyl_mat</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cor_mat</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">]</span><span class="w"> </span><span class="c1"># print the top-left corner of the correlation matrix</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <p>The <code class="language-plaintext highlighter-rouge">assay()</code> function creates a matrix-like object where rows represent probes
+for genes and columns represent samples. We calculate correlations between
+features in the <code class="language-plaintext highlighter-rouge">methylation</code> dataset and examine the first 100 cells of this
+matrix. The size of the dataset makes it difficult to examine in full, a
+common challenge in analysing high-dimensional genomics data.</p>
+</blockquote>
+
+<h1 id="further-reading">Further reading</h1>
+
+<ul>
+  <li>Buhlman, P. &amp; van de Geer, S. (2011) Statistics for High-Dimensional Data. Springer, London.</li>
+  <li><a href="https://doi.org/10.1146/annurev-statistics-022513-115545">Buhlman, P., Kalisch, M. &amp; Meier, L. (2014) High-dimensional statistics with a view toward applications in biology. Annual Review of Statistics and Its Application</a>.</li>
+  <li>Johnstone, I.M. &amp; Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Philosophical Transactions of the Royal Society A 367:4237-4253.</li>
+  <li><a href="https://www.bioconductor.org/packages/release/workflows/vignettes/methylationArrayAnalysis/inst/doc/methylationArrayAnalysis.html">Bioconductor ethylation array analysis vignette</a>.</li>
+  <li>The <em>Introduction to Machine Learning with Python</em> course covers additional 
+methods that could be used to analyse high-dimensional data. See 
+<a href="https://carpentries-incubator.github.io/machine-learning-novice-python/">Introduction to machine learning</a>,
+<a href="https://carpentries-incubator.github.io/machine-learning-trees-python/">Tree models</a> and
+<a href="https://carpentries-incubator.github.io/machine-learning-neural-python/">Neural networks</a>. 
+Some related (an important!) content is also available in 
+<a href="https://carpentries-incubator.github.io/machine-learning-responsible-python/">Responsible machine learning</a>.</li>
+</ul>
+
+<h1 id="other-resources-suggested-by-former-students">Other resources suggested by former students</h1>
+
+<ul>
+  <li><a href="https://www.youtube.com/c/joshstarmer">Josh Starmer’s</a> youtube channel.</li>
+</ul>
+
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>High-dimensional data are data in which the number of features, $p$, are close to or larger than the number of observations, $n$.</p>
+</li>
+    
+    <li><p>These data are becoming more common in the biological sciences due to increases in data storage capabilities and computing power.</p>
+</li>
+    
+    <li><p>Standard statistical methods, such as linear regression, run into difficulties when analysing high-dimensional data.</p>
+</li>
+    
+    <li><p>In this workshop, we will explore statistical methods used for analysing high-dimensional data using datasets available on Bioconductor.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../02-high-dimensional-regression/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <hr/>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2024 by <a href="../CITATION">the authors</a>.
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	
+	<a href="/edit//_episodes_rmd/01-introduction-to-high-dimensional-data.Rmd" data-checker-ignore>Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:alan.ocallaghan@outlook.com">Contact</a>
+    </div>
+  </div>
+  <p class="text-muted text-right">
+    <small><i>Using <a href="https://github.com/carpentries/carpentries-theme/">The Carpentries theme</a> &mdash; Site last built on: 2024-02-22 13:22:06 +0000.</i></small>
+  </p>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { fonts: ["TeX"] }
+      });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,45 @@
+Package: foo
+Title: {{ Title }}
+Version: 1.0.0
+Authors@R: 
+    c(person(given = "Jo", family = "Doe", email = "jodoe@dom.ain",
+      role = c("aut", "cre")))
+Maintainer: {{ Maintainer }}
+Description: {{ Description }}
+License: {{ License }}
+URL: {{ URL }}
+BugReports: {{ BugReports }}
+Encoding: UTF-8
+Imports: 
+    BiocManager,
+    bluster,
+    broom,
+    circlize,
+    cluster,
+    clValid,
+    ComplexHeatmap,
+    dendextend,
+    desc,
+    dplyr,
+    ggplot2,
+    glmnet,
+    glue,
+    here,
+    knitr,
+    limma,
+    MASS,
+    methylclock,
+    minfi,
+    PCAtools,
+    pheatmap,
+    remotes,
+    renv,
+    rmarkdown,
+    rprojroot,
+    scater,
+    SingleCellExperiment,
+    stats,
+    stringr,
+    SummarizedExperiment,
+    utils,
+    viridis
