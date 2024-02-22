@@ -1,0 +1,1492 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2024-02-22 11:43:43 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+     <link rel="stylesheet" type="text/css" href="../assets/css/fonts.css" />
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/katex.min.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/incubator/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/incubator/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/incubator/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/incubator/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/incubator/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/incubator/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/incubator/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/incubator/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries Incubator - High dimensional statistics with R"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/incubator/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/incubator/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/incubator/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/incubator/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/incubator/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+  <title>
+  Regularised regression &ndash; High dimensional statistics with R
+  </title>
+
+  </head>
+  <body>
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body alpha">
+    This lesson is in the early stages of development (Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="../index.html" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/incubator-logo-blue.svg" alt="The Carpentries Incubator logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="../01-introduction-to-high-dimensional-data/index.html">Introduction to high-dimensional data</a></li>
+            
+            
+            <li><a href="../02-high-dimensional-regression/index.html">Regression with many outcomes</a></li>
+            
+            
+            <li><a href="../03-regression-regularisation/index.html">Regularised regression</a></li>
+            
+            
+            <li><a href="../04-principal-component-analysis/index.html">Principal component analysis</a></li>
+            
+            
+            <li><a href="../05-factor-analysis/index.html">Factor analysis</a></li>
+            
+            
+            <li><a href="../06-k-means/index.html">K-means</a></li>
+            
+            
+            <li><a href="../07-hierarchical/index.html">Hierarchical clustering</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference.html">Reference</a></li>
+            
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+            
+            <li><a href="../slides/index.html">Lecture slides</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	
+	<li><a href="/edit//_episodes_rmd/03-regression-regularisation.Rmd" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+      
+
+
+<div class="alert alert-info text-center" role="alert">
+  This lesson is part of
+  <a href="https://github.com/carpentries-incubator/proposals/#the-carpentries-incubator" data-checker-ignore>
+    The Carpentries Incubator</a>, a place to share and use each other's
+  Carpentries-style lessons. <strong>This lesson has not been reviewed by and is
+  not endorsed by The Carpentries</strong>.
+</div>
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../02-high-dimensional-regression/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">High dimensional statistics with R</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../04-principal-component-analysis/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Regularised regression</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 60 min
+      <br/>
+      <strong>Exercises:</strong> 20 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>What is regularisation?</p>
+</li>
+	
+	<li><p>How does regularisation work?</p>
+</li>
+	
+	<li><p>How can we select the level of regularisation for a model?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Understand the benefits of regularised models.</p>
+</li>
+	
+	<li><p>Understand how different types of regularisation work.</p>
+</li>
+	
+	<li><p>Apply and critically analyse regularised regression models.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>This episode is about <strong>regularisation</strong>, also called <strong>regularised regression</strong> 
+or <strong>penalised regression</strong>. This approach can be used for prediction and for 
+feature selection and it is particularly useful when dealing with high-dimensional data.</p>
+
+<p>One reason that we need special statistical tools for high-dimensional data is
+that standard linear models cannot handle high-dimensional data sets – one cannot fit
+a linear model where there are more features (predictor variables) than there are observations
+(data points). In the previous lesson we dealt with this problem by fitting individual
+models for each feature and sharing information among these models. Now we will
+take a look at an alternative approach called regularisation. Regularisation can be used to
+stabilise coefficient estimates (and thus to fit models with more features than observations)
+and even to select a subset of relevant features.</p>
+
+<p>First, let us check out what happens if we try to fit a linear model to high-dimensional
+data! We start by reading in the data from the last lesson:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"here"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"minfi"</span><span class="p">)</span><span class="w">
+</span><span class="n">methylation</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/methylation.rds"</span><span class="p">))</span><span class="w">
+
+</span><span class="c1">## here, we transpose the matrix to have features as rows and samples as columns</span><span class="w">
+</span><span class="n">methyl_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="n">assay</span><span class="p">(</span><span class="n">methylation</span><span class="p">))</span><span class="w">
+</span><span class="n">age</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">methylation</span><span class="o">$</span><span class="n">Age</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Then, we try to fit a model with outcome age and all 5,000 features in this
+dataset as predictors (average methylation levels, M-values, across different
+sites in the genome).</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># by using methyl_mat in the formula below, R will run a multivariate regression</span><span class="w">
+</span><span class="c1"># model in which each of the columns in methyl_mat is used as a predictor. </span><span class="w">
+</span><span class="n">fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">methyl_mat</span><span class="p">)</span><span class="w">
+</span><span class="n">summary</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Call:
+lm(formula = age ~ methyl_mat)
+
+Residuals:
+ALL 37 residuals are 0: no residual degrees of freedom!
+
+Coefficients: (4964 not defined because of singularities)
+                          Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)               2640.474        NaN     NaN      NaN
+methyl_matcg00075967      -108.216        NaN     NaN      NaN
+methyl_matcg00374717      -139.637        NaN     NaN      NaN
+methyl_matcg00864867        33.102        NaN     NaN      NaN
+methyl_matcg00945507        72.250        NaN     NaN      NaN
+ [ reached getOption("max.print") -- omitted 4996 rows ]
+
+Residual standard error: NaN on 0 degrees of freedom
+Multiple R-squared:      1,	Adjusted R-squared:    NaN 
+F-statistic:   NaN on 36 and 0 DF,  p-value: NA
+</code></pre></div></div>
+
+<p>You can see that we’re able to get some effect size estimates, but they seem very 
+high! The summary also says that we were unable to estimate
+effect sizes for 4,964 features
+because of “singularities”. What this means is that R couldn’t find a way to
+perform the calculations necessary due to the fact that we have more features
+than observations.</p>
+
+<blockquote class="callout">
+  <h2 id="singularities">Singularities</h2>
+
+  <p>The message that <code class="language-plaintext highlighter-rouge">lm</code> produced is not necessarily the most intuitive. What
+are “singularities”, and why are they an issue? A singular matrix 
+is one that cannot be
+<a href="https://en.wikipedia.org/wiki/Invertible_matrix">inverted</a>.
+The inverse of an $n \times n$ square matrix $A$ is the matrix $B$ for which
+$AB = BA = I_n$, where $I_n$ is the $n \times n$ identity matrix.</p>
+
+  <p>Why is the inverse important? Well, to find the
+coefficients of a linear model of a matrix of predictor features $X$ and an
+outcome vector $y$, we may perform the calculation</p>
+
+\[(X^TX)^{-1}X^Ty\]
+
+  <p>You can see that, if we’re unable to find the inverse of the matrix $X^TX$,
+then we’ll be unable to find the regression coefficients.</p>
+
+  <p>Why might this be the case?
+Well, when the <a href="https://en.wikipedia.org/wiki/Determinant">determinant</a>
+of the matrix is zero, we are unable to find its inverse.</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xtx</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="n">methyl_mat</span><span class="p">)</span><span class="w"> </span><span class="o">%*%</span><span class="w"> </span><span class="n">methyl_mat</span><span class="w">
+</span><span class="n">det</span><span class="p">(</span><span class="n">xtx</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 0
+</code></pre></div>  </div>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="correlated-features--common-in-high-dimensional-data">Correlated features – common in high-dimensional data</h2>
+
+  <p>So, we can’t fit a standard linear model to high-dimensional data. But there
+is another issue. In high-dimensional datasets, there
+are often multiple features that contain redundant information (correlated features).</p>
+
+  <p>We have seen in the first episode that correlated features can make it hard 
+(or impossible) to correctly infer parameters. If we visualise the level of 
+correlation between sites in the methylation dataset, we can see that many 
+of the features essentially represent the same information - there are many 
+off-diagonal cells, which are deep red or blue. For example, the following
+heatmap visualises the correlations for the first 500 features in the 
+<code class="language-plaintext highlighter-rouge">methylation</code> dataset (we selected 500 features only as it can be hard to
+visualise patterns when there are too many features!).</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">small</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">methyl_mat</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">500</span><span class="p">]</span><span class="w">
+</span><span class="n">cor_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor</span><span class="p">(</span><span class="n">small</span><span class="p">)</span><span class="w">
+</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">cor_mat</span><span class="p">,</span><span class="w">
+    </span><span class="n">column_title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Feature-feature correlation in methylation data"</span><span class="p">,</span><span class="w">
+    </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Pearson correlation"</span><span class="p">,</span><span class="w">
+    </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">col</span><span class="p">,</span><span class="w">
+    </span><span class="n">show_row_dend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">show_column_dend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+    </span><span class="n">show_row_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">show_column_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in col_fun(le): a matrix-like object is required as argument to 'col'
+</code></pre></div>  </div>
+
+  <p>Correlation between features can be problematic for technical reasons. If it is 
+very severe, it may even make it impossible to fit a model! This is in addition to
+the fact that with more features than observations, we can’t even estimate
+the model properly. Regularisation can help us to deal with correlated features.</p>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="challenge-1">Challenge 1</h2>
+
+  <p>Discuss in  groups:</p>
+
+  <ol>
+    <li>Why would we observe correlated features in high-dimensional biological
+data?</li>
+    <li>Why might correlated features be a problem when fitting linear models?</li>
+    <li>What issue might correlated features present when selecting features to include in a model one at a time?</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+
+    <ol>
+      <li>Many of the features in biological data represent very similar 
+information biologically. For example, sets of genes that form complexes
+are often expressed in very similar quantities. Similarly, methylation
+levels at nearby sites are often very highly correlated.</li>
+      <li>Correlated features can make inference unstable or even impossible
+mathematically.</li>
+      <li>When we are selecting features one at a time we want to pick the most predictive feature each time. 
+When a lot of features are very similar but encode
+slightly different information, which of the correlated features we 
+select to include can have a huge impact on the later stages of model selection!</li>
+    </ol>
+
+  </blockquote>
+</blockquote>
+
+<h1 id="coefficient-estimates-of-a-linear-model">Coefficient estimates of a linear model</h1>
+
+<p>When we fit a linear model, we’re finding the line through our data that 
+minimises the sum of the squared residuals. We can think of that as finding
+the slope and intercept that minimises the square of the length of the dashed
+lines. In this case, the red line in the left panel is the line that
+accomplishes this objective, and the red dot in the right panel is the point 
+that represents this line in terms of its slope and intercept among many 
+different possible models, where the background colour represents how well
+different combinations of slope and intercept accomplish this objective.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-regplot-1.png" alt="For each observation, the left panel shows the residuals with respect to the optimal line (the one that minimises the sum of square errors). These are calculated as the difference between the value predicted by the line and the observed outcome. Right panel shows the sum of squared residuals across all possible linear regression models (as defined by different values of the regression coefficients)." width="720" />
+<p class="caption">Illustrative example demonstrated how regression coefficients are inferred under a linear model framework.</p>
+</div>
+
+<p>Mathematically, we can write the sum of squared residuals as</p>
+
+\[\sum_{i=1}^N ( y_i-x'_i\beta)^2\]
+
+<p>where $\beta$ is a vector of (unknown) covariate effects which we want to learn
+by fitting a regression model: the $j$-th element of $\beta$, which we denote as 
+$\beta_j$ quantifies the effect of the $j$-th covariate. For each individual 
+$i$, $x_i$ is a vector of $j$ covariate values and $y_i$ is the true observed value for 
+the outcome. The notation $x’_i\beta$ indicates matrix multiplication. In this case, the 
+result is equivalent to multiplying each element of $x_i$ by its corresponding element in 
+$\beta$ and then calculating the sum across all of those values. The result of this 
+product (often denoted by $\hat{y}_i$) is the predicted value of the outcome generated
+by the model. As such, $y_i-x’_i\beta$ can be interpreted as the prediction error, also 
+referred to as model residual. To quantify the total error across all individuals, we sum 
+the square residuals $( y_i-x’_i\beta)^2$ across all the individuals in our data.</p>
+
+<p>Finding the value of $\beta$ that minimises
+the sum above is the line of best fit through our data when considering 
+this goal of minimising the sum of squared error. However, it is not the only 
+possible line we could use! For example, we might want to err on the side of
+caution when estimating effect sizes (coefficients). That is, we might want to 
+avoid estimating very large effect sizes. This can help us to create <em>generalisable</em>
+models. This is important when models that are fitted (trained) on one dataset
+and then used to predict outcomes from a new dataset. Restricting parameter
+estimates is particularly important when analysing high-dimensional data.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-2">Challenge 2</h2>
+
+  <p>Discuss in groups:</p>
+
+  <ol>
+    <li>What are we minimising when we fit a linear model?</li>
+    <li>Why are we minimising this objective? What assumptions are we making
+about our data when we do so?</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution-1">Solution</h2>
+
+    <ol>
+      <li>When we fit a linear model we are minimising the squared error.
+In fact, the standard linear model estimator is often known as
+“ordinary least squares”. The “ordinary” really means “original” here,
+to distinguish between this method, which dates back to ~1800, and some
+more “recent” (think 1940s…) methods.</li>
+      <li>Least squares assumes that, when we account for the change in the mean of
+the outcome based on changes in the income, the data are normally
+distributed. That is, the <em>residuals</em> of the model, or the error 
+left over after we account for any linear relationships in the data,
+are normally distributed, and have a fixed variance.</li>
+    </ol>
+
+  </blockquote>
+</blockquote>
+
+<h1 id="model-selection-using-training-and-test-sets">Model selection using training and test sets</h1>
+
+<p>Sets of models are often compared using statistics such as adjusted $R^2$, AIC or BIC.
+These show us how well the model is learning the data used in fitting that same model <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.
+However, these statistics do not really tell us how well the model will generalise to new data.
+This is an important thing to  consider – if our model doesn’t generalise to new data,
+then there’s a chance that it’s just picking up on a technical or batch effect
+in our data, or simply some noise that happens to fit the outcome we’re modelling.
+This is especially important when our goal is prediction – it’s not much good
+if we can only predict well for samples where the outcome is already known,
+after all!</p>
+
+<p>To get an idea of how well our model generalises, we can split the data into
+two - a “training” and a “test” set. We use the “training” data to fit the model,
+and then see its performance on the “test” data.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/validation.png" alt="Schematic representation of how a dataset can be divided into a training (the portion of the data used to fit a model) and a test set (the portion of the data used to assess external generalisability)." width="500px" />
+<p class="caption">Schematic representation of how a dataset can be divided into a training and a test set.</p>
+</div>
+
+<p>One thing that often happens in this context is that large 
+coefficient values minimise the training error, but they don’t minimise the 
+test error on unseen data. First, we’ll go through an example of what exactly 
+this means.</p>
+
+<p>For the next few challenges, we’ll work with a set of features
+known to be associated with age from a paper by Horvath et al.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>. Horvath et al
+use methylation markers alone to predict the biological age of an individual.
+This is useful in studying age-related disease amongst many other things.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">coef_horvath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="o">::</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/coefHorvath.rds"</span><span class="p">))</span><span class="w">
+</span><span class="n">methylation</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="o">::</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/methylation.rds"</span><span class="p">))</span><span class="w">
+
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"SummarizedExperiment"</span><span class="p">)</span><span class="w">
+</span><span class="n">age</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">methylation</span><span class="o">$</span><span class="n">Age</span><span class="w">
+</span><span class="n">methyl_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="n">assay</span><span class="p">(</span><span class="n">methylation</span><span class="p">))</span><span class="w">
+
+</span><span class="n">coef_horvath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">coef_horvath</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="n">features</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">coef_horvath</span><span class="o">$</span><span class="n">CpGmarker</span><span class="w">
+</span><span class="n">horvath_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">methyl_mat</span><span class="p">[,</span><span class="w"> </span><span class="n">features</span><span class="p">]</span><span class="w">
+
+</span><span class="c1">## Generate an index to split the data</span><span class="w">
+</span><span class="n">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span><span class="w">
+</span><span class="n">train_ind</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="n">nrow</span><span class="p">(</span><span class="n">methyl_mat</span><span class="p">),</span><span class="w"> </span><span class="m">25</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-3">Challenge 3</h2>
+
+  <ol>
+    <li>Split the methylation data matrix and the age vector
+into training and test sets.</li>
+    <li>Fit a model on the training data matrix and training age 
+vector.</li>
+    <li>Check the mean squared error on this model.</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution-2">Solution</h2>
+
+    <ol>
+      <li>
+        <p>Splitting the data involves using our index to split up the matrix and
+the age vector into two each. We can use a negative subscript to create
+the test data.</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">horvath_mat</span><span class="p">[</span><span class="n">train_ind</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="n">train_age</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">age</span><span class="p">[</span><span class="n">train_ind</span><span class="p">]</span><span class="w">
+</span><span class="n">test_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">horvath_mat</span><span class="p">[</span><span class="o">-</span><span class="n">train_ind</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="n">test_age</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">age</span><span class="p">[</span><span class="o">-</span><span class="n">train_ind</span><span class="p">]</span><span class="w">
+</span></code></pre></div>        </div>
+        <p>The solution to this exercise is important because the generated objects 
+(<code class="language-plaintext highlighter-rouge">train_mat</code>, <code class="language-plaintext highlighter-rouge">train_age</code>, <code class="language-plaintext highlighter-rouge">test_mat</code> and <code class="language-plaintext highlighter-rouge">test_age</code>) will be used later in 
+this episode. Please make sure that you use the same object names.</p>
+      </li>
+      <li>
+        <p>To</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># as.data.frame() converts train_mat into a data.frame</span><span class="w">
+</span><span class="n">fit_horvath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lm</span><span class="p">(</span><span class="n">train_age</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">.</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">train_mat</span><span class="p">))</span><span class="w">
+</span></code></pre></div>        </div>
+      </li>
+    </ol>
+
+    <p>Using the <code class="language-plaintext highlighter-rouge">.</code> syntax above together with a <code class="language-plaintext highlighter-rouge">data</code> argument will lead to
+the same result as usign <code class="language-plaintext highlighter-rouge">train_age ~ tran_mat</code>: R will fit a multivariate 
+regression model in which each of the colums in <code class="language-plaintext highlighter-rouge">train_mat</code> is used as 
+a predictor. We opted to use the <code class="language-plaintext highlighter-rouge">.</code> syntax because it will help us to 
+obtain model predictions using the <code class="language-plaintext highlighter-rouge">predict()</code> function.</p>
+
+    <ol>
+      <li>
+        <p>The mean squared error of the model is the mean of the square of the
+residuals. This seems very low here – on average we’re only off by 
+about a year!</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean</span><span class="p">(</span><span class="n">residuals</span><span class="p">(</span><span class="n">fit_horvath</span><span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 1.319628
+</code></pre></div>        </div>
+      </li>
+    </ol>
+
+  </blockquote>
+</blockquote>
+
+<p>Having trained this model, now we can check how well it does in predicting age
+from new dataset (the test data).
+Here we use the mean of the squared difference between our predictions and the
+true ages for the test data, or “mean squared error” (MSE). Unfortunately, it
+seems like this is a lot higher than the error on the training data!</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mse</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">true</span><span class="p">,</span><span class="w"> </span><span class="n">prediction</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">mean</span><span class="p">((</span><span class="n">true</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">prediction</span><span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">pred_lm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">predict</span><span class="p">(</span><span class="n">fit_horvath</span><span class="p">,</span><span class="w"> </span><span class="n">newdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">test_mat</span><span class="p">))</span><span class="w">
+</span><span class="n">err_lm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mse</span><span class="p">(</span><span class="n">test_age</span><span class="p">,</span><span class="w"> </span><span class="n">pred_lm</span><span class="p">)</span><span class="w">
+</span><span class="n">err_lm</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 223.3571
+</code></pre></div></div>
+
+<p>Further, if we plot true age against predicted age for the samples in the test
+set, we can see how well we’re really doing - ideally these would line up
+exactly!</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">))</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">test_age</span><span class="p">,</span><span class="w"> </span><span class="n">pred_lm</span><span class="p">,</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">coef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dashed"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-test-plot-lm-1.png" alt="A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted). In this case we observe high prediction error in the test set." width="432" />
+<p class="caption">A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted).</p>
+</div>
+
+<p>This figure shows the predicted ages obtained from a linear model fit plotted 
+against the true ages, which we kept in the test dataset. If the prediction were 
+good, the dots should follow a line. Regularisation can help us to make the 
+model more generalisable, improving predictions for the test dataset (or any 
+other dataset that is not used when fitting our model).</p>
+
+<h1 id="using-regularisation-to-impove-generalisability">Using regularisation to impove generalisability</h1>
+
+<p>As stated above, restricting model parameter estimates can improve a model’s
+generalisability. This can be done with <em>regularisation</em>. The idea to add another
+condition to the problem we’re solving with linear regression. This condition
+controls the total size of the  coefficients that come out. 
+For example, we might say that the point representing the slope and intercept
+must fall within a certain distance of the origin, $(0, 0)$. Note that we are 
+still trying to solve for the line that minimises the square of the residuals; 
+we are just adding this extra constraint to our solution.</p>
+
+<p>For the 2-parameter model (slope and intercept), we could
+visualise this constraint as a circle with a given radius. We 
+want to find the “best” solution (in terms of minimising the 
+residuals) that also falls within a circle of a given radius 
+(in this case, 2).</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-ridgeplot-1.png" alt="For each observation, the left panel shows the residuals with respect to the optimal lines obtained with and without regularisation. Right panel shows the sum of squared residuals across all possible linear regression models. Regularisation moves the line away from the optimal (in terms of minimising the sum of squared residuals). " width="720" />
+<p class="caption">Illustrative example demonstrated how regression coefficients are inferred under a linear model framework, with (blue line) and without (red line) regularisation. A ridge penalty is used in this example</p>
+</div>
+
+<p>There are multiple ways to define the distance that our solution must fall in,
+though. The one we’ve plotted above controls the squared sum of the 
+coefficients, $\beta$.
+This is also sometimes called the $L^2$ norm. This is defined as</p>
+
+\[\left\lVert \beta\right\lVert_2 = \sqrt{\sum_{j=1}^p \beta_j^2}\]
+
+<p>To control this, we specify that the solution for the equation above
+also has to have an $L^2$ norm smaller than a certain amount. Or, equivalently,
+we try to minimise a function that includes our $L^2$ norm scaled by a 
+factor that is usually written $\lambda$.</p>
+
+\[\sum_{i=1}^N \biggl( y_i - x'_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2\]
+
+<p>Another way of thinking about this is that when finding the best model, we’re
+weighing up a balance of the ordinary least squares objective and a “penalty”
+term that punished models with large coefficients. The balance between the
+penalty and the ordinary least squares objective is controlled by $\lambda$ - 
+when $\lambda$ is large, we care a lot about the size of the coefficients.
+When it’s small, we don’t really care a lot. When it’s zero, we’re back to
+just using ordinary least squares. This type of regularisation is called <em>ridge regression</em>.</p>
+
+<h1 id="why-would-we-want-to-restrict-our-model">Why would we want to restrict our model?</h1>
+
+<p>It may seem an odd thing to do: to restrict the possible values of our model
+parameters! Why would we want to do this? Firstly, as discussed earlier, our 
+model estimates can be very unstable or even difficult to calculate when we have 
+many correlated features. Secondly, this type of approach can make our model more 
+generalisable to new data. To show this, we’ll fit a model using the same set
+of 20 features (stored as <code class="language-plaintext highlighter-rouge">features</code>) selected earlier in this episode (these
+are a subset of the features identified by Horvarth et al), using both 
+regularised and ordinary least squares.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"glmnet"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">## glmnet() performs scaling by default, supply un-scaled data:</span><span class="w">
+</span><span class="n">horvath_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">methyl_mat</span><span class="p">[,</span><span class="w"> </span><span class="n">features</span><span class="p">]</span><span class="w"> </span><span class="c1"># select the first 20 sites as before</span><span class="w">
+</span><span class="n">train_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">horvath_mat</span><span class="p">[</span><span class="n">train_ind</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="c1"># use the same individuals as selected before</span><span class="w">
+</span><span class="n">test_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">horvath_mat</span><span class="p">[</span><span class="o">-</span><span class="n">train_ind</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
+
+
+
+</span><span class="n">ridge_fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">glmnet</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">train_mat</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">train_age</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">ridge_fit</span><span class="p">,</span><span class="w"> </span><span class="n">xvar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lambda"</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dashed"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-plot-ridge-1.png" alt="Alt" width="432" />
+<p class="caption">Cap</p>
+</div>
+
+<p>This plot shows how the estimated coefficients for each CpG site change
+as we increase the penalty, $\lambda$. That is,
+as we decrease the size of the region that solutions can fall into, the values
+of the coefficients that we get back tend to decrease. In this case,
+coefficients trend towards zero but generally don’t reach it until the penalty
+gets very large. We can see that initially, some parameter estimates are really,
+really large, and these tend to shrink fairly rapidly.</p>
+
+<p>We can also notice that some parameters “flip signs”; that is, they start off
+positive and become negative as lambda grows. This is a sign of collinearity,
+or correlated predictors. As we reduce the importance of one feature, we can 
+“make up for” the loss in accuracy from that one feature by adding a bit of
+weight to another feature that represents similar information.</p>
+
+<p>Since we split the data into test and training data, we can prove that ridge
+regression gives us a better prediction in this case:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pred_ridge</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">predict</span><span class="p">(</span><span class="n">ridge_fit</span><span class="p">,</span><span class="w"> </span><span class="n">newx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">test_mat</span><span class="p">)</span><span class="w">
+</span><span class="n">err_ridge</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">apply</span><span class="p">(</span><span class="n">pred_ridge</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">col</span><span class="p">)</span><span class="w"> </span><span class="n">mse</span><span class="p">(</span><span class="n">test_age</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="p">))</span><span class="w">
+</span><span class="nf">min</span><span class="p">(</span><span class="n">err_ridge</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 46.76802
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">err_lm</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 223.3571
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">which_min_err</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">which.min</span><span class="p">(</span><span class="n">err_ridge</span><span class="p">)</span><span class="w">
+</span><span class="n">min_err_ridge</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">min</span><span class="p">(</span><span class="n">err_ridge</span><span class="p">)</span><span class="w">
+</span><span class="n">pred_min_ridge</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pred_ridge</span><span class="p">[,</span><span class="w"> </span><span class="n">which_min_err</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We can see where on the continuum of lambdas we’ve picked a model by plotting
+the coefficient paths again. In this case, we’ve picked a model with fairly
+modest shrinkage.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chosen_lambda</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ridge_fit</span><span class="o">$</span><span class="n">lambda</span><span class="p">[</span><span class="n">which.min</span><span class="p">(</span><span class="n">err_ridge</span><span class="p">)]</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">ridge_fit</span><span class="p">,</span><span class="w"> </span><span class="n">xvar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lambda"</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">chosen_lambda</span><span class="p">),</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dashed"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-chooselambda-1.png" alt="Alt" width="432" />
+<p class="caption">Cap</p>
+</div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-4">Challenge 4</h2>
+
+  <ol>
+    <li>Which performs better, ridge or OLS?</li>
+    <li>Plot predicted ages for each method against the true ages.
+How do the predictions look for both methods? Why might ridge be 
+performing better?</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution-3">Solution</h2>
+
+    <ol>
+      <li>
+        <p>Ridge regression performs significantly better on unseen data, despite
+being “worse” on the training data.</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">min_err_ridge</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 46.76802
+</code></pre></div>        </div>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">err_lm</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 223.3571
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>The ridge ones are much less spread out with far fewer extreme predictions.</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">all</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">pred_lm</span><span class="p">,</span><span class="w"> </span><span class="n">test_age</span><span class="p">,</span><span class="w"> </span><span class="n">pred_min_ridge</span><span class="p">)</span><span class="w">
+</span><span class="n">lims</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">range</span><span class="p">(</span><span class="n">all</span><span class="p">)</span><span class="w">
+</span><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">test_age</span><span class="p">,</span><span class="w"> </span><span class="n">pred_lm</span><span class="p">,</span><span class="w">
+    </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lims</span><span class="p">,</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lims</span><span class="p">,</span><span class="w">
+    </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">coef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dashed"</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">test_age</span><span class="p">,</span><span class="w"> </span><span class="n">pred_min_ridge</span><span class="p">,</span><span class="w">
+    </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lims</span><span class="p">,</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lims</span><span class="p">,</span><span class="w">
+    </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">coef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dashed"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-plot-ridge-prediction-1.png" alt="Alt" width="720" />
+<p class="caption">Cap</p>
+</div>
+      </li>
+    </ol>
+  </blockquote>
+</blockquote>
+
+<h1 id="lasso-regression">LASSO regression</h1>
+
+<p><em>LASSO</em> is another type of regularisation. In this case we use the $L^1$ norm,
+or the sum of the absolute values of the coefficients.</p>
+
+\[\left\lVert \beta \right\lVert_1 = \sum_{j=1}^p |\beta_j|\]
+
+<p>This tends to produce sparse models; that is to say, it tends to remove features
+from the model that aren’t necessary to produce accurate predictions. This
+is because the region we’re restricting the coefficients to has sharp edges.
+So, when we increase the penalty (reduce the norm), it’s more likely that
+the best solution that falls in this region will be at the corner of this
+diagonal (i.e., one or more coefficient is exactly zero).</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-shrink-lasso-1.png" alt="For each observation, the left panel shows the residuals with respect to the optimal lines obtained with and without regularisation. Right panel shows the sum of squared residuals across all possible linear regression models. Regularisation moves the line away from the optimal (in terms of minimising the sum of squared residuals)" width="720" />
+<p class="caption">Illustrative example demonstrated how regression coefficients are inferred under a linear model framework, with (blue line) and without (red line) regularisation. A LASSO penalty is used in this example.</p>
+</div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-5">Challenge 5</h2>
+
+  <ol>
+    <li>Use <code class="language-plaintext highlighter-rouge">glmnet</code> to fit a LASSO model (hint: set <code class="language-plaintext highlighter-rouge">alpha = 1</code>).</li>
+    <li>Plot the model object. Remember that for ridge regression,
+we set <code class="language-plaintext highlighter-rouge">xvar = "lambda"</code>. What if you don’t set this? What’s the
+relationship between the two plots?</li>
+    <li>How do the coefficient paths differ to the ridge case?</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution-4">Solution</h2>
+
+    <ol>
+      <li>
+        <p>Fitting a LASSO model is very similar to a ridge model, we just need
+to change the <code class="language-plaintext highlighter-rouge">alpha</code> setting.</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fit_lasso</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">glmnet</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">methyl_mat</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+      </li>
+      <li>When <code class="language-plaintext highlighter-rouge">xvar = "lambda"</code>, the x-axis represents increasing model sparsity
+from left to right, because increasing lambda increases the penalty added
+to the coefficients. When we instead plot the L1 norm on the x-axis,
+increasing L1 norm means that we are allowing our
+coefficients to take on increasingly large values.
+        <div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-plotlas-1.png" alt="plot of chunk plotlas" width="720" />
+<p class="caption">plot of chunk plotlas</p>
+</div>
+      </li>
+      <li>The paths tend to go to exactly zero much more when sparsity increases when we use a LASSO model. 
+In the ridge case, the paths tend towards zero but less commonly reach exactly zero.</li>
+    </ol>
+
+  </blockquote>
+</blockquote>
+
+<h1 id="cross-validation-to-find-the-best-value-of-lambda">Cross-validation to find the best value of $\lambda$</h1>
+
+<p>There are various methods to select the “best”
+value for $\lambda$. One is to split
+the data into $K$ chunks. We then use $K-1$ of
+these as the training set, and the remaining $1$ chunk
+as the test set. We can repeat this until we’ve rotated through all $K$ chunks,
+giving us a good estimate of how well each of the lambda values work in our
+data. This is called cross-validation, and doing this repeated test/train split
+gives us a better estimate of how generalisable our model is. Cross-validation
+is a really deep topic that we’re not going to cover in more detail today, though!</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/cross_validation.png" alt="The data is divided into $K$ chunks. For each cross-validation iteration, one data chunk is used as the test set. The remaining $K-1$ chunks are combined into a training set." />
+<p class="caption">Schematic representiation of a $K$-fold cross-validation procedure.</p>
+</div>
+
+<p>We can use this new idea to choose a lambda value, by finding the lambda
+that minimises the error across each of the test and training splits.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lasso</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cv.glmnet</span><span class="p">(</span><span class="n">methyl_mat</span><span class="p">[,</span><span class="w"> </span><span class="m">-1</span><span class="p">],</span><span class="w"> </span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">lasso</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-lasso-cv-1.png" alt="Alt" width="432" />
+<p class="caption">Cross-validated mean squared error for different values of lambda under a LASSO penalty.</p>
+</div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">coefl</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">coef</span><span class="p">(</span><span class="n">lasso</span><span class="p">,</span><span class="w"> </span><span class="n">lasso</span><span class="o">$</span><span class="n">lambda.min</span><span class="p">)</span><span class="w">
+</span><span class="n">selected_coefs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.matrix</span><span class="p">(</span><span class="n">coefl</span><span class="p">)[</span><span class="n">which</span><span class="p">(</span><span class="n">coefl</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="m">1</span><span class="p">]</span><span class="w">
+
+</span><span class="c1">## load the horvath signature to compare features</span><span class="w">
+</span><span class="n">coef_horvath</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="o">::</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/coefHorvath.rds"</span><span class="p">))</span><span class="w">
+</span><span class="c1">## We select some of the same features! Hooray</span><span class="w">
+</span><span class="n">intersect</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">selected_coefs</span><span class="p">),</span><span class="w"> </span><span class="n">coef_horvath</span><span class="o">$</span><span class="n">CpGmarker</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "cg02388150" "cg06493994" "cg22449114" "cg22736354" "cg03330058"
+[6] "cg09809672" "cg11299964" "cg19761273" "cg26162695"
+</code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-heatmap-lasso-1.png" alt="Overall, we observe either increasing or decreasing methylation patterns as a function of age." width="432" />
+<p class="caption">Heatmap showing methylation values for the selected CpG and how the vary with age.</p>
+</div>
+
+<h1 id="blending-ridge-regression-and-the-lasso---elastic-nets">Blending ridge regression and the LASSO - elastic nets</h1>
+
+<p>So far, we’ve used ridge regression, where <code class="language-plaintext highlighter-rouge">alpha = 0</code>, and LASSO regression,
+where <code class="language-plaintext highlighter-rouge">alpha = 1</code>. What if <code class="language-plaintext highlighter-rouge">alpha</code> is set to a value between zero and one?
+Well, this actually lets us blend the properties of ridge and LASSO
+regression. This allows us to have the nice properties of the LASSO, where
+uninformative variables are dropped automatically, and the nice properties
+of ridge regression, where our coefficient estimates are a bit more
+conservative, and as a result our predictions are a bit better.</p>
+
+<p>Formally, the objective function of elastic net regression is to optimise the
+following function:</p>
+
+\[\left(\sum_{i=1}^N y_i - x'_i\beta\right)
+        + \lambda \left(
+            \alpha \left\lVert \beta \right\lVert_1 +
+            (1-\alpha)  \left\lVert \beta \right\lVert_2
+        \right)\]
+
+<p>You can see that if <code class="language-plaintext highlighter-rouge">alpha = 1</code>, then the L1 norm term is multiplied by one,
+and the L2 norm is multiplied by zero. This means we have pure LASSO regression.
+Conversely, if <code class="language-plaintext highlighter-rouge">alpha = 0</code>, the L2 norm term is multiplied by one, and the L1
+norm is multiplied by zero, meaning we have pure ridge regression. Anything
+in between gives us something in between.</p>
+
+<p>The contour plots we looked at previously to visualise what this penalty looks
+like for different values of <code class="language-plaintext highlighter-rouge">alpha</code>.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-elastic-contour-1.png" alt="For lower values of alpha, the penalty resembles ridge regression. For higher values of alpha, the penalty resembles LASSO regression." width="1152" />
+<p class="caption">For an elastic net, the panels show the effect of the regularisation across different values of alpha</p>
+</div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-6">Challenge 6</h2>
+
+  <ol>
+    <li>Fit an elastic net model (hint: alpha = 0.5) without cross-validation and plot the model
+object.</li>
+    <li>Fit an elastic net model with cross-validation and plot the error. Compare
+with LASSO.</li>
+    <li>Select the lambda within one standard error of 
+the minimum cross-validation error (hint: <code class="language-plaintext highlighter-rouge">lambda.1se</code>). Compare the
+coefficients with the LASSO model.</li>
+    <li>Discuss: how could we pick an <code class="language-plaintext highlighter-rouge">alpha</code> in the range (0, 1)? Could we justify
+choosing one <em>a priori</em>?</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution-5">Solution</h2>
+    <ol>
+      <li>
+        <p>Fitting an elastic net model is just like fitting a LASSO model.
+You can see that coefficients tend to go exactly to zero,
+but the paths are a bit less
+extreme than with pure LASSO; similar to ridge.</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elastic</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">glmnet</span><span class="p">(</span><span class="n">methyl_mat</span><span class="p">[,</span><span class="w"> </span><span class="m">-1</span><span class="p">],</span><span class="w"> </span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">elastic</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-elastic-1.png" alt="plot of chunk elastic" width="432" />
+<p class="caption">plot of chunk elastic</p>
+</div>
+      </li>
+      <li>
+        <p>The process of model selection is similar for elastic net models as for
+LASSO models.</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elastic_cv</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cv.glmnet</span><span class="p">(</span><span class="n">methyl_mat</span><span class="p">[,</span><span class="w"> </span><span class="m">-1</span><span class="p">],</span><span class="w"> </span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">elastic_cv</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-elastic-cv-1.png" alt="Alt" width="432" />
+<p class="caption">Elastic</p>
+</div>
+      </li>
+      <li>
+        <p>You can see that the coefficients from these two methods are broadly
+similar, but the elastic net coefficients are a bit more conservative.
+Further, more coefficients are exactly zero in the LASSO model.</p>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">coefe</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">coef</span><span class="p">(</span><span class="n">elastic_cv</span><span class="p">,</span><span class="w"> </span><span class="n">elastic_cv</span><span class="o">$</span><span class="n">lambda.1se</span><span class="p">)</span><span class="w">
+</span><span class="nf">sum</span><span class="p">(</span><span class="n">coefe</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 4973
+</code></pre></div>        </div>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">sum</span><span class="p">(</span><span class="n">coefl</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 4955
+</code></pre></div>        </div>
+
+        <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="w">
+    </span><span class="n">coefl</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w"> </span><span class="n">coefe</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w">
+    </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w">
+    </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"LASSO coefficients"</span><span class="p">,</span><span class="w">
+    </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Elastic net coefficients"</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dashed"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>        </div>
+
+        <div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-elastic-plot-1.png" alt="Alt" width="432" />
+<p class="caption">LASSO-Elastic</p>
+</div>
+      </li>
+      <li>
+        <p>You could pick an arbitrary value of <code class="language-plaintext highlighter-rouge">alpha</code>, because arguably pure ridge
+regression or pure LASSO regression are also arbitrary model choices.
+To be rigorous and to get the best-performing model and the best 
+inference about predictors, it’s usually best to find the best
+combination of <code class="language-plaintext highlighter-rouge">alpha</code> and <code class="language-plaintext highlighter-rouge">lambda</code> using a grid search approach
+in cross-validation. However, this can be very computationally demanding.</p>
+      </li>
+    </ol>
+  </blockquote>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="the-bias-variance-tradeoff">The bias-variance tradeoff</h2>
+
+  <p>When we make predictions in statistics, there are two sources of error
+that primarily influence the (in)accuracy of our predictions. these are <em>bias</em>
+and <em>variance</em>.</p>
+
+  <p>The total expected error in our predictions is given by the following
+equation:</p>
+
+\[E(y - \hat{y}) = \text{Bias}^2 + \text{Variance} + \sigma^2\]
+
+  <p>Here, $\sigma^2$ represents the irreducible error, that we can never overcome.
+Bias results from erroneous assumptions in the model used for predictions.
+Fundamentally, bias means that our model is mis-specified in some way,
+and fails to capture some components of the data-generating process 
+(which is true of all models). If we have failed to account for a confounding
+factor that leads to very inaccurate predictions in a subgroup of our
+population, then our model has high bias.</p>
+
+  <p>Variance results from sensitivity to particular properties of the input data.
+For example, if a tiny change to the input data would result in a huge change
+to our predictions, then our model has high variance.</p>
+
+  <p>Linear regression is an unbiased model under certain conditions.
+In fact, the <a href="https://en.wikipedia.org/wiki/Gauss%E2%80%93Markov_theorem">Gauss-Markov theorem</a>
+shows that under the right conditions, OLS is the best possible type of
+unbiased linear model.</p>
+
+  <p>Introducing penalties to means that our model is no longer unbiased, meaning
+that the coefficients estimated from our data will systematically deviate
+from the ground truth. Why would we do this? As we saw, the total error is
+a function of bias and variance. By accepting a small amount of bias, it’s
+possible to achieve huge reductions in the total expected error.</p>
+
+  <p>This bias-variance tradeoff is also why people often favour elastic net
+regression over pure LASSO regression.</p>
+
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="other-types-of-outcomes">Other types of outcomes</h2>
+
+  <p>You may have noticed that <code class="language-plaintext highlighter-rouge">glmnet</code> is written as <code class="language-plaintext highlighter-rouge">glm</code>, not <code class="language-plaintext highlighter-rouge">lm</code>.
+This means we can actually model a variety of different outcomes
+using this regularisation approach. For example, we can model binary
+variables using logistic regression, as shown below. The type of outcome
+can be specified using the <code class="language-plaintext highlighter-rouge">family</code> argument, which specifies the family
+of the outcome variable.</p>
+
+  <p>In fact, <code class="language-plaintext highlighter-rouge">glmnet</code> is somewhat cheeky as it also allows you to model
+survival using Cox proportional hazards models, which aren’t GLMs, strictly
+speaking.</p>
+
+  <p>For example, in the current dataset we can model smoking status as a binary
+variable in logistic regression by setting <code class="language-plaintext highlighter-rouge">family = "binomial"</code>.</p>
+
+  <p>The <a href="https://glmnet.stanford.edu/articles/glmnet.html">package documentation</a>
+explains this in more detail.</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">smoking</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">factor</span><span class="p">(</span><span class="n">methylation</span><span class="o">$</span><span class="n">smoker</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="c1"># binary outcome</span><span class="w">
+</span><span class="n">table</span><span class="p">(</span><span class="n">smoking</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smoking
+ 0  1 
+30  7 
+</code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cv.glmnet</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">methyl_mat</span><span class="p">,</span><span class="w"> </span><span class="n">nfolds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">smoking</span><span class="p">,</span><span class="w"> </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"binomial"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext warning highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+multinomial or binomial class has fewer than 8 observations; dangerous ground
+</code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">coef</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">coef</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit</span><span class="o">$</span><span class="n">lambda.min</span><span class="p">)</span><span class="w">
+</span><span class="n">coef</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.matrix</span><span class="p">(</span><span class="n">coef</span><span class="p">)</span><span class="w">
+</span><span class="n">coef</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">coef</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="m">1</span><span class="p">]</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] -1.455287
+</code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="figure" style="text-align: center">
+<img src="../fig/rmd-03-binomial-1.png" alt="Alt" width="432" />
+<p class="caption">Title</p>
+</div>
+  <p>In this case, the results aren’t very interesting! We select an intercept-only
+model. However, as highlighted by the warnings above, we should not trust this
+result too much as the data was too small to obtain reliable results! We only 
+included it here to provide the code that <em>could</em> be used to perform penalised
+regression for binary outcomes (i.e. penalised logistic regression).</p>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="tidymodels">tidymodels</h2>
+
+  <p>A lot of the packages for fitting predictive models like regularised
+regression have different user interfaces. To do predictive modelling, it’s
+important to consider things like choosing a good performance metric,
+how to run normalisation, and . It’s also useful to compare different
+model “engines”.</p>
+
+  <p>To this end, the tidymodels framework exists. The code below would be
+useful to perform repeated cross-validation. We’re not doing a course on 
+advanced topics in predictive modelling so we are not covering this framework.</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"tidymodels"</span><span class="p">)</span><span class="w">
+</span><span class="n">all_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">cbind</span><span class="p">(</span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">methyl_mat</span><span class="p">))</span><span class="w">
+</span><span class="n">split_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">initial_split</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span><span class="w">
+
+</span><span class="n">norm_recipe</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">recipe</span><span class="p">(</span><span class="n">training</span><span class="p">(</span><span class="n">split_data</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="c1">## everything other than age is a predictor</span><span class="w">
+    </span><span class="n">update_role</span><span class="p">(</span><span class="n">everything</span><span class="p">(),</span><span class="w"> </span><span class="n">new_role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"predictor"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">update_role</span><span class="p">(</span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">new_role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"outcome"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="c1">## center and scale all the predictors</span><span class="w">
+    </span><span class="n">step_center</span><span class="p">(</span><span class="n">all_predictors</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">step_scale</span><span class="p">(</span><span class="n">all_predictors</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">prep</span><span class="p">(</span><span class="n">training</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">training</span><span class="p">(</span><span class="n">split_data</span><span class="p">),</span><span class="w"> </span><span class="n">retain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">## set the "engine" to be a linear model with tunable alpha and lambda</span><span class="w">
+</span><span class="n">glmnet_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">linear_reg</span><span class="p">(</span><span class="n">penalty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tune</span><span class="p">(),</span><span class="w"> </span><span class="n">mixture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tune</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+    </span><span class="n">set_engine</span><span class="p">(</span><span class="s2">"glmnet"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">## define a workflow, with normalisation recipe into glmnet engine</span><span class="w">
+</span><span class="n">workflow</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">workflow</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">add_recipe</span><span class="p">(</span><span class="n">norm_recipe</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">add_model</span><span class="p">(</span><span class="n">glmnet_model</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">## 5-fold cross-validation repeated 5 times</span><span class="w">
+</span><span class="n">folds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vfold_cv</span><span class="p">(</span><span class="n">training</span><span class="p">(</span><span class="n">split_data</span><span class="p">),</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">repetitions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">## define a grid of lambda and alpha parameters to search</span><span class="w">
+</span><span class="n">glmn_set</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">parameters</span><span class="p">(</span><span class="w">
+    </span><span class="n">penalty</span><span class="p">(</span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="n">trans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log10_trans</span><span class="p">()),</span><span class="w">
+    </span><span class="n">mixture</span><span class="p">()</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">glmn_grid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">grid_regular</span><span class="p">(</span><span class="n">glmn_set</span><span class="p">)</span><span class="w">
+</span><span class="n">ctrl</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">control_grid</span><span class="p">(</span><span class="n">save_pred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">## use the metric "rmse" (root mean squared error) to grid search for the</span><span class="w">
+</span><span class="c1">## best model</span><span class="w">
+</span><span class="n">results</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">workflow</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">tune_grid</span><span class="p">(</span><span class="w">
+        </span><span class="n">resamples</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">folds</span><span class="p">,</span><span class="w">
+        </span><span class="n">metrics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metric_set</span><span class="p">(</span><span class="n">rmse</span><span class="p">),</span><span class="w">
+        </span><span class="n">control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctrl</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span><span class="c1">## select the best model based on RMSE</span><span class="w">
+</span><span class="n">best_mod</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">select_best</span><span class="p">(</span><span class="s2">"rmse"</span><span class="p">)</span><span class="w">
+</span><span class="n">best_mod</span><span class="w">
+</span><span class="c1">## finalise the workflow and fit it with all of the training data</span><span class="w">
+</span><span class="n">final_workflow</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">finalize_workflow</span><span class="p">(</span><span class="n">workflow</span><span class="p">,</span><span class="w"> </span><span class="n">best_mod</span><span class="p">)</span><span class="w">
+</span><span class="n">final_workflow</span><span class="w">
+</span><span class="n">final_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">final_workflow</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">training</span><span class="p">(</span><span class="n">split_data</span><span class="p">))</span><span class="w">
+
+</span><span class="c1">## plot predicted age against true age for test data</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="w">
+    </span><span class="n">testing</span><span class="p">(</span><span class="n">split_data</span><span class="p">)</span><span class="o">$</span><span class="n">age</span><span class="p">,</span><span class="w">
+    </span><span class="n">predict</span><span class="p">(</span><span class="n">final_model</span><span class="p">,</span><span class="w"> </span><span class="n">new_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testing</span><span class="p">(</span><span class="n">split_data</span><span class="p">))</span><span class="o">$</span><span class="n">.pred</span><span class="p">,</span><span class="w">
+    </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"True age"</span><span class="p">,</span><span class="w">
+    </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Predicted age"</span><span class="p">,</span><span class="w">
+    </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w">
+    </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"xy"</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dashed"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+</blockquote>
+
+<h1 id="further-reading">Further reading</h1>
+
+<ul>
+  <li><a href="https://www.statlearning.com/">An introduction to statistical learning</a>.</li>
+  <li><a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Elements of statistical learning</a>.</li>
+  <li><a href="https://glmnet.stanford.edu/articles/glmnet.html">glmnet vignette</a>.</li>
+  <li><a href="https://www.tidymodels.org/">tidymodels</a>.</li>
+</ul>
+
+<h1 id="footnotes">Footnotes</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>Model selection including $R^2$, AIC and BIC are covered in the additional feature selection for regression episode of this course. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0014821">Epigenetic Predictor of Age, Bocklandt et al. (2011)</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>Regularisation is a way to fit a model, get better estimates of effect sizes, and perform variable selection simultaneously.</p>
+</li>
+    
+    <li><p>Test and training splits, or cross-validation, are a useful way to select models or hyperparameters.</p>
+</li>
+    
+    <li><p>Regularisation can give us a more predictive set of variables, and by restricting the magnitude of coefficients, can give us a better (and more stable) estimate of our outcome.</p>
+</li>
+    
+    <li><p>Regularisation is often <em>very</em> fast! Compared to other methods for variable selection, it is very efficient. This makes it easier to practice rigorous variable selection.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../02-high-dimensional-regression/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../04-principal-component-analysis/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <hr/>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2024 by <a href="../CITATION">the authors</a>.
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	
+	<a href="/edit//_episodes_rmd/03-regression-regularisation.Rmd" data-checker-ignore>Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:alan.ocallaghan@outlook.com">Contact</a>
+    </div>
+  </div>
+  <p class="text-muted text-right">
+    <small><i>Using <a href="https://github.com/carpentries/carpentries-theme/">The Carpentries theme</a> &mdash; Site last built on: 2024-02-22 11:43:43 +0000.</i></small>
+  </p>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { fonts: ["TeX"] }
+      });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  </body>
+</html>
