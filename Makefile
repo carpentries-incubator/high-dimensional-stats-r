@@ -131,17 +131,17 @@ HTML_DST = \
 
 
 ## * install-rmd-deps : Install R packages dependencies to build the RMarkdown lesson
-dependencies.csv: _episodes_rmd/*.Rmd
-	@${SHELL} bin/list_r_deps.sh
+# dependencies.csv: _episodes_rmd/*.Rmd
+# 	@${SHELL} bin/list_r_deps.sh
 
-.installed: dependencies.csv
-	@${SHELL} bin/install_r_deps.sh
-	@touch .installed
+# .installed: dependencies.csv
+# 	@${SHELL} bin/install_r_deps.sh
+# 	@touch .installed
 
 ## * lesson-md        : convert Rmarkdown files to markdown
 lesson-md: ${RMD_DST} figure
 
-_episodes/%.md: _episodes_rmd/%.Rmd .installed
+_episodes/%.md: _episodes_rmd/%.Rmd
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
