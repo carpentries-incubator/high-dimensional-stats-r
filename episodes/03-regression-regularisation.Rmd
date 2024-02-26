@@ -27,7 +27,6 @@ math: yes
 
 ```{r settings, include=FALSE}
 library("here")
-library("ComplexHeatmap")
 source(here("bin/chunk-options.R"))
 knitr_fig_path("03-")
 ```
@@ -1050,7 +1049,7 @@ plot_elastic(0.75)
 >     ## center and scale all the predictors
 >     step_center(all_predictors()) %>%
 >     step_scale(all_predictors())
->
+> 
 > ## set the "engine" to be a linear model with tunable alpha and lambda
 > glmnet_model <- linear_reg(penalty = tune(), mixture = tune()) %>% 
 >     set_engine("glmnet")
