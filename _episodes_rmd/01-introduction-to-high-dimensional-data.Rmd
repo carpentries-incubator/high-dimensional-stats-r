@@ -50,7 +50,7 @@ come from having more features than observations.
 High-dimensional data have become more common in many scientific fields as new
 automated data collection techniques have been developed. More and more datasets
 have a large number of features and some have as many features as there are rows
-in the dataset. Datasets in which $p$>=$n$ are becoming more common. Such datasets
+in the dataset. Datasets in which $p \geq n$ are becoming more common. Such datasets
 pose a challenge for data analysis as standard methods of analysis, such as linear
 regression, are no longer appropriate.
 
