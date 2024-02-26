@@ -365,7 +365,6 @@ episode will explore a specific method to perform clustering analysis.
 > taken.
 > 
 > ```{r libsload}
-> library("minfi")
 > library("here")
 > library("ComplexHeatmap")
 > 
