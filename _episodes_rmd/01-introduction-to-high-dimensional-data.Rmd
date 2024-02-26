@@ -104,7 +104,7 @@ Now that we have an idea of what high-dimensional data look like we can think
 about the challenges we face in analysing them.
 
 
-# Challenges in dealing with high-dimensional data 
+# Why is dealing with high-dimensional data challenging? 
 
 Most classical statistical methods are set up for use on low-dimensional data
 (i.e. data where the number of observations $n$ is much larger than the number
