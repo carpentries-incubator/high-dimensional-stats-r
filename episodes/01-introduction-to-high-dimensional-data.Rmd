@@ -295,9 +295,10 @@ may be used to examine whether groups of observations show similar characteristi
 and whether these groups may relate to other features in the data (e.g.
 phenotype in genetics data). 
 
-In this course we will cover four topics: (1) regression with numerous outcome 
-variables, (2) regularised regression, (3) dimensionality reduction, and (4) 
-clustering. Here are some examples for when each of these approaches may be used:
+In this course, we will cover four methods that help in dealing with high-dimensional data:
+(1) regression with numerous outcome variables, (2) regularised regression, 
+(3) dimensionality reduction, and (4) clustering. Here are some examples of when each of 
+these approaches may be used:
 
 (1) Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
