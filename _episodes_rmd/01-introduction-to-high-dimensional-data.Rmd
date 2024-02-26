@@ -146,7 +146,8 @@ of the challenges we are facing when working with high-dimensional data.
 >
 > 1. Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function).
 > 2. Examine what variables were measured (hint: see the `names()` and `head()` functions).
-> 3. Plot the relationship between the variables (hint: see the `pairs()` function). 
+> 3. Plot the relationship between the variables (hint: see the `pairs()` function). What problem(s) with
+> high-dimensional data analysis does this illustrate?
 > 
 > > ## Solution
 > > 
