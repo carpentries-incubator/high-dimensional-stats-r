@@ -213,7 +213,8 @@ common problem when using regression on high-dimensional datasets.
 
 Another problem in carrying out regression on high-dimensional data is dealing
 with correlations between explanatory variables. The large numbers of features
-in these datasets makes high correlations between variables more likely.
+in these datasets makes high correlations between variables more likely. Let's
+explore why high correlations might be an issue in a Challenge.
 
 
 > ## Challenge 3
