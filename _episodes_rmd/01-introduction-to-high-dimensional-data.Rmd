@@ -50,13 +50,13 @@ come from having more features than observations.
 High-dimensional data have become more common in many scientific fields as new
 automated data collection techniques have been developed. More and more datasets
 have a large number of features and some have as many features as there are rows
-in the dataset. Datasets in which $p$>=$n$ are becoming more common. Such datasets
+in the dataset. Datasets in which $p \geq n$ are becoming more common. Such datasets
 pose a challenge for data analysis as standard methods of analysis, such as linear
 regression, are no longer appropriate.
 
-High-dimensional datasets are common in the biological sciences. Subjects like
-genomics and medical sciences often use both tall (in terms of $n$) and wide
-(in terms of $p$) datasets that can be difficult to analyse or visualise using
+High-dimensional datasets are common in the biological sciences. Data sets in subjects like
+genomics and medical sciences are often tall (with large $n$) and wide
+(with large $p$), and can be difficult to analyse or visualise using
 standard statistical tools. An example of high-dimensional data in biological
 sciences may include data collected from hospital patients recording symptoms,
 blood test results, behaviours, and general health, resulting in datasets with
@@ -74,7 +74,7 @@ knitr::include_graphics("../fig/intro-table.png")
 > ## Challenge 1 
 > 
 > Descriptions of three research questions and their datasets are given below.
-> Which of these are considered to have high-dimensional data?
+> Which of these scenarios use high-dimensional data?
 > 
 > 1. Predicting patient blood pressure using: cholesterol level in blood, age,
 >    and BMI measurements, collected from 100 patients.
@@ -143,9 +143,10 @@ of the challenges we are facing when working with high-dimensional data.
 > ```
 >
 > Examine the dataset (in which each row represents a single patient) to:
-> a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function) 
-> b) Examine what variables were measured (hint: see the `names()` and `head()` functions)
-> c) Plot the relationship between the variables (hint: see the `pairs()` function). 
+>
+> 1. Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function).
+> 2. Examine what variables were measured (hint: see the `names()` and `head()` functions).
+> 3. Plot the relationship between the variables (hint: see the `pairs()` function). 
 > 
 > > ## Solution
 > > 
@@ -287,7 +288,7 @@ regression.
 # What statistical methods are used to analyse high-dimensional data? 
 
 As we found out in the above challenges, carrying out linear regression on
-datasets with large numbers of features is difficult due to: high levels of correlation
+datasets with large numbers of features can be difficult due to: high levels of correlation
 between variables; difficulty in identifying a clear response variable; and risk
 of overfitting. These problems are common to the analysis of many high-dimensional datasets,
 for example, those using genomics data with multiple genes, or species
@@ -297,9 +298,10 @@ may be used to examine whether groups of observations show similar characteristi
 and whether these groups may relate to other features in the data (e.g.
 phenotype in genetics data). 
 
-In this course we will cover four topics: (1) regression with numerous outcome 
-variables, (2) regularised regression, (3) dimensionality reduction, and (4) 
-clustering. Here are some examples for when each of these approaches may be used:
+In this course, we will cover four methods that help in dealing with high-dimensional data:
+(1) regression with numerous outcome variables, (2) regularised regression, 
+(3) dimensionality reduction, and (4) clustering. Here are some examples of when each of 
+these approaches may be used:
 
 (1) Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
@@ -321,7 +323,7 @@ been often used when building *epigenetic clocks*, where methylation values
 across several thousands of genomic sites are used to predict chronological age. 
 We will explore this in more detail in the *Regularised regression* episode. 
 
-(3) Dimensionality reduction is commonly used on high dimensional datasets for 
+(3) Dimensionality reduction is commonly used on high-dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
 For instance, a low-dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
@@ -366,7 +368,6 @@ episode will explore a specific method to perform clustering analysis.
 > taken.
 > 
 > ```{r libsload}
-> library("minfi")
 > library("here")
 > library("ComplexHeatmap")
 > 
