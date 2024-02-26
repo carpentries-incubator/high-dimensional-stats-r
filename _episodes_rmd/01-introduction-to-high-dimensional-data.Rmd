@@ -130,6 +130,10 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
+> For illustrative purposes, we start with a simple dataset that is not technically
+> high-dimensional but contains many features. This will illustrate the general problems 
+> encountered when working with many features in a high-dimensional data set.
+>
 > First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
 > Next, let's Load the `Prostate` dataset as follows:
 >
@@ -137,9 +141,6 @@ of the challenges we are facing when working with high-dimensional data.
 > library("here")
 > Prostate <- readRDS(here("data/prostate.rds"))
 > ```
-> 
-> Although technically not a high-dimensional dataset, the `Prostate` data
-> will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
 > a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function) 
