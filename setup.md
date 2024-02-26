@@ -40,18 +40,14 @@ for (file in data_files) {
 }
 ```
 
-On Linux systems, part of the above may fail due to the **`bluster`** package
-and you may receive error messages after running `BiocManager::install(table[[1]])`,
-indicating that the package `igraph` was not installed successfully.
+On Linux systems, part of the above may fail due to the **`bluster`** package and you may receive error messages after running `BiocManager::install(table[[1]])`, indicating that the package `igraph` was not installed successfully. 
 
-Detailed installation instructions for `igraph` can be found at [https://r.igraph.org/](https://r.igraph.org/),
-but the following workaround code may resolve the issue:
+Detailed installation instructions for `igraph` can be found at [https://r.igraph.org/](https://r.igraph.org/), but the following workaround code may resolve the issue:
 
 ```r
-install.packages('igraph',
-    repos = c(igraph = 'https://igraph.r-universe.dev', CRAN = 'https://cloud.r-project.org')
-)
-
+install.packages('igraph', repos=c(igraph = 'https://igraph.r-universe.dev', 
+                                   CRAN = 'https://cloud.r-project.org'))
+                                   
 BiocManager::install('bluster')
 ```
 

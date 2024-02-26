@@ -46,7 +46,7 @@ serve: lesson-md
 # slides
 
 ## * site             : build website but do not run a server
-site: data figure lesson-md
+site: data figure lesson-md 
 	${JEKYLL} build
 # slides
 

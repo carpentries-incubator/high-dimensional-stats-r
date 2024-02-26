@@ -1,0 +1,864 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2024-02-26 16:27:16 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+     <link rel="stylesheet" type="text/css" href="../assets/css/fonts.css" />
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/katex.min.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/incubator/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/incubator/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/incubator/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/incubator/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/incubator/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/incubator/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/incubator/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/incubator/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries Incubator - High dimensional statistics with R"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/incubator/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/incubator/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/incubator/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/incubator/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/incubator/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+  <title>
+  Factor analysis &ndash; High dimensional statistics with R
+  </title>
+
+  </head>
+  <body>
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body alpha">
+    This lesson is in the early stages of development (Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="../index.html" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/incubator-logo-blue.svg" alt="The Carpentries Incubator logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="../01-introduction-to-high-dimensional-data/index.html">Introduction to high-dimensional data</a></li>
+            
+            
+            <li><a href="../02-high-dimensional-regression/index.html">Regression with many outcomes</a></li>
+            
+            
+            <li><a href="../03-regression-regularisation/index.html">Regularised regression</a></li>
+            
+            
+            <li><a href="../04-principal-component-analysis/index.html">Principal component analysis</a></li>
+            
+            
+            <li><a href="../05-factor-analysis/index.html">Factor analysis</a></li>
+            
+            
+            <li><a href="../06-k-means/index.html">K-means</a></li>
+            
+            
+            <li><a href="../07-hierarchical/index.html">Hierarchical clustering</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference.html">Reference</a></li>
+            
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+            
+            <li><a href="../slides/index.html">Lecture slides</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	
+	<li><a href="/edit//_episodes_rmd/05-factor-analysis.Rmd" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+      
+
+
+<div class="alert alert-info text-center" role="alert">
+  This lesson is part of
+  <a href="https://github.com/carpentries-incubator/proposals/#the-carpentries-incubator" data-checker-ignore>
+    The Carpentries Incubator</a>, a place to share and use each other's
+  Carpentries-style lessons. <strong>This lesson has not been reviewed by and is
+  not endorsed by The Carpentries</strong>.
+</div>
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../04-principal-component-analysis/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">High dimensional statistics with R</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../06-k-means/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Factor analysis</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 25 min
+      <br/>
+      <strong>Exercises:</strong> 10 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>What is factor analysis and when can it be used?</p>
+</li>
+	
+	<li><p>What are communality and uniqueness in factor analysis?</p>
+</li>
+	
+	<li><p>How to decide on the number of factors to use?</p>
+</li>
+	
+	<li><p>How to interpret the output of factor analysis?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Perform a factor analysis on high-dimensional data.</p>
+</li>
+	
+	<li><p>Select an appropriate number of factors.</p>
+</li>
+	
+	<li><p>Interpret the output of factor analysis.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Biologists often encounter high-dimensional datasets from which they wish
+to extract underlying features – they need to carry out dimensionality
+reduction. The last episode dealt with one method to achieve this this,
+called principal component analysis (PCA). Here, we introduce more general
+set of methods called factor analysis (FA).</p>
+
+<p>There are two types of FA, called exploratory and confirmatory factor analysis
+(EFA and CFA). Both EFA and CFA aim to reproduce the observed relationships
+among a group of features with a smaller set of latent variables. EFA
+is used in a descriptive, data-driven manner to uncover which
+measured variables are reasonable indicators of the various latent dimensions.
+In contrast, CFA is conducted in an a-priori,
+hypothesis-testing manner that requires strong empirical or theoretical foundations.
+We will mainly focus on EFA here, which is used to group features into a specified
+number of latent factors.</p>
+
+<p>Unlike with PCA, researchers using FA have to specify the number of latent
+variables (factors) at the point of running the analysis. Researchers may use
+exploratory data analysis methods (including PCA) to provide an initial estimate
+of how many factors adequately explain the variation observed in a dataset.
+In practice, a range of different values is usually tested.</p>
+
+<h2 id="an-example">An example</h2>
+
+<p>One scenario for using FA would be whether student scores in different subjects
+can be summarised by certain subject categories. Take a look at the hypothetical
+dataset below. If we were to run and EFA on this, we might find that the scores
+can be summarised well by two factors, which we can then interpret. We have
+labelled these hypothetical factors “mathematical ability” and “writing ability”.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/table_for_fa.png" alt="plot of chunk table" />
+<p class="caption">plot of chunk table</p>
+</div>
+<p>So, EFA is designed to identify a specified number of unobservable factors from
+observable features contained in the original dataset. This is slightly
+different from PCA, which does not do this directly. Just to recap, PCA creates
+as many principal components as there are features in the dataset, each
+component representing a different linear combination of features. The principal
+components are ordered by the amount of variance they account for.</p>
+
+<h1 id="advantages-and-disadvantages-of-factor-analysis">Advantages and disadvantages of Factor Analysis</h1>
+
+<p>There are several advantages and disadvantages of using FA as a
+dimensionality reduction method.</p>
+
+<p>Advantages:</p>
+
+<ul>
+  <li>FA is a useful way of combining different groups of data into known
+representative factors, thus reducing dimensionality in a dataset.</li>
+  <li>FA can take into account researchers’ expert knowledge when choosing
+the number of factors to use, and can be used to identify latent or hidden
+variables which may not be apparent from using other analysis methods.</li>
+  <li>It is easy to implement with many software tools available to carry out FA.</li>
+  <li>Confirmatory FA can be used to test hypotheses.</li>
+</ul>
+
+<p>Disadvantages:</p>
+
+<ul>
+  <li>Justifying the choice of
+number of factors to use may be difficult if little is known about the
+structure of the data before analysis is carried out.</li>
+  <li>Sometimes, it can be difficult to interpret what factors mean after
+analysis has been completed.</li>
+  <li>Like PCA, standard methods of carrying out FA assume that input variables
+are continuous, although extensions to FA allow ordinal and binary
+variables to be included (after transforming the input matrix).</li>
+</ul>
+
+<h1 id="prostate-cancer-patient-data">Prostate cancer patient data</h1>
+
+<p>The prostate dataset represents data from 97 men who have prostate cancer.
+The data come from a study which examined the correlation between the level
+of prostate specific antigen and a number of clinical measures in men who were
+about to receive a radical prostatectomy. The data have 97 rows and 9 columns.</p>
+
+<p>Columns are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">lcavol</code>: log (cancer volume)</li>
+  <li><code class="language-plaintext highlighter-rouge">lweight</code>: log (prostate weight)</li>
+  <li><code class="language-plaintext highlighter-rouge">age</code>: age (years)</li>
+  <li><code class="language-plaintext highlighter-rouge">lbph</code>: log (benign prostatic hyperplasia amount)</li>
+  <li><code class="language-plaintext highlighter-rouge">svi</code>: seminal vesicle invasion</li>
+  <li><code class="language-plaintext highlighter-rouge">lcp</code>: log (capsular penetration); amount of spread of cancer in outer walls
+of prostate</li>
+  <li><code class="language-plaintext highlighter-rouge">gleason</code>: <a href="https://en.wikipedia.org/wiki/Gleason_grading_system">Gleason score</a></li>
+  <li><code class="language-plaintext highlighter-rouge">pgg45</code>: percentage Gleason scores 4 or 5</li>
+  <li><code class="language-plaintext highlighter-rouge">lpsa</code>: log (prostate specific antigen)</li>
+</ul>
+
+<p>In this example, we use the clinical variables to identify factors representing
+various clinical variables from prostate cancer patients. Two principal
+components have already been identified as explaining a large proportion
+of variance in the data when these data were analysed in the PCA episode.
+We may expect a similar number of factors to exist in the data.</p>
+
+<p>Let’s subset the data to just include the log-transformed clinical variables
+for the purposes of this episode:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">prostate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/prostate.rds"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">View</span><span class="p">(</span><span class="n">prostate</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nrow</span><span class="p">(</span><span class="n">prostate</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 97
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">head</span><span class="p">(</span><span class="n">prostate</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  X     lcavol  lweight age      lbph svi       lcp gleason pgg45       lpsa
+1 1 -0.5798185 2.769459  50 -1.386294   0 -1.386294       6     0 -0.4307829
+2 2 -0.9942523 3.319626  58 -1.386294   0 -1.386294       6     0 -0.1625189
+3 3 -0.5108256 2.691243  74 -1.386294   0 -1.386294       7    20 -0.1625189
+4 4 -1.2039728 3.282789  58 -1.386294   0 -1.386294       6     0 -0.1625189
+5 5  0.7514161 3.432373  62 -1.386294   0 -1.386294       6     0  0.3715636
+6 6 -1.0498221 3.228826  50 -1.386294   0 -1.386294       6     0  0.7654678
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#select five log-transformed clinical variables for further analysis</span><span class="w">
+</span><span class="n">pros2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prostate</span><span class="p">[,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="m">9</span><span class="p">)]</span><span class="w">
+</span><span class="n">head</span><span class="p">(</span><span class="n">pros2</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  X     lcavol age svi pgg45
+1 1 -0.5798185  50   0     0
+2 2 -0.9942523  58   0     0
+3 3 -0.5108256  74   0    20
+4 4 -1.2039728  58   0     0
+5 5  0.7514161  62   0     0
+6 6 -1.0498221  50   0     0
+</code></pre></div></div>
+
+<h1 id="performing-exploratory-factor-analysis">Performing exploratory factor analysis</h1>
+
+<p>EFA may be implemented in R using the <code class="language-plaintext highlighter-rouge">factanal()</code> function
+from the <strong><code class="language-plaintext highlighter-rouge">stats</code></strong> package (which is a built-in package in base R). This
+function fits a factor analysis by maximising the log-likelihood using a
+data matrix as input. The number of factors to be fitted in the analysis
+is specified by the user using the <code class="language-plaintext highlighter-rouge">factors</code> argument. Options for
+transforming the factors by rotating the data in different ways are
+available via the <code class="language-plaintext highlighter-rouge">rotation</code> argument (default is ‘none’).</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-1-3-mins">Challenge 1 (3 mins)</h2>
+
+  <p>Use the <code class="language-plaintext highlighter-rouge">factanal()</code> function to identify the minimum number of factors
+necessary to explain most of the variation in the data</p>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Include one factor only</span><span class="w">
+</span><span class="n">pros_fa</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factanal</span><span class="p">(</span><span class="n">pros2</span><span class="p">,</span><span class="w"> </span><span class="n">factors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">pros_fa</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Call:
+factanal(x = pros2, factors = 1)
+
+Uniquenesses:
+     X lcavol    age    svi  pgg45 
+ 0.279  0.321  0.933  0.548  0.689 
+
+Loadings:
+       Factor1
+X      0.849  
+lcavol 0.824  
+age    0.258  
+svi    0.673  
+pgg45  0.558  
+
+               Factor1
+SS loadings      2.229
+Proportion Var   0.446
+
+Test of the hypothesis that 1 factor is sufficient.
+The chi square statistic is 6.2 on 5 degrees of freedom.
+The p-value is 0.287 
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># p-value &lt;0.05 suggests that one factor is not sufficient </span><span class="w">
+</span><span class="c1"># we reject the null hypothesis that one factor captures full</span><span class="w">
+</span><span class="c1"># dimensionality in the dataset</span><span class="w">
+
+</span><span class="c1"># Include two factors</span><span class="w">
+</span><span class="n">pros_fa</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factanal</span><span class="p">(</span><span class="n">pros2</span><span class="p">,</span><span class="w"> </span><span class="n">factors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+</span><span class="n">pros_fa</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Call:
+factanal(x = pros2, factors = 2)
+
+Uniquenesses:
+     X lcavol    age    svi  pgg45 
+ 0.256  0.319  0.912  0.554  0.005 
+
+Loadings:
+       Factor1 Factor2
+X      0.825   0.254  
+lcavol 0.788   0.247  
+age    0.171   0.242  
+svi    0.584   0.324  
+pgg45  0.248   0.966  
+
+               Factor1 Factor2
+SS loadings      1.732   1.222
+Proportion Var   0.346   0.244
+Cumulative Var   0.346   0.591
+
+Test of the hypothesis that 2 factors are sufficient.
+The chi square statistic is 0.99 on 1 degree of freedom.
+The p-value is 0.32 
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># p-value &gt;0.05 suggests that two factors is sufficient </span><span class="w">
+</span><span class="c1"># we cannot reject the null hypothesis that two factors captures</span><span class="w">
+</span><span class="c1"># full dimensionality in the dataset</span><span class="w">
+
+</span><span class="c1">#Include three factors</span><span class="w">
+</span><span class="n">pros_fa</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factanal</span><span class="p">(</span><span class="n">pros2</span><span class="p">,</span><span class="w"> </span><span class="n">factors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext error highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in factanal(pros2, factors = 3): 3 factors are too many for 5 variables
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Error shows that fitting three factors are not appropriate</span><span class="w">
+</span><span class="c1"># for only 5 variables (number of factors too high)</span><span class="w">
+</span></code></pre></div>    </div>
+  </blockquote>
+</blockquote>
+
+<p>The output of <code class="language-plaintext highlighter-rouge">factanal()</code> shows the loadings for each of the input variables
+associated with each factor. The loadings are values between -1 and 1 which
+represent the relative contribution each input variable makes to the factors.
+Positive values show that these variables are positively related to the
+factors, while negative values show a negative relationship between variables
+and factors. Loading values are missing for some variables because R does not
+print loadings less than 0.1.</p>
+
+<p>There are numerous ways to select the “best” number of factors. One is to use
+the minimum number of features that does not leave a significant amount of
+variance unaccounted for. In practise, we repeat the factor
+analysis using different values in the <code class="language-plaintext highlighter-rouge">factors</code> argument. If we have an
+idea of how many factors there will be before analysis, we can start with
+that number. The final section of the analysis output shows the results of
+a hypothesis test in which the null hypothesis is that the number of factors
+used in the model is sufficient to capture most of the variation in the
+dataset. If the p-value is less than 0.05, we reject the null hypothesis
+and accept that the number of factors included is too small. If the p-value
+is greater than 0.05, we accept the null hypothesis that the number of
+factors used captures variation in the data.</p>
+
+<p>Like PCA, the fewer factors that can explain most of the variation in the
+dataset, the better. It is easier to explore and interpret results using a
+smaller number of factors which represent underlying features in the data.</p>
+
+<h1 id="variance-accounted-for-by-factors---communality-and-uniqueness">Variance accounted for by factors - communality and uniqueness</h1>
+
+<p>The <em>communality</em> of a variable is the sum of its squared loadings. It
+represents the proportion of the variance in a variable that is accounted
+for by the FA model.</p>
+
+<p><em>Uniqueness</em> is the opposite of communality and represents the amount of
+variation in a variable that is not accounted for by the FA model. Uniqueness is
+calculated by subtracting the communality value from 1. If uniqueness is high for
+a given variable, that means this variable is not well explaind/accounted for
+by the factors identified.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apply</span><span class="p">(</span><span class="n">pros_fa</span><span class="o">$</span><span class="n">loadings</span><span class="o">^</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">)</span><span class="w">  </span><span class="c1">#communality</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         X     lcavol        age        svi      pgg45 
+0.74437666 0.68122690 0.08759426 0.44575518 0.99500020 
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">apply</span><span class="p">(</span><span class="n">pros_fa</span><span class="o">$</span><span class="n">loadings</span><span class="o">^</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">)</span><span class="w">  </span><span class="c1">#uniqueness</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        X    lcavol       age       svi     pgg45 
+0.2556233 0.3187731 0.9124057 0.5542448 0.0049998 
+</code></pre></div></div>
+
+<h1 id="visualising-the-contribution-of-each-variable-to-the-factors">Visualising the contribution of each variable to the factors</h1>
+<p>Similar to a biplot as we produced in the PCA episode, we can “plot the
+loadings”. This shows how each original variable contributes to each of
+the factors we chose to visualise.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#First, carry out factor analysis using two factors</span><span class="w">
+</span><span class="n">pros_fa</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factanal</span><span class="p">(</span><span class="n">pros2</span><span class="p">,</span><span class="w"> </span><span class="n">factors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">#plot loadings for each factor</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="w">
+  </span><span class="n">pros_fa</span><span class="o">$</span><span class="n">loadings</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">],</span><span class="w"> 
+  </span><span class="n">pros_fa</span><span class="o">$</span><span class="n">loadings</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">],</span><span class="w">
+  </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Factor 1"</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Factor 2"</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w">
+  </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w">
+  </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Factor analysis of prostate data"</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">#add column names to each point</span><span class="w">
+</span><span class="n">text</span><span class="p">(</span><span class="w">
+  </span><span class="n">pros_fa</span><span class="o">$</span><span class="n">loadings</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">0.08</span><span class="p">,</span><span class="w"> 
+  </span><span class="n">pros_fa</span><span class="o">$</span><span class="n">loadings</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">0.08</span><span class="p">,</span><span class="w">
+  </span><span class="n">colnames</span><span class="p">(</span><span class="n">pros2</span><span class="p">),</span><span class="w">
+  </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"blue"</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-06-biplot-1.png" alt="plot of chunk biplot" width="432" />
+<p class="caption">plot of chunk biplot</p>
+</div>
+
+<blockquote class="challenge">
+  <h2 id="challenge-2-3-mins">Challenge 2 (3 mins)</h2>
+
+  <p>Use the output from your factor analysis and the plots above to interpret
+the results of your analysis.</p>
+
+  <p>What variables are most important in explaining each factor? Do you think
+this makes sense biologically? Discuss in groups.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-1">Solution</h2>
+
+    <p>This plot suggests that the variables lweight and lbph are associated with
+high values on factor 2 (but lower values on factor 1) and the variables
+lcavol, lcp and lpsa are associated with high values on factor 1
+(but lower values on factor 2). There appear to be two ‘clusters’ of
+variables which can be represented by the two factors.</p>
+
+    <p>The grouping of weight and enlargement (lweight and lbph) makes sense
+biologically, as we would expect prostate enlargement to be associated
+with greater weight. The groupings of lcavol, lcp, and lpsa also make
+sense biologically, as larger cancer volume may be expected to be
+associated with greater cancer spead and therefore higher PSA in the blood.</p>
+  </blockquote>
+</blockquote>
+
+<h1 id="further-reading">Further reading</h1>
+
+<ul>
+  <li>Gundogdu et al. (2019) Comparison of performances of Principal Component Analysis (PCA) and Factor Analysis (FA) methods on the identification of cancerous and healthy colon tissues. International Journal of Mass Spectrometry 445:116204.</li>
+  <li>Kustra et al. (2006) A factor analysis model for functional genomics. BMC Bioinformatics 7: doi:10.1186/1471-2105-7-21.</li>
+  <li>Yong, A.G. &amp; Pearce, S. (2013) A beginner’s guide to factor analysis: focusing on exploratory factor analysis. Tutorials in Quantitative Methods for Psychology 9(2):79-94.</li>
+  <li>Confirmatory factor analysis can be carried out with the package <a href="https://www.lavaan.ugent.be/index.html">Lavaan</a>.</li>
+  <li>A more sophisticated implementation of EFA is available in the packages <a href="https://cran.r-project.org/web/packages/EFA.dimensions/index.html">EFA.dimensions</a> and <a href="https://personality-project.org/r/psych/">psych</a>.</li>
+</ul>
+
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>Factor analysis is a method used for reducing dimensionality in a dataset by reducing variation contained in multiple variables into a smaller number of uncorrelated factors.</p>
+</li>
+    
+    <li><p>PCA can be used to identify the number of factors to initially use in factor analysis.</p>
+</li>
+    
+    <li><p>The <code class="language-plaintext highlighter-rouge">factanal()</code> function in R can be used to fit a factor analysis, where the number of factors is specified by the user.</p>
+</li>
+    
+    <li><p>Factor analysis can take into account expert knowledge when deciding on the number of factors to use, but a disadvantage is that the output requires careful interpretation.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../04-principal-component-analysis/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../06-k-means/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <hr/>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2024 by <a href="../CITATION">the authors</a>.
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	
+	<a href="/edit//_episodes_rmd/05-factor-analysis.Rmd" data-checker-ignore>Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:alan.ocallaghan@outlook.com">Contact</a>
+    </div>
+  </div>
+  <p class="text-muted text-right">
+    <small><i>Using <a href="https://github.com/carpentries/carpentries-theme/">The Carpentries theme</a> &mdash; Site last built on: 2024-02-26 16:27:16 +0000.</i></small>
+  </p>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { fonts: ["TeX"] }
+      });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  </body>
+</html>
