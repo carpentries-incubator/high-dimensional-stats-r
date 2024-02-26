@@ -51,4 +51,6 @@ install.packages('igraph', repos=c(igraph = 'https://igraph.r-universe.dev',
 BiocManager::install('bluster')
 ```
 
+If this does not work, it may be necessary to check that the **glpk** package, on which igraph depends, is installed on your system. More details can be found at [https://github.com/igraph/rigraph/issues/490](https://github.com/igraph/rigraph/issues/490).
+
 {% include links.md %}
