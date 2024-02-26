@@ -141,7 +141,7 @@ dependencies.csv: _episodes_rmd/*.Rmd
 ## * lesson-md        : convert Rmarkdown files to markdown
 lesson-md: ${RMD_DST} figure
 
-_episodes/%.md: _episodes_rmd/%.Rmd
+_episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
