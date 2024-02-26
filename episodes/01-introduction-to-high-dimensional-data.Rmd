@@ -74,7 +74,7 @@ knitr::include_graphics("../fig/intro-table.png")
 > ## Challenge 1 
 > 
 > Descriptions of three research questions and their datasets are given below.
-> Which of these are considered to have high-dimensional data?
+> Which of these scenarios use high-dimensional data?
 > 
 > 1. Predicting patient blood pressure using: cholesterol level in blood, age,
 >    and BMI measurements, collected from 100 patients.
