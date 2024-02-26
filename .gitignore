@@ -1,1 +1,13 @@
 _site
+.Rproj.user
+*.Rproj
+.Rbuildignore
+.Rhistory
+.RData
+.bundle/
+.vendor/
+vendor/
+.docker-vendor/
+Gemfile.lock
+.*history
+DESCRIPTION
