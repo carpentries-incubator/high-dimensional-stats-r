@@ -140,10 +140,11 @@ of the challenges we are facing when working with high-dimensional data.
 > Although technically not a high-dimensional dataset, the `Prostate` data
 > will allow us explore the problems encountered when working with many features.
 >
-> Examine the dataset (in which each row represents a single patient) to:\
-> a) Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function).\
-> b) Examine what variables were measured (hint: see the `names()` and `head()` functions).\
-> c) Plot the relationship between the variables (hint: see the `pairs()` function). 
+> Examine the dataset (in which each row represents a single patient) to:
+>
+> 1. Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function).
+> 2. Examine what variables were measured (hint: see the `names()` and `head()` functions).
+> 3. Plot the relationship between the variables (hint: see the `pairs()` function). 
 > 
 > > ## Solution
 > > 
