@@ -46,7 +46,7 @@ serve: lesson-md
 # slides
 
 ## * site             : build website but do not run a server
-site: data figure lesson-md 
+site: data figure lesson-md
 	${JEKYLL} build
 # slides
 
@@ -131,17 +131,17 @@ HTML_DST = \
 
 
 ## * install-rmd-deps : Install R packages dependencies to build the RMarkdown lesson
-# dependencies.csv: _episodes_rmd/*.Rmd
-# 	@${SHELL} bin/list_r_deps.sh
+dependencies.csv: _episodes_rmd/*.Rmd
+	@${SHELL} bin/list_r_deps.sh
 
-# .installed: dependencies.csv
-# 	@${SHELL} bin/install_r_deps.sh
-# 	@touch .installed
+.installed: dependencies.csv
+	@${SHELL} bin/install_r_deps.sh
+	@touch .installed
 
 ## * lesson-md        : convert Rmarkdown files to markdown
 lesson-md: ${RMD_DST} figure
 
-_episodes/%.md: _episodes_rmd/%.Rmd
+_episodes/%.md: _episodes_rmd/%.Rmd .installed
 	@mkdir -p _episodes
 	@${SHELL} bin/knit_lessons.sh $< $@
 
