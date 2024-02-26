@@ -54,9 +54,9 @@ in the dataset. Datasets in which $p \geq n$ are becoming more common. Such data
 pose a challenge for data analysis as standard methods of analysis, such as linear
 regression, are no longer appropriate.
 
-High-dimensional datasets are common in the biological sciences. Subjects like
-genomics and medical sciences often use both tall (large $n$) and wide
-(large $p$) datasets, which can be difficult to analyse or visualise using
+High-dimensional datasets are common in the biological sciences. Data sets in subjects like
+genomics and medical sciences are often tall (with large $n$) and wide
+(with large $p$), and can be difficult to analyse or visualise using
 standard statistical tools. An example of high-dimensional data in biological
 sciences may include data collected from hospital patients recording symptoms,
 blood test results, behaviours, and general health, resulting in datasets with
