@@ -130,7 +130,8 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `Prostate` dataset as follows:
+> First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
+> Next, let's Load the `Prostate` dataset as follows:
 >
 > ```{r prostate}
 > library("here")
