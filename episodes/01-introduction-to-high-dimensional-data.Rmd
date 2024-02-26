@@ -285,7 +285,7 @@ regression.
 # What statistical methods are used to analyse high-dimensional data? 
 
 As we found out in the above challenges, carrying out linear regression on
-datasets with large numbers of features is difficult due to: high levels of correlation
+datasets with large numbers of features can be difficult due to: high levels of correlation
 between variables; difficulty in identifying a clear response variable; and risk
 of overfitting. These problems are common to the analysis of many high-dimensional datasets,
 for example, those using genomics data with multiple genes, or species
