@@ -1054,13 +1054,8 @@ like for different values of `alpha`.
 > 
 > A lot of the packages for fitting predictive models like regularised
 > regression have different user interfaces. To do predictive modelling, it's
-<<<<<<< HEAD
 > important to consider things like choosing a good performance metric,
 > and how to run normalisation. It's also useful to compare different
-=======
-> important to consider things like choosing a good performance metric and 
-> how to run normalisation. It's also useful to compare different 
->>>>>>> d39c170d1002cfc71828e6ec9d26d4cdf197f46e
 > model "engines". 
 > 
 > To this end, the **`tidymodels`** R framework exists. We're not doing a course on 
@@ -1081,11 +1076,7 @@ like for different values of `alpha`.
 >     update_role(age, new_role = "outcome") %>%
 >     ## center and scale all the predictors
 >     step_center(all_predictors()) %>%
-<<<<<<< HEAD
 >     step_scale(all_predictors())
-=======
->     step_scale(all_predictors()) 
->>>>>>> d39c170d1002cfc71828e6ec9d26d4cdf197f46e
 > 
 > ## set the "engine" to be a linear model with tunable alpha and lambda
 > glmnet_model <- linear_reg(penalty = tune(), mixture = tune()) %>% 
