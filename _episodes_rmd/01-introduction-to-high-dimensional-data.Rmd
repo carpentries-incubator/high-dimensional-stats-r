@@ -101,7 +101,7 @@ about the challenges we face in analysing them.
 # Challenges in dealing with high-dimensional data 
 
 Most classical statistical methods are set up for use on low-dimensional data
-(i.e. with a small number of features $p$). 
+(i.e. with a small number of features, $p$). 
 This is because low-dimensional data were much more common in
 the past when data collection was more difficult and time consuming. 
 
