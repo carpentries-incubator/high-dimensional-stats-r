@@ -38,7 +38,7 @@ knitr_fig_path("01-")
 
 # What are high-dimensional data? 
 
-*High-dimensional data* are defined as data with many features (variables observed), $p$.
+*High-dimensional data* are defined as data with many features (variables observed).
 In recent years, advances in information technology have allowed large amounts of data to
 be collected and stored with relative ease. As such, high-dimensional
 data have become more common in many scientific fields, including the biological sciences, 
