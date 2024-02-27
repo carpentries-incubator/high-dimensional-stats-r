@@ -57,8 +57,8 @@ Researchers often want to relate such features to specific patient outcomes
 (e.g. survival, length of time spent in hospital). However, analysing 
 high-dimensional data can be extremely challenging since standard methods of analysis, 
 such as individual plots of features and linear regression, 
-are no longer appropriate when we have many features and 
-relatively few observations. In this lesson, we will learn alternative methods 
+are no longer appropriate when we have many features.
+In this lesson, we will learn alternative methods 
 for dealing with high-dimensional data and discover how these can be applied 
 for practical high-dimensional data analysis in the biological sciences. 
 
@@ -101,8 +101,8 @@ about the challenges we face in analysing them.
 # Challenges in dealing with high-dimensional data 
 
 Most classical statistical methods are set up for use on low-dimensional data
-(i.e. data where the number of observations $n$ is much larger than the number
-of features $p$). This is because low-dimensional data were much more common in
+(i.e. with a small number of features $p$). 
+This is because low-dimensional data were much more common in
 the past when data collection was more difficult and time consuming. 
 
 One challenge when analysing high-dimensional data is visualising the many variables. 
