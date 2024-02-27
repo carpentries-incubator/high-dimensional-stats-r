@@ -65,7 +65,7 @@ specific patient outcomes (e.g. survival, length of time spent in hospital).
 An example of what high-dimensional data might look like in a biomedical study
 is shown in the figure below. 
 
-```{r table-intro, echo = FALSE}
+```{r table-intro, echo = FALSE, fig.cap = "Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.", fig.alt = "Table displaying a high-dimensional data set with many features in individual columns relating to health data such as blood pressure, heart rate and respiratory rate. Each row contains the data for individual patients."}
 knitr::include_graphics("../fig/intro-table.png")
 ```
 
