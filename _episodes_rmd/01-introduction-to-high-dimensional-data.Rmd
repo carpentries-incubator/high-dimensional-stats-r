@@ -115,11 +115,11 @@ Most classical statistical methods are set up for use on low-dimensional data
 of features $p$). This is because low-dimensional data were much more common in
 the past when data collection was more difficult and time consuming. 
 
-Datasets with large numbers of features are difficult to visualise. When
-exploring low-dimensional datasets, it is possible to plot the response variable
-against each of the limited number of explanatory variables to get an idea which
-of these are important predictors of the response. With high-dimensional data
-the large number of explanatory variables makes doing this difficult. In some
+One challenge when analysing high-dimensional data is visualising the many variables. 
+When exploring low-dimensional datasets, it is possible to plot the response variable
+against each of features to get an idea which
+of these are important predictors of the response. With high-dimensional data,
+the large number of explanatory variables makes doing this difficult. In addition, in some
 high-dimensional datasets it can also be difficult to identify a single response
 variable, making standard data exploration and analysis techniques less useful.
 
