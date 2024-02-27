@@ -277,15 +277,11 @@ regression.
 
 # What statistical methods are used to analyse high-dimensional data? 
 
-As we found out in the above challenges, carrying out linear regression on
-datasets with large numbers of features can be difficult due to: high levels of correlation
-between variables; difficulty in identifying a clear response variable; and risk
-of overfitting. These problems are common to the analysis of many high-dimensional datasets,
-for example, those using genomics data with multiple genes, or species
-composition data in an environment where the relative abundance of different species
-within a community is of interest. For such datasets, other statistical methods
-may be used to examine whether groups of observations show similar characteristics
-and whether these groups may relate to other features in the data (e.g.
+We have discussed so far that high-dimensional data analysis can be challenging since variables are difficult to visualise, 
+leading to challenges identifying relationships between variables and suitable response variables, we may have
+relatively few observations compared to features, leading to over-fitting, and features may be highly correlated, leading to
+challenges including over-fitting. We therefore require alternative approaches to examine whether, for example,
+groups of observations show similar characteristics and whether these groups may relate to other features in the data (e.g.
 phenotype in genetics data). 
 
 In this course, we will cover four methods that help in dealing with high-dimensional data:
