@@ -69,7 +69,7 @@ jobs:
           git restore --staged . # remove things from the stage
           cd ..
           # copy everything into gh-pages site
-          cp -r `ls -A | grep -v 'gh-pages' | grep -v '.git' | grep -v '.bundle/'` gh-pages
+          cp -r `ls -A | grep -v 'gh-pages' | grep -v '.git' | grep -v '.bundle/' | grep -v '_site'` gh-pages
           # move into gh-pages, add, commit, and push
           cd gh-pages
           # setup git
