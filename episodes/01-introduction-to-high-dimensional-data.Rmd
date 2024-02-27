@@ -38,14 +38,14 @@ knitr_fig_path("01-")
 
 # What are high-dimensional data? 
 
-*High-dimensional data* are defined as data with a large number of features (variables observed),
-$p$. In recent years, advances in information technology have allowed large amounts of data to
+*High-dimensional data* are defined as data with many features (variables observed), $p$.
+In recent years, advances in information technology have allowed large amounts of data to
 be collected and stored with relative ease. As such, high-dimensional
-data have become more common in mant scientific fields, including the biological sciences, 
-where datasets in subjects like genomics and medical sciences are often tall (with large $n$) and wide
-(with large $p$). For example, data collected from hospital patients may record symptoms,
-blood test results, behaviours, and general health, resulting in datasets with
-large numbers of features. An example of what high-dimensional data might look like 
+data have become more common in many scientific fields, including the biological sciences, 
+where datasets in subjects like genomics and medical sciences often have a large numbers of features.
+For example, hospital data may record many variables, including symptoms,
+blood test results, behaviours, and general health, resulting in a dataset with
+many features. An example of what high-dimensional data might look like 
 in a biomedical study is shown in the figure below. 
 
 
