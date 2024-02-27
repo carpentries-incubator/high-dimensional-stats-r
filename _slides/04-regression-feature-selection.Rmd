@@ -1,0 +1,37 @@
+---
+title: "Feature selection for regression (optional lesson)"
+output:
+    xaringan::moon_reader:
+        self_contained: true
+---
+```{r, echo=FALSE, message=FALSE}
+library("here")
+```
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/bs_fs.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-04-fit-scale-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-04-residuals-1.png"))
+```
+
+---
+# Alt
+```{r, out.width="100%", echo=FALSE}
+# , fig.cap='Alt
+knitr::include_graphics(here("fig/rmd-04-likelihood-1.png"))
+```
+
+---
