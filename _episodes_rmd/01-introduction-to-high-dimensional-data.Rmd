@@ -45,8 +45,12 @@ $n$, far outnumbers the number of features, $p$. A related concept is *wide data
 refers to data with numerous features irrespective of the number of observations (similarly,
 *tall data* is often used to denote data with a large number of observations).
 
-High-dimensional data have become more common in many scientific fields as new
-automated data collection techniques have been developed. This includes the biological sciences,
+In recent years advances in information technology have allowed large amounts of data to
+be collected and stored with relative ease. This has allowed large numbers of
+features to be collected, meaning that datasets in which $p$ matches or exceeds
+$n$ are common (collecting observations is often more difficult or expensive
+than collecting many features from a single observation). As such, high-dimensional
+data have become more common in mant scientific fields, including the biological sciences, 
 where datasets in subjects like genomics and medical sciences are often tall (with large $n$) and wide
 (with large $p$). For example, data collected from hospital patients may record symptoms,
 blood test results, behaviours, and general health, resulting in datasets with
@@ -109,12 +113,7 @@ about the challenges we face in analysing them.
 Most classical statistical methods are set up for use on low-dimensional data
 (i.e. data where the number of observations $n$ is much larger than the number
 of features $p$). This is because low-dimensional data were much more common in
-the past when data collection was more difficult and time consuming. In recent
-years advances in information technology have allowed large amounts of data to
-be collected and stored with relative ease. This has allowed large numbers of
-features to be collected, meaning that datasets in which $p$ matches or exceeds
-$n$ are common (collecting observations is often more difficult or expensive
-than collecting many features from a single observation).
+the past when data collection was more difficult and time consuming. 
 
 Datasets with large numbers of features are difficult to visualise. When
 exploring low-dimensional datasets, it is possible to plot the response variable
