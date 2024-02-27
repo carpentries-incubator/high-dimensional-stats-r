@@ -1,0 +1,1067 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2024-02-27 09:14:21 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+     <link rel="stylesheet" type="text/css" href="../assets/css/fonts.css" />
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/katex.min.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/incubator/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/incubator/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/incubator/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/incubator/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/incubator/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/incubator/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/incubator/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/incubator/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries Incubator - High dimensional statistics with R"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/incubator/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/incubator/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/incubator/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/incubator/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/incubator/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+  <title>
+  K-means &ndash; High dimensional statistics with R
+  </title>
+
+  </head>
+  <body>
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body alpha">
+    This lesson is in the early stages of development (Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="../index.html" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/incubator-logo-blue.svg" alt="The Carpentries Incubator logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="../01-introduction-to-high-dimensional-data/index.html">Introduction to high-dimensional data</a></li>
+            
+            
+            <li><a href="../02-high-dimensional-regression/index.html">Regression with many outcomes</a></li>
+            
+            
+            <li><a href="../03-regression-regularisation/index.html">Regularised regression</a></li>
+            
+            
+            <li><a href="../04-principal-component-analysis/index.html">Principal component analysis</a></li>
+            
+            
+            <li><a href="../05-factor-analysis/index.html">Factor analysis</a></li>
+            
+            
+            <li><a href="../06-k-means/index.html">K-means</a></li>
+            
+            
+            <li><a href="../07-hierarchical/index.html">Hierarchical clustering</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference.html">Reference</a></li>
+            
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+            
+            <li><a href="../slides/index.html">Lecture slides</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	
+	<li><a href="/edit//_episodes_rmd/06-k-means.Rmd" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+      
+
+
+<div class="alert alert-info text-center" role="alert">
+  This lesson is part of
+  <a href="https://github.com/carpentries-incubator/proposals/#the-carpentries-incubator" data-checker-ignore>
+    The Carpentries Incubator</a>, a place to share and use each other's
+  Carpentries-style lessons. <strong>This lesson has not been reviewed by and is
+  not endorsed by The Carpentries</strong>.
+</div>
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../05-factor-analysis/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">High dimensional statistics with R</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../07-hierarchical/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">K-means</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 45 min
+      <br/>
+      <strong>Exercises:</strong> 15 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do we detect real clusters in high-dimensional data?</p>
+</li>
+	
+	<li><p>How does K-means work and when should it be used?</p>
+</li>
+	
+	<li><p>How can we perform K-means in <code class="language-plaintext highlighter-rouge">R</code>?</p>
+</li>
+	
+	<li><p>How can we appraise a clustering and test cluster robustness?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Understand the importance of clustering in high-dimensional data</p>
+</li>
+	
+	<li><p>Understand and perform K-means clustering in <code class="language-plaintext highlighter-rouge">R</code>.</p>
+</li>
+	
+	<li><p>Assess clustering performance using silhouette scores.</p>
+</li>
+	
+	<li><p>Assess cluster robustness using bootstrapping.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>High-dimensional data, especially in biological settings,  has
+many sources of heterogeneity. Some of these are stochastic variation
+arising from measurement error or random differences between organisms. 
+In some cases, a known grouping causes this heterogeneity (sex, treatment
+groups, etc). In other cases, this heterogeneity arises from the presence of
+unknown subgroups in the data. <strong>Clustering</strong> is a set of techniques that allows
+us to discover unknown groupings like this, which we can often use to
+discover the nature of the heterogeneity we’re investigating.</p>
+
+<p><strong>Cluster analysis</strong> involves finding groups of observations that are more
+similar to each other (according to some feature) than they are to observations
+in other groups. Cluster analysis is a useful statistical tool for exploring
+high-dimensional datasets as 
+visualising data with large numbers of features is difficult. It is commonly
+used in fields such as bioinformatics, genomics, and image processing in which
+large datasets that include many features are often produced. Once groups
+(or clusters) of observations have been identified using cluster analysis,
+further analyses or interpretation can be carried out on the groups, for
+example, using metadata to further explore groups.</p>
+
+<p>There are various ways to look for clusters of observations in a dataset using
+different <em>clustering algorithms</em>. One way of clustering data is to minimise
+distance between observations within a cluster and maximise distance between
+proposed clusters. Clusters can be updated in an iterative process so that over
+time we can become more confident in size and shape of clusters.</p>
+
+<h1 id="believing-in-clusters">Believing in clusters</h1>
+
+<p>When using clustering, it’s important to realise that data may seem to
+group together even when these groups are created randomly. It’s especially 
+important to remember this when making plots that add extra visual aids to
+distinguish clusters. 
+For example, if we cluster data from a single 2D normal distribution and draw
+ellipses around the points, these clusters suddenly become almost visually
+convincing. This is a somewhat extreme example, since there is genuinely no
+heterogeneity in the data, but it does reflect what can happen if you allow
+yourself to read too much into faint signals.</p>
+
+<p>Let’s explore this further using an example. We create two columns of data
+(‘x’ and ‘y’) and partition these data into three groups (‘a’, ‘b’, ‘c’)
+according to data values. We then plot these data and their allocated clusters
+and put ellipses around the clusters using the <code class="language-plaintext highlighter-rouge">stat_ellipse</code> function
+in <code class="language-plaintext highlighter-rouge">ggplot</code>.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-fake-cluster-1.png" alt="plot of chunk fake-cluster" width="432" />
+<p class="caption">plot of chunk fake-cluster</p>
+</div>
+<p>The randomly created data used here appear to form three clusters when we
+plot the data. Putting ellipses around the clusters can further convince us
+that the clusters are ‘real’. But how do we tell if clusters identified
+visually are ‘real’?</p>
+
+<h1 id="what-is-k-means-clustering">What is K-means clustering?</h1>
+
+<p><strong>K-means clustering</strong> is a clustering method which groups data points into a 
+user-defined number of distinct non-overlapping clusters. In K-means clustering 
+we are interested in minimising the <em>within-cluster variation</em>. This is the amount that
+data points within a cluster differ from each other. In K-means clustering, the distance 
+between data points within a cluster is used as a measure of within-cluster variation.
+Using a specified clustering algorithm like K-means clustering increases our confidence
+that our data can be partitioned into groups.</p>
+
+<p>To carry out K-means clustering, we first pick $k$ initial points as centres or 
+“centroids” of our clusters. There are a few ways to choose these initial “centroids”,
+but for simplicity let’s imagine we just pick three random co-ordinates.
+We then follow these two steps until convergence:</p>
+
+<ol>
+  <li>Assign each data point to the cluster with the closest centroid</li>
+  <li>Update centroid positions as the average of the points in that cluster</li>
+</ol>
+
+<p>We can see this process in action in this animation:</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/kmeans.gif" alt="Alt" />
+<p class="caption">Cap</p>
+</div>
+<p>While K-means has some advantages over other clustering methods (easy to implement and
+to understand), it does have some disadvantages, namely difficulties in identifying 
+initial clusters which observations belong to and the need for the user to specifiy the
+number of clusters that the data should be partitioned into.</p>
+
+<blockquote class="callout">
+  <h2 id="initialisation">Initialisation</h2>
+
+  <p>The algorithm used in K-means clustering finds a <em>local</em> rather than a
+<em>global</em> optimum, so that results of clustering are dependent on the initial
+cluster that each observation is randomly assigned to. This initial
+configuration can have a significant effect on the final configuration of the
+clusters, so dealing with this limitation is an important part 
+of K-means clustering. Some strategies to deal with this problem are:</p>
+  <ul>
+    <li>Choose $K$ points at random from the data as the cluster centroids.</li>
+    <li>Randomly split the data into $K$ groups, and then average these groups.</li>
+    <li>Use the K-means++ algorithm to choose initial values.</li>
+  </ul>
+
+  <p>These each have advantages and disadvantages. In general, it’s good to be
+aware of this limitation of K-means clustering and that this limitation can
+be addressed by choosing a good initialisation method, initialising clusters
+manually, or running the algorithm from multiple different starting points.</p>
+
+</blockquote>
+
+<h1 id="k-means-clustering-applied-to-single-cell-rnaseq-data">K-means clustering applied to single-cell RNAseq data</h1>
+
+<p>Let’s carry out K-means clustering in <code class="language-plaintext highlighter-rouge">R</code> using some real high-dimensional data.
+We’re going to work with single-cell RNAseq data in these clustering challenges,
+which is often <em>very</em> high-dimensional. Commonly, experiments profile the
+expression level of 10,000+ genes in thousands of cells. Even after filtering
+the data to remove low quality observations, the dataset we’re using in this
+episode contains measurements for over 9,000 genes in over 3,000 cells.</p>
+
+<p>One way to get a handle on a dataset of this size is to use something we covered
+earlier in the course - dimensionality reduction. Dimensionality reduction
+allows us to visualise this incredibly complex data in a small number of
+dimensions. In this case, we’ll be using principal component analysis (PCA) to
+compress the data by identifying the major axes of variation in the data,
+before running our clustering algorithms on this lower-dimensional data.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">scater</code> package has some easy-to-use tools to calculate a PCA for
+<code class="language-plaintext highlighter-rouge">SummarizedExperiment</code> objects.
+Let’s load the <code class="language-plaintext highlighter-rouge">scRNAseq</code> data and calculate some principal components.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"SingleCellExperiment"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"scater"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">scrnaseq</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="o">::</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/scrnaseq.rds"</span><span class="p">))</span><span class="w">
+</span><span class="n">scrnaseq</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">runPCA</span><span class="p">(</span><span class="n">scrnaseq</span><span class="p">,</span><span class="w"> </span><span class="n">ncomponents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">)</span><span class="w">
+</span><span class="n">pcs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">reducedDim</span><span class="p">(</span><span class="n">scrnaseq</span><span class="p">)[,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+<p>The first two principal components capture almost 50% of the variation within
+the data. For now, we’ll work with just these two principal components, since
+we can visualise those easily, and they’re a quantitative representation of
+the underlying data, representing the two largest axes of variation.</p>
+
+<p>We can now run K-means clustering on the first and second principal components
+of the <code class="language-plaintext highlighter-rouge">scRNAseq</code> data using the <code class="language-plaintext highlighter-rouge">kmeans</code> function.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span><span class="w">
+</span><span class="n">cluster</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">kmeans</span><span class="p">(</span><span class="n">pcs</span><span class="p">,</span><span class="w"> </span><span class="n">centers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w">
+</span><span class="n">scrnaseq</span><span class="o">$</span><span class="n">kmeans</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">cluster</span><span class="o">$</span><span class="n">cluster</span><span class="p">)</span><span class="w">
+</span><span class="n">plotReducedDim</span><span class="p">(</span><span class="n">scrnaseq</span><span class="p">,</span><span class="w"> </span><span class="s2">"PCA"</span><span class="p">,</span><span class="w"> </span><span class="n">colour_by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"kmeans"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-kmeans-1.png" alt="Alt" width="432" />
+<p class="caption">Title</p>
+</div>
+
+<p>We can see that this produces a sensible-looking partition of the data. 
+However, is it totally clear whether there might be more or fewer clusters
+here?</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-1">Challenge 1</h2>
+
+  <p>Cluster the data using a $K$ of 5, and plot it using <code class="language-plaintext highlighter-rouge">plotReducedDim</code>.
+Save this with a variable name that’s different to what we just used,
+because we’ll use this again later.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span><span class="w">
+</span><span class="n">cluster5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">kmeans</span><span class="p">(</span><span class="n">pcs</span><span class="p">,</span><span class="w"> </span><span class="n">centers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+</span><span class="n">scrnaseq</span><span class="o">$</span><span class="n">kmeans5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">cluster5</span><span class="o">$</span><span class="n">cluster</span><span class="p">)</span><span class="w">
+</span><span class="n">plotReducedDim</span><span class="p">(</span><span class="n">scrnaseq</span><span class="p">,</span><span class="w"> </span><span class="s2">"PCA"</span><span class="p">,</span><span class="w"> </span><span class="n">colour_by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"kmeans5"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-kmeans-ex-1.png" alt="plot of chunk kmeans-ex" width="432" />
+<p class="caption">plot of chunk kmeans-ex</p>
+</div>
+
+  </blockquote>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="k-medoids-pam">K-medoids (PAM)</h2>
+
+  <p>One problem with K-means is that using the mean to define cluster centroids
+means that clusters can be very sensitive to outlying observations.
+K-medoids, also known as “partitioning around medoids (PAM)” is similar to 
+K-means, but uses the median rather than the mean as the method for defining
+cluster centroids. Using the median rather than the mean reduces sensitivity of
+clusters to outliers in the data. K-medioids has had popular application in
+genomics, for example the well-known PAM50 gene set in breast cancer, which has seen some 
+prognostic applications.
+The following example shows how cluster centroids differ when created using 
+medians rather than means.</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rnorm</span><span class="p">(</span><span class="m">20</span><span class="p">)</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rnorm</span><span class="p">(</span><span class="m">20</span><span class="p">)</span><span class="w">
+</span><span class="n">x</span><span class="p">[</span><span class="m">10</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="m">10</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">)</span><span class="w">
+</span><span class="n">points</span><span class="p">(</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"firebrick"</span><span class="p">)</span><span class="w">
+</span><span class="n">points</span><span class="p">(</span><span class="n">median</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dodgerblue"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" width="432" />
+<p class="caption">plot of chunk unnamed-chunk-1</p>
+</div>
+  <p>PAM can be carried out using <code class="language-plaintext highlighter-rouge">pam()</code> form the <strong><code class="language-plaintext highlighter-rouge">cluster</code></strong> package.</p>
+
+</blockquote>
+
+<h1 id="cluster-separation">Cluster separation</h1>
+<p>When performing clustering, it is important for us to be able to measure
+how well our clusters are separated. One measure to test this is silhouette width.
+This is a number that is computed for every observation. It can range from -1 to 1.
+A high silhouette width means an observation is closer to other observations
+within the same cluster. For each cluster, the silhouette widths can then be
+averaged or an overall average can be taken.</p>
+
+<blockquote class="callout">
+  <h2 id="more-detail-on-silhouette-widths">More detail on silhouette widths</h2>
+  <p>In more detail, each observation’s silhouette width is computed as follows:</p>
+  <ol>
+    <li>Compute the average distance between the focal observation and all other
+observations in the same cluster.</li>
+    <li>For each of the other clusters, compute the average distance between
+focal observation and all observations in the other cluster. Keep the
+smallest of these average distances.</li>
+    <li>Subtract (1.)-(2.) then divivde by whichever is smaller (1.) or (2).</li>
+  </ol>
+</blockquote>
+
+<p>Ideally, we would have only large positive silhouette widths, indicating
+that each data point is much more similar to points within its cluster than it
+is to the points in any other cluster. However, this is rarely the case. Often,
+clusters are very fuzzy, and even if we are relatively sure about the existence
+of discrete groupings in the data, observations on the boundaries can be difficult
+to confidently place in either cluster.</p>
+
+<p>Here we use the <code class="language-plaintext highlighter-rouge">silhouette</code> function from the <code class="language-plaintext highlighter-rouge">cluster</code> package to calculate the
+silhouette width of our K-means clustering using a distance matrix of distances
+between points in the clusters.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"cluster"</span><span class="p">)</span><span class="w">
+</span><span class="n">dist_mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dist</span><span class="p">(</span><span class="n">pcs</span><span class="p">)</span><span class="w">
+</span><span class="n">sil</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">silhouette</span><span class="p">(</span><span class="n">cluster</span><span class="o">$</span><span class="n">cluster</span><span class="p">,</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_mat</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">sil</span><span class="p">,</span><span class="w"> </span><span class="n">border</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-silhouette-1.png" alt="plot of chunk silhouette" width="432" />
+<p class="caption">plot of chunk silhouette</p>
+</div>
+
+<p>Let’s plot the silhouette score on the original dimensions used to cluster
+the data. Here, we’re mapping cluster membership to point shape, and silhouette
+width to colour.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.data.frame</span><span class="p">(</span><span class="n">pcs</span><span class="p">)</span><span class="w">
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"x"</span><span class="p">,</span><span class="w"> </span><span class="s2">"y"</span><span class="p">)</span><span class="w">
+</span><span class="n">pc</span><span class="o">$</span><span class="n">sil</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sil</span><span class="p">[,</span><span class="w"> </span><span class="s2">"sil_width"</span><span class="p">]</span><span class="w">
+</span><span class="n">pc</span><span class="o">$</span><span class="n">clust</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">cluster</span><span class="o">$</span><span class="n">cluster</span><span class="p">)</span><span class="w">
+</span><span class="n">mean</span><span class="p">(</span><span class="n">sil</span><span class="p">[,</span><span class="w"> </span><span class="s2">"sil_width"</span><span class="p">])</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 0.7065662
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clust</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sil</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">scale_colour_gradient2</span><span class="p">(</span><span class="w">
+        </span><span class="n">low</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"dodgerblue"</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"firebrick"</span><span class="w">
+    </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">scale_shape_manual</span><span class="p">(</span><span class="w">
+        </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">setNames</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">)</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-plot-silhouette-1.png" alt="plot of chunk plot-silhouette" width="432" />
+<p class="caption">plot of chunk plot-silhouette</p>
+</div>
+
+<p>This plot shows that silhouette values for individual observations tends to be
+very high in the centre of clusters, but becomes quite low towards the edges.
+This makes sense, as points that are “between” two clusters may be more similar
+to points in another cluster than they are to the points in the cluster one they
+belong to.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-2">Challenge 2</h2>
+
+  <p>Calculate the silhouette width for the K of 5 clustering we did earlier.
+Is it better or worse than before?</p>
+
+  <p>Can you identify where the differences lie?</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-1">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sil5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">silhouette</span><span class="p">(</span><span class="n">cluster5</span><span class="o">$</span><span class="n">cluster</span><span class="p">,</span><span class="w"> </span><span class="n">dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_mat</span><span class="p">)</span><span class="w">
+</span><span class="n">scrnaseq</span><span class="o">$</span><span class="n">kmeans5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">cluster5</span><span class="o">$</span><span class="n">cluster</span><span class="p">)</span><span class="w">
+</span><span class="n">plotReducedDim</span><span class="p">(</span><span class="n">scrnaseq</span><span class="p">,</span><span class="w"> </span><span class="s2">"PCA"</span><span class="p">,</span><span class="w"> </span><span class="n">colour_by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"kmeans5"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-silhouette-ex-1.png" alt="plot of chunk silhouette-ex" width="432" />
+<p class="caption">plot of chunk silhouette-ex</p>
+</div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean</span><span class="p">(</span><span class="n">sil5</span><span class="p">[,</span><span class="w"> </span><span class="s2">"sil_width"</span><span class="p">])</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 0.5849979
+</code></pre></div>    </div>
+    <p>The average silhouette width is lower when k=5.</p>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">sil5</span><span class="p">,</span><span class="w"> </span><span class="n">border</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/silhouette5.png" alt="plot of chunk unnamed-chunk-4" />
+<p class="caption">plot of chunk unnamed-chunk-4</p>
+</div>
+    <p>This seems to be because some observations in clusters 3 and 5 seem to be
+more similar to other clusters than the one they have been assigned to.
+This may indicate that K is too high.</p>
+  </blockquote>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="gap-statistic">Gap statistic</h2>
+
+  <p>Another measure of how good our clustering is is the “gap statistic”.
+This compares the observed squared distance between observations in a cluster
+and the centre of the cluster to an “expected” squared distances.
+The expected distances are calculated by randomly distributing cells within
+the range of the original data. Larger values represent lower
+squared distances within clusters, and thus better clustering.
+We can see how this is calculated in the following example.</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"cluster"</span><span class="p">)</span><span class="w">
+</span><span class="n">gaps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">clusGap</span><span class="p">(</span><span class="n">pcs</span><span class="p">,</span><span class="w"> </span><span class="n">kmeans</span><span class="p">,</span><span class="w"> </span><span class="n">K.max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">iter.max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span><span class="w">
+</span><span class="n">best_k</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">maxSE</span><span class="p">(</span><span class="n">gaps</span><span class="o">$</span><span class="n">Tab</span><span class="p">[,</span><span class="w"> </span><span class="s2">"gap"</span><span class="p">],</span><span class="w"> </span><span class="n">gaps</span><span class="o">$</span><span class="n">Tab</span><span class="p">[,</span><span class="w"> </span><span class="s2">"SE.sim"</span><span class="p">])</span><span class="w">
+</span><span class="n">best_k</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">gaps</span><span class="o">$</span><span class="n">Tab</span><span class="p">[,</span><span class="s2">"gap"</span><span class="p">],</span><span class="w"> </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Number of clusters"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Gap statistic"</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">best_k</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+</blockquote>
+
+<h1 id="cluster-robustness">Cluster robustness</h1>
+
+<p>When we cluster data, we want to be sure that the clusters we identify are
+not a result of the exact properties of the input data. That is, if the
+data we observed were slightly different, the clusters we would identify
+in this different data would be very similar. This makes it more
+likely that these can be reproduced.</p>
+
+<p>To assess this, we can use the <em>bootstrap</em>. What we do here is to take a sample
+from the data with replacement. Sampling with replacement means that in the 
+sample that we take, we can include points from the input data more than once.
+This is maybe easier to see with an example. First, we define some data:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Then, we can take a sample from this data without replacement:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 4 1 3 5 2
+</code></pre></div></div>
+
+<p>This sample is a subset of the original data, and points are only present once.
+This is the case every time even if we do it many times:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Each column is a sample</span><span class="w">
+</span><span class="n">replicate</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]    5    2    5    2    3    1    3    5    5     3
+[2,]    4    5    4    5    4    4    1    3    1     2
+[3,]    2    1    1    3    2    5    2    2    3     4
+[4,]    1    4    2    1    5    3    5    1    2     5
+[5,]    3    3    3    4    1    2    4    4    4     1
+</code></pre></div></div>
+
+<p>However, if we sample <em>with replacement</em>, then sometimes individual data points
+are present more than once.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">replicate</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]    3    1    2    2    1    3    3    2    4     2
+[2,]    1    3    2    4    2    5    2    1    2     5
+[3,]    5    5    4    4    2    2    1    1    1     3
+[4,]    1    1    4    2    1    4    4    5    5     4
+[5,]    3    1    2    1    4    2    5    3    3     2
+</code></pre></div></div>
+
+<blockquote class="callout">
+  <h2 id="bootstrapping">Bootstrapping</h2>
+
+  <p>The bootstrap is a powerful and common statistical technique.</p>
+
+  <p>We would like to know about the sampling distribution of a statistic,
+but we don’t have any knowledge of its behaviour under the null hypothesis.</p>
+
+  <p>For example, we might want to understand the uncertainty around an estimate
+of the mean of our data. To do this, we could resample the data with
+replacement and calculate the mean of each average.</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boots</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">replicate</span><span class="p">(</span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)))</span><span class="w">
+</span><span class="n">hist</span><span class="p">(</span><span class="n">boots</span><span class="p">,</span><span class="w">
+    </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"FD"</span><span class="p">,</span><span class="w">
+    </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"1,000 bootstrap samples"</span><span class="p">,</span><span class="w">
+    </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Mean of sample"</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-boots-1.png" alt="plot of chunk boots" width="432" />
+<p class="caption">plot of chunk boots</p>
+</div>
+
+  <p>In this case, the example is simple, but it’s possible to
+devise more complex statistical tests using this kind of approach.</p>
+
+  <p>The bootstrap, along with permutation testing, can be a very flexible and 
+general solution to many statistical problems.</p>
+
+</blockquote>
+
+<p>In applying the bootstrap to clustering, we want to see two things:</p>
+<ol>
+  <li>Will observations within a cluster consistently cluster together in
+different bootstrap replicates?</li>
+  <li>Will observations frequently swap between clusters?</li>
+</ol>
+
+<p>In the plot below, the diagonal of the plot shows how often the clusters
+are reproduced in boostrap replicates. High scores on
+the diagonal mean that the clusters are consistently reproduced in each 
+boostrap replicate. Similarly, the off-diagonal elements represent how often
+observations swap between clusters in bootstrap replicates. High scores 
+indicate that observations rarely swap between clusters.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"pheatmap"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"bluster"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"viridis"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">km_fun</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">kmeans</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">centers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="o">$</span><span class="n">cluster</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">ratios</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">bootstrapStability</span><span class="p">(</span><span class="n">pcs</span><span class="p">,</span><span class="w"> </span><span class="n">FUN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">km_fun</span><span class="p">,</span><span class="w"> </span><span class="n">clusters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cluster</span><span class="o">$</span><span class="n">cluster</span><span class="p">)</span><span class="w">
+</span><span class="n">pheatmap</span><span class="p">(</span><span class="n">ratios</span><span class="p">,</span><span class="w">
+    </span><span class="n">cluster_rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">cluster_cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+    </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viridis</span><span class="p">(</span><span class="m">10</span><span class="p">),</span><span class="w">
+    </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">length.out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-bs-heatmap-1.png" alt="plot of chunk bs-heatmap" width="432" />
+<p class="caption">plot of chunk bs-heatmap</p>
+</div>
+
+<p>Yellow boxes indicate values slightly greater than 1, which may be observed.
+These are “good” (despite missing in the colour bar).</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-3">Challenge 3</h2>
+
+  <p>Repeat the bootstrapping process with K=5. Are the results better or worse?
+Can you identify where the differences occur on the <code class="language-plaintext highlighter-rouge">plotReducedDim</code>?</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-2">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">km_fun5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">kmeans</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">centers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">)</span><span class="o">$</span><span class="n">cluster</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span><span class="w">
+</span><span class="n">ratios5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">bootstrapStability</span><span class="p">(</span><span class="n">pcs</span><span class="p">,</span><span class="w"> </span><span class="n">FUN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">km_fun5</span><span class="p">,</span><span class="w"> </span><span class="n">clusters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cluster5</span><span class="o">$</span><span class="n">cluster</span><span class="p">)</span><span class="w">
+</span><span class="n">pheatmap</span><span class="p">(</span><span class="n">ratios5</span><span class="p">,</span><span class="w">
+    </span><span class="n">cluster_rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">cluster_cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+    </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viridis</span><span class="p">(</span><span class="m">10</span><span class="p">),</span><span class="w">
+    </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">length.out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-bs-ex-1.png" alt="plot of chunk bs-ex" width="432" />
+<p class="caption">plot of chunk bs-ex</p>
+</div>
+    <p>When K=5, we can see that the values on the diagonal of the matrix are 
+smaller, indicating that the clusters aren’t exactly reproducible in the
+bootstrap samples.</p>
+
+    <p>Similarly, the off-diagonal elements are considerably lower for some
+elements.
+This indicates that observations are “swapping” between these clusters
+in bootstrap replicates.</p>
+  </blockquote>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="consensus-clustering">Consensus clustering</h2>
+
+  <p>One useful and generic method of clustering is <em>consensus clustering</em>.
+This method can use k-means, or other clustering methods.</p>
+
+  <p>The idea behind this is to bootstrap the data repeatedly, and cluster
+it each time, perhaps using different numbers of clusters.
+If a pair of data points always end up in the same cluster,
+it’s likely that they really belong to the same underlying cluster.</p>
+
+  <p>This is really computationally demanding but has been shown to perform very
+well in some situations. It also allows you to visualise how cluster
+membership changes over different values of K.</p>
+
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="speed">Speed</h2>
+
+  <p>It’s worth noting that a lot of the methods we’ve discussed here are very
+computationally demanding. 
+When clustering data, we may have to compare points to each other many times.
+This becomes more and more difficult when we have many observations and
+many features. This is especially problematic when we want to do things like
+bootstrapping that requires us to cluster the data over and over.</p>
+
+  <p>As a result, there are a lot of approximate methods for finding clusters
+in the data. For example, the
+<a href="http://www.bioconductor.org/packages/3.13/bioc/html/mbkmeans.html">mbkmeans</a>
+package includes an algorithm for clustering extremely large data. The idea
+behind this algorithm
+is that if the clusters we find are robust, we don’t need to look at all of
+the data every time. This is very helpful because it reduces the amount of
+data that needs to be held in memory at once, but also because it minimises the 
+computational cost.</p>
+
+  <p>Similarly, approximate nearest neighbour methods like 
+<a href="https://pypi.org/project/annoy/">Annoy</a> can be used to identify what the
+$K$ closest points are in the data, and this can be used in some clustering 
+methods (for example, graph-based clustering).</p>
+
+  <p>Generally, these methods sacrifice a bit of accuracy for a big gain in speed.</p>
+</blockquote>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+  <li><a href="https://doi.org/10.1007/978-3-642-29807-3_1">Wu, J. (2012) Cluster analysis and K-means clustering: An Introduction. In: Advances in K-means Clustering. Springer Berlin, Heidelberg.</a>.</li>
+  <li><a href="https://web.stanford.edu/class/bios221/book/Chap-Clustering.html">Modern statistics for modern biology, Susan Holmes and Wolfgang Huber (Chapter 5)</a>.</li>
+  <li><a href="https://towardsdatascience.com/understanding-k-means-clustering-in-machine-learning-6a6e67336aa1">Understanding K-means clustering in machine learning, Towards Data Science</a>.</li>
+</ul>
+
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>K-means is an intuitive algorithm for clustering data.</p>
+</li>
+    
+    <li><p>K-means has various advantages but can be computationally intensive.</p>
+</li>
+    
+    <li><p>Apparent clusters in high-dimensional data should always be treated with some scepticism.</p>
+</li>
+    
+    <li><p>Silhouette width and bootstrapping can be used to assess how well our clustering algorithm has worked.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../05-factor-analysis/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../07-hierarchical/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <hr/>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2024 by <a href="../CITATION">the authors</a>.
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	
+	<a href="/edit//_episodes_rmd/06-k-means.Rmd" data-checker-ignore>Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:alan.ocallaghan@outlook.com">Contact</a>
+    </div>
+  </div>
+  <p class="text-muted text-right">
+    <small><i>Using <a href="https://github.com/carpentries/carpentries-theme/">The Carpentries theme</a> &mdash; Site last built on: 2024-02-27 09:14:21 +0000.</i></small>
+  </p>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { fonts: ["TeX"] }
+      });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  </body>
+</html>

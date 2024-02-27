@@ -1,0 +1,1506 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2024-02-27 09:14:21 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+     <link rel="stylesheet" type="text/css" href="../assets/css/fonts.css" />
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/katex.min.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/incubator/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/incubator/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/incubator/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/incubator/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/incubator/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/incubator/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/incubator/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/incubator/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/incubator/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries Incubator - High dimensional statistics with R"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/incubator/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/incubator/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/incubator/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/incubator/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/incubator/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+  <title>
+  Principal component analysis &ndash; High dimensional statistics with R
+  </title>
+
+  </head>
+  <body>
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body alpha">
+    This lesson is in the early stages of development (Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="../index.html" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/incubator-logo-blue.svg" alt="The Carpentries Incubator logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="../01-introduction-to-high-dimensional-data/index.html">Introduction to high-dimensional data</a></li>
+            
+            
+            <li><a href="../02-high-dimensional-regression/index.html">Regression with many outcomes</a></li>
+            
+            
+            <li><a href="../03-regression-regularisation/index.html">Regularised regression</a></li>
+            
+            
+            <li><a href="../04-principal-component-analysis/index.html">Principal component analysis</a></li>
+            
+            
+            <li><a href="../05-factor-analysis/index.html">Factor analysis</a></li>
+            
+            
+            <li><a href="../06-k-means/index.html">K-means</a></li>
+            
+            
+            <li><a href="../07-hierarchical/index.html">Hierarchical clustering</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference.html">Reference</a></li>
+            
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+            
+            <li><a href="../slides/index.html">Lecture slides</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	
+	<li><a href="/edit//_episodes_rmd/04-principal-component-analysis.Rmd" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+      
+
+
+<div class="alert alert-info text-center" role="alert">
+  This lesson is part of
+  <a href="https://github.com/carpentries-incubator/proposals/#the-carpentries-incubator" data-checker-ignore>
+    The Carpentries Incubator</a>, a place to share and use each other's
+  Carpentries-style lessons. <strong>This lesson has not been reviewed by and is
+  not endorsed by The Carpentries</strong>.
+</div>
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../03-regression-regularisation/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">High dimensional statistics with R</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../05-factor-analysis/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Principal component analysis</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 90 min
+      <br/>
+      <strong>Exercises:</strong> 30 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>What is principal component analysis (PCA) and when can it be used?</p>
+</li>
+	
+	<li><p>How can we perform a PCA in R?</p>
+</li>
+	
+	<li><p>How many principal components are needed to explain a significant amount of variation in the data?</p>
+</li>
+	
+	<li><p>How to interpret the output of PCA using loadings and principal components?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Identify situations where PCA can be used to answer research questions using high-dimensional data.</p>
+</li>
+	
+	<li><p>Perform a PCA on high-dimensional data.</p>
+</li>
+	
+	<li><p>Select the appropriate number of principal components.</p>
+</li>
+	
+	<li><p>Interpret the output of PCA.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Imagine a dataset which contains many variables ($p$), close to the total number
+of rows in the dataset ($n$). Some of these variables are highly correlated and
+several form groups which you might expect to represent the same overall effect.
+Such datasets are challenging to analyse for several reasons, with the main
+problem being how to reduce dimensionality in the dataset while retaining the
+important features.</p>
+
+<p>In this episode we will explore <em>principal component analysis</em> (PCA) as a
+popular method of analysing high-dimensional data. PCA is an unsupervised
+statistical method which allows large datasets of correlated variables to be
+summarised into smaller numbers of uncorrelated principal components that
+explain most of the variability in the original dataset. This is useful,
+for example, during initial data exploration as it allows correlations among
+data points to be observed and principal components to be calculated for
+inclusion in further analysis (e.g. linear regression). An example of PCA might
+be reducing several variables representing aspects of patient health
+(blood pressure, heart rate, respiratory rate) into a single feature.</p>
+
+<h1 id="advantages-and-disadvantages-of-pca">Advantages and disadvantages of PCA</h1>
+
+<p>Advantages:</p>
+<ul>
+  <li>It is a relatively easy to use and popular method.</li>
+  <li>Various software/packages are available to run a PCA.</li>
+  <li>The calculations used in a PCA are easy to understand for statisticians and
+non-statisticians alike.</li>
+</ul>
+
+<p>Disadvantages:</p>
+<ul>
+  <li>It assumes that variables in a dataset are correlated.</li>
+  <li>It is sensitive to the scale at which input variables are measured.
+If input variables are measured at different scales, the variables
+with large variance relative to the scale of measurement will have
+greater impact on the principal components relative to variables with smaller
+variance. In many cases, this is not desirable.</li>
+  <li>It is not robust against outliers, meaning that very large or small data
+points can have a large effect on the output of the PCA.</li>
+  <li>PCA assumes a linear relationship between variables which is not always a
+realistic assumption.</li>
+  <li>It can be difficult to interpret the meaning of the principal components,
+especially when including them in further analyses (e.g. inclusion in a linear
+regression).</li>
+</ul>
+
+<blockquote class="callout">
+  <h2 id="supervised-vs-unsupervised-learning">Supervised vs unsupervised learning</h2>
+  <p>Most statistical problems fall into one of two categories: supervised or
+unsupervised learning. 
+Examples of supervised learning problems include linear regression and include
+analyses in which each observation has both at least one independent variable
+($x$) as well as a dependent variable ($y$). In supervised learning problems
+the aim is to predict the value of the response given future observations or
+to understand the relationship between the dependent variable and the
+predictors. In unsupervised learning for each observation there is no
+dependent variable ($y$), but only 
+a series of independent variables. In this situation there is no need for
+prediction, as there is no dependent variable to predict (hence the analysis
+can be thought as being unsupervised by the dependent variable). Instead
+statistical analysis can be used to understand relationships between the
+independent variables or between observations themselves. Unsupervised
+learning problems often occur when analysing high-dimensional datasets in
+which there is no obvious dependent variable to be
+predicted, but the analyst would like to understand more about patterns
+between groups of observations or reduce dimensionality so that a supervised
+learning process may be used.</p>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="challenge-1">Challenge 1</h2>
+
+  <p>Descriptions of three datasets and research questions are given below. For
+which of these might PCA be considered a useful tool for analysing data so
+that the research questions may be addressed?</p>
+
+  <ol>
+    <li>An epidemiologist has data collected from different patients admitted to
+hospital with infectious respiratory disease. They would like to determine
+whether length of stay in hospital differs in patients with different
+respiratory diseases.</li>
+    <li>An online retailer has collected data on user interactions with its online
+app and has information on the number of times each user interacted with
+the app, what products they viewed per interaction, and the type and cost
+of these products. The retailer would like to use this information to
+predict whether or not a user will be interested in a new product.</li>
+    <li>A scientist has assayed gene expression levels in 1000 cancer patients and
+has data from probes targeting different genes in tumour samples from
+patients. She would like to create new variables representing relative
+abundance of different groups of genes to i) find out if genes form
+subgroups based on biological function and ii) use these new variables
+in a linear regression examining how gene expression varies with disease
+severity.</li>
+    <li>All of the above.</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+
+    <p>In the first case, a regression model would be more suitable; perhaps a
+survival model.
+In the second, again a regression model, likely linear or logistic, would
+be more suitable.
+In the third example, PCA can help to identify modules of correlated
+features that explain a large amount of variation within the data.</p>
+
+    <p>Therefore the answer here is 3.</p>
+  </blockquote>
+</blockquote>
+
+<h1 id="what-is-a-principal-component">What is a principal component?</h1>
+
+<p>The first principal component is the direction of the data along which the
+observations vary the most. The second principal component is the direction of
+the data along which the observations show the next highest amount of variation.
+For example, Figure 1 shows biodiversity index versus percentage area left
+fallow for 50 farms in southern England. The red line represents the first
+principal component direction of the data, which is the direction along which
+there is greatest variability in the data. Projecting points onto this line
+(i.e. by finding the location on the line closest to the point) would give a
+vector of points with the greatest possible variance. The next highest amount
+of variability in the data is represented by the line perpendicular to first
+regression line which represents the second principal component (green line).</p>
+
+<p>The second principal component is a linear combination of the variables that
+is uncorrelated with the first principal component. There are as many principal
+components as there are variables in your dataset, but as we’ll see, some are
+more useful at explaining your data than others. By definition, the first
+principal component explains more variation than other principal components.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/bio_index_vs_percentage_fallow.png" alt="Alt" />
+<p class="caption">Cap</p>
+</div>
+
+<p>The animation below illustrates how principal components are calculated from
+data. You can imagine that the black line is a rod and each red dashed line is
+a spring. The energy of each spring is proportional to its squared length. The
+direction of the first principal component is the one that minimises the total
+energy of all of the springs. In the animation below, the springs pull the rod,
+finding the direction of the first principal component when they reach
+equilibrium. We then use the length of the springs from the rod as the first
+principal component.
+This is explained in more detail on <a href="https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues">this Q&amp;A website</a>.</p>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/pendulum.gif" alt="Alt" />
+<p class="caption">Cap</p>
+</div>
+
+<p>The first principal component’s scores ($Z_1$) are calculated using the equation:</p>
+
+\[Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p\]
+
+<p>$X_1…X_p$ represents variables in the original dataset and $a_{11}…a_{p1}$
+represent principal component loadings, which can be thought of as the degree to
+which each variable contributes to the calculation of the principal component.
+We will come back to principal component scores and loadings further below.</p>
+
+<h1 id="how-do-we-perform-a-pca">How do we perform a PCA?</h1>
+
+<h2 id="a-prostate-cancer-dataset">A prostate cancer dataset</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">prostate</code> dataset represents data from 97
+men who have prostate cancer. The data come from a study which examined the
+correlation between the level of prostate specific antigen and a number of
+clinical measures in men who were about to receive a radical prostatectomy.
+The data have 97 rows and 9 columns.</p>
+
+<p>Columns include:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">lcavol</code> (log-transformed cancer volume),</li>
+  <li><code class="language-plaintext highlighter-rouge">lweight</code> (log-transformed prostate weight),</li>
+  <li><code class="language-plaintext highlighter-rouge">lbph</code> (log-transformed amount of benign prostate enlargement),</li>
+  <li><code class="language-plaintext highlighter-rouge">svi</code> (seminal vesicle invasion),</li>
+  <li><code class="language-plaintext highlighter-rouge">lcp</code> (log-transformed capsular penetration; amount of spread of cancer in
+ outer walls of prostate),</li>
+  <li><code class="language-plaintext highlighter-rouge">gleason</code> (Gleason score; grade of cancer cells),</li>
+  <li><code class="language-plaintext highlighter-rouge">pgg45</code> (percentage Gleason scores 4 or 5),</li>
+  <li><code class="language-plaintext highlighter-rouge">lpsa</code> (log-tranformed prostate specific antigen; level of PSA in blood).</li>
+  <li><code class="language-plaintext highlighter-rouge">age</code> (patient age in years).</li>
+</ul>
+
+<p>Here we will calculate principal component scores for each of the rows in this
+dataset, using five principal components (one for each variable included in the
+PCA). We will include five clinical variables in our PCA, each of the continuous
+variables in the prostate dataset, so that we can create fewer variables
+representing clinical markers of cancer progression. Standard PCAs are carried
+out using continuous variables only.</p>
+
+<p>First, we will examine the <code class="language-plaintext highlighter-rouge">prostate</code> dataset (originally part of the
+<strong><code class="language-plaintext highlighter-rouge">lasso2</code></strong> package):</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">prostate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/prostate.rds"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">head</span><span class="p">(</span><span class="n">prostate</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  X     lcavol  lweight age      lbph svi       lcp gleason pgg45       lpsa
+1 1 -0.5798185 2.769459  50 -1.386294   0 -1.386294       6     0 -0.4307829
+2 2 -0.9942523 3.319626  58 -1.386294   0 -1.386294       6     0 -0.1625189
+3 3 -0.5108256 2.691243  74 -1.386294   0 -1.386294       7    20 -0.1625189
+4 4 -1.2039728 3.282789  58 -1.386294   0 -1.386294       6     0 -0.1625189
+5 5  0.7514161 3.432373  62 -1.386294   0 -1.386294       6     0  0.3715636
+6 6 -1.0498221 3.228826  50 -1.386294   0 -1.386294       6     0  0.7654678
+</code></pre></div></div>
+
+<p>Note that each row of the dataset represents a single patient.</p>
+
+<p>We will create a subset of the data including only the clinical variables we
+want to use in the PCA.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pros2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prostate</span><span class="p">[,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"lcavol"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lweight"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lbph"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lcp"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lpsa"</span><span class="p">)]</span><span class="w">
+</span><span class="n">head</span><span class="p">(</span><span class="n">pros2</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      lcavol  lweight      lbph       lcp       lpsa
+1 -0.5798185 2.769459 -1.386294 -1.386294 -0.4307829
+2 -0.9942523 3.319626 -1.386294 -1.386294 -0.1625189
+3 -0.5108256 2.691243 -1.386294 -1.386294 -0.1625189
+4 -1.2039728 3.282789 -1.386294 -1.386294 -0.1625189
+5  0.7514161 3.432373 -1.386294 -1.386294  0.3715636
+6 -1.0498221 3.228826 -1.386294 -1.386294  0.7654678
+</code></pre></div></div>
+
+<h2 id="do-we-need-to-standardise-the-data">Do we need to standardise the data?</h2>
+
+<p>Now we compare the variances between variables in the dataset.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apply</span><span class="p">(</span><span class="n">pros2</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">var</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  lcavol  lweight     lbph      lcp     lpsa 
+1.389157 0.246642 2.104840 1.955102 1.332476 
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">))</span><span class="w">
+</span><span class="n">hist</span><span class="p">(</span><span class="n">pros2</span><span class="o">$</span><span class="n">lweight</span><span class="p">,</span><span class="w"> </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"FD"</span><span class="p">)</span><span class="w">
+</span><span class="n">hist</span><span class="p">(</span><span class="n">pros2</span><span class="o">$</span><span class="n">lbph</span><span class="p">,</span><span class="w"> </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"FD"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-var-hist-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
+
+<p>Note that variance is greatest for <code class="language-plaintext highlighter-rouge">lbph</code> and lowest for <code class="language-plaintext highlighter-rouge">lweight</code>. It is clear
+from this output that we need to scale each of these variables before including
+them in a PCA analysis to ensure that differences in variances between variables
+do not drive the calculation of principal components. In this example we
+standardise all five variables to have a mean of 0 and a standard
+deviation of 1.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-2">Challenge 2</h2>
+
+  <p>Why might it be necessary to standardise variables before performing a PCA?<br />
+Can you think of datasets where it might not be necessary to standardise
+variables?
+Discuss.</p>
+
+  <ol>
+    <li>To make the results of the PCA interesting.</li>
+    <li>If you want to ensure that variables with different ranges of values
+contribute equally to analysis.</li>
+    <li>To allow the feature matrix to be calculated faster, especially in cases
+where there are a lot of input variables.</li>
+    <li>To allow both continuous and categorical variables to be included in the PCA.</li>
+    <li>All of the above.</li>
+  </ol>
+
+  <blockquote class="solution">
+    <h2 id="solution-1">Solution</h2>
+
+    <p>2.
+Scaling the data isn’t guaranteed to make the results more interesting.
+It also won’t affect how quickly the output will be calculated, whether
+continuous and categorical variables are present or not.</p>
+
+    <p>It is done to ensure that all features have equal weighting in the resulting
+PCs.</p>
+
+    <p>You may not want to standardise datasets which contain continuous variables
+all measured on the same scale (e.g. gene expression data or RNA sequencing
+data). In this case, variables with very little sample-to-sample variability
+may represent only random noise, and standardising the data would give
+these extra weight in the PCA.</p>
+
+  </blockquote>
+</blockquote>
+
+<p>Next we will carry out a PCA using the <code class="language-plaintext highlighter-rouge">prcomp()</code> function in base R. The input
+data (<code class="language-plaintext highlighter-rouge">pros2</code>) is in the form of a matrix. Note that the <code class="language-plaintext highlighter-rouge">scale = TRUE</code> argument
+is used to standardise the variables to have a mean 0 and standard deviation of
+1.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pca.pros</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prcomp</span><span class="p">(</span><span class="n">pros2</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span><span class="n">pca.pros</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Standard deviations (1, .., p=5):
+[1] 1.5648756 1.1684678 0.7452990 0.6362941 0.4748755
+
+Rotation (n x k) = (5 x 5):
+              PC1         PC2         PC3         PC4         PC5
+lcavol  0.5616465 -0.23664270  0.01486043  0.22708502 -0.75945046
+lweight 0.2985223  0.60174151 -0.66320198 -0.32126853 -0.07577123
+lbph    0.1681278  0.69638466  0.69313753  0.04517286 -0.06558369
+lcp     0.4962203 -0.31092357  0.26309227 -0.72394666  0.25253840
+lpsa    0.5665123 -0.01680231 -0.10141557  0.56487128  0.59111493
+</code></pre></div></div>
+
+<h1 id="how-many-principal-components-do-we-need">How many principal components do we need?</h1>
+
+<p>We have calculated one principal component for each variable in the original
+dataset. How do we choose how many of these are necessary to represent the true
+variation in the data, without having extra components that are unnecessary?</p>
+
+<p>Let’s look at the relative importance of each component using <code class="language-plaintext highlighter-rouge">summary</code>.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">summary</span><span class="p">(</span><span class="n">pca.pros</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Importance of components:
+                          PC1    PC2    PC3     PC4    PC5
+Standard deviation     1.5649 1.1685 0.7453 0.63629 0.4749
+Proportion of Variance 0.4898 0.2731 0.1111 0.08097 0.0451
+Cumulative Proportion  0.4898 0.7628 0.8739 0.95490 1.0000
+</code></pre></div></div>
+
+<p>This returns the proportion of variance in the data explained by each of the
+(p = 5) principal components. In this example, PC1 explains approximately
+49% of variance in the data, PC2 27% of variance,
+PC3 a further 11%, PC4 approximately 8% and PC5
+around 5%.</p>
+
+<p>Let us visualise this. A plot of the amount of variance accounted for by each PC
+is also called a scree plot. Note that the amount of variance accounted for by a principal
+component is also called eigenvalue and thus the y-axis in scree plots if often
+labelled “eigenvalue”.</p>
+
+<p>Often, scree plots show a characteristic pattern where initially, the variance drops
+rapidly with each additional principal component. But then there is an “elbow” after which the
+variance decreases more slowly. The total variance explained up to the elbow point is sometimes
+interpreted as structural variance that is relevant and should be retained versus noise
+which may be discarded after the elbow.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># calculate variance explained</span><span class="w">
+</span><span class="n">varExp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">pca.pros</span><span class="o">$</span><span class="n">sdev</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">pca.pros</span><span class="o">$</span><span class="n">sdev</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span><span class="c1"># calculate percentage variance explained using output from the PCA</span><span class="w">
+</span><span class="n">varDF</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">Dimensions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">length</span><span class="p">(</span><span class="n">varExp</span><span class="p">),</span><span class="w"> </span><span class="n">varExp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">varExp</span><span class="p">)</span><span class="w">
+</span><span class="c1"># create new dataframe with five rows, one for each principal component</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">varDF</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-vardf-plot-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
+
+<p>The screeplot shows that the first principal component explains most of the
+variance in the data (&gt;50%) and each subsequent principal component explains
+less and less of the total variance. The first two principal components
+explain &gt;70% of variance in the data. But what do these two principal
+components mean?</p>
+
+<h2 id="what-are-loadings-and-principal-component-scores">What are loadings and principal component scores?</h2>
+
+<p>Most PCA functions will produce two main output matrices: the
+<em>principal component scores</em> and the <em>loadings</em>. The matrix of principal component scores
+has as many rows as there were observations in the input matrix. These
+scores are what is usually visualised or used for down-stream analyses.
+The matrix of loadings (also called rotation matrix) has as many rows as there
+are features in the original data. It contains information about how the
+(usually centered and scaled) original data relate to the PC scores.</p>
+
+<p>When calling a PCA object generated with <code class="language-plaintext highlighter-rouge">prcomp()</code>, the loadings are printed by default:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pca.pros</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Standard deviations (1, .., p=5):
+[1] 1.5648756 1.1684678 0.7452990 0.6362941 0.4748755
+
+Rotation (n x k) = (5 x 5):
+              PC1         PC2         PC3         PC4         PC5
+lcavol  0.5616465 -0.23664270  0.01486043  0.22708502 -0.75945046
+lweight 0.2985223  0.60174151 -0.66320198 -0.32126853 -0.07577123
+lbph    0.1681278  0.69638466  0.69313753  0.04517286 -0.06558369
+lcp     0.4962203 -0.31092357  0.26309227 -0.72394666  0.25253840
+lpsa    0.5665123 -0.01680231 -0.10141557  0.56487128  0.59111493
+</code></pre></div></div>
+
+<p>The principal component scores are obtained by carrying out matrix multiplication of the
+(usually centered and scaled) original data times the loadings. The following
+callout demonstrates this.</p>
+
+<blockquote class="callout">
+  <h2 id="computing-a-pca-by-hand">Computing a PCA “by hand”</h2>
+  <p>The rotation matrix obtained in a PCA is identical to the eigenvectors
+of the covariance matrix of the data. Multiplying these with the (centered and scaled)
+data yields the PC scores:</p>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pros2.scaled</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">scale</span><span class="p">(</span><span class="n">pros2</span><span class="p">)</span><span class="w"> </span><span class="c1"># centre and scale the Prostate data</span><span class="w">
+</span><span class="n">pros2.cov</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cov</span><span class="p">(</span><span class="n">pros2.scaled</span><span class="p">)</span><span class="w">   </span><span class="c1">#generate covariance matrix</span><span class="w">
+</span><span class="n">pros2.cov</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>           lcavol   lweight         lbph          lcp      lpsa
+lcavol  1.0000000 0.1941283  0.027349703  0.675310484 0.7344603
+lweight 0.1941283 1.0000000  0.434934636  0.100237795 0.3541204
+lbph    0.0273497 0.4349346  1.000000000 -0.006999431 0.1798094
+lcp     0.6753105 0.1002378 -0.006999431  1.000000000 0.5488132
+lpsa    0.7344603 0.3541204  0.179809410  0.548813169 1.0000000
+</code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pros2.eigen</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">eigen</span><span class="p">(</span><span class="n">pros2.cov</span><span class="p">)</span><span class="w"> </span><span class="c1"># preform eigen decomposition</span><span class="w">
+</span><span class="n">pros2.eigen</span><span class="w"> </span><span class="c1"># The slot $vectors = rotation of the PCA</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eigen() decomposition
+$values
+[1] 2.4488355 1.3653171 0.5554705 0.4048702 0.2255067
+
+$vectors
+           [,1]        [,2]        [,3]        [,4]        [,5]
+[1,] -0.5616465  0.23664270  0.01486043  0.22708502  0.75945046
+[2,] -0.2985223 -0.60174151 -0.66320198 -0.32126853  0.07577123
+[3,] -0.1681278 -0.69638466  0.69313753  0.04517286  0.06558369
+[4,] -0.4962203  0.31092357  0.26309227 -0.72394666 -0.25253840
+[5,] -0.5665123  0.01680231 -0.10141557  0.56487128 -0.59111493
+</code></pre></div>  </div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># generate PC scores by by hand, using matrix multiplication</span><span class="w">
+</span><span class="n">my.pros2.pcs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pros2.scaled</span><span class="w"> </span><span class="o">%*%</span><span class="w"> </span><span class="n">pros2.eigen</span><span class="o">$</span><span class="n">vectors</span><span class="w">
+</span><span class="c1"># compare results</span><span class="w">
+</span><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">pca.pros</span><span class="o">$</span><span class="n">x</span><span class="p">[,</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"prcomp()"</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">my.pros2.pcs</span><span class="p">[,</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">],</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"\"By hand\""</span><span class="p">,</span><span class="w"> </span><span class="n">xlab</span><span class="o">=</span><span class="s2">"PC1"</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="o">=</span><span class="s2">"PC2"</span><span class="p">)</span><span class="w">
+</span><span class="n">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="o">=</span><span class="m">2</span><span class="p">)</span><span class="w">
+</span></code></pre></div>  </div>
+
+  <div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-pca-by-hand-1.png" alt="plot of chunk pca-by-hand" width="432" />
+<p class="caption">plot of chunk pca-by-hand</p>
+</div>
+
+  <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">))</span><span class="w">
+</span><span class="c1"># Note that the axis orientations may be swapped but the relative positions of the dots should be the same in both plots.</span><span class="w">
+</span></code></pre></div>  </div>
+</blockquote>
+
+<p>One way to visualise how principal components relate to the original variables
+is by creating a biplot. Biplots usually show two principal components plotted
+against each other. Observations are sometimes labelled with numbers. The
+contribution of each original variable to the principal components displayed
+is then shown by arrows (generated from those two columns of the rotation matrix that
+correspond to the principal components shown). NB, there are several biplot
+implementations in different R libraries. It is thus a good idea to specify
+the desired package when calling <code class="language-plaintext highlighter-rouge">biplot()</code>. A biplot of the first two principal
+components can be generated as follows:</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="o">::</span><span class="n">biplot</span><span class="p">(</span><span class="n">pca.pros</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-0.3</span><span class="p">,</span><span class="w"> </span><span class="m">0.3</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-stats-biplot-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
+
+<p>This biplot shows the position of each patient on a 2-dimensional plot where
+loadings can be observed via the red arrows associated with each of
+the variables. The variables <code class="language-plaintext highlighter-rouge">lpsa</code>, <code class="language-plaintext highlighter-rouge">lcavol</code> and <code class="language-plaintext highlighter-rouge">lcp</code> are associated with
+positive values on PC1 while positive values on PC2 are associated with the
+variables <code class="language-plaintext highlighter-rouge">lbph</code> and <code class="language-plaintext highlighter-rouge">lweight</code>. The length of the arrows indicates how much
+each variable contributes to the calculation of each principal component.</p>
+
+<p>The left and bottom axes show normalised principal component scores. The axes
+on the top and right of the plot are used to interpret the loadings, where
+loadings are scaled by the standard deviation of the principal components
+(<code class="language-plaintext highlighter-rouge">pca.pros$sdev</code>) times the square root the number of observations.</p>
+
+<p>Finally, you need to know that PC scores and rotations may have different slot names, 
+depending on the PCA implementation you use. Here are some examples:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>library::command()</th>
+      <th>PC scores</th>
+      <th>Loadings</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>stats::prcomp()</td>
+      <td>$x</td>
+      <td>$rotation</td>
+    </tr>
+    <tr>
+      <td>stats::princomp()</td>
+      <td>$scores</td>
+      <td>$loadings</td>
+    </tr>
+    <tr>
+      <td>PCAtools::pca()</td>
+      <td>$rotated</td>
+      <td>$loadings</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="using-pca-to-analyse-gene-expression-data">Using PCA to analyse gene expression data</h1>
+
+<p>In this section you will carry out your own PCA using the Bioconductor package <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> 
+applied to gene expression data to explore the topics covered above. 
+<strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> provides functions that can be used to explore data via PCA and
+produce useful figures and analysis tools. The package is made for the somewhat unusual
+Bioconductor style of data tables (observations in columns, features in rows). When
+using Bioconductor data sets and <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong>, it is thus not necessary to transpose the data.</p>
+
+<h2 id="a-gene-expression-dataset-of-cancer-patients">A gene expression dataset of cancer patients</h2>
+
+<p>The dataset we will be analysing in this lesson includes two subsets of data:</p>
+<ul>
+  <li>a matrix of gene expression data showing microarray results for different
+probes used to examine gene expression profiles in 91 different breast
+cancer patient samples.</li>
+  <li>metadata associated with the gene expression results detailing information
+from patients from whom samples were taken.</li>
+</ul>
+
+<p>Let’s load the <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> package and the data.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"PCAtools"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We will first load the microarray breast cancer gene expression data and
+associated metadata, downloaded from the
+<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990">Gene Expression Omnibus</a>.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s2">"SummarizedExperiment"</span><span class="p">)</span><span class="w">
+</span><span class="n">cancer</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readRDS</span><span class="p">(</span><span class="n">here</span><span class="o">::</span><span class="n">here</span><span class="p">(</span><span class="s2">"data/cancer_expression.rds"</span><span class="p">))</span><span class="w">
+</span><span class="n">mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">assay</span><span class="p">(</span><span class="n">cancer</span><span class="p">)</span><span class="w">
+</span><span class="n">metadata</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">colData</span><span class="p">(</span><span class="n">cancer</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">View</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span><span class="w">
+</span><span class="c1">#nrow=22215 probes</span><span class="w">
+</span><span class="c1">#ncol=91 samples</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">View</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w">
+</span><span class="c1">#nrow=91</span><span class="w">
+</span><span class="c1">#ncol=8</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">all</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">rownames</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] TRUE
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Check that column names and row names match</span><span class="w">
+</span><span class="c1">#If they do should return TRUE</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The ‘mat’ variable contains a matrix of gene expression profiles for each sample.
+Rows represent gene expression measurements and columns represent samples. The
+‘metadata’ variable contains the metadata associated with the gene expression
+data including the name of the study from which data originate, the age of the
+patient from which the sample was taken, whether or not an oestrogen receptor
+was involved in their cancer and the grade and size of the cancer for each
+sample (represented by rows).</p>
+
+<p>Microarray data are difficult to analyse for several reasons. Firstly, 
+they are typically high-dimensional and therefore are subject to the same
+difficulties associated with analysing high dimensional data outlined above
+(i.e. <em>p</em>&gt;<em>n</em>, large numbers of rows, multiple possible response variables,
+curse of dimensionality). Secondly, formulating a research question using
+microarray data can be difficult, especially if not much is known a priori
+about which genes code for particular phenotypes of interest. Finally,
+exploratory analysis, which can be used to help formulate research questions
+and display relationships, is difficult using microarray data due to the number
+of potentially interesting response variables (i.e. expression data from probes
+targeting different genes).</p>
+
+<p>If researchers hypothesise that groups of genes (e.g. biological pathways) may
+be associated with different phenotypic characteristics of cancers (e.g.
+histologic grade, tumour size), using statistical methods that reduce the
+number of columns in the microarray matrix to a smaller number of dimensions
+representing groups of genes would help visualise the data and address
+research questions regarding the effect different groups of genes have on
+disease progression.</p>
+
+<p>Using the <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> we will apply a PCA to the cancer
+gene expression data, plot the amount of variation in the data explained by
+each principal component and plot the most important principal components
+against each other as well as understanding what each principal component
+represents.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-3">Challenge 3</h2>
+
+  <p>Apply a PCA to the cancer gene expression data using the <code class="language-plaintext highlighter-rouge">pca()</code> function from
+<strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong>. You can use the help files in PCAtools to find out about the <code class="language-plaintext highlighter-rouge">pca()</code>
+function (type <code class="language-plaintext highlighter-rouge">help("pca")</code> or <code class="language-plaintext highlighter-rouge">?pca</code> in R).</p>
+
+  <p>Let us assume we only care about the principal components accounting for the top
+80% of the variance in the dataset. Use the <code class="language-plaintext highlighter-rouge">removeVar</code> argument in <code class="language-plaintext highlighter-rouge">pca()</code> to remove
+the PCs accounting for the bottom 20%.</p>
+
+  <p>As in the example using prostate data above, examine the first 5 rows and
+columns of rotated data and loadings from your PCA.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-2">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pca</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">)</span><span class="w">
+</span><span class="c1">#Many PCs explain a very small amount of the total variance in the data</span><span class="w">
+</span><span class="c1">#Remove the lower 20% of PCs with lower variance</span><span class="w">
+</span><span class="n">pc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pca</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">removeVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">)</span><span class="w">
+</span><span class="c1">#Explore other arguments provided in pca</span><span class="w">
+</span><span class="n">pc</span><span class="o">$</span><span class="n">rotated</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">]</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>               PC1        PC2        PC3        PC4        PC5
+GSM65752 -29.79105  43.866788   3.255903 -40.663138 15.3427597
+GSM65753 -37.33911 -15.244788  -4.948201  -6.182795  9.4725870
+GSM65755 -29.41462   7.846858 -22.880525 -16.149669 22.3821009
+GSM65757 -33.35286   1.343573 -22.579568   2.200329 15.0082786
+GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pc</span><span class="o">$</span><span class="n">loadings</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">]</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                    PC1          PC2          PC3        PC4          PC5
+206378_at -0.0024680993 -0.053253543 -0.004068209 0.04068635  0.015078376
+205916_at -0.0051557973  0.001315022 -0.009836545 0.03992371  0.038552048
+206799_at  0.0005684075 -0.050657061 -0.009515725 0.02610233  0.006208078
+205242_at  0.0130742288  0.028876408  0.007655420 0.04449641 -0.001061205
+206509_at  0.0019031245 -0.054698479 -0.004667356 0.01566468  0.001306807
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">which.max</span><span class="p">(</span><span class="n">pc</span><span class="o">$</span><span class="n">loadings</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">])</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 49
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pc</span><span class="o">$</span><span class="n">loadings</span><span class="p">[</span><span class="m">49</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                   PC1          PC2         PC3          PC4          PC5
+215281_x_at 0.03752947 -0.007369379 0.006243377 -0.008242589 -0.004783206
+                   PC6          PC7         PC8         PC9          PC10
+215281_x_at 0.01194012 -0.002822407 -0.01216792 0.001137451 -0.0009056616
+                   PC11          PC12       PC13         PC14          PC15
+215281_x_at -0.00196034 -0.0001676705 0.00699201 -0.002897995 -0.0005044658
+                     PC16        PC17         PC18        PC19         PC20
+215281_x_at -0.0004547916 0.002277035 -0.006199078 0.002708574 -0.006217326
+                  PC21        PC22        PC23        PC24        PC25
+215281_x_at 0.00516745 0.007625912 0.003434534 0.005460017 0.001477415
+                   PC26         PC27          PC28         PC29       PC30
+215281_x_at 0.002350428 0.0007183107 -0.0006195515 0.0006349803 0.00413627
+                    PC31        PC32         PC33         PC34         PC35
+215281_x_at 0.0001322301 0.003182956 -0.002123462 -0.001042769 -0.001729869
+                    PC36        PC37        PC38          PC39        PC40
+215281_x_at -0.006556369 0.005766949 0.002537993 -0.0002846248 -0.00018195
+                     PC41        PC42         PC43          PC44         PC45
+215281_x_at -0.0007970789 0.003888626 -0.008210075 -0.0009570174 0.0007998935
+                     PC46         PC47        PC48        PC49         PC50
+215281_x_at -0.0006931441 -0.005717836 0.005189649 0.002591188 0.0007810259
+                   PC51        PC52         PC53         PC54        PC55
+215281_x_at 0.006610815 0.005371134 -0.001704796 -0.002286475 0.001365417
+                   PC56         PC57        PC58         PC59         PC60
+215281_x_at 0.003529892 0.0003375981 0.009895923 -0.001564423 -0.006989092
+                   PC61        PC62         PC63          PC64        PC65
+215281_x_at 0.000971273 0.001345406 -0.003575415 -0.0005588113 0.006516669
+                    PC66        PC67       PC68         PC69        PC70
+215281_x_at -0.008770186 0.006699641 0.01284606 -0.005041574 0.007845653
+                   PC71        PC72         PC73         PC74        PC75
+215281_x_at 0.003964697 -0.01104367 -0.001506485 -0.001583824 0.003798343
+                   PC76         PC77         PC78         PC79          PC80
+215281_x_at 0.004817252 -0.001290033 -0.004402926 -0.003440367 -0.0001646198
+                   PC81        PC82          PC83         PC84        PC85
+215281_x_at 0.003923775 0.003179556 -0.0004388192 9.664648e-05 0.003501335
+                   PC86        PC87          PC88         PC89         PC90
+215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
+                   PC91
+215281_x_at -0.00383085
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">which.max</span><span class="p">(</span><span class="n">pc</span><span class="o">$</span><span class="n">loadings</span><span class="p">[,</span><span class="w"> </span><span class="m">2</span><span class="p">])</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 27
+</code></pre></div>    </div>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pc</span><span class="o">$</span><span class="n">loadings</span><span class="p">[</span><span class="m">27</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                   PC1        PC2          PC3        PC4          PC5
+211122_s_at 0.01649085 0.05090275 -0.003378728 0.05178144 -0.003742393
+                    PC6         PC7          PC8        PC9        PC10
+211122_s_at -0.00543753 -0.03522848 -0.006333521 0.01575401 0.004732546
+                   PC11        PC12        PC13        PC14       PC15
+211122_s_at 0.004687599 -0.01349892 0.005207937 -0.01731898 0.02323893
+                   PC16       PC17        PC18       PC19        PC20
+211122_s_at -0.02069509 0.01477432 0.005658529 0.02667751 -0.01333503
+                    PC21        PC22       PC23         PC24        PC25
+211122_s_at -0.003254036 0.003572342 0.01416779 -0.005511838 -0.02582847
+                  PC26        PC27       PC28        PC29       PC30      PC31
+211122_s_at 0.03405417 -0.01797345 0.01826328 0.005123959 0.01300763 0.0127127
+                   PC32       PC33       PC34        PC35        PC36
+211122_s_at 0.002477672 0.01933214 0.03017661 -0.01935071 -0.01960912
+                   PC37        PC38        PC39        PC40       PC41
+211122_s_at 0.004411188 -0.01263612 -0.02019279 -0.01441513 -0.0310399
+                   PC42         PC43        PC44        PC45        PC46
+211122_s_at -0.02540426 0.0007949801 -0.00200195 -0.01748543 0.006881834
+                   PC47         PC48        PC49         PC50        PC51
+211122_s_at 0.006690698 -0.004000732 -0.02747926 -0.006963189 -0.02232332
+                     PC52        PC53        PC54        PC55       PC56
+211122_s_at -0.0003089115 -0.01604491 0.005649511 -0.02629501 0.02332997
+                   PC57        PC58        PC59        PC60         PC61
+211122_s_at -0.01248022 -0.01563245 0.005369433 0.009445262 -0.005209349
+                  PC62       PC63       PC64        PC65        PC66
+211122_s_at 0.01787645 0.01629425 0.02457665 -0.02384242 0.002814479
+                    PC67        PC68         PC69         PC70       PC71
+211122_s_at 0.0004584731 0.007939733 -0.009554166 -0.003967123 0.01825668
+                   PC72        PC73        PC74        PC75        PC76
+211122_s_at -0.00580374 -0.02236727 0.001295688 -0.02264723 0.006855855
+                   PC77         PC78       PC79         PC80        PC81
+211122_s_at 0.004995447 -0.008404118 0.00442875 -0.001027912 0.006104406
+                   PC82        PC83         PC84       PC85       PC86
+211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
+                    PC87        PC88        PC89        PC90        PC91
+211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.004593411
+</code></pre></div>    </div>
+    <p>The function <code class="language-plaintext highlighter-rouge">pca()</code> is used to perform PCA, and uses as inputs a matrix
+(<code class="language-plaintext highlighter-rouge">mat</code>) containing continuous numerical data
+in which rows are data variables and columns are samples, and <code class="language-plaintext highlighter-rouge">metadata</code>
+associated with the matrix in which rows represent samples and columns
+represent data variables. It has options to centre or scale the input data
+before a PCA is performed, although in this case gene expression data do
+not need to be transformed prior to PCA being carried out as variables are
+measured on a similar scale (values are comparable between rows). The output
+of the <code class="language-plaintext highlighter-rouge">pca()</code> function includes a lot of information such as loading values
+for each variable (<code class="language-plaintext highlighter-rouge">loadings</code>), principal component scores (<code class="language-plaintext highlighter-rouge">rotated</code>)
+and the amount of variance in the data
+explained by each principal component.</p>
+
+    <p>Rotated data shows principal
+component scores for each sample and each principal component. Loadings
+the contribution each variable makes to each principal component.</p>
+  </blockquote>
+</blockquote>
+
+<blockquote class="callout">
+  <h2 id="scaling-variables-for-pca">Scaling variables for PCA</h2>
+
+  <p>When running <code class="language-plaintext highlighter-rouge">pca()</code> above, we kept the default setting, <code class="language-plaintext highlighter-rouge">scale=FALSE</code>. That means genes with higher variation in
+their expression levels should have higher loadings, which is what we are interested in.
+Whether or not to scale variables for PCA will depend on your data and research question.</p>
+
+  <p>Note that this is different from normalising gene expression data. Gene expression
+data have to be normalised before donwstream analyses can be
+carried out. This is to reduce to effect technical and other potentially confounding
+factors. We assume that the expression data we use had been noralised previously.</p>
+</blockquote>
+
+<h2 id="choosing-how-many-components-are-important-to-explain-the-variance-in-the-data">Choosing how many components are important to explain the variance in the data</h2>
+
+<p>As in the example using the <code class="language-plaintext highlighter-rouge">prostate</code> dataset we can use a screeplot to
+compare the proportion of variance in the data explained by each principal
+component. This allows us to understand how much information in the microarray
+dataset is lost by projecting the observations onto the first few principal
+components and whether these principal components represent a reasonable
+amount of the variation. The proportion of variance explained should sum to one.</p>
+
+<p>There are no clear guidelines on how many principal components should be
+included in PCA: your choice depends on the total variability of the data and
+the size of the dataset. We often look at the ‘elbow’ on the screeplot as an
+indicator that the addition of principal components does not drastically
+contribute to explain the remaining variance or choose an arbitory cut off for
+proportion of variance explained.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-4">Challenge 4</h2>
+
+  <p>Using the <code class="language-plaintext highlighter-rouge">screeplot()</code> function in <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong>, create a screeplot to show 
+proportion of variance explained by each principal component. Explain the
+output of the screeplot in terms of proportion of variance in data explained
+by each principal component.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-3">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">screeplot</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="n">axisLabSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">titleLabSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-scree-ex-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
+    <p>Note that first principal component (PC1) explains more variation than
+other principal components (which is always the case in PCA). The screeplot
+shows that the first principal component only explains ~33% of the total
+variation in the micrarray data and many principal components explain very 
+little variation. The red line shows the cumulative percentage of explained
+variation with increasing principal components. Note that in this case 18
+principal components are needed to explain over 75% of variation in the
+data. This is not an unusual result for complex biological datasets
+including genetic information as clear relationships between groups are
+sometimes difficult to observe in the data. The screeplot shows that using
+a PCA we have reduced 91 predictors to 18 in order to explain a significant
+amount of variation in the data. See additional arguments in screeplot
+function for improving the appearance of the plot.</p>
+  </blockquote>
+</blockquote>
+
+<h2 id="investigating-the-principal-components">Investigating the principal components</h2>
+
+<p>Once the most important principal components have been identified using
+<code class="language-plaintext highlighter-rouge">screeplot()</code>, these can be explored in more detail by plotting principal components
+against each other and highlighting points based on variables in the metadata.
+This will allow any potential clustering of points according to demographic or
+phenotypic variables to be seen.</p>
+
+<p>We can use biplots to look for patterns in the output from the PCA. Note that there
+are two functions called <code class="language-plaintext highlighter-rouge">biplot()</code>, one in the package <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> and one in
+<strong><code class="language-plaintext highlighter-rouge">stats</code></strong>. Both functions produce biplots but their scales are different!</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-5">Challenge 5</h2>
+
+  <p>Create a biplot of the first two principal components from your PCA
+using <code class="language-plaintext highlighter-rouge">biplot()</code> function in <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong>. See <code class="language-plaintext highlighter-rouge">help("PCAtools::biplot")</code> for
+arguments and their meaning. For instance, <code class="language-plaintext highlighter-rouge">lab</code> or <code class="language-plaintext highlighter-rouge">colBy</code> may be useful.</p>
+
+  <p>Examine whether the data appear to form clusters. Explain your results.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-4">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">biplot</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="n">lab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">colby</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Grade'</span><span class="p">,</span><span class="w"> </span><span class="n">legendPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'top'</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-biplot-ex-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
+    <p>The biplot shows the position of patient samples relative to PC1 and PC2
+in a 2-dimensional plot. Note that two groups are apparent along the PC1
+axis according to expressions of different genes while no separation can be
+seem along the PC2 axis. Labels of patient samples are automatically added
+in the biplot. Labels for each sample are added by default, but can be
+removed if there is too much overlap in names. Note that <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> does
+not scale biplot in the same way as biplot using the stats package.</p>
+  </blockquote>
+</blockquote>
+
+<p>Let’s consider this biplot in more detail, and also display the loadings:</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge-6">Challenge 6</h2>
+
+  <p>Use <code class="language-plaintext highlighter-rouge">colby</code> and <code class="language-plaintext highlighter-rouge">lab</code> arguments in <code class="language-plaintext highlighter-rouge">biplot()</code> to explore whether these two
+groups may cluster by patient age or by whether or not the sample expresses
+the oestrogen receptor gene (ER+ or ER-).</p>
+
+  <p>Note: You may see a warning about <code class="language-plaintext highlighter-rouge">ggrepel</code>. This happens when there are many
+labels but little space for plotting. This is not usually a serious problem - 
+not all labels will be shown.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-5">Solution</h2>
+
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="n">PCAtools</span><span class="o">::</span><span class="n">biplot</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span><span class="w">
+    </span><span class="n">lab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="n">pc</span><span class="o">$</span><span class="n">metadata</span><span class="o">$</span><span class="n">Age</span><span class="p">,</span><span class="s1">'years'</span><span class="p">),</span><span class="w">
+    </span><span class="n">colby</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'ER'</span><span class="p">,</span><span class="w">
+    </span><span class="n">hline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">vline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">
+    </span><span class="n">legendPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'right'</span><span class="p">)</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <div class="language-plaintext warning highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: ggrepel: 35 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps
+</code></pre></div>    </div>
+
+    <div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-pca-biplot-ex2-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
+    <p>It appears that one cluster has more ER+ samples than the other group.</p>
+  </blockquote>
+</blockquote>
+
+<p>So far, we have only looked at a biplot of PC1 versus PC2 which only gives part
+of the picture. The <code class="language-plaintext highlighter-rouge">pairplots()</code> function in <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> can be used to create
+multiple biplots including different principal components.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pairsplot</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-pairsplot-1.png" alt="Alt" width="432" />
+<p class="caption">Alt</p>
+</div>
+
+<p>The plots show two apparent clusters involving the first principal component
+only. No other clusters are found involving other principal components. Each dot
+is coloured differently along a gradient of blues. This can potentially help identifying
+the same observation/individual in several panels. Here too, the argument <code class="language-plaintext highlighter-rouge">colby</code> allows
+you to set custom colours.</p>
+
+<p>Finally, it can sometimes be of interest to compare how certain variables contribute
+to different principal components. This can be visualised with <code class="language-plaintext highlighter-rouge">plotloadings()</code> from
+the <strong><code class="language-plaintext highlighter-rouge">PCAtools</code></strong> package. The function checks the range of loadings for each
+principal component specified (default: first five PCs). It then selects the features
+in the top and bottom 5% of these ranges and displays their loadings. This behaviour
+can be adjusted with the <code class="language-plaintext highlighter-rouge">rangeRetain</code> argument, which has 0.1 as the default value (i.e.
+5% on each end of the range). NB, if there are too many labels to be plotted, you will see
+a warning. This is not a serious problem.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plotloadings</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"PC1"</span><span class="p">),</span><span class="w"> </span><span class="n">rangeRetain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-loadingsplots-1.png" alt="plot of chunk loadingsplots" width="432" />
+<p class="caption">plot of chunk loadingsplots</p>
+</div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plotloadings</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"PC2"</span><span class="p">),</span><span class="w"> </span><span class="n">rangeRetain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-loadingsplots-2.png" alt="plot of chunk loadingsplots" width="432" />
+<p class="caption">plot of chunk loadingsplots</p>
+</div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plotloadings</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"PC1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"PC2"</span><span class="p">),</span><span class="w"> </span><span class="n">rangeRetain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-05-loadingsplots-3.png" alt="plot of chunk loadingsplots" width="432" />
+<p class="caption">plot of chunk loadingsplots</p>
+</div>
+
+<p>You can see how the third code line prooces more dots, some of which do not have
+extreme loadings. This is because all loadings selected for any PC are shown for all
+other PCs. For instance, it is plausible that features which have high loadings on
+PC1 may have lower ones on PC2.</p>
+
+<h1 id="using-pca-output-in-further-analysis">Using PCA output in further analysis</h1>
+
+<p>The output of PCA can be used to interpret data or can be used in further
+analyses. For example, the PCA outputs new variables (principal components)
+which represent several variables in the original dataset. These new variables
+are useful for further exploring data, for example, comparing principal
+component scores between groups or including the new variables in linear
+regressions. Because the principal components are uncorrelated (and independent)
+they can be included together in a single linear regression.</p>
+
+<blockquote class="callout">
+  <h2 id="principal-component-regression">Principal component regression</h2>
+
+  <p>PCA is often used to reduce large numbers of correlated variables into fewer
+uncorrelated variables that can then be included in linear regression or
+other models. This technique is called principal component regression (PCR)
+and it allows researchers to examine the effect of several correlated
+explanatory variables on a single response variable in cases where a high
+degree of correlation initially prevents them from being included in the same
+model. This is called principal componenet regression (PCR) and is just one
+example of how principal components can be used in further analysis of data.
+When carrying out PCR, the variable of interest (response/dependent variable)
+is regressed against the principal components calculated using PCA, rather
+than against each individual explanatory variable from the original dataset.
+As there as many principal components created from PCA as there are variables
+in the dataset, we must select which principal components to include in PCR.
+This can be done by examining the amount of variation in the data explained
+by each principal component (see above).</p>
+</blockquote>
+
+<h1 id="further-reading">Further reading</h1>
+
+<ul>
+  <li>James, G., Witten, D., Hastie, T. &amp; Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
+Chapter 6.3 (Dimension Reduction Methods), Chapter 10 (Unsupervised Learning).</li>
+  <li><a href="http://dx.doi.org/10.1098/rsta.2015.0202">Jolliffe, I.T. &amp; Cadima, J. (2016) Principal component analysis: a review and recent developments. Phil. Trans. R. Soc A 374.</a>.</li>
+  <li><a href="https://doi.org/10.1098/rsta.2009.0159">Johnstone, I.M. &amp; Titterington, D.M. (2009) Statistical challenges of high-dimensional data. Phil. Trans. R. Soc A 367.</a></li>
+  <li><a href="https://www.analyticsvidhya.com/blog/2016/03/pca-practical-guide-principal-component-analysis-python/">PCA: A Practical Guide to Principal Component Analysis, Analytics Vidhya</a>.</li>
+  <li><a href="https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c">A One-Stop Shop for Principal Component Analysis, Towards Data Science</a>.</li>
+</ul>
+
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>A principal component analysis is a statistical approach used to reduce dimensionality in high-dimensional datasets (i.e. where $p$ is equal or greater than $n$).</p>
+</li>
+    
+    <li><p>PCA may be used to create a low-dimensional set of features from a larger set of variables. Examples of when a PCA may be useful include reducing high-dimensional datasets to fewer variables for use in a linear regression and for identifying groups with similar features.</p>
+</li>
+    
+    <li><p>PCA is a useful dimensionality reduction technique used in the analysis of complex biological datasets (e.g. high throughput data or genetics data).</p>
+</li>
+    
+    <li><p>The first principal component represents the dimension along which there is maximum variation in the data. Subsequent principal components represent dimensions with progressively less variation.</p>
+</li>
+    
+    <li><p>Screeplots and biplots may be used to show: 1. how much variation in the data is explained by each principal component and 2. how data points cluster according to principal component scores and which variables are associated with these scores.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../03-regression-regularisation/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../05-factor-analysis/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <hr/>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2024 by <a href="../CITATION">the authors</a>.
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	
+	<a href="/edit//_episodes_rmd/04-principal-component-analysis.Rmd" data-checker-ignore>Edit on GitHub</a>
+	
+	
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:alan.ocallaghan@outlook.com">Contact</a>
+    </div>
+  </div>
+  <p class="text-muted text-right">
+    <small><i>Using <a href="https://github.com/carpentries/carpentries-theme/">The Carpentries theme</a> &mdash; Site last built on: 2024-02-27 09:14:21 +0000.</i></small>
+  </p>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { fonts: ["TeX"] }
+      });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  </body>
+</html>
