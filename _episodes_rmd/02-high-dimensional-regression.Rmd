@@ -129,7 +129,7 @@ Heatmap(methyl_mat_ord,
 Depending on the scientific question of interest, two types of high-dimensional 
 problems could be explored in this context:
 
-1. To predict age using methylation leves as predictors. In this case, we would 
+1. To predict age using methylation levels as predictors. In this case, we would 
 have a single outcome (age) which will be predicted using 5000 covariates 
 (methylation levels across the genome). 
 
@@ -154,7 +154,7 @@ the next episode will focus on the first.
 > > model, it's not clear how we can interpret each model, and
 > > rationalising the results after the fact can be dangerous; it's easy
 > > to make up a "story" that isn't grounded in anything but the fact
-> > that we have signif findings. 2. We may not have a representative
+> > that we have significant findings. 2. We may not have a representative
 > > sample for each of these covariates. For example, we may have very
 > > small sample sizes for some ethnicities, leading to spurious
 > > findings. 3. If we perform `r nrow(methylation)` tests for each of
@@ -209,7 +209,7 @@ expression, DNA methylation levels). In general, we want to identify
 differences in the features of interest that are related to a phenotype
 or grouping of our samples. Identifying features of interest that vary
 along with phenotypes or groupings can allow us to understand how
-phenotypes arise or manifest. Analysis of this type are sometimes referred 
+phenotypes arise or manifest. Analysis of this type is sometimes referred 
 to using the term *differential analysis*. 
 
 For example, we might want to identify genes that are expressed at a
@@ -342,10 +342,10 @@ to age ($\beta_1$) is equal to zero or not. If $\beta_1$ is equal to zero,
 the linear model indicates that there is no linear relationship between age
 and the methylation level for the CpG  (remember: as its name suggests, linear 
 regression can only be used to model linear relationships between predictors and 
-outcomes!). In other words, there answer to our question would be: no!
+outcomes!). In other words, the answer to our question would be: no!
 
 The output of a linear model typically returns the results associated 
-to the null hypothesis described above (this may not always be the most realistic 
+with the null hypothesis described above (this may not always be the most realistic 
 or useful null hypothesis, but it is the one we have by default!). To be 
 more specific, the test compares our observed results with a set of 
 hypothetical counter-examples of what we would expect to observe if we repeated 
@@ -380,7 +380,7 @@ results like this under the "null hypothesis".
 > >
 > > The reported p-value is associated to the following null hypothesis:
 > > the intercept ($\beta_0$ above) is equal to zero. Using the usual
-> > significant threshold of 0.05, we reject the null hypothesis as
+> > significance threshold of 0.05, we reject the null hypothesis as
 > > the p-value is smaller than 0.05. However, it is not really interesting
 > > if this intercept is zero or not, since we probably do not care what the
 > > methylation level is when age is zero. In fact, this question does not
@@ -503,7 +503,7 @@ ggplot() +
 The red-ish shaded region represents the portion of the distribution of
 the test statistic under the null hypothesis that is equal or greater to
 the value we observe for the intercept term. As our null hypothesis 
-relates to a 2-tail test (as the null hypothesis states that the regression
+relates to a 2-tailed test (as the null hypothesis states that the regression
 coefficient is equal to zero, we would reject it if the regression
 coefficient is substantially larger **or** smaller than zero), the p-value for
 the test is twice the value of the shaded region. In this case, the shaded region 
@@ -536,9 +536,9 @@ small uncertainty may lead to a small p-value.
 > The function`pt()`(similar to`pnorm()`, etc) can give us this information.
 >
 > Since we're not sure if the coefficient will be larger or smaller than
-> zero, we want to do a 2-tail test. Therefore we take the absolute
+> zero, we want to do a 2-tailed test. Therefore we take the absolute
 > value of the t-statistic, and look at the upper rather than lower
-> tailed. In the figure above the shaded areas are only looking at "half" of the
+> tail. In the figure above the shaded areas are only looking at "half" of the
 > t-distribution (which is symmetric around zero), therefore we multiply the 
 > shaded area by 2 in order to calculate the p-value. 
 >
@@ -794,7 +794,7 @@ is not much opportunity to generate pooled estimates, and the evidence
 of the data can easily outweigh the pooling.
 
 Shrinkage methods like these ones can be complex to implement and
-understand, but it is useful to develp an intuition why these approaches may be more
+understand, but it is useful to develop an intuition about why these approaches may be more
 precise and sensitive than the naive approach of fitting a model to each
 feature separately.
 
@@ -874,7 +874,7 @@ feature separately.
 > An example people often use is estimating the effect of attendance on
 > grades in several schools. We can assume that this effect is similar
 > in different schools (but maybe not identical), so we can *share
-> information* about the effect size between schools and shink our
+> information* about the effect size between schools and shrink our
 > estimates towards a common value.
 >
 > For example in **`DESeq2`**, the authors used the observation that genes
@@ -1137,7 +1137,7 @@ experiment over and over.
     Hansen](https://kasperdanielhansen.github.io/genbioconductor/html/limma.html)
 -   [**`limma`** user
     manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf).
--   [The **`VariancePartition`** package](https://bioconductor.org/packages/release/bioc/vignettes/variancePartition/inst/doc/dream.html) has similar functionality as **`limma`** but allows the inclusion of random effects. 
+-   [The **`VariancePartition`** package](https://bioconductor.org/packages/release/bioc/vignettes/variancePartition/inst/doc/dream.html) has similar functionality to **`limma`** but allows the inclusion of random effects. 
 
 ## Footnotes
 

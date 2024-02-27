@@ -72,7 +72,7 @@ is shown in the figure below.
 
 > ## Challenge 1 
 > 
-> Descriptions of three research questions and their datasets are given below.
+> Descriptions of four research questions and their datasets are given below.
 > Which of these scenarios use high-dimensional data?
 > 
 > 1. Predicting patient blood pressure using: cholesterol level in blood, age,
@@ -478,7 +478,7 @@ We will explore this type of analysis in the *Regression with many outcomes* epi
 is typically used to fit regression models when there is a single outcome 
 variable or interest but the number of potential predictors is large, e.g. 
 there are more predictors than observations. Regularisation can help to prevent 
-over-fitting and may be used to identify a small subset of predictors that are
+overfitting and may be used to identify a small subset of predictors that are
 associated with the outcome of interest. For example, regularised regression has
 been often used when building *epigenetic clocks*, where methylation values 
 across several thousands of genomic sites are used to predict chronological age. 
