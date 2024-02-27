@@ -280,7 +280,7 @@ regression.
 We have discussed so far that high-dimensional data analysis can be challenging since variables are difficult to visualise, 
 leading to challenges identifying relationships between variables and suitable response variables; we may have
 relatively few observations compared to features, leading to over-fitting; and features may be highly correlated, leading to
-challenges including over-fitting. We therefore require alternative approaches to examine whether, for example,
+challenges interpreting models. We therefore require alternative approaches to examine whether, for example,
 groups of observations show similar characteristics and whether these groups may relate to other features in the data (e.g.
 phenotype in genetics data). 
 
