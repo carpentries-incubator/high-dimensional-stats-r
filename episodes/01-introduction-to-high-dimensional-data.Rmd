@@ -247,7 +247,7 @@ in these datasets makes high correlations between variables more likely.
 > > ```
 > >
 > > Based on these results we conclude that both `gleason` and `pgg45` have a 
-> > statistically significan univariate effect (also referred to as a marginal
+> > statistically significant univariate effect (also referred to as a marginal
 > > effect) as predictors of age (5% significance level). 
 > >
 > > Fitting a multivariate regression model using both both `gleason` and `pgg45` 
