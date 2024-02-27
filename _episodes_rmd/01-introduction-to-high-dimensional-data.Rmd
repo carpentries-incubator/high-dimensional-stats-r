@@ -86,10 +86,10 @@ for practical high-dimensional data analysis in the biological sciences.
 > 
 > > ## Solution
 > > 
-> > 1. No. The number of observations (100 patients) is far greater than the number of features (3).
-> > 2. Yes, this is an example of high-dimensional data. There are only 100 observations but 200,000+3 features.
-> > 3. No. There are many more observations (200 patients) than features (5). 
-> > 4. Yes. There is only one observation of more than 20,000 features.
+> > 1. No. The number of features is relatively small (3).
+> > 2. Yes, this is an example of high-dimensional data. There are 200,000+3 features.
+> > 3. No. The number of features is relatively small (5).
+> > 4. Yes. There are 20,000 features.
 > {: .solution}
 {: .challenge}
 
