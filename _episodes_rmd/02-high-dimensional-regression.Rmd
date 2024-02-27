@@ -8,7 +8,7 @@ questions:
 - "How can we benefit from the fact that we have many outcomes?"
 - "How can we control for the fact that we do many tests?"
 objectives:
-- "Perform and critically analyse high dimensional regression."
+- "Perform and critically analyse high-dimensional regression."
 - "Understand methods for shrinkage of noise parameters in
   high-dimensional regression."
 - "Perform multiple testing adjustment."
