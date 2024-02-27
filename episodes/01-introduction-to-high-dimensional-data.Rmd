@@ -185,13 +185,16 @@ of the challenges we are facing when working with high-dimensional data.
 > improve the reproducibility of an analysis.
 {: .callout}
 
-Imagine we are carrying out least squares regression on a dataset with 25
+As well as many variables causing problems when working with high-dimensional data,
+having relatively few observations ($n$) compared to the number of features ($p$) causes 
+additional challenges. To illustrate these challenges,
+imagine we are carrying out least squares regression on a dataset with 25
 observations. Fitting a best fit line through these data produces a plot shown
 in the left-hand panel of the figure below.
 
 However, imagine a situation in which the number of observations and features in a
 dataset are almost equal. In that situation the effective number of observations
-per features is low. The result of fitting a best fit line through
+per feature is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE}
