@@ -119,7 +119,7 @@ One challenge when analysing high-dimensional data is visualising the many varia
 When exploring low-dimensional datasets, it is possible to plot the response variable
 against each of features to get an idea which
 of these are important predictors of the response. With high-dimensional data,
-the large number of explanatory variables makes doing this difficult. In addition, in some
+the large number of features makes doing this difficult. In addition, in some
 high-dimensional datasets it can also be difficult to identify a single response
 variable, making standard data exploration and analysis techniques less useful.
 
