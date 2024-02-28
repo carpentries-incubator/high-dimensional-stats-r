@@ -917,6 +917,7 @@ run the same test again:
 
 ```{r volcplotfake, fig.cap="Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results.", fig.alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level."}
 
+set.seed(123) 
 age_perm <- age[sample(ncol(methyl_mat), ncol(methyl_mat))]
 design_age_perm <- model.matrix(~age_perm)
 
