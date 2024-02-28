@@ -279,7 +279,7 @@ above, is that there are far too many features to fit each one-by-one as
 we might do when analysing low-dimensional datasets (for example using
 `lm` on each feature and checking the linear model assumptions). A
 second consideration is that statistical approaches may behave
-slightly differently in very high-dimensional data, compared to
+slightly differently when implemented on very high-dimensional data, compared to
 low-dimensional data. A third consideration is the speed at which we can
 actually compute statistics for data this large -- methods optimised for
 low-dimensional data may be very slow when applied to high-dimensional
