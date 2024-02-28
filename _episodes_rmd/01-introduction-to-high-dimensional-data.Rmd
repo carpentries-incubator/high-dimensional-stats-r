@@ -199,7 +199,6 @@ per features is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE, fig.cap = "Scatter plot of two variables (x and y) from a data set with 25 observations (left) and 2 observations (right) with a fitted regression line (red).", fig.alt = "Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points."}
-knitr::include_graphics("../fig/intro-scatterplot.png")
 knitr::include_graphics(here::here("fig/intro-scatterplot.png"))
 ```
 
