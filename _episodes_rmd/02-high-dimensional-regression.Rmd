@@ -58,15 +58,15 @@ methylation <- readRDS(here("data/methylation.rds"))
 Note: the code that we used to download these data from its source is available
 [here](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/data/methylation.R)
 
-This `methylation` object is a `GenomicRatioSet`, a Bioconductor data
-object derived from the `SummarizedExperiment` class. These
-`SummarizedExperiment` objects contain `assay`s, in this case
-normalised methylation levels, and optional sample-level `colData` and
-feature-level `metadata`. These objects are very convenient to contain
-all of the information about a dataset in a high-throughput context. If
-you would like more detail on these objects it may be useful to consult
-the [vignettes on
+`methylation` is actually a special Bioconductor `SummarizedExperiment`
+object that contains lots of different information about the data. 
+These objects are very useful for storing all of the information 
+about a dataset in a high-throughput context. In this case, `methylation`
+contains `assay`s providing normalised methylation levels, `colData` providing 
+sample-level information and `metadata` providing feature-level information.
+The structure of `SummarizedExperiment` objects is described in the [vignettes on
 Bioconductor](https://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
+Here, we show how to extract the information for analysis.
 
 ```{r showmethy}
 methylation
