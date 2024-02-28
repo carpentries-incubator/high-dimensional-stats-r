@@ -761,7 +761,7 @@ or moderate the effect size estimates, in the case of **`DESeq2`** by again
 sharing information between features about sample-to-sample variability.
 In contrast, let us look at the p-values from **`limma`** and R's built-in `lm()` function:
 
-```{r plot-limma-lm-pval, echo = FALSE}
+```{r plot-limma-lm-pval, echo = FALSE, fig.cap = "Plot of p-values using limma vs. those using lm.", fig.alt = "A scatter plot of the p-values using limma vs. those using lm. A straight line is also displayed, showing that the p-values for limma tend to be smaller than those using lm towards the left of the plot and higher towards the right of the plot."}
 plot(
     coef_df[["p.value"]],
     toptab_age[coef_df[["feature"]], "P.Value"],
@@ -774,7 +774,7 @@ plot(
 abline(0:1, lty = "dashed")
 ```
 
-we can see that for the vast majority of features, the results are
+We can see that for the vast majority of features, the results are
 broadly similar. There seems to be a minor general tendency for **`limma`**
 to produce smaller p-values, but for several features, the p-values from
 limma are considerably larger than the p-values from `lm()`. This is
