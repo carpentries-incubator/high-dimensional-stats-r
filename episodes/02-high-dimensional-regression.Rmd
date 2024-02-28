@@ -513,7 +513,7 @@ p-value is small ($p=`r round(table_age_methyl1$p.value[[1]], digits =
 this is larger, relative to the total area of the distribution, therefore the 
 p-value is larger than the one for the intercept term 
 ($p=`r round(table_age_methyl1$p.value[[2]], digits = 3)`$). The
-the p-value is a function of the test statistic: the ratio between the effect size 
+p-value is a function of the test statistic: the ratio between the effect size 
 we're estimating and the uncertainty we have in that effect. A large effect with large
 uncertainty may not lead to a small p-value, and a small effect with
 small uncertainty may lead to a small p-value.
