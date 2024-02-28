@@ -200,7 +200,7 @@ few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE, fig.cap = "Scatter plot of two variables (x and y) from a data set with 25 observations (left) and 2 observations (right) with a fitted regression line (red).", fig.alt = "Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points."}
 knitr::include_graphics("../fig/intro-scatterplot.png")
-# ![Figure 2: Least squares regression using a) low-dimensional data and b) low ratio of observations per feature](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Figure 2 for Intro.png)
+knitr::include_graphics(here::here("fig/intro-scatterplot.png"))
 ```
 
 In the first situation, the least squares regression line does not fit the data
