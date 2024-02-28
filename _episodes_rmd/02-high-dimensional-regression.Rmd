@@ -70,24 +70,21 @@ We can extract
 
 - the dimensions of the dataset using `dim`. Importantly, in these objects (and
 data structures for computational biology in R generally), samples are stored as
-columns and features are stored as rows;
+columns and features are stored as rows. This is in contrast to usual tabular data, where features or variables
+are stored as columns and observations are stored as rows;
 - assays, (normalised methylation levels here), using `assay`;
 - sample-level information using `colData`.
 
 ```{r showmethy}
-methylation
+dim(methylation)
 ```
 
 You can see in this output that this object has a `dim()` of
 $`r nrow(methylation)` \times `r ncol(methylation)`$, meaning it has
-`r nrow(methylation)` features and `r ncol(methylation)` columns. To
+`r nrow(methylation)` _features_ and `r ncol(methylation)` _columns_. To
 extract the matrix of methylation M-values, we can use the
-`assay()` function. One thing to bear in mind with these objects (and
-data structures for computational biology in R generally) is that in the
-matrix of methylation data, samples or observations are stored as
-columns, while features (in this case, sites in the genome) are stored as rows.
-This is in contrast to usual tabular data, where features or variables
-are stored as columns and observations are stored as rows.
+`assay()` function. 
+
 
 ```{r grabx}
 methyl_mat <- assay(methylation)
