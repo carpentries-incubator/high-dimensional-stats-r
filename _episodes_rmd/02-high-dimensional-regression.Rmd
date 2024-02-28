@@ -82,7 +82,7 @@ dim(methylation)
 
 You can see in this output that this object has a `dim()` of
 $`r nrow(methylation)` \times `r ncol(methylation)`$, meaning it has
-`r nrow(methylation)` _features_ and `r ncol(methylation)` _columns_. To
+`r nrow(methylation)` _features_ and `r ncol(methylation)` _observations_. To
 extract the matrix of methylation M-values, we can use the
 `assay()` function. 
 
