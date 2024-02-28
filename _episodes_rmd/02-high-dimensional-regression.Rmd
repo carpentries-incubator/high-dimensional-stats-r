@@ -59,14 +59,21 @@ Note: the code that we used to download these data from its source is available
 [here](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/data/methylation.R)
 
 `methylation` is actually a special Bioconductor `SummarizedExperiment`
-object that contains lots of different information about the data. 
+object that summarises lots of different information about the data. 
 These objects are very useful for storing all of the information 
-about a dataset in a high-throughput context. In this case, `methylation`
-contains `assay`s providing normalised methylation levels, `colData` providing 
-sample-level information and `metadata` providing feature-level information.
-The structure of `SummarizedExperiment` objects is described in the [vignettes on
+about a dataset in a high-throughput context. The structure of `SummarizedExperiment`
+objects is described in the [vignettes on
 Bioconductor](https://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
-Here, we show how to extract the information for analysis.
+Here, we show how to extract the information for analysis. 
+
+We can extract
+
+- the dimensions of the dataset using `dim`. Importantly, in these objects (and
+data structures for computational biology in R generally), samples are stored as
+columns and features are stored as rows;
+- assays, (normalised methylation levels here), using `assay`;
+- sample-level information using `colData`;
+- and feature-level information using `metadata`.
 
 ```{r showmethy}
 methylation
