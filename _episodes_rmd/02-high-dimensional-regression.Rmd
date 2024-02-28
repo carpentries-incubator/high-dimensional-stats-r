@@ -72,8 +72,7 @@ We can extract
 data structures for computational biology in R generally), samples are stored as
 columns and features are stored as rows;
 - assays, (normalised methylation levels here), using `assay`;
-- sample-level information using `colData`;
-- and feature-level information using `metadata`.
+- sample-level information using `colData`.
 
 ```{r showmethy}
 methylation
