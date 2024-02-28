@@ -109,7 +109,7 @@ In this episode, we will focus on the association between age and
 methylation. The following heatmap summarises age and methylation levels 
 available in the Prostate dataset:
 
-```{r heatmap, fig.cap="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
+```{r heatmap, fig.cap="Heatmap of methylation values across all features.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
 age <- methylation$Age
 
 library("ComplexHeatmap")
