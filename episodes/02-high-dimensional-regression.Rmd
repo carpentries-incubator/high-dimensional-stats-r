@@ -741,7 +741,7 @@ or information sharing that **`limma`** performs has on our results. To do
 this, let us compare the effect sizes estimates and p-values from the two
 approaches.
 
-```{r plot-limma-lm-effect, echo = FALSE}
+```{r plot-limma-lm-effect, echo = FALSE, fig.cap = "Plot of effect sizes using limma vs. those using lm.", fig.alt = "A scatter plot of the effect size using limmma vs. those using lm. The plot also shows a straight line through all points showing that the effect sizes are the same."}
 plot(
     coef_df[["estimate"]],
     toptab_age[coef_df[["feature"]], "logFC"],
