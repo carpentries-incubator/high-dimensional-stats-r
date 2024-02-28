@@ -1041,7 +1041,7 @@ tests we performed! This is not ideal sometimes, because unfortunately
 we usually don't have very large sample sizes in health sciences.
 
 The second main way of controlling for multiple tests is to control the
-*false discovery rate*.[^3] This is the proportion of false positives,
+*false discovery rate (FDR)*.[^3] This is the proportion of false positives,
 or false discoveries, we'd expect to get each time if we repeated the
 experiment over and over.
 
