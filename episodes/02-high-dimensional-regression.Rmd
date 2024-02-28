@@ -142,7 +142,7 @@ the next episode will focus on the second.
 
 > ## Challenge 1
 >
-> Why can we not just fit many linear regression models, one for each of the columns
+> For the problem in (1) above, why can we not just fit many linear regression models, one for each of the columns
 > in the `colData` above against each of the features in the matrix of
 > assays, and choose all of the significant results at a p-value of
 > 0.05?
