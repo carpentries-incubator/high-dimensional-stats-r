@@ -127,7 +127,7 @@ Heatmap(methyl_mat_ord,
         top_annotation = columnAnnotation(age = age_ord))
 ```
 
-Typically, two types of high-dimensional problem may be of scientific interest:
+In general, it is scientifically interesting to answer two main questions using the three types of data:
 
 1. To predict methylation levels using age as a predictor. In this case, we 
 would have 5000 outcomes (methylation levels across the genome) and a single 
