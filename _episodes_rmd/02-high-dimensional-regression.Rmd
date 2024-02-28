@@ -700,7 +700,7 @@ while the y-axis is the $-\log_{10}(\text{p-value})$, where larger
 values indicate increasing statistical evidence of a non-zero effect
 size. A positive effect size represents increasing methylation with
 increasing age, and a negative effect size represents decreasing
-methylation with increasing age. Points higher on the x-axis represent
+methylation with increasing age. Points higher on the y-axis represent
 features for which we think the results we observed would be very
 unlikely under the null hypothesis.
 
