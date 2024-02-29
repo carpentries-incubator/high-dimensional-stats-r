@@ -581,6 +581,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 ```
 
 
+
 > ## Challenge 4
 > 
 > 1. Which performs better, ridge or OLS?
