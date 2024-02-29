@@ -510,15 +510,17 @@ $$
      \sum_{i=1}^N \biggl( y_i - x'_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
 $$
 
+This type of regularisation is called *ridge regression*. 
 Another way of thinking about this is that when finding the best model, we're
 weighing up a balance of the ordinary least squares objective and a "penalty"
 term that punishes models with large coefficients. The balance between the
 penalty and the ordinary least squares objective is controlled by $\lambda$ - 
-when $\lambda$ is large, we care a lot about the size of the coefficients.
-When it's small, we don't really care a lot. When it's zero, we're back to
-just using ordinary least squares. This type of regularisation is called *ridge regression*.
+when $\lambda$ is large, we want to penalise large coefficients, i.e., we care a lot about the size of the coefficients
+and we want to reduce the complexity of our model.
+When $\lambda$ is small, we don't really care a lot about shrinking our coefficients and we opt for a more complex model. When it's zero, we're back to
+just using ordinary least squares. We see how a penalty term, $\lambda$, might be chosen later in this episode.
 
-To see how regularisation might improve a model, let's fit a model using the same set
+For now, to see how regularisation might improve a model, let's fit a model using the same set
 of 20 features (stored as `features`) selected earlier in this episode (these
 are a subset of the features identified by Horvarth et al), using both 
 regularised and ordinary least squares.
