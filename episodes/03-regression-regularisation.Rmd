@@ -768,11 +768,9 @@ coefl <- coef(lasso, lasso$lambda.min)
 selected_coefs <- as.matrix(coefl)[which(coefl != 0), 1] ; selected_coefs
 ```
 
-We can see that cross-validation has selected a value of $\lambda$ resulting in `r length(selected_coefs)` features (including the intercept. 
-We can cross reference these with the hovarth data to compare features:
+We can see that cross-validation has selected a value of $\lambda$ resulting in `r length(selected_coefs)-1` features and the intercept. We can cross-reference these features with the Hovarth data to compare the features to the Hovarth signature:
 
 ```{r lasso-cv-2}
-## load the horvath signature to compare features
 coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 ## We select some of the same features! Hooray
 intersect(names(selected_coefs), coef_horvath$CpGmarker)
