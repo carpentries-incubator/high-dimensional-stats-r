@@ -87,10 +87,10 @@ when we have more features than observations.
 > ## Singularities
 > 
 > The message that `lm` produced is not necessarily the most intuitive. What
-> are "singularities", and why are they an issue? A singular matrix 
+> are "singularities" and why are they an issue? A singular matrix 
 > is one that cannot be
 > [inverted](https://en.wikipedia.org/wiki/Invertible_matrix). R uses 
-> inverse operations to fit linear models (finds the coefficients) using: 
+> inverse operations to fit linear models (find the coefficients) using: 
 > 
 > $$
 >     (X^TX)^{-1}X^Ty,
@@ -103,7 +103,7 @@ when we have more features than observations.
 > Why might R be unable to calculate $(X^TX)^{-1}$ and return singularities errors?
 > Well, when the [determinant](https://en.wikipedia.org/wiki/Determinant)
 > of the matrix is zero, we are unable to find its inverse. The determinant 
-> of the matrix is zero when there are more features than observations or when
+> of the matrix is zero when there are more features than observations or often when
 > the features are highly correlated.
 > 
 > ```{r determinant}
