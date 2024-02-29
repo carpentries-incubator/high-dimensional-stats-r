@@ -507,7 +507,7 @@ $$
 
 Another way of thinking about this is that when finding the best model, we're
 weighing up a balance of the ordinary least squares objective and a "penalty"
-term that punished models with large coefficients. The balance between the
+term that punishes models with large coefficients. The balance between the
 penalty and the ordinary least squares objective is controlled by $\lambda$ - 
 when $\lambda$ is large, we care a lot about the size of the coefficients.
 When it's small, we don't really care a lot. When it's zero, we're back to
