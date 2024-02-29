@@ -42,12 +42,12 @@ feature selection and it is particularly useful when dealing with high-dimension
 One reason that we need special statistical tools for high-dimensional data is
 that standard linear models cannot handle high-dimensional data sets -- one cannot fit
 a linear model where there are more features (predictor variables) than there are observations
-(data points). In the previous lesson we dealt with this problem by fitting individual
+(data points). In the previous lesson, we dealt with this problem by fitting individual
 models for each feature and sharing information among these models. Now we will
-take a look at an alternative approach called regularisation. Regularisation can be used to
-stabilise coefficient estimates (and thus to fit models with more features than observations)
-and even to select a subset of relevant features. In addition, regularisation is often very fast 
-computationally and is thus practically useful.
+take a look at an alternative approach that can be used to fit models with more 
+features than observations by stabilising coefficient estimates. This approach is called
+regularisation. Compared to many other methods, regularisation is also often very fast 
+and can therefore be extremely useful in practice. 
 
 First, let us check out what happens if we try to fit a linear model to high-dimensional
 data! We start by reading in the data from the last lesson:
