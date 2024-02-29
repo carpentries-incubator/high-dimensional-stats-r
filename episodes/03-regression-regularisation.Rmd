@@ -116,12 +116,9 @@ when we have more features than observations.
 
 > ## Correlated features -- common in high-dimensional data
 > 
-> So, we can't fit a standard linear model to high-dimensional data. But there
-> is another issue. In high-dimensional datasets, there
+> In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
->
-> We have seen in the first episode that correlated features can make it hard 
-> (or impossible) to correctly infer parameters. If we visualise the level of 
+> If we visualise the level of 
 > correlation between sites in the methylation dataset, we can see that many 
 > of the features essentially represent the same information - there are many 
 > off-diagonal cells, which are deep red or blue. For example, the following
