@@ -546,7 +546,7 @@ This plot shows how the estimated coefficients for each CpG site change
 as we increase the penalty, $\lambda$. That is,
 as we decrease the size of the region that solutions can fall into, the values
 of the coefficients that we get back tend to decrease. In this case,
-coefficients trend towards zero but generally don't reach it until the penalty
+coefficients tend towards zero but generally don't reach it until the penalty
 gets very large. We can see that initially, some parameter estimates are really,
 really large, and these tend to shrink fairly rapidly.
 
