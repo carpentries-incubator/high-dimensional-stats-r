@@ -136,7 +136,6 @@ library("ComplexHeatmap")
 > )
 > ```
 > 
-> Regularisation can help us to deal with correlated features.
 {: .callout}
 
 
