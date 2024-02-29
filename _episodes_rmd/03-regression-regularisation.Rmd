@@ -46,7 +46,8 @@ a linear model where there are more features (predictor variables) than there ar
 models for each feature and sharing information among these models. Now we will
 take a look at an alternative approach called regularisation. Regularisation can be used to
 stabilise coefficient estimates (and thus to fit models with more features than observations)
-and even to select a subset of relevant features.
+and even to select a subset of relevant features. In addition, regularisation is often very fast 
+computationally and is thus practically useful.
 
 First, let us check out what happens if we try to fit a linear model to high-dimensional
 data! We start by reading in the data from the last lesson:
