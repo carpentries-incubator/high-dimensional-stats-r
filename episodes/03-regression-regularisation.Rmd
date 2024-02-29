@@ -746,7 +746,7 @@ our model, thus reducing the number of and correlations between the features, an
 we don't want the value of $\lambda$ to be so large that we lose a lot of the valuable information in the features.
 
 Various methods can be used to balance this trade-off and thus select the "best"
-value for $\lambda$. One is to split
+value for $\lambda$. One method splits
 the data into $K$ chunks. We then use $K-1$ of
 these as the training set, and the remaining $1$ chunk
 as the test set. We can repeat this until we've rotated through all $K$ chunks,
