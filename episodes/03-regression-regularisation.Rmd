@@ -797,7 +797,7 @@ Heatmap(
 )
 ```
 
-# Blending ridge regression and the LASSO - elastic nets
+# Elastic nets: blending ridge regression and the LASSO 
 
 So far, we've used ridge regression, where `alpha = 0`, and LASSO regression,
 where `alpha = 1`. What if `alpha` is set to a value between zero and one?
