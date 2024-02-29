@@ -98,9 +98,9 @@ when we have more features than observations.
 > 
 > where $X$ is a matrix of predictor features and $y$ is the outcome vector.
 > Thus, if the matrix $X^TX$ cannot be inverted to give $(X^TX)^{-1}$, R 
-> cannot fit the model and returns the singularities error.
+> cannot fit the model and returns the error that there are singularities.
 > 
-> Why might R be unable to calculate $(X^TX)^{-1}$ and return singularities errors?
+> Why might R be unable to calculate $(X^TX)^{-1}$ and return the error that there are singularities?
 > Well, when the [determinant](https://en.wikipedia.org/wiki/Determinant)
 > of the matrix is zero, we are unable to find its inverse. The determinant 
 > of the matrix is zero when there are more features than observations or often when
