@@ -741,7 +741,11 @@ drawplot()
 
 # Cross-validation to find the best value of $\lambda$
 
-There are various methods to select the "best"
+Ideally, we want $\lambda$ to be large enough to reduce the complexity of
+our model, thus reducing the number of and correlations between the features, and improving generalisability. However, 
+we don't want the value of $\lambda$ to be so large that we lose a lot of the valuable information in the features.
+
+Various methods can be used to balance this trade-off and thus select the "best"
 value for $\lambda$. One is to split
 the data into $K$ chunks. We then use $K-1$ of
 these as the training set, and the remaining $1$ chunk
