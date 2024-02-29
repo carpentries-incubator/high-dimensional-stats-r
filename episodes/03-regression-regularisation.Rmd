@@ -283,10 +283,7 @@ the sum above is the line of best fit through our data when considering
 this goal of minimising the sum of squared error. However, it is not the only 
 possible line we could use! For example, we might want to err on the side of
 caution when estimating effect sizes (coefficients). That is, we might want to 
-avoid estimating very large effect sizes. This can help us to create *generalisable*
-models. This is important when models that are fitted (trained) on one dataset
-and then used to predict outcomes from a new dataset. Restricting parameter
-estimates is particularly important when analysing high-dimensional data.
+avoid estimating very large effect sizes. 
 
 
 > ## Challenge 2
