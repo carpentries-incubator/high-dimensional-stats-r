@@ -492,8 +492,10 @@ points(
 par(mfrow = c(1, 1))
 ```
 
-There are multiple ways to define the distance that our solution must fall in,
-though. The one we've plotted above controls the squared sum of the 
+# Ridge regression
+
+There are multiple ways to define the distance that our solution must fall in.
+The one we've plotted above controls the squared sum of the 
 coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
