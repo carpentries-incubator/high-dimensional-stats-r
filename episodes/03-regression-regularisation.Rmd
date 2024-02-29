@@ -149,7 +149,7 @@ library("ComplexHeatmap")
 
 > ## Challenge 1
 > 
-> Discuss in  groups:
+> Consider or discuss in groups:
 > 
 > 1. Why would we observe correlated features in high-dimensional biological
 >    data?
