@@ -136,10 +136,7 @@ library("ComplexHeatmap")
 > )
 > ```
 > 
-> Correlation between features can be problematic for technical reasons. If it is 
-> very severe, it may even make it impossible to fit a model! This is in addition to
-> the fact that with more features than observations, we can't even estimate
-> the model properly. Regularisation can help us to deal with correlated features.
+Regularisation can help us to deal with correlated features.
 {: .callout}
 
 
