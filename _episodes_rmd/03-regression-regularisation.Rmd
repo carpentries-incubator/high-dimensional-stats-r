@@ -752,8 +752,7 @@ these as the training set, and the remaining $1$ chunk
 as the test set. We can repeat this until we've rotated through all $K$ chunks,
 giving us a good estimate of how well each of the lambda values work in our
 data. This is called cross-validation, and doing this repeated test/train split
-gives us a better estimate of how generalisable our model is. Cross-validation
-is a really deep topic that we're not going to cover in more detail today, though!
+gives us a better estimate of how generalisable our model is. 
 
 ```{r cvfig, echo = FALSE, fig.cap = "Schematic representiation of a $K$-fold cross-validation procedure.", fig.alt = "The data is divided into $K$ chunks. For each cross-validation iteration, one data chunk is used as the test set. The remaining $K-1$ chunks are combined into a training set."}
 knitr::include_graphics("../fig/cross_validation.png")
