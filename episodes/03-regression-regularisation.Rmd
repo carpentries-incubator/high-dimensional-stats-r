@@ -79,7 +79,8 @@ high! The summary also says that we were unable to estimate
 effect sizes for `r format(sum(is.na(coef(fit))), big.mark=",")` features
 because of "singularities". What this means is that R couldn't find a way to
 perform the calculations necessary due to the fact that we have more features
-than observations.
+than observations. We explain what singularities are and why they appear when fitting
+models to high-dimensional data below.
 
 
 > ## Singularities
