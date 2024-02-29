@@ -89,24 +89,22 @@ when we have more features than observations.
 > The message that `lm` produced is not necessarily the most intuitive. What
 > are "singularities", and why are they an issue? A singular matrix 
 > is one that cannot be
-> [inverted](https://en.wikipedia.org/wiki/Invertible_matrix).
-> The inverse of an $n \times n$ square matrix $A$ is the matrix $B$ for which
-> $AB = BA = I_n$, where $I_n$ is the $n \times n$ identity matrix.
-> 
-> Why is the inverse important? Well, to find the
-> coefficients of a linear model of a matrix of predictor features $X$ and an
-> outcome vector $y$, we may perform the calculation 
+> [inverted](https://en.wikipedia.org/wiki/Invertible_matrix). R uses 
+> inverse operations to fit linear models (finds the coefficients) using: 
 > 
 > $$
->     (X^TX)^{-1}X^Ty
+>     (X^TX)^{-1}X^Ty,
 > $$
 > 
-> You can see that, if we're unable to find the inverse of the matrix $X^TX$,
-> then we'll be unable to find the regression coefficients. 
+> where $X$ is a matrix of predictor features and $y$ is the outcome vector.
+> Thus, if the matrix $X^TX$ cannot be inverted to give $(X^TX)^{-1}$, R 
+> cannot fit the model and returns the singularities error.
 > 
-> Why might this be the case?
+> Why might R be unable to calculate $(X^TX)^{-1}$ and return singularities errors?
 > Well, when the [determinant](https://en.wikipedia.org/wiki/Determinant)
-> of the matrix is zero, we are unable to find its inverse.
+> of the matrix is zero, we are unable to find its inverse. The determinant 
+> of the matrix is zero when there are more features than observations or when
+> the features are highly correlated.
 > 
 > ```{r determinant}
 > xtx <- t(methyl_mat) %*% methyl_mat
