@@ -441,10 +441,10 @@ other dataset that is not used when fitting our model).
 
 # Regularisation
 
-As stated above, restricting model parameter estimates can improve a model's
-generalisability. This can be done with *regularisation*: adding another
-condition to the problem we're solving with linear regression. This condition
-controls the total size of the  coefficients that come out. 
+Regularisation can be used to reduce correlation between predictors, the number of features, 
+and improve generalisability by restricting model parameter estimates. Essentially, we 
+add another condition to the problem we're solving with linear regression that controls the 
+total size of the  coefficients that come out. 
 For example, we might say that the point representing the slope and intercept
 must fall within a certain distance of the origin, $(0, 0)$. Note that we are 
 still trying to solve for the line that minimises the square of the residuals; 
