@@ -75,15 +75,14 @@ summary(fit)
 ```
 
 You can see that we're able to get some effect size estimates, but they seem very 
-high! This is common when fitting a linear regression model with a large number of features,
-often since the model cannot distinguish between the effects of many, correlated features.
-The summary also says that we were unable to estimate
+high! The summary also says that we were unable to estimate
 effect sizes for `r format(sum(is.na(coef(fit))), big.mark=",")` features
-because of "singularities". What this means is that R couldn't find a way to
-perform the calculations necessary due to the fact that we have more features
-than observations. We explain what singularities are and why they appear when fitting
-models to high-dimensional data below.
-
+because of "singularities". We clarify what singularities are in the note below
+but this essentially means that R couldn't find a way to
+perform the calculations necessary to fit the model. Large effect sizes and singularities are common
+when naively fitting linear regression models with a large number of features (i.e., to high-dimensional data),
+often since the model cannot distinguish between the effects of many, correlated features and 
+when we have more features than observations. 
 
 > ## Singularities
 > 
