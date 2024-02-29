@@ -439,7 +439,7 @@ good, the dots should follow a line. Regularisation can help us to make the
 model more generalisable, improving predictions for the test dataset (or any 
 other dataset that is not used when fitting our model). 
 
-# Using regularisation to impove generalisability
+# Regularisation
 
 As stated above, restricting model parameter estimates can improve a model's
 generalisability. This can be done with *regularisation*. The idea to add another
