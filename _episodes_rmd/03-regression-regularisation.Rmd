@@ -172,6 +172,13 @@ library("ComplexHeatmap")
 > {: .solution}
 {: .challenge}
 
+Regularisation can help us to deal with correlated features, as well as effectively reduce
+the number of features in our model. Before we describe regularisation, let's recap what's 
+going on when we fit a linear model.
+
+
+
+
 # Coefficient estimates of a linear model
 
 When we fit a linear model, we're finding the line through our data that 
