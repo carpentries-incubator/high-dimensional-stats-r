@@ -75,7 +75,9 @@ summary(fit)
 ```
 
 You can see that we're able to get some effect size estimates, but they seem very 
-high! The summary also says that we were unable to estimate
+high! This is common when fitting a linear regression model with a large number of features,
+often since the model cannot distinguish between the effects of many, correlated features.
+The summary also says that we were unable to estimate
 effect sizes for `r format(sum(is.na(coef(fit))), big.mark=",")` features
 because of "singularities". What this means is that R couldn't find a way to
 perform the calculations necessary due to the fact that we have more features
