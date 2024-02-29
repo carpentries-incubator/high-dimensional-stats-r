@@ -758,7 +758,7 @@ gives us a better estimate of how generalisable our model is.
 knitr::include_graphics("../fig/cross_validation.png")
 ```
 
-We can use this new idea to choose a lambda value, by finding the lambda
+We can use this new idea to choose a lambda value by finding the lambda
 that minimises the error across each of the test and training splits.
 
 ```{r lasso-cv, fig.cap="Cross-validated mean squared error for different values of lambda under a LASSO penalty.", fig.alt="Alt"}
