@@ -56,13 +56,13 @@ In this episode we will explore *principal component analysis* (PCA) as a
 popular method of analysing high-dimensional data. PCA is an unsupervised
 statistical method which allows large datasets of correlated variables to be
 summarised into smaller numbers of uncorrelated principal components that
-explain most of the variability in the original dataset. This is useful,
-for example, during initial data exploration as it allows correlations among
-data points to be observed and principal components to be calculated for
-inclusion in further analysis (e.g. linear regression). An example of PCA might
-be reducing several variables representing aspects of patient health
-(blood pressure, heart rate, respiratory rate) into a single feature.
-
+explain most of the variability in the original dataset. As an example,
+PCA might reduce several variables representing aspects of patient health 
+(blood pressure, heart rate, respiratory rate) into a single feature capturing
+an overarching "patient health" effect. This is useful from an exploratory point 
+of view, discovering how variables might be associated and combined, but the 
+associated principal component can also be used as an effect in further analysis 
+(e.g. linear regression). 
 
 
 
