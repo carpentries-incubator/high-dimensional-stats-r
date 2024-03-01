@@ -53,7 +53,7 @@ to analyse for several reasons, with the main problem being how to reduce
 dimensionality in the dataset while retaining the important features. 
 
 In this episode we will explore *principal component analysis* (PCA) as a
-popular method of analysing high-dimensional data. PCA is an unsupervised
+popular method of analysing high-dimensional data. PCA is a
 statistical method which allows large datasets of correlated variables to be
 summarised into smaller numbers of uncorrelated principal components that
 explain most of the variability in the original dataset. As an example,
@@ -89,28 +89,6 @@ Disadvantages:
   especially when including them in further analyses (e.g. inclusion in a linear
   regression).
 
-
-> ## Supervised vs unsupervised learning
-> Most statistical problems fall into one of two categories: supervised or
-> unsupervised learning. 
-> Examples of supervised learning problems include linear regression and include
-> analyses in which each observation has both at least one independent variable
-> ($x$) as well as a dependent variable ($y$). In supervised learning problems
-> the aim is to predict the value of the response given future observations or
-> to understand the relationship between the dependent variable and the
-> predictors. In unsupervised learning for each observation there is no
-> dependent variable ($y$), but only 
-> a series of independent variables. In this situation there is no need for
-> prediction, as there is no dependent variable to predict (hence the analysis
-> can be thought as being unsupervised by the dependent variable). Instead
-> statistical analysis can be used to understand relationships between the
-> independent variables or between observations themselves. Unsupervised
-> learning problems often occur when analysing high-dimensional datasets in
-> which there is no obvious dependent variable to be
-> predicted, but the analyst would like to understand more about patterns
-> between groups of observations or reduce dimensionality so that a supervised
-> learning process may be used.
-{: .callout}
 
 
 > ## Challenge 1 
