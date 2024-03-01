@@ -557,18 +557,32 @@ or correlated predictors. As we reduce the importance of one feature, we can
 weight to another feature that represents similar information.
 
 Since we split the data into test and training data, we can prove that ridge
-regression gives us a better prediction in this case:
+regression gives us a better prediction compared to the model with no regularisation. 
+Let's generate our predictions under the ridge regression model and calculate
+the mean squared error in the test set:
 
 ```{r pred-ridge-lm, fig.width = 10, fig.cap="Cap", fig.alt="Alt"}
+##Predict using the ridge model
 pred_ridge <- predict(ridge_fit, newx = test_mat)
-err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col))
-min(err_ridge)
-err_lm
 
-which_min_err <- which.min(err_ridge)
+##Calculate MSE
+err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col)) 
 min_err_ridge <- min(err_ridge)
+
+##Save some results for later analysis 
+which_min_err <- which.min(err_ridge)
 pred_min_ridge <- pred_ridge[, which_min_err]
+
+##Return errors
+min_err_ridge
 ```
+
+This is much lower than the test error for the model without regularisation:
+
+```{r pred-ridge-lm-noreg}
+err_lm  
+```
+
 
 We can see where on the continuum of lambdas we've picked a model by plotting
 the coefficient paths again. In this case, we've picked a model with fairly
