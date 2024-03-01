@@ -342,6 +342,13 @@ known to be associated with age from a paper by Horvath et al.[^2]. Horvath et a
 use methylation markers alone to predict the biological age of an individual.
 This is useful in studying age-related disease amongst many other things.
 
+
+To compare the training and test errors for a model for age using the Hovarth data, we'll split the
+data into training and test sets, fit a linear model and calculate the errors. First, let's
+calculate the training error. Let's start by splitting the data into training and test sets: 
+
+
+
 ```{r coefhorvath}
 coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 methylation <- readRDS(here::here("data/methylation.rds"))
@@ -357,75 +364,68 @@ horvath_mat <- methyl_mat[, features]
 ## Generate an index to split the data
 set.seed(42)
 train_ind <- sample(nrow(methyl_mat), 25)
+
+## Split the data 
+train_mat <- horvath_mat[train_ind, ]
+train_age <- age[train_ind]
+test_mat <- horvath_mat[-train_ind, ]
+test_age <- age[-train_ind]
+
 ```
+
+Now let's fit a linear model to our training data and calculate the training error. Here we use the mean of the squared difference between our predictions and the observed data, or "mean squared error" (MSE).
+
+```{r trainlm}
+## Fit a linear model
+# as.data.frame() converts train_mat into a data.frame
+#Using the `.` syntax above together with a `data` argument will lead to
+#the same result as using `train_age ~ train_mat`: R will fit a multivariate 
+#regression model in which each of the columns in `train_mat` is used as 
+#a predictor. We opted to use the `.` syntax because it will help us to 
+#obtain model predictions using the `predict()` function. 
+
+fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
+
+## Function to calculate the (mean squared) error
+ mse <- function(true, prediction) { 
+     mean((true - prediction)^2) 
+ } 
+
+## Calculate the training error 
+err_lm_train <- mse(train_age, fitted(fit_horvath)) 
+err_lm_train
+```
+
+The training error appears very low here -- on average we're only off by 
+about a year! 
 
 > ## Challenge 3
 > 
-> 1. Split the methylation data matrix and the age vector
->    into training and test sets.
-> 2. Fit a model on the training data matrix and training age 
->    vector.
-> 3. Check the mean squared error on this model.
+> For the fitted model above, calculate the mean squared error for the test set. 
 >
 > 
 > > ## Solution
 > >
-> > 1. Splitting the data involves using our index to split up the matrix and
-> >    the age vector into two each. We can use a negative subscript to create
-> >    the test data.
-> >    
-> >    ```{r testsplit} 
-> >    train_mat <- horvath_mat[train_ind, ]
-> >    train_age <- age[train_ind]
-> >    test_mat <- horvath_mat[-train_ind, ]
-> >    test_age <- age[-train_ind]
-> >    ```
-> > The solution to this exercise is important because the generated objects 
-> > (`train_mat`, `train_age`, `test_mat` and `test_age`) will be used later in 
-> > this episode. Please make sure that you use the same object names. 
+> > First, let's find the predicted values for the 'unseen' test data:
+> > ```{r modelpreds}
+> > pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat)) 
+> > ```
 > > 
-> > 2. To 
-> >    
-> >    ```{r trainfit}
-> >    # as.data.frame() converts train_mat into a data.frame
-> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
-> >    ```
-> > 
-> > Using the `.` syntax above together with a `data` argument will lead to
-> > the same result as usign `train_age ~ tran_mat`: R will fit a multivariate 
-> > regression model in which each of the colums in `train_mat` is used as 
-> > a predictor. We opted to use the `.` syntax because it will help us to 
-> > obtain model predictions using the `predict()` function. 
-> > 
-> > 3. The mean squared error of the model is the mean of the square of the
-> >    residuals. This seems very low here -- on average we're only off by 
-> >    about a year!
-> >    ```{r testerror}
-> >    mean(residuals(fit_horvath)^2)
-> >    ```
+> > The mean squared error for the test set is the mean of the squared 
+> > error of the predicted values and true test data.
+> > ```{r testerror}
+> > err_lm<-mse(test_age, pred_lm)
+> > err_lm
+> > ```
 > >
 > {: .solution}
 {: .challenge}
 
-Having trained this model, now we can check how well it does in predicting age
-from new dataset (the test data).
-Here we use the mean of the squared difference between our predictions and the
-true ages for the test data, or "mean squared error" (MSE). Unfortunately, it
-seems like this is a lot higher than the error on the training data!
 
-
-```{r}
-mse <- function(true, prediction) {
-    mean((true - prediction)^2)
-}
-pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
-err_lm <- mse(test_age, pred_lm)
-err_lm
-```
-
-Further, if we plot true age against predicted age for the samples in the test
-set, we can see how well we're really doing - ideally these would line up
-exactly!
+Unfortunately, the test error is a lot higher than the training error.
+If we plot true age against predicted age for the samples in the test
+set, we can gain more insight into the performance of the model on the test set. 
+Ideally, the predicted values should be close to the test data.
 
 ```{r test-plot-lm, fig.cap="A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted).", fig.alt="A scatter plot of observed age versus predicted age for individuals in the test set. Each dot represents one individual. Dashed line is used as a reference to indicate how perfect predictions would look (observed = predicted). In this case we observe high prediction error in the test set."}
 par(mfrow = c(1, 1))
