@@ -46,12 +46,11 @@ knitr_fig_path("05-")
 
 # Introduction
 
-Imagine a dataset which contains many variables ($p$), close to the total number
-of rows in the dataset ($n$). Some of these variables are highly correlated and
-several form groups which you might expect to represent the same overall effect.
-Such datasets are challenging to analyse for several reasons, with the main
-problem being how to reduce dimensionality in the dataset while retaining the
-important features. 
+If a dataset contains many variables ($p$), it is likely that some of these 
+variables will be highly correlated. Variables may even be so highly correlated 
+that they represent the same overall effect. Such datasets are challenging 
+to analyse for several reasons, with the main problem being how to reduce 
+dimensionality in the dataset while retaining the important features. 
 
 In this episode we will explore *principal component analysis* (PCA) as a
 popular method of analysing high-dimensional data. PCA is an unsupervised
