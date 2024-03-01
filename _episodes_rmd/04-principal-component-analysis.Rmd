@@ -361,11 +361,10 @@ which may be discarded after the elbow.
 
 
 ```{r varexp}
-# calculate variance explained
-varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 # calculate percentage variance explained using output from the PCA
-varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
+varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 # create new dataframe with five rows, one for each principal component
+varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 ```
 
 ```{r vardf-plot, fig.cap="Caption", fig.cap="Alt"}
