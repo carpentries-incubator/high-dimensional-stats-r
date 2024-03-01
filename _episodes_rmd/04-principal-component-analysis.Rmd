@@ -66,31 +66,6 @@ associated principal component could also be used as an effect in further analys
 
 
 
-# Advantages and disadvantages of PCA
-
-Advantages:
-* It is a relatively easy to use and popular method. 
-* Various software/packages are available to run a PCA.
-* The calculations used in a PCA are easy to understand for statisticians and
-  non-statisticians alike.
-
-Disadvantages:
-* It assumes that variables in a dataset are correlated.
-* It is sensitive to the scale at which input variables are measured.
-  If input variables are measured at different scales, the variables
-  with large variance relative to the scale of measurement will have
-  greater impact on the principal components relative to variables with smaller
-  variance. In many cases, this is not desirable.
-* It is not robust against outliers, meaning that very large or small data
-  points can have a large effect on the output of the PCA.
-* PCA assumes a linear relationship between variables which is not always a
-  realistic assumption.
-* It can be difficult to interpret the meaning of the principal components,
-  especially when including them in further analyses (e.g. inclusion in a linear
-  regression).
-
-
-
 > ## Challenge 1 
 > 
 > Descriptions of three datasets and research questions are given below. For
@@ -436,6 +411,31 @@ depending on the PCA implementation you use. Here are some examples:
 | stats::prcomp()   | $x         | $rotation |
 | stats::princomp() | $scores    | $loadings | 
 | PCAtools::pca()   | $rotated   | $loadings | 
+
+
+
+# Advantages and disadvantages of PCA
+
+Advantages:
+* It is a relatively easy to use and popular method. 
+* Various software/packages are available to run a PCA.
+* The calculations used in a PCA are easy to understand for statisticians and
+  non-statisticians alike.
+
+Disadvantages:
+* It assumes that variables in a dataset are correlated.
+* It is sensitive to the scale at which input variables are measured.
+  If input variables are measured at different scales, the variables
+  with large variance relative to the scale of measurement will have
+  greater impact on the principal components relative to variables with smaller
+  variance. In many cases, this is not desirable.
+* It is not robust against outliers, meaning that very large or small data
+  points can have a large effect on the output of the PCA.
+* PCA assumes a linear relationship between variables which is not always a
+  realistic assumption.
+* It can be difficult to interpret the meaning of the principal components,
+  especially when including them in further analyses (e.g. inclusion in a linear
+  regression).
 
 
 
