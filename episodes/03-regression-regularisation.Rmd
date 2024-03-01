@@ -776,8 +776,11 @@ We can use this new idea to choose a lambda value by finding the lambda
 that minimises the error across each of the test and training splits. In R:
 
 ```{r lasso-cv, fig.cap="Cross-validated mean squared error for different values of lambda under a LASSO penalty.", fig.alt="Alt"}
+##Fit lasso
 lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 plot(lasso)
+
+##Extract the coefficients and return those that are non-zero
 coefl <- coef(lasso, lasso$lambda.min)
 selected_coefs <- as.matrix(coefl)[which(coefl != 0), 1] ; selected_coefs
 ```
