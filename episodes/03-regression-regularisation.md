@@ -359,24 +359,22 @@ train_ind <- sample(nrow(methyl_mat), 25)
 > >    test_age <- age[-train_ind]
 > >    ~~~
 > >    {: .language-r}
-> > The solution to this exercise is important because the generated objects 
-> > (`train_mat`, `train_age`, `test_mat` and `test_age`) will be used later in 
-> > this episode. Please make sure that you use the same object names. 
-> > 
-> > 2. To 
-> >    
+> >   The solution to this exercise is important because the generated objects 
+> >   (`train_mat`, `train_age`, `test_mat` and `test_age`) will be used later in 
+> >   this episode. Please make sure that you use the same object names. 
+> > 2. We can fit a model using the training data and the `lm` function.
 > >    
 > >    ~~~
-> >    # as.data.frame() converts train_mat into a data.frame
+> >    # we convert train_mat to a data frame to use the `.` syntax in lm
 > >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 > >    ~~~
 > >    {: .language-r}
-> > 
-> > Using the `.` syntax above together with a `data` argument will lead to
-> > the same result as usign `train_age ~ tran_mat`: R will fit a multivariate 
-> > regression model in which each of the colums in `train_mat` is used as 
-> > a predictor. We opted to use the `.` syntax because it will help us to 
-> > obtain model predictions using the `predict()` function. 
+> >   
+> >   Using the `.` syntax above together with a `data` argument will lead to
+> >   the same result as usign `train_age ~ tran_mat`: R will fit a multivariate 
+> >   regression model in which each of the colums in `train_mat` is used as 
+> >   a predictor. We opted to use the `.` syntax because it will help us to 
+> >   obtain model predictions using the `predict()` function. 
 > > 
 > > 3. The mean squared error of the model is the mean of the square of the
 > >    residuals. This seems very low here -- on average we're only off by 
@@ -489,7 +487,7 @@ $$
 
 Another way of thinking about this is that when finding the best model, we're
 weighing up a balance of the ordinary least squares objective and a "penalty"
-term that punished models with large coefficients. The balance between the
+term that punishes models with large coefficients. The balance between the
 penalty and the ordinary least squares objective is controlled by $\lambda$ - 
 when $\lambda$ is large, we care a lot about the size of the coefficients.
 When it's small, we don't really care a lot. When it's zero, we're back to
@@ -514,8 +512,6 @@ library("glmnet")
 horvath_mat <- methyl_mat[, features] # select the first 20 sites as before
 train_mat <- horvath_mat[train_ind, ] # use the same individuals as selected before
 test_mat <- horvath_mat[-train_ind, ]
-
-
 
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
 plot(ridge_fit, xvar = "lambda")
@@ -713,7 +709,8 @@ diagonal (i.e., one or more coefficient is exactly zero).
 > >    <img src="../fig/rmd-03-plotlas-1.png" alt="plot of chunk plotlas" width="720" />
 > >    <p class="caption">plot of chunk plotlas</p>
 > >    </div>
-> > 3. The paths tend to go to exactly zero much more when sparsity increases when we use a LASSO model. 
+> > 3. When using LASSO, the paths tend to go to exactly zero much more as the
+> >    penalty ($ \lambda $) increases. 
 > >    In the ridge case, the paths tend towards zero but less commonly reach exactly zero.
 > > 
 > {: .solution}
