@@ -414,7 +414,7 @@ about a year!
 > > The mean squared error for the test set is the mean of the squared 
 > > error of the predicted values and true test data.
 > > ```{r testerror}
-> > err_lm<-mse(test_age, pred_lm)
+> > err_lm <- mse(test_age, pred_lm)
 > > err_lm
 > > ```
 > >
@@ -534,8 +534,6 @@ library("glmnet")
 horvath_mat <- methyl_mat[, features] # select the first 20 sites as before
 train_mat <- horvath_mat[train_ind, ] # use the same individuals as selected before
 test_mat <- horvath_mat[-train_ind, ]
-
-
 
 ridge_fit <- glmnet(x = train_mat, y = train_age, alpha = 0)
 plot(ridge_fit, xvar = "lambda")
@@ -741,12 +739,13 @@ drawplot()
 > >    to the coefficients. When we instead plot the L1 norm on the x-axis,
 > >    increasing L1 norm means that we are allowing our
 > >    coefficients to take on increasingly large values.
-> >    ```{r plotlas, fig.width = 10, echo=FALSE}
+> >    ```{r plotlas, fig.width = 10, fig.height = 20, echo=FALSE}
 > >    par(mfrow = c(2, 1))
 > >    plot(fit_lasso, xvar = "lambda")
 > >    plot(fit_lasso)
 > >    ```
-> > 3. The paths tend to go to exactly zero much more when sparsity increases when we use a LASSO model. 
+> > 3. When using LASSO, the paths tend to go to exactly zero much more as the
+> >    penalty ($ \lambda $) increases. 
 > >    In the ridge case, the paths tend towards zero but less commonly reach exactly zero.
 > > 
 > {: .solution}
