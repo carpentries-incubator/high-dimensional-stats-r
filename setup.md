@@ -51,6 +51,6 @@ install.packages('igraph', repos=c(igraph = 'https://igraph.r-universe.dev',
 BiocManager::install('bluster')
 ```
 
-If this does not work, it may be necessary to check that the **glpk** package, on which igraph depends, is installed on your system. More details can be found at [https://github.com/igraph/rigraph/issues/490](https://github.com/igraph/rigraph/issues/490).
+Note especially the C libraries that are mentioned on the `igraph` help page for compiling from source --- these are usually available via a package manager (homebrew, apt, pacman, etc), and are required if your R installation is unable to use pre-compiled binaries from CRAN.
 
 {% include links.md %}
