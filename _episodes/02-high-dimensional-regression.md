@@ -10,7 +10,7 @@ questions:
 - "How can we benefit from the fact that we have many outcomes?"
 - "How can we control for the fact that we do many tests?"
 objectives:
-- "Perform and critically analyse high dimensional regression."
+- "Perform and critically analyse high-dimensional regression."
 - "Understand methods for shrinkage of noise parameters in
   high-dimensional regression."
 - "Perform multiple testing adjustment."
@@ -58,54 +58,43 @@ methylation <- readRDS(here("data/methylation.rds"))
 Note: the code that we used to download these data from its source is available
 [here](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/data/methylation.R)
 
-This `methylation` object is a `GenomicRatioSet`, a Bioconductor data
-object derived from the `SummarizedExperiment` class. These
-`SummarizedExperiment` objects contain `assay`s, in this case
-normalised methylation levels, and optional sample-level `colData` and
-feature-level `metadata`. These objects are very convenient to contain
-all of the information about a dataset in a high-throughput context. If
-you would like more detail on these objects it may be useful to consult
-the [vignettes on
+`methylation` is actually a special Bioconductor `SummarizedExperiment`
+object that summarises lots of different information about the data. 
+These objects are very useful for storing all of the information 
+about a dataset in a high-throughput context. The structure of `SummarizedExperiment`
+objects is described in the [vignettes on
 Bioconductor](https://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
+Here, we show how to extract the information for analysis. 
+
+We can extract
+
+- the dimensions of the dataset using `dim`. Importantly, in these objects and
+data structures for computational biology in R generally, observations are stored as
+columns and features (in this case, sites in the genome) are stored as rows. 
+This is in contrast to usual tabular data, where features or variables
+are stored as columns and observations are stored as rows;
+- assays, (normalised methylation levels here), using `assay`;
+- sample-level information using `colData`.
 
 
 ~~~
-methylation
+dim(methylation)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-class: GenomicRatioSet 
-dim: 5000 37 
-metadata(0):
-assays(2): M CN
-rownames(5000): cg00075967 cg00374717 ... cg08482167 cg13174700
-rowData names(0):
-colnames(37): 201868500150_R01C01 201868500150_R03C01 ...
-  201870610111_R06C01 201870610111_R07C01
-colData names(14): Sample_Well Sample_Name ... Array Slide
-Annotation
-  array: IlluminaHumanMethylationEPIC
-  annotation: ilm10b4.hg19
-Preprocessing
-  Method: Raw (no normalization or bg correction)
-  minfi version: 1.38.0
-  Manifest version: 0.3.0
+[1] 5000   37
 ~~~
 {: .output}
 
 You can see in this output that this object has a `dim()` of
 $5000 \times 37$, meaning it has
-5000 features and 37 columns. To
+5000 _features_ and 37 _observations_. To
 extract the matrix of methylation M-values, we can use the
-`assay()` function. One thing to bear in mind with these objects (and
-data structures for computational biology in R generally) is that in the
-matrix of methylation data, samples or observations are stored as
-columns, while features (in this case, sites in the genome) are stored as rows.
-This is in contrast to usual tabular data, where features or variables
-are stored as columns and observations are stored as rows.
+`assay()` function. 
+
 
 
 ~~~
@@ -153,7 +142,7 @@ knitr::kable(head(colData(methylation)), row.names = FALSE)
 
 In this episode, we will focus on the association between age and
 methylation. The following heatmap summarises age and methylation levels 
-available in the Prostate dataset:
+available in the methylation dataset:
 
 
 ~~~
