@@ -1177,7 +1177,8 @@ experiment over and over.
 >
 > 1.  At a significance level of 0.05, with 100 tests performed, what is
 >     the Bonferroni significance threshold?
-> 2.  In a gene expression experiment, after FDR correction we observe
+> 2.  In a gene expression experiment, after FDR correction with
+>     an FDR-adjusted p-value threshold of 0.05, we observe
 >     500 significant genes. What proportion of these genes are truly
 >     different?
 > 3.  Try running FDR correction on the `p_raw` vector. *Hint: check
