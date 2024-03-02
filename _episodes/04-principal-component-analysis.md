@@ -331,34 +331,33 @@ deviation of 1.
 > ## Challenge 2
 > 
 > 
-> Why might it be necessary to standardise variables before performing a PCA?  
-> Can you think of datasets where it might not be necessary to standardise
-> variables?
-> Discuss.
+> 1. Why might it be necessary to standardise variables before performing a PCA?  
+>   Some ideas:
+>   - To make the results of the PCA interesting.
+>   - If you want to ensure that variables with different ranges of values
+>      contribute equally to analysis.
+>   - To allow the feature matrix to be calculated faster, especially in cases
+>      where there are a lot of input variables.
+>   - To allow both continuous and categorical variables to be included in the PCA.
+>   - All of the above.
+> 2. Can you think of datasets where it might not be necessary to standardise
+>   variables?
 > 
-> 1. To make the results of the PCA interesting.
-> 2. If you want to ensure that variables with different ranges of values
->    contribute equally to analysis.
-> 3. To allow the feature matrix to be calculated faster, especially in cases
->    where there are a lot of input variables.
-> 4. To allow both continuous and categorical variables to be included in the PCA.
-> 5. All of the above.
 > 
 > > ## Solution
 > > 
-> > 2.
-> > Scaling the data isn't guaranteed to make the results more interesting.
-> > It also won't affect how quickly the output will be calculated, whether
-> > continuous and categorical variables are present or not.
+> > 1. Scaling the data isn't guaranteed to make the results more interesting.
+> >    It also won't affect how quickly the output will be calculated, whether
+> >    continuous and categorical variables are present or not.
 > > 
-> > It is done to ensure that all features have equal weighting in the resulting
-> > PCs.
+> >    It is done to ensure that all features have equal weighting in the resulting
+> >    PCs.
 > > 
-> > You may not want to standardise datasets which contain continuous variables
-> > all measured on the same scale (e.g. gene expression data or RNA sequencing
-> > data). In this case, variables with very little sample-to-sample variability
-> > may represent only random noise, and standardising the data would give
-> > these extra weight in the PCA.
+> >  2. You may not want to standardise datasets which contain continuous variables
+> >    all measured on the same scale (e.g. gene expression data or RNA sequencing
+> >    data). In this case, variables with very little sample-to-sample variability
+> >    may represent only random noise, and standardising the data would give
+> >    these extra weight in the PCA.
 > > 
 > {: .solution}
 {: .challenge}
@@ -438,11 +437,10 @@ which may be discarded after the elbow.
 
 
 ~~~
-# calculate variance explained
-varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 # calculate percentage variance explained using output from the PCA
-varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
+varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 # create new dataframe with five rows, one for each principal component
+varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 ~~~
 {: .language-r}
 
