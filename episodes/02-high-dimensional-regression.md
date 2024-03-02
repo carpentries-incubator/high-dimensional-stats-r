@@ -203,17 +203,21 @@ the next episode will focus on the first.
 > > ## Solution
 > >
 > > There are a number of problems that this kind of approach presents.
-> > For example: 1. Without a research question in mind when creating a
-> > model, it's not clear how we can interpret each model, and
-> > rationalising the results after the fact can be dangerous; it's easy
-> > to make up a "story" that isn't grounded in anything but the fact
-> > that we have significant findings. 2. We may not have a representative
-> > sample for each of these covariates. For example, we may have very
-> > small sample sizes for some ethnicities, leading to spurious
-> > findings. 3. If we perform 5000 tests for each of
+> > For example:
+> > 
+> > 1. If we perform 5000 tests for each of
 > > 14 variables, even if there were no true
 > > associations in the data, we'd be likely to observe some strong
 > > spurious associations that arise just from random noise.
+> > 2. We may not have a representative
+> > sample for each of these covariates. For example, we may have very
+> > small sample sizes for some ethnicities, leading to spurious
+> > findings.
+> > 3. Without a research question in mind when creating a
+> > model, it's not clear how we can interpret each model, and
+> > rationalising the results after the fact can be dangerous; it's easy
+> > to make up a "story" that isn't grounded in anything but the fact
+> > that we have significant findings.
 > >
 > {: .solution}
 {: .challenge}
