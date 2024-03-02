@@ -50,7 +50,7 @@ in a biomedical study is shown in the figure below.
 
 
 ```{r table-intro, echo = FALSE}
-knitr::include_graphics("../fig/intro-table.png")
+knitr::include_graphics(here::here("fig/intro-table.png"))
 ```
 
 Researchers often want to relate such features to specific patient outcomes
