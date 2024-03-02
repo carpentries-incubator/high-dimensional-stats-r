@@ -220,7 +220,7 @@ explore why high correlations might be an issue in a Challenge.
 > 
 > Use the `cor()` function to examine correlations between all variables in the 
 > `Prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
-> 0.7 for the correlation coefficients?
+> 0.75 for the correlation coefficients?
 >
 > Use the `lm()` function to fit univariate regression models to predict patient 
 > age using two variables that are highly correlated as predictors. Which of 
