@@ -564,7 +564,7 @@ the mean squared error in the test set:
 # where each column corresponds to a different lambda value
 pred_ridge <- predict(ridge_fit, newx = test_mat)
 
-##Calculate MSE
+# Calculate MSE for every column of the prediction matrix against the vector of true ages
 err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col)) 
 min_err_ridge <- min(err_ridge)
 
