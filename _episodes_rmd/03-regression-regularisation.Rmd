@@ -378,11 +378,11 @@ Now let's fit a linear model to our training data and calculate the training err
 ```{r trainlm}
 ## Fit a linear model
 # as.data.frame() converts train_mat into a data.frame
-#Using the `.` syntax above together with a `data` argument will lead to
-#the same result as using `train_age ~ train_mat`: R will fit a multivariate 
-#regression model in which each of the columns in `train_mat` is used as 
-#a predictor. We opted to use the `.` syntax because it will help us to 
-#obtain model predictions using the `predict()` function. 
+# Using the `.` syntax above together with a `data` argument will lead to
+# the same result as using `train_age ~ train_mat`: R will fit a multivariate 
+# regression model in which each of the columns in `train_mat` is used as 
+# a predictor. We opted to use the `.` syntax because it will help us to 
+# obtain model predictions using the `predict()` function. 
 
 fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 
