@@ -141,7 +141,7 @@ nrow(prostate)
 head(prostate)
 
 #select five log-transformed clinical variables for further analysis
-pros2 <- prostate[, c(1, 2, 4, 6, 9)]
+pros2 <- prostate[, c("lcavol", "lweight", "lbph", "lcp", "lpsa")]
 head(pros2)
 ```
 
@@ -151,9 +151,7 @@ EFA may be implemented in R using the `factanal()` function
 from the **`stats`** package (which is a built-in package in base R). This
 function fits a factor analysis by maximising the log-likelihood using a
 data matrix as input. The number of factors to be fitted in the analysis
-is specified by the user using the `factors` argument. Options for
-transforming the factors by rotating the data in different ways are
-available via the `rotation` argument (default is 'none').
+is specified by the user using the `factors` argument.
 
 
 > ## Challenge 1 (3 mins)
