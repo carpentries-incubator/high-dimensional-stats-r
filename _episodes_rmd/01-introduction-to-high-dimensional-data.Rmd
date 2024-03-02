@@ -277,7 +277,7 @@ explore why high correlations might be an issue in a Challenge.
 
 Including highly correlated variables such as `gleason` and `pgg45` 
 simultaneously the same regression model can lead to problems 
-in fitting a regression model and interpreting its output. Although, each variable
+in fitting a regression model and interpreting its output. Although each variable
 appears to be associated with the response individually, the model cannot distinguish 
 the contribution of each variable to the model. This can also increase the risk 
 of over-fitting since the model may fit redundant variables to noise rather 
