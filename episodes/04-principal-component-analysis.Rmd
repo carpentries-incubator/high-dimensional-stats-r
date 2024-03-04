@@ -29,7 +29,7 @@ keypoints:
 - The first principal component represents the dimension along which there is
   maximum variation in the data. Subsequent principal components represent
   dimensions with progressively less variation.
-- "Screeplots and biplots may be used to show:  
+- "scree plots and biplots may be used to show:  
   1. how much variation in the data is explained by each principal component and
   2. how data points cluster according to principal component scores and which
   variables are associated with these scores."
@@ -371,7 +371,7 @@ varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 plot(varDF, type="b")
 ```
 
-The screeplot shows that the first principal component explains most of the
+The scree plot shows that the first principal component explains most of the
 variance in the data (>50%) and each subsequent principal component explains
 less and less of the total variance. The first two principal components
 explain >70% of variance in the data. But what do these two principal
@@ -612,7 +612,7 @@ represents.
 
 ## Choosing how many components are important to explain the variance in the data
 
-As in the example using the `prostate` dataset we can use a screeplot to
+As in the example using the `prostate` dataset we can use a scree plot to
 compare the proportion of variance in the data explained by each principal
 component. This allows us to understand how much information in the microarray
 dataset is lost by projecting the observations onto the first few principal
@@ -621,16 +621,16 @@ amount of the variation. The proportion of variance explained should sum to one.
 
 There are no clear guidelines on how many principal components should be
 included in PCA: your choice depends on the total variability of the data and
-the size of the dataset. We often look at the 'elbow’ on the screeplot as an
+the size of the dataset. We often look at the 'elbow’ on the scree plot as an
 indicator that the addition of principal components does not drastically
 contribute to explain the remaining variance or choose an arbitory cut off for
 proportion of variance explained.
 
 > ## Challenge 4
 > 
-> Using the `screeplot()` function in **`PCAtools`**, create a screeplot to show 
+> Using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
 > proportion of variance explained by each principal component. Explain the
-> output of the screeplot in terms of proportion of variance in data explained
+> output of the scree plot in terms of proportion of variance in data explained
 > by each principal component.
 > 
 > > ## Solution
@@ -639,7 +639,7 @@ proportion of variance explained.
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
 > > ```
 > > Note that first principal component (PC1) explains more variation than
-> > other principal components (which is always the case in PCA). The screeplot
+> > other principal components (which is always the case in PCA). The scree plot
 > > shows that the first principal component only explains ~33% of the total
 > > variation in the micrarray data and many principal components explain very 
 > > little variation. The red line shows the cumulative percentage of explained
@@ -647,9 +647,9 @@ proportion of variance explained.
 > > principal components are needed to explain over 75% of variation in the
 > > data. This is not an unusual result for complex biological datasets
 > > including genetic information as clear relationships between groups are
-> > sometimes difficult to observe in the data. The screeplot shows that using
+> > sometimes difficult to observe in the data. The scree plot shows that using
 > > a PCA we have reduced 91 predictors to 18 in order to explain a significant
-> > amount of variation in the data. See additional arguments in screeplot
+> > amount of variation in the data. See additional arguments in scree plot
 > > function for improving the appearance of the plot.
 > {: .solution}
 {: .challenge}
