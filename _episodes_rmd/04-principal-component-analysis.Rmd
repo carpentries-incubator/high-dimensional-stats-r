@@ -159,9 +159,7 @@ This is explained in more detail on [this Q&A website](https://stats.stackexchan
 knitr::include_graphics(here("fig/pendulum.gif"))
 ```
 
-
-
-We will come back to principal component scores and loadings further below.
+In this episode, we will see how to perform PCA to summarise the information in high-dimensional datasets.
 
 # How do we perform a PCA?
 
