@@ -290,10 +290,7 @@ This returns the proportion of variance in the data explained by each of the
 PC3 a further `r prop.var[[3]]`%, PC4 approximately `r prop.var[[4]]`% and PC5
 around `r prop.var[[5]]`%.
 
-Let us visualise this. A plot of the amount of variance accounted for by each PC
-is also called a scree plot. Note that the amount of variance accounted for by a principal
-component is also called eigenvalue and thus the y-axis in scree plots if often
-labelled “eigenvalue”.
+Let us visualise this. A plot of the amount of variance accounted for by each PC is called a scree plot. Note that the amount of variance accounted for by a principal component is given by "eigenvalues". Thus, the y-axis in scree plots if often labelled "eigenvalue".
 
 Often, scree plots show a characteristic pattern where initially, the variance drops
 rapidly with each additional principal component. But then there is an “elbow” after which the
