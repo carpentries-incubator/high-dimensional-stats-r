@@ -272,7 +272,7 @@ We have calculated one principal component for each variable in the original
 dataset. How do we choose how many of these are necessary to represent the true
 variation in the data, without having extra components that are unnecessary?
 
-Let's look at the relative importance of each component using `summary`.
+Let's look at the relative importance of (variance explained by) each component using `summary`.
 
 ```{r summ}
 summary(pca.pros)
