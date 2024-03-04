@@ -146,7 +146,7 @@ in the data and are represented by the line perpendicular to the first (green li
 
 ```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
 # ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
-knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
+knitr::include_graphics(here("fig/bio_index_vs_percentage_fallow.png"))
 ```
 
 The animation below illustrates how principal components are calculated iteratively from
@@ -160,7 +160,7 @@ principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
 ```{r pendulum, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
-knitr::include_graphics("../fig/pendulum.gif")
+knitr::include_graphics(here("fig/pendulum.gif"))
 ```
 
 
@@ -470,7 +470,7 @@ associated metadata, downloaded from the
 
 ```{r se}
 library("SummarizedExperiment")
-cancer <- readRDS(here::here("data/cancer_expression.rds"))
+cancer <- readRDS(here("data/cancer_expression.rds")
 mat <- assay(cancer)
 metadata <- colData(cancer)
 ```
