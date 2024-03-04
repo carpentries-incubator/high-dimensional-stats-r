@@ -326,7 +326,7 @@ explain >70% of variance in the data. But what do these two principal
 components mean?
 
 
-## What are loadings and principal component scores?
+## Loadings and principal component scores
 
 Most PCA functions will produce two main output matrices: the
 *principal component scores* and the *loadings*. The matrix of principal component scores
