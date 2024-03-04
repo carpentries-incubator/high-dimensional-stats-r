@@ -195,7 +195,7 @@ equilibrium. We then use the length of the springs from the rod as the first
 principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
-```{r pendulum, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
+```{r pendulum, echo=FALSE, fig.cap="Animation showing the iterative process by which principal components are found. Data points are shown in blue, distances from the line in red dashed lines and the principal component is shown by a black line.", fig.alt="Animated scatter plot displaying the iterative process by which principal components are found. The data points are shown in blue and the principal component is shown by a solid black line. The distances of the points from the line are also shown by red dashed lines. The animation initially starts with the principal component far away from the direction of variability in the points and, as time goes on, eventually finds the direction of variability exhibiting a springing motion."}
 knitr::include_graphics("../fig/pendulum.gif")
 ```
 
