@@ -113,7 +113,7 @@ associated principal component could also be used as an effect in further analys
 # relate to each other.
 ```
 
-PCA transforms a dataset into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
+PCA transforms a dataset of continuous variables into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
 in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed to principal components, we can extract a subset of the principal components as new variables that sufficiently explain the variability in the dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset. 
 
 > ## Mathematical description of PCA 
@@ -183,8 +183,7 @@ Here we will calculate principal component scores for each of the rows in this
 dataset, using five principal components (one for each variable included in the
 PCA). We will include five clinical variables in our PCA, each of the continuous
 variables in the prostate dataset, so that we can create fewer variables
-representing clinical markers of cancer progression. Standard PCAs are carried
-out using continuous variables only.
+representing clinical markers of cancer progression.
 
 First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
