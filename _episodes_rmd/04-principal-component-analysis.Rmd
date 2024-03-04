@@ -374,10 +374,14 @@ plot(varDF, type="b")
 The scree plot shows that the first principal component explains most of the
 variance in the data (>50%) and each subsequent principal component explains
 less and less of the total variance. The first two principal components
-explain >70% of variance in the data. There are no clear guidelines on 
-how many principal components should be
-included in PCA: your choice depends on the total variability of the data and
-the size of the dataset. We often look at the 'elbow’ on the scree plot as an
+explain >70% of variance in the data. 
+
+Selecting a subset of principal components results in loss of 
+information from the original dataset but selecting principal components to 
+summarise the _majority_ of the information in the original dataset is useful
+from a practical dimension reduction perspective. There are no clear guidelines 
+on how many principal components should be included in PCA. 
+We often look at the 'elbow’ on the scree plot as an
 indicator that the addition of principal components does not drastically
 contribute to explain the remaining variance. In this case, the 'elbow' of the scree plot appears
 to be at the third principal component. We may therefore conclude that three principal
@@ -385,8 +389,8 @@ components are sufficient to explain the majority of the variability in the orig
 dataset. We may also choose another criterion, such as an arbitrary cut-off for 
 the proportion of the variance explained compared to other principal components. 
 Essentially, the criterion used to select principal components should be determined 
-based on what is deemed a sufficient level of variability explained for a specific 
-dataset. 
+based on what is deemed a sufficient level of information retention for a specific 
+dataset.
 
 
 
