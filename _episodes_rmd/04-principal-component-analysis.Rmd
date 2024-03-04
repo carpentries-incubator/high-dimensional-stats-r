@@ -449,7 +449,7 @@ implementations in different R libraries. It is thus a good idea to specify
 the desired package when calling `biplot()`. A biplot of the first two principal
 components can be generated as follows:
 
-```{r stats-biplot, fig.cap="Caption", fig.cap="Alt"}
+```{r stats-biplot, fig.cap="Scatter plot of the first two principal components with observations numerically labelled. The loadings are down by red arrows.", fig.cap="Scatter plot of the second principal component versus the first principal components. Observations as points, numerically labelled. The loadings are shown by red arrows, each labelled by their associated variable."}
 stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ```
 
