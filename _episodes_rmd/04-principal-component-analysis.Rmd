@@ -337,7 +337,7 @@ summary(pca.pros)
 ```
 
 ```{r, echo = FALSE}
-# Get proportions of variance explained by each PC (rounded to 2 DP)
+# Get proportions of variance explained by each principal component (rounded to 2 DP)
 prop.var <- round(summary(pca.pros)$importance["Proportion of Variance", ], 2) *
   100
 ```
@@ -402,7 +402,7 @@ has as many rows as there were observations in the input matrix. These
 scores are what is usually visualised or used for down-stream analyses.
 The matrix of loadings (also called rotation matrix) has as many rows as there
 are features in the original data. It contains information about how the
-(usually centered and scaled) original data relate to the PC scores.
+(usually centered and scaled) original data relate to the principal component scores.
 
 When calling a PCA object generated with `prcomp()`, the loadings are printed by default:
 
@@ -417,14 +417,14 @@ callout demonstrates this.
 > ## Computing a PCA "by hand"
 > The rotation matrix obtained in a PCA is identical to the eigenvectors
 > of the covariance matrix of the data. Multiplying these with the (centered and scaled)
-> data yields the PC scores:
+> data yields the principal component scores:
 > ```{r pca-by-hand}
 > pros2.scaled <- scale(pros2) # centre and scale the Prostate data
 > pros2.cov <- cov(pros2.scaled)   #generate covariance matrix
 > pros2.cov
 > pros2.eigen <- eigen(pros2.cov) # preform eigen decomposition
 > pros2.eigen # The slot $vectors = rotation of the PCA
-> # generate PC scores by by hand, using matrix multiplication
+> # generate principal component scores by by hand, using matrix multiplication
 > my.pros2.pcs <- pros2.scaled %*% pros2.eigen$vectors
 > # compare results
 > par(mfrow=c(1,2))
@@ -465,10 +465,10 @@ on the top and right of the plot are used to interpret the loadings, where
 loadings are scaled by the standard deviation of the principal components
 (`pca.pros$sdev`) times the square root the number of observations.
 
-Finally, you need to know that PC scores and rotations may have different slot names, 
+Finally, you need to know that principal component scores and rotations may have different slot names, 
 depending on the PCA implementation you use. Here are some examples:
 
-| library::command()| PC scores | Loadings |
+| library::command()| principal component scores | Loadings |
 |-------------------|-----------|----------|
 | stats::prcomp()   | $x         | $rotation |
 | stats::princomp() | $scores    | $loadings | 
@@ -571,7 +571,7 @@ represents.
 > 
 > Let us assume we only care about the principal components accounting for the top
 > 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
-> the PCs accounting for the bottom 20%.
+> the principal components accounting for the bottom 20%.
 > 
 > As in the example using prostate data above, examine the first 5 rows and
 > columns of rotated data and loadings from your PCA.
@@ -580,8 +580,8 @@ represents.
 > > 
 > > ```{r pca-ex}
 > > pc <- pca(mat, metadata = metadata)
-> > #Many PCs explain a very small amount of the total variance in the data
-> > #Remove the lower 20% of PCs with lower variance
+> > #Many principal components explain a very small amount of the total variance in the data
+> > #Remove the lower 20% of principal components with lower variance
 > > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
 > > #Explore other arguments provided in pca
 > > pc$rotated[1:5, 1:5]
@@ -743,7 +743,7 @@ you to set custom colours.
 Finally, it can sometimes be of interest to compare how certain variables contribute
 to different principal components. This can be visualised with `plotloadings()` from
 the **`PCAtools`** package. The function checks the range of loadings for each
-principal component specified (default: first five PCs). It then selects the features
+principal component specified (default: first five principal components). It then selects the features
 in the top and bottom 5% of these ranges and displays their loadings. This behaviour
 can be adjusted with the `rangeRetain` argument, which has 0.1 as the default value (i.e.
 5% on each end of the range). NB, if there are too many labels to be plotted, you will see
@@ -755,10 +755,9 @@ plotloadings(pc, c("PC2"), rangeRetain = 0.1)
 plotloadings(pc, c("PC1", "PC2"), rangeRetain = 0.1)
 ```
 
-You can see how the third code line prooces more dots, some of which do not have
-extreme loadings. This is because all loadings selected for any PC are shown for all
-other PCs. For instance, it is plausible that features which have high loadings on
-PC1 may have lower ones on PC2.
+You can see how the third code line produces more dots, some of which do not have
+extreme loadings. This is because all loadings selected for any principal component
+are shown for all other principal components. For instance, it is plausible that features which have high loadings on PC1 may have lower ones on PC2.
 
 
 # Using PCA output in further analysis
