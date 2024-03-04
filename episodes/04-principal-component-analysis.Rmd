@@ -535,7 +535,7 @@ sample (represented by rows).
 
 Microarray data are difficult to analyse for several reasons. Firstly, 
 they are typically high-dimensional and therefore are subject to the same
-difficulties associated with analysing high dimensional data outlined above
+difficulties associated with analysing high-dimensional data outlined above
 (i.e. *p*>*n*, large numbers of rows, multiple possible response variables,
 curse of dimensionality). Secondly, formulating a research question using
 microarray data can be difficult, especially if not much is known a priori
