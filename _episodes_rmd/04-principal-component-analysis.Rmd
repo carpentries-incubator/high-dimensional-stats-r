@@ -230,14 +230,14 @@ Columns include:
    outer walls of prostate),
 - `gleason` (Gleason score; grade of cancer cells),
 - `pgg45` (percentage Gleason scores 4 or 5),
-- `lpsa` (log-tranformed prostate specific antigen; level of PSA in blood).
+- `lpsa` (log-transformed prostate specific antigen; level of PSA in blood).
 - `age` (patient age in years).
 
 Here we will calculate principal component scores for each of the rows in this
 dataset, using five principal components (one for each variable included in the
 PCA). We will include five clinical variables in our PCA, each of the continuous
 variables in the prostate dataset, so that we can create fewer variables
-representing clinical markers of cancer progression. Standard PCAs are carried
+representing clinical markers of cancer progression. Standard PCA is carried
 out using continuous variables only.
 
 First, we will examine the `prostate` dataset (originally part of the
