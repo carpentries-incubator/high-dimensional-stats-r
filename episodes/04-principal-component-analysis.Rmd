@@ -367,7 +367,7 @@ varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 ```
 
-```{r vardf-plot, fig.cap="Caption", fig.cap="Alt"}
+```{r vardf-plot, fig.cap="Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.", fig.cap="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."}
 plot(varDF, type="b")
 ```
 
