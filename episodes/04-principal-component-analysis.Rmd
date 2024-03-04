@@ -654,7 +654,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 > > Note that first principal component (PC1) explains more variation than
 > > other principal components (which is always the case in PCA). The scree plot
 > > shows that the first principal component only explains ~33% of the total
-> > variation in the micrarray data and many principal components explain very 
+> > variation in the microarray data and many principal components explain very 
 > > little variation. The red line shows the cumulative percentage of explained
 > > variation with increasing principal components. Note that in this case 18
 > > principal components are needed to explain over 75% of variation in the
