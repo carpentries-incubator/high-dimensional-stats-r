@@ -417,8 +417,7 @@ depending on the PCA implementation you use. Here are some examples:
 Advantages:
 * It is a relatively easy to use and popular method. 
 * Various software/packages are available to run a PCA.
-* The calculations used in a PCA are easy to understand for statisticians and
-  non-statisticians alike.
+* The calculations used in a PCA are simple to understand compared to other methods for dimension reduction. 
 
 Disadvantages:
 * It assumes that variables in a dataset are correlated.
