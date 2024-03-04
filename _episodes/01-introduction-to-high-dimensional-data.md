@@ -63,10 +63,11 @@ specific patient outcomes (e.g. survival, length of time spent in hospital).
 An example of what high-dimensional data might look like in a biomedical study
 is shown in the figure below. 
 
-<div class="figure" style="text-align: center">
-<img src="../fig/intro-table.png" alt="plot of chunk table-intro"  />
-<p class="caption">plot of chunk table-intro</p>
-</div>
+
+~~~
+Error in knitr::include_graphics(here::here("fig/intro-table.png")): Cannot find the file(s): "fig/intro-table.png"
+~~~
+{: .error}
 
 
 
@@ -103,7 +104,7 @@ Now that we have an idea of what high-dimensional data look like we can think
 about the challenges we face in analysing them.
 
 
-# Challenges in dealing with high-dimensional data 
+# Why is dealing with high-dimensional data challenging? 
 
 Most classical statistical methods are set up for use on low-dimensional data
 (i.e. data where the number of observations $n$ is much larger than the number
@@ -129,7 +130,12 @@ of the challenges we are facing when working with high-dimensional data.
 
 > ## Challenge 2 
 > 
-> Load the `Prostate` dataset as follows:
+> For illustrative purposes, we start with a simple dataset that is not technically
+> high-dimensional but contains many features. This will illustrate the general problems 
+> encountered when working with many features in a high-dimensional data set.
+>
+> First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
+> Next, let's Load the `Prostate` dataset as follows:
 >
 > 
 > ~~~
@@ -137,15 +143,13 @@ of the challenges we are facing when working with high-dimensional data.
 > Prostate <- readRDS(here("data/prostate.rds"))
 > ~~~
 > {: .language-r}
-> 
-> Although technically not a high-dimensional dataset, the `Prostate` data
-> will allow us explore the problems encountered when working with many features.
 >
 > Examine the dataset (in which each row represents a single patient) to:
 >
 > 1. Determine how many observations ($n$) and features ($p$) are available (hint: see the `dim()` function).
 > 2. Examine what variables were measured (hint: see the `names()` and `head()` functions).
-> 3. Plot the relationship between the variables (hint: see the `pairs()` function). 
+> 3. Plot the relationship between the variables (hint: see the `pairs()` function). What problem(s) with
+> high-dimensional data analysis does this illustrate?
 > 
 > > ## Solution
 > > 
@@ -172,8 +176,8 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> >  [1] "X"       "lcavol"  "lweight" "age"     "lbph"    "svi"     "lcp"    
-> >  [8] "gleason" "pgg45"   "lpsa"   
+> > [1] "lcavol"  "lweight" "age"     "lbph"    "svi"     "lcp"     "gleason"
+> > [8] "pgg45"   "lpsa"   
 > > ~~~
 > > {: .output}
 > > 
@@ -220,10 +224,11 @@ dataset are almost equal. In that situation the effective number of observations
 per features is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
-<div class="figure" style="text-align: center">
-<img src="../fig/intro-scatterplot.png" alt="plot of chunk intro-figure"  />
-<p class="caption">plot of chunk intro-figure</p>
-</div>
+
+~~~
+Error in knitr::include_graphics(here::here("fig/intro-scatterplot.png")): Cannot find the file(s): "fig/intro-scatterplot.png"
+~~~
+{: .error}
 
 In the first situation, the least squares regression line does not fit the data
 perfectly and there is some error around the regression line. But, when there are
@@ -235,14 +240,15 @@ common problem when using regression on high-dimensional datasets.
 
 Another problem in carrying out regression on high-dimensional data is dealing
 with correlations between explanatory variables. The large numbers of features
-in these datasets makes high correlations between variables more likely.
+in these datasets makes high correlations between variables more likely. Let's
+explore why high correlations might be an issue in a Challenge.
 
 
 > ## Challenge 3
 > 
 > Use the `cor()` function to examine correlations between all variables in the 
-> `Prostate` dataset. Are some pairs of variables highly correlated (i.e. 
-> correlation coefficients > 0.6)?
+> `Prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
+> 0.75 for the correlation coefficients?
 >
 > Use the `lm()` function to fit univariate regression models to predict patient 
 > age using two variables that are highly correlated as predictors. Which of 
@@ -265,28 +271,26 @@ in these datasets makes high correlations between variables more likely.
 > > 
 > > 
 > > ~~~
-> >                 X    lcavol      lweight       age         lbph         svi
-> > X       1.0000000 0.7111363  0.350443662 0.1965557  0.167928486  0.56678035
-> > lcavol  0.7111363 1.0000000  0.194128286 0.2249999  0.027349703  0.53884500
-> > lweight 0.3504437 0.1941283  1.000000000 0.3075286  0.434934636  0.10877851
-> > age     0.1965557 0.2249999  0.307528614 1.0000000  0.350185896  0.11765804
-> > lbph    0.1679285 0.0273497  0.434934636 0.3501859  1.000000000 -0.08584324
-> > svi     0.5667803 0.5388450  0.108778505 0.1176580 -0.085843238  1.00000000
-> > lcp     0.5336960 0.6753105  0.100237795 0.1276678 -0.006999431  0.67311118
-> > gleason 0.3936079 0.4324171 -0.001275658 0.2688916  0.077820447  0.32041222
-> > pgg45   0.4497267 0.4336522  0.050846821 0.2761124  0.078460018  0.45764762
-> > lpsa    0.9581149 0.7344603  0.354120390 0.1695928  0.179809410  0.56621822
-> >                  lcp      gleason      pgg45      lpsa
-> > X        0.533696039  0.393607939 0.44972672 0.9581149
-> > lcavol   0.675310484  0.432417056 0.43365225 0.7344603
-> > lweight  0.100237795 -0.001275658 0.05084682 0.3541204
-> > age      0.127667752  0.268891599 0.27611245 0.1695928
-> > lbph    -0.006999431  0.077820447 0.07846002 0.1798094
-> > svi      0.673111185  0.320412221 0.45764762 0.5662182
-> > lcp      1.000000000  0.514830063 0.63152825 0.5488132
-> > gleason  0.514830063  1.000000000 0.75190451 0.3689868
-> > pgg45    0.631528245  0.751904512 1.00000000 0.4223159
-> > lpsa     0.548813169  0.368986803 0.42231586 1.0000000
+> >            lcavol      lweight       age         lbph         svi          lcp
+> > lcavol  1.0000000  0.194128286 0.2249999  0.027349703  0.53884500  0.675310484
+> > lweight 0.1941283  1.000000000 0.3075286  0.434934636  0.10877851  0.100237795
+> > age     0.2249999  0.307528614 1.0000000  0.350185896  0.11765804  0.127667752
+> > lbph    0.0273497  0.434934636 0.3501859  1.000000000 -0.08584324 -0.006999431
+> > svi     0.5388450  0.108778505 0.1176580 -0.085843238  1.00000000  0.673111185
+> > lcp     0.6753105  0.100237795 0.1276678 -0.006999431  0.67311118  1.000000000
+> > gleason 0.4324171 -0.001275658 0.2688916  0.077820447  0.32041222  0.514830063
+> > pgg45   0.4336522  0.050846821 0.2761124  0.078460018  0.45764762  0.631528245
+> > lpsa    0.7344603  0.354120390 0.1695928  0.179809410  0.56621822  0.548813169
+> >              gleason      pgg45      lpsa
+> > lcavol   0.432417056 0.43365225 0.7344603
+> > lweight -0.001275658 0.05084682 0.3541204
+> > age      0.268891599 0.27611245 0.1695928
+> > lbph     0.077820447 0.07846002 0.1798094
+> > svi      0.320412221 0.45764762 0.5662182
+> > lcp      0.514830063 0.63152825 0.5488132
+> > gleason  1.000000000 0.75190451 0.3689868
+> > pgg45    0.751904512 1.00000000 0.4223159
+> > lpsa     0.368986803 0.42231586 1.0000000
 > > ~~~
 > > {: .output}
 > > 
@@ -300,17 +304,16 @@ in these datasets makes high correlations between variables more likely.
 > > 
 > > 
 > > ~~~
-> >            X lcavol lweight  age  lbph   svi   lcp gleason pgg45 lpsa
-> > X       1.00   0.71    0.35 0.20  0.17  0.57  0.53    0.39  0.45 0.96
-> > lcavol  0.71   1.00    0.19 0.22  0.03  0.54  0.68    0.43  0.43 0.73
-> > lweight 0.35   0.19    1.00 0.31  0.43  0.11  0.10    0.00  0.05 0.35
-> > age     0.20   0.22    0.31 1.00  0.35  0.12  0.13    0.27  0.28 0.17
-> > lbph    0.17   0.03    0.43 0.35  1.00 -0.09 -0.01    0.08  0.08 0.18
-> > svi     0.57   0.54    0.11 0.12 -0.09  1.00  0.67    0.32  0.46 0.57
-> > lcp     0.53   0.68    0.10 0.13 -0.01  0.67  1.00    0.51  0.63 0.55
-> > gleason 0.39   0.43    0.00 0.27  0.08  0.32  0.51    1.00  0.75 0.37
-> > pgg45   0.45   0.43    0.05 0.28  0.08  0.46  0.63    0.75  1.00 0.42
-> > lpsa    0.96   0.73    0.35 0.17  0.18  0.57  0.55    0.37  0.42 1.00
+> >         lcavol lweight  age  lbph   svi   lcp gleason pgg45 lpsa
+> > lcavol    1.00    0.19 0.22  0.03  0.54  0.68    0.43  0.43 0.73
+> > lweight   0.19    1.00 0.31  0.43  0.11  0.10    0.00  0.05 0.35
+> > age       0.22    0.31 1.00  0.35  0.12  0.13    0.27  0.28 0.17
+> > lbph      0.03    0.43 0.35  1.00 -0.09 -0.01    0.08  0.08 0.18
+> > svi       0.54    0.11 0.12 -0.09  1.00  0.67    0.32  0.46 0.57
+> > lcp       0.68    0.10 0.13 -0.01  0.67  1.00    0.51  0.63 0.55
+> > gleason   0.43    0.00 0.27  0.08  0.32  0.51    1.00  0.75 0.37
+> > pgg45     0.43    0.05 0.28  0.08  0.46  0.63    0.75  1.00 0.42
+> > lpsa      0.73    0.35 0.17  0.18  0.57  0.55    0.37  0.42 1.00
 > > ~~~
 > > {: .output}
 > > 
@@ -437,8 +440,14 @@ in these datasets makes high correlations between variables more likely.
 
 Including highly correlated variables such as `gleason` and `pgg45` 
 simultaneously the same regression model can lead to problems 
-in fitting a regression model and interpreting its output. To allow variables to 
-be included in the same model despite high levels of correlation, we can use
+in fitting a regression model and interpreting its output. Although each variable
+appears to be associated with the response individually, the model cannot distinguish 
+the contribution of each variable to the model. This can also increase the risk 
+of over-fitting since the model may fit redundant variables to noise rather 
+than true relationships.
+
+
+To allow the information from variables to be included in the same model despite high levels of correlation, we can use
 dimensionality reduction methods to collapse multiple variables into a single
 new variable (we will explore this dataset further in the dimensionality
 reduction lesson). We can also use modifications to linear regression like
