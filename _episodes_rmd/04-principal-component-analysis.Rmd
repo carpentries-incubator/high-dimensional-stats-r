@@ -749,9 +749,15 @@ can be adjusted with the `rangeRetain` argument, which has 0.1 as the default va
 5% on each end of the range). NB, if there are too many labels to be plotted, you will see
 a warning. This is not a serious problem.
 
-```{r loadingsplots}
+```{r loadingsplots, fig.cap="Cap", fig.alt="Alt"}
 plotloadings(pc, c("PC1"), rangeRetain = 0.1)
+```
+
+```{r loadingsplots1, fig.cap="Cap", fig.alt="Alt"}
 plotloadings(pc, c("PC2"), rangeRetain = 0.1)
+```
+
+```{r loadingsplots2, fig.cap="Cap", fig.alt="Alt"}
 plotloadings(pc, c("PC1", "PC2"), rangeRetain = 0.1)
 ```
 
