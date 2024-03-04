@@ -368,7 +368,7 @@ varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 ```
 
 ```{r vardf-plot, fig.cap="Caption", fig.cap="Alt"}
-plot(varDF)
+plot(varDF, type="b")
 ```
 
 The screeplot shows that the first principal component explains most of the
