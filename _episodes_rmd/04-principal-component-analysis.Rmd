@@ -538,9 +538,7 @@ formulating a research question using microarray data can be difficult,
 especially if not much is known a priori
 about which genes code for particular phenotypes of interest.
 Secondly, they are typically high-dimensional and therefore are subject to the same
-difficulties associated with analysing high-dimensional data outlined above
-(i.e. *p*>*n*, large numbers of rows, multiple possible response variables,
-curse of dimensionality). Finally,
+difficulties associated with analysing high-dimensional data. Finally,
 exploratory analysis, which can be used to help formulate research questions
 and display relationships, is difficult using microarray data due to the number
 of potentially interesting response variables (i.e. expression data from probes
