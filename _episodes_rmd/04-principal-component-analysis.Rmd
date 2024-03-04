@@ -418,7 +418,7 @@ callout demonstrates this.
 > The rotation matrix obtained in a PCA is identical to the eigenvectors
 > of the covariance matrix of the data. Multiplying these with the (centered and scaled)
 > data yields the principal component scores:
-> ```{r pca-by-hand}
+> ```{r pca-by-hand, fig.cap="Scatter plots of the second versus first principal components calculated by prcomp() (left) and by hand (right).", fig.alt="Side-by-side scatter plots of the second versus first principal components calculated by prcomp() (left) and by hand (right). The left scatter plot is the same as the right scatter plot but with swapped axes."}
 > pros2.scaled <- scale(pros2) # centre and scale the Prostate data
 > pros2.cov <- cov(pros2.scaled)   #generate covariance matrix
 > pros2.cov
