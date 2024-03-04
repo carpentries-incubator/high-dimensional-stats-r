@@ -114,10 +114,16 @@ associated principal component could also be used as an effect in further analys
 ```
 
 PCA transforms data to new uncorrelated variables called "principal components".
-The first principal component is the direction of the data along which the
-observations vary the most. The second principal component is the direction of
-the data along which the observations show the next highest amount of variation.
-For example, Figure 1 shows biodiversity index versus percentage area left
+Each principal component is a linear combination of the variables in the data
+set. The first principal component is the direction of the data along which the
+observations vary the most. In other words, the first principal component 
+explains the largest amount of the variability in the underlying dataset. 
+The second principal component is the direction of
+the data along which the observations show the next highest amount of variation
+(and explains the second largest amount of variability in the dataset).
+
+
+Figure 1 shows biodiversity index versus percentage area left
 fallow for 50 farms in southern England. The red line represents the first
 principal component direction of the data, which is the direction along which
 there is greatest variability in the data. Projecting points onto this line
@@ -126,11 +132,6 @@ vector of points with the greatest possible variance. The next highest amount
 of variability in the data is represented by the line perpendicular to first
 regression line which represents the second principal component (green line).
 
-The second principal component is a linear combination of the variables that
-is uncorrelated with the first principal component. There are as many principal
-components as there are variables in your dataset, but as we'll see, some are
-more useful at explaining your data than others. By definition, the first
-principal component explains more variation than other principal components.
 
 ```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
 # ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
