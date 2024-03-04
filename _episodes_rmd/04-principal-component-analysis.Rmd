@@ -113,6 +113,7 @@ associated principal component could also be used as an effect in further analys
 # relate to each other.
 ```
 
+PCA transforms data to new uncorrelated variables called "principal components".
 The first principal component is the direction of the data along which the
 observations vary the most. The second principal component is the direction of
 the data along which the observations show the next highest amount of variation.
