@@ -131,18 +131,17 @@ $$
 
 where $a_{11}...a_{p1}$ represent principal component _loadings_,
 which can be thought of as the degree to
-which each variable contributes to the calculation of the principal component.
-The values of $a_{11}...a_{p1}$ are found so that the principal component (scores), $Z_1$,
-explain most of the variation in the dataset.
+which each variable contributes to the calculation of the principal component scores.
+The values of $a_{11}...a_{p1}$ are found so that the principal component scores, $Z_1$,
+explain most of the variation in the dataset. Once we have calculated the principal component scores by finding the loadings, we can use them as new variables. 
 
+To see what these new principal component variables may look like, 
 Figure 1 shows biodiversity index versus percentage area left
 fallow for 50 farms in southern England. The red line represents the first
-principal component direction of the data, which is the direction along which
-there is greatest variability in the data. Finding the location on the line
-closest to a given data point would yield a vector of points with the 
-greatest possible variance. The next highest amount
-of variability in the data is represented by the line perpendicular to the first
-regression line, which represents the uncorrelated second principal component (green line).
+principal component scores, which pass through the points with the greatest 
+variability. The points along this line give the first principal component scores.
+The second principal component scores explain the next highest amount of variability 
+in the data and are represented by the line perpendicular to the first (green line).
 
 
 ```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
@@ -150,7 +149,7 @@ regression line, which represents the uncorrelated second principal component (g
 knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
 ```
 
-The animation below illustrates how principal components are calculated from
+The animation below illustrates how principal components are calculated iteratively from
 data. You can imagine that the black line is a rod and each red dashed line is
 a spring. The energy of each spring is proportional to its squared length. The
 direction of the first principal component is the one that minimises the total
@@ -163,8 +162,6 @@ This is explained in more detail on [this Q&A website](https://stats.stackexchan
 ```{r pendulum, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
 knitr::include_graphics("../fig/pendulum.gif")
 ```
-
-
 
 
 
