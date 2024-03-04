@@ -179,11 +179,8 @@ Columns include:
 - `lpsa` (log-tranformed prostate specific antigen; level of PSA in blood).
 - `age` (patient age in years).
 
-Here we will calculate principal component scores for each of the rows in this
-dataset, using five principal components (one for each variable included in the
-PCA). We will include five clinical variables in our PCA, each of the continuous
-variables in the prostate dataset, so that we can create fewer variables
-representing clinical markers of cancer progression.
+We will perform PCA on the five continuous clinical variables in our dataset
+so that we can create fewer variables representing clinical markers of cancer progression.
 
 First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
