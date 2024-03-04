@@ -161,7 +161,7 @@ In this episode, we will see how to perform PCA to summarise the information in 
 
 # How do we perform a PCA?
 
-To illustrate how to perform PCA initially, we start with a low dimensional dataset. The `prostate` dataset represents data from 97
+To illustrate how to perform PCA initially, we start with a low-dimensional dataset. The `prostate` dataset represents data from 97
 men who have prostate cancer. The data come from a study which examined the
 correlation between the level of prostate specific antigen and a number of
 clinical measures in men who were about to receive a radical prostatectomy.
@@ -205,7 +205,9 @@ head(pros2)
 
 ## Do we need to standardise the data?
 
-Now we compare the variances between variables in the dataset.
+Since PCA derives principal components based on the variance they explain in the data, we may need to apply some pre-processing to scale variables in our dataset if we want to ensure that each variable is considered equally by the PCA. Standardisation is essential if we want to avoid the PCA ignoring variables that may be important to our analysis just because they take low values and have low variance. We do not need to standardise if we want variables with low variance to carry less weight in the PCA.
+
+For this dataset, we want each variable to be treated equally by the PCA since variables with lower values may be just as informative as variables with higher values. Let's therefore investigate the variables in our dataset to see if we need to standardise our variables first:
 
 ```{r var-hist, fig.cap="Caption", fig.cap="Alt"}
 apply(pros2, 2, var)
@@ -216,8 +218,8 @@ hist(pros2$lbph, breaks = "FD")
 
 Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
 from this output that we need to scale each of these variables before including
-them in a PCA analysis to ensure that differences in variances between variables
-do not drive the calculation of principal components. In this example we
+them in a PCA analysis to ensure that differences in variances 
+do not drive the calculation of principal components. In this example, we
 standardise all five variables to have a mean of 0 and a standard
 deviation of 1. 
 
