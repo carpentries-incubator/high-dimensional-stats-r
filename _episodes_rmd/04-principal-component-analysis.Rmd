@@ -116,25 +116,12 @@ associated principal component could also be used as an effect in further analys
 PCA transforms a dataset of continuous variables into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
 in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed to principal components, we can extract a subset of the principal components as new variables that sufficiently explain the variability in the dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset. 
 
-> ## Mathematical description of PCA 
-> Mathematically, each principal component is a linear combination 
-> of the variables in the dataset. That is, the first principal
-> component values or _scores_, $Z_1$, are a linear combination 
-> of variables in the dataset, $X_1...X_p$, given by
-> $$ Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p, $$
-> where $a_{11}...a_{p1}$ represent principal component _loadings_. 
-{: .callout} 
-
-In summary, the principal components values are called _scores_. The loadings can
-be thought of as the degree to which each original variable contributes to 
-the principal component scores.
-
-To see what these new principal component variables (scores) may look like, 
+To see what these new principal components may look like, 
 Figure 1 shows biodiversity index versus percentage area left
 fallow for 50 farms in southern England. The red line represents the first
 principal component scores, which pass through the points with the greatest 
-variability. The points along this line give the first principal component scores.
-The second principal component scores explain the next highest amount of variability 
+variability. The points along this line give the first principal component.
+The second principal component explains the next highest amount of variability 
 in the data and are represented by the line perpendicular to the first (green line).
 
 
@@ -157,7 +144,18 @@ This is explained in more detail on [this Q&A website](https://stats.stackexchan
 knitr::include_graphics(here("fig/pendulum.gif"))
 ```
 
-In this episode, we will see how to perform PCA to summarise the information in high-dimensional datasets.
+> ## Mathematical description of PCA 
+> Mathematically, each principal component is a linear combination 
+> of the variables in the dataset. That is, the first principal
+> component values or _scores_, $Z_1$, are a linear combination 
+> of variables in the dataset, $X_1...X_p$, given by
+> $$ Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p, $$
+> where $a_{11}...a_{p1}$ represent principal component _loadings_. 
+{: .callout} 
+
+In summary, the principal components values are called _scores_. The loadings can
+be thought of as the degree to which each original variable contributes to 
+the principal component scores. In this episode, we will see how to perform PCA to summarise the information in high-dimensional datasets.
 
 # How do we perform a PCA?
 
