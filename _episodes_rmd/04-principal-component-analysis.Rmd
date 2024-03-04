@@ -470,7 +470,7 @@ associated metadata, downloaded from the
 
 ```{r se}
 library("SummarizedExperiment")
-cancer <- readRDS(here("data/cancer_expression.rds")
+cancer <- readRDS(here("data/cancer_expression.rds"))
 mat <- assay(cancer)
 metadata <- colData(cancer)
 ```
