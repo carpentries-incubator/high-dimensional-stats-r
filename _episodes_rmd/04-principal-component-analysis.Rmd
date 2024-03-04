@@ -779,7 +779,7 @@ they can be included together in a single linear regression.
 > and it allows researchers to examine the effect of several correlated
 > explanatory variables on a single response variable in cases where a high
 > degree of correlation initially prevents them from being included in the same
-> model. This is called principal componenet regression (PCR) and is just one
+> model. Principal component regression (PCR) is just one
 > example of how principal components can be used in further analysis of data.
 > When carrying out PCR, the variable of interest (response/dependent variable)
 > is regressed against the principal components calculated using PCA, rather
