@@ -684,7 +684,7 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > 
 > Create a biplot of the first two principal components from your PCA
 > using `biplot()` function in **`PCAtools`**. See `help("PCAtools::biplot")` for
-> arguments and their meaning. For instance, `lab` or `colBy` may be useful.
+> arguments and their meaning. For instance, `lab` or `colby` may be useful.
 > 
 > Examine whether the data appear to form clusters. Explain your results.
 > 
