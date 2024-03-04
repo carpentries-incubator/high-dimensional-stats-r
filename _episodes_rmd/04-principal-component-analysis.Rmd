@@ -105,7 +105,7 @@ associated principal component could also be used as an effect in further analys
 {: .challenge}
 
 
-# What is a principal component?
+# Principal component analysis
 
 
 ```{r, eval=FALSE, echo=FALSE}
