@@ -511,13 +511,13 @@ metadata <- colData(cancer)
 ```
 
 ```{r mat, eval=FALSE}
-View(mat)
+head(mat)
 #nrow=22215 probes
 #ncol=91 samples
 ```
 
 ```{r meta, eval=FALSE}
-View(metadata)
+head(metadata)
 #nrow=91
 #ncol=8
 ```
