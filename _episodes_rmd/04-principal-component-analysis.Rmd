@@ -623,7 +623,7 @@ represents.
 
 ## Choosing how many components are important to explain the variance in the data
 
-As in the example using the `prostate` dataset we can use a scree plot to
+As in the example using the `prostate` dataset, we can use a scree plot to
 compare the proportion of variance in the data explained by each principal
 component. This allows us to understand how much information in the microarray
 dataset is lost by projecting the observations onto the first few principal
