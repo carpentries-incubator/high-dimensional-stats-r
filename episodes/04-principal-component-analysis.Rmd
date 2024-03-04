@@ -161,9 +161,9 @@ In this episode, we will see how to perform PCA to summarise the information in 
 
 # How do we perform a PCA?
 
-## A prostate cancer dataset
+## Prostate cancer dataset
 
-The `prostate` dataset represents data from 97
+To illustrate how to perform PCA initially, we start with a low dimensional dataset. The `prostate` dataset represents data from 97
 men who have prostate cancer. The data come from a study which examined the
 correlation between the level of prostate specific antigen and a number of
 clinical measures in men who were about to receive a radical prostatectomy.
