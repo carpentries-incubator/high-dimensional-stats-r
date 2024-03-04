@@ -265,7 +265,7 @@ head(pros2)
 
 Now we compare the variances between variables in the dataset.
 
-```{r var-hist, fig.cap="Caption", fig.cap="Alt"}
+```{r var-hist, fig.cap="Histograms of two variables from the Prostate data set.", fig.cap="Side-by-side histograms of two variables from the dataset, lweight on the left and lbph on the right. The histogram for the lweight data ranges from around 2 to 6 on the x axis, while the histogram for the lbph ranges from around -2 to 3 on the x axis."}
 apply(pros2, 2, var)
 par(mfrow = c(1, 2))
 hist(pros2$lweight, breaks = "FD")
