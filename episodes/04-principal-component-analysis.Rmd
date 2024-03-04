@@ -113,10 +113,10 @@ associated principal component could also be used as an effect in further analys
 # relate to each other.
 ```
 
-PCA transforms a dataset into a new set of uncorrelated variables called "principal components".
-The first principal component is derived to explain the largest amount of the variability
-in the underlying dataset. The second principal component is derived to explain the second largest amount of variability in the dataset, and so on.
+PCA transforms a dataset into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
+in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset, and so on. Once the dataset has been transformed to principal components, we can extract a subset of the principal components as new variables that sufficiently explain the variability in the dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset. 
 
+callout
 Mathematically, each principal component is a linear combination of the variables in the data
 set. That is, the first principal component values or _scores_, $Z_1$, are a linear combination 
 of variables in the dataset, $X_1...X_p$, given by
@@ -125,13 +125,13 @@ $$
   Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p,
 $$
 
-where $a_{11}...a_{p1}$ represent principal component _loadings_. These loadings can
-be thought of as the degree to which each original variable contributes to 
-the calculation of the principal component scores.
-The values of $a_{11}...a_{p1}$ are found so that the principal component scores, $Z_1$,
-explain most of the variation in the dataset. Once we have calculated the principal component scores by finding the loadings, we can use them as new variables. 
+where $a_{11}...a_{p1}$ represent principal component _loadings_. 
 
-To see what these new principal component variables may look like, 
+In summary, the principal components values are called _scores_. The loadings can
+be thought of as the degree to which each original variable contributes to 
+the principal component scores.
+
+To see what these new principal component variables (scores) may look like, 
 Figure 1 shows biodiversity index versus percentage area left
 fallow for 50 farms in southern England. The red line represents the first
 principal component scores, which pass through the points with the greatest 
