@@ -459,7 +459,6 @@ depending on the PCA implementation you use. Here are some examples:
 | PCAtools::pca()   | $rotated   | $loadings | 
 
 
-
 # Using PCA to analyse gene expression data 
 
 In this section you will carry out your own PCA using the Bioconductor package **`PCAtools`** 
