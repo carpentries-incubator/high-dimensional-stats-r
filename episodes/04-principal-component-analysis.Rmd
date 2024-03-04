@@ -205,7 +205,7 @@ head(pros2)
 
 ## Do we need to standardise the data?
 
-Since PCA derives principal components based on the variance they explain in the data, we may need to apply some pre-processing to scale variables in our dataset if we want to ensure that each variable is considered equally by the PCA. Standardisation is essential if we want to avoid the PCA ignoring variables that may be important to our analysis just because they take low values and have low variance. We do not need to standardise if we want variables with low variance to carry less weight in the PCA.
+PCA derives principal components based on the variance they explain in the data. Therefore, we may need to apply some pre-processing to scale variables in our dataset if we want to ensure that each variable is considered equally by the PCA. Standardisation is essential if we want to avoid the PCA ignoring variables that may be important to our analysis just because they take low values and have low variance. We do not need to standardise if we want variables with low variance to carry less weight in the PCA.
 
 For this dataset, we want each variable to be treated equally by the PCA since variables with lower values may be just as informative as variables with higher values. Let's therefore investigate the variables in our dataset to see if we need to standardise our variables first:
 
@@ -216,9 +216,9 @@ hist(pros2$lweight, breaks = "FD")
 hist(pros2$lbph, breaks = "FD")
 ```
 
-Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
-from this output that we need to scale each of these variables before including
-them in a PCA analysis to ensure that differences in variances 
+Note that variance is greatest for `lbph` and lowest for `lweight`. Since we 
+want each of the variables to be treated equally in our PCA, but there are large differences in the variances of the variables, we need to scale each of the variables before including
+them in a PCA to ensure that differences in variances 
 do not drive the calculation of principal components. In this example, we
 standardise all five variables to have a mean of 0 and a standard
 deviation of 1. 
