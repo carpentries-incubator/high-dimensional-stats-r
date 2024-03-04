@@ -107,7 +107,6 @@ associated principal component could also be used as an effect in further analys
 
 # Principal component analysis
 
-
 ```{r, eval=FALSE, echo=FALSE}
 # A PCA is carried out by calculating a matrix of Pearson's correlations from
 # the original dataset which shows how each of the variables in the dataset
