@@ -265,7 +265,7 @@ head(pros2)
 
 Now we compare the variances between variables in the dataset.
 
-```{r var-hist, fig.cap="Histograms of two variables from the Prostate data set.", fig.cap="Side-by-side histograms of two variables from the dataset, lweight on the left and lbph on the right. The histogram for the lweight data ranges from around 2 to 6 on the x axis, while the histogram for the lbph ranges from around -2 to 3 on the x axis."}
+```{r var-hist, fig.cap="Histograms of two variables from the Prostate data set.", fig.alt="Side-by-side histograms of two variables from the dataset, lweight on the left and lbph on the right. The histogram for the lweight data ranges from around 2 to 6 on the x axis, while the histogram for the lbph ranges from around -2 to 3 on the x axis."}
 apply(pros2, 2, var)
 par(mfrow = c(1, 2))
 hist(pros2$lweight, breaks = "FD")
@@ -367,7 +367,7 @@ varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
 varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 ```
 
-```{r vardf-plot, fig.cap="Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.", fig.cap="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."}
+```{r vardf-plot, fig.cap="Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.", fig.alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."}
 plot(varDF, type="b")
 ```
 
@@ -449,7 +449,7 @@ implementations in different R libraries. It is thus a good idea to specify
 the desired package when calling `biplot()`. A biplot of the first two principal
 components can be generated as follows:
 
-```{r stats-biplot, fig.cap="Scatter plot of the first two principal components with observations numerically labelled. The loadings are down by red arrows.", fig.cap="Scatter plot of the second principal component versus the first principal components. Observations as points, numerically labelled. The loadings are shown by red arrows, each labelled by their associated variable."}
+```{r stats-biplot, fig.cap="Scatter plot of the first two principal components with observations numerically labelled. The loadings are down by red arrows.", fig.alt="Scatter plot of the second principal component versus the first principal components. Observations as points, numerically labelled. The loadings are shown by red arrows, each labelled by their associated variable."}
 stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ```
 
@@ -644,7 +644,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 > 
 > > ## Solution
 > > 
-> > ```{r scree-ex, fig.cap="Caption", fig.cap="Alt"}
+> > ```{r scree-ex}
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
 > > ```
 > > Note that first principal component (PC1) explains more variation than
@@ -686,7 +686,7 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > 
 > > ## Solution
 > > 
-> > ```{r biplot-ex, fig.cap="Caption", fig.cap="Alt"}
+> > ```{r biplot-ex}
 > > biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 > > ```
 > > The biplot shows the position of patient samples relative to PC1 and PC2
@@ -714,7 +714,7 @@ Let's consider this biplot in more detail, and also display the loadings:
 > 
 > > ## Solution
 > > 
-> > ```{r pca-biplot-ex2, fig.cap="Caption", fig.cap="Alt"}
+> > ```{r pca-biplot-ex2}
 > >   PCAtools::biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
@@ -729,7 +729,7 @@ So far, we have only looked at a biplot of PC1 versus PC2 which only gives part
 of the picture. The `pairplots()` function in **`PCAtools`** can be used to create
 multiple biplots including different principal components.
 
-```{r pairsplot, fig.cap="Multiple biplots produced by pairsplot().", fig.cap="An upper triangular grid of scatter plots of each principal component versus the others."}
+```{r pairsplot, fig.cap="Multiple biplots produced by pairsplot().", fig.alt="An upper triangular grid of scatter plots of each principal component versus the others."}
 pairsplot(pc)
 ```
 
@@ -749,15 +749,15 @@ can be adjusted with the `rangeRetain` argument, which has 0.1 as the default va
 5% on each end of the range). NB, if there are too many labels to be plotted, you will see
 a warning. This is not a serious problem.
 
-```{r loadingsplots, fig.cap="Plot of the features in the top and bottom 5 \% of the loadings range for the first principal component.", fig.alt="A plot with axes component loading versus principal component index. The plot shows the loadings of features at the top and bottom 5 \% of the loadings range and only for the first principal component. The component loading values for four features are shown. The features with the highest loadings are shown at the top of the plot and consist of three features, each with a blue dot and feature label. The feature with the lowest loading is shown at the bottom of the plot and delineated by a yellow dot with a feature label."}
+```{r loadingsplots, fig.cap="Plot of the features in the top and bottom 5 % of the loadings range for the first principal component.", fig.alt="A plot with axes component loading versus principal component index. The plot shows the loadings of features at the top and bottom 5 % of the loadings range and only for the first principal component. The component loading values for four features are shown. The features with the highest loadings are shown at the top of the plot and consist of three features, each with a blue dot and feature label. The feature with the lowest loading is shown at the bottom of the plot and delineated by a yellow dot with a feature label."}
 plotloadings(pc, c("PC1"), rangeRetain = 0.1)
 ```
 
-```{r loadingsplots1, fig.cap="Plot of the features in the top and bottom 5 \% of the loadings range for the second principal component.", fig.alt="A plot with axes component loading versus principal component index. The plot shows the loadings of features at the top and bottom 5 \% of the loadings range and only for the second principal component. The component loading values for 9 features are shown. The features with the highest loadings are shown at the top of the plot and consist of 6 features, each with a blue dot and feature label. The 3 features at the lower range are at the bottom of the plot and delineated by a yellow dot with a feature label."}
+```{r loadingsplots1, fig.cap="Plot of the features in the top and bottom 5 % of the loadings range for the second principal component.", fig.alt="A plot with axes component loading versus principal component index. The plot shows the loadings of features at the top and bottom 5 % of the loadings range and only for the second principal component. The component loading values for 9 features are shown. The features with the highest loadings are shown at the top of the plot and consist of 6 features, each with a blue dot and feature label. The 3 features at the lower range are at the bottom of the plot and delineated by a yellow dot with a feature label."}
 plotloadings(pc, c("PC2"), rangeRetain = 0.1)
 ```
 
-```{r loadingsplots2, fig.cap="Plot of the features in the top and bottom 5 \% of the loadings range for the either the first or second principal components.", fig.alt="A plot with axes component loading versus principal component index. The plot shows the loadings of features at the top and bottom 5 \% of the loadings range for either principal component. The component loading values for several features are shown with loading score-delineated colours ranging from dark blue for the highest loadings and dark yellow for the lowest loadings. Each point has a feature label. The loadings of features points for the first principal component are concentrated towards the top, while the loadings of features points for the second principal components are concentrated at the top, middle and bottom of the range."}
+```{r loadingsplots2, fig.cap="Plot of the features in the top and bottom 5 % of the loadings range for the either the first or second principal components.", fig.alt="A plot with axes component loading versus principal component index. The plot shows the loadings of features at the top and bottom 5 % of the loadings range for either principal component. The component loading values for several features are shown with loading score-delineated colours ranging from dark blue for the highest loadings and dark yellow for the lowest loadings. Each point has a feature label. The loadings of features points for the first principal component are concentrated towards the top, while the loadings of features points for the second principal components are concentrated at the top, middle and bottom of the range."}
 plotloadings(pc, c("PC1", "PC2"), rangeRetain = 0.1)
 ```
 
