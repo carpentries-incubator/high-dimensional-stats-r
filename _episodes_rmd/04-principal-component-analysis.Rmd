@@ -113,25 +113,21 @@ associated principal component could also be used as an effect in further analys
 # relate to each other.
 ```
 
-PCA transforms data to new uncorrelated variables called "principal components".
-Each principal component is a linear combination of the variables in the data
-set. The first principal component is the direction of the data along which the
-observations vary the most. In other words, the first principal component 
-explains the largest amount of the variability in the underlying dataset. 
-The second principal component is the direction of
-the data along which the observations show the next highest amount of variation
-(and explains the second largest amount of variability in the dataset), and so on.
+PCA transforms a dataset into a new set of uncorrelated variables called "principal components".
+The first principal component is derived to explain the largest amount of the variability
+in the underlying dataset. The second principal component is derived to explain the second largest amount of variability in the dataset, and so on.
 
-Mathematically, the first principal component values or _scores_, $Z_1$, are a linear combination 
-of variables in the dataset, $X_1...X_p$:
+Mathematically, each principal component is a linear combination of the variables in the data
+set. That is, the first principal component values or _scores_, $Z_1$, are a linear combination 
+of variables in the dataset, $X_1...X_p$, given by
 
 $$  
   Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p,
 $$
 
-where $a_{11}...a_{p1}$ represent principal component _loadings_,
-which can be thought of as the degree to
-which each variable contributes to the calculation of the principal component scores.
+where $a_{11}...a_{p1}$ represent principal component _loadings_. These loadings can
+be thought of as the degree to which each original variable contributes to 
+the calculation of the principal component scores.
 The values of $a_{11}...a_{p1}$ are found so that the principal component scores, $Z_1$,
 explain most of the variation in the dataset. Once we have calculated the principal component scores by finding the loadings, we can use them as new variables. 
 
