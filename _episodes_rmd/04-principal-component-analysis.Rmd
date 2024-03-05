@@ -316,14 +316,14 @@ deviation of 1.
 
 ## Performing PCA
 
-Throughout this episode, we will carry out a PCA using the Bioconductor package **`PCAtools`**.
-This package provides several functions that can be used to explore data via PCA and
-produce useful figures and analysis tools. The package is made for the somewhat unusual
+Throughout this episode, we will carry out PCA using the Bioconductor package **`PCAtools`**.
+This package provides several functions that are useful for exploring data via PCA and
+producing useful figures and analysis tools. The package is made for the somewhat unusual
 Bioconductor style of data tables (observations in columns, features in rows). When
 using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
 Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
-options for performing PCA, including a base R function, `prcomp()`. Equivalent functions for 
-the common implementations are summarised below.
+options for performing PCA, including a base R function, `prcomp()`. Equivalent functions and 
+output labels for the common implementations are summarised below.
 
 | library::command()| PC scores | Loadings |
 |-------------------|-----------|----------|
