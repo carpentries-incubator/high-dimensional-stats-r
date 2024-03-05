@@ -344,8 +344,8 @@ matrix for use within the **`PCAtools`** package. We set the `scale = TRUE` argu
 to standardise the variables to have a mean 0 and standard deviation of 1. 
 
 ```{r prcomp}
-pc <- pca(t(pros2), scale = TRUE, center = TRUE)
-pc$loadings #return pca loadings 
+pca.pros <- pca(t(pros2), scale = TRUE, center = TRUE)
+pca.pros$loadings #return pca loadings 
 ```
 
 # How many principal components do we need?
@@ -357,7 +357,7 @@ variation in the data, without having extra components that are unnecessary?
 Let's look at the relative importance of (percentage of the variance explained by) the components:
 
 ```{r summ}
-prop.var <- round(pc$variance, 4) #round to 4 decimal places
+prop.var <- round(pca.pros$variance, 4) #round to 4 decimal places
 prop.var
 ```
 
@@ -375,21 +375,17 @@ variance decreases more slowly. The total variance explained up to the elbow poi
 interpreted as structural variance that is relevant and should be retained versus noise
 which may be discarded after the elbow. 
 
+We can create a scree plot using the **`PCAtools`** function `screeplot()`:
+
 
 ```{r varexp}
-# calculate percentage variance explained using output from the PCA
-varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
-# create new dataframe with five rows, one for each principal component
-varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
+screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8)
 ```
 
-```{r vardf-plot, fig.cap="Caption", fig.cap="Alt"}
-plot(varDF)
-```
-
-The screeplot shows that the first principal component explains most of the
+The scree plot shown by the blue bars shows that the first principal component explains most of the
 variance in the data (>50%) and each subsequent principal component explains
-less and less of the total variance. The first two principal components
+less and less of the total variance. The red line displays the cumulative variance explained
+by the principal components and shows that the first two principal components
 explain >70% of variance in the data. But what do these two principal
 components mean?
 
