@@ -354,30 +354,22 @@ We have calculated one principal component for each variable in the original
 dataset. How do we choose how many of these are necessary to represent the true
 variation in the data, without having extra components that are unnecessary?
 
-Let's look at the relative importance of each component using `summary`.
+Let's look at the relative importance of (percentage of the variance explained by) the components:
 
 ```{r summ}
-summary(pca.pros)
-```
-
-```{r, echo = FALSE}
-# Get proportions of variance explained by each PC (rounded to 2 DP)
-prop.var <- round(summary(pca.pros)$importance["Proportion of Variance", ], 2) *
-  100
+prop.var <- round(pc$variance, 4) #round to 4 decimal places
+prop.var
 ```
 
 This returns the proportion of variance in the data explained by each of the
-(p = 5) principal components. In this example, PC1 explains approximately
-`r prop.var[[1]]`% of variance in the data, PC2 `r prop.var[[2]]`% of variance,
-PC3 a further `r prop.var[[3]]`%, PC4 approximately `r prop.var[[4]]`% and PC5
-around `r prop.var[[5]]`%.
+(p = 5) principal components. In this example, the first principal component, PC1, explains approximately
+`r round(prop.var[[1]])`% of variance in the data, PC2 `r round(prop.var[[2]])`% of variance,
+PC3 a further `r round(prop.var[[3]])`%, PC4 approximately `r round(prop.var[[4]])`% and PC5
+around `r round(prop.var[[5]])`%.
 
-Let us visualise this. A plot of the amount of variance accounted for by each PC
-is also called a scree plot. Note that the amount of variance accounted for by a principal
-component is also called eigenvalue and thus the y-axis in scree plots if often
-labelled “eigenvalue”.
-
-Often, scree plots show a characteristic pattern where initially, the variance drops
+Let's visualise this. A plot of the amount of variance accounted for by each PC
+is also called a scree plot. Often, scree plots show a characteristic pattern 
+where initially, the variance drops
 rapidly with each additional principal component. But then there is an “elbow” after which the
 variance decreases more slowly. The total variance explained up to the elbow point is sometimes
 interpreted as structural variance that is relevant and should be retained versus noise
