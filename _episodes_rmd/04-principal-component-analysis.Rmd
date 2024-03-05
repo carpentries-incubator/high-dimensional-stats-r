@@ -630,7 +630,7 @@ proportion of variance explained.
 > 
 > Using the `screeplot()` function in **`PCAtools`**, create a screeplot to show 
 > proportion of variance explained by each principal component. Explain the
-> output of the screeplot in terms of proportion of variance in data explained
+> output of the screeplot in terms of proportion of the variance in the data explained
 > by each principal component.
 > 
 > > ## Solution
