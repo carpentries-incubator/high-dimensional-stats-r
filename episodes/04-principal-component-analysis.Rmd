@@ -639,26 +639,26 @@ proportion of variance explained.
 > > pc <- pca(mat, metadata = metadata)
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
 > > ```
-> > Note that first principal component (PC1) explains more variation than
-> > other principal components (which is always the case in PCA). The screeplot
-> > shows that the first principal component only explains ~33% of the total
-> > variation in the micrarray data and many principal components explain very 
-> > little variation. The red line shows the cumulative percentage of explained
-> > variation with increasing principal components. Note that in this case 18
-> > principal components are needed to explain over 75% of variation in the
-> > data. This is not an unusual result for complex biological datasets
-> > including genetic information as clear relationships between groups are
-> > sometimes difficult to observe in the data. The screeplot shows that using
-> > a PCA we have reduced 91 predictors to 18 in order to explain a significant
-> > amount of variation in the data. See additional arguments in screeplot
-> > function for improving the appearance of the plot.
+> > The red line shows the cumulative percentage of explained
+> > variation with increasing principal components. The first 
+> > principal component explains around 33% of the 
+> > variance in the microarray data, the first 4 principal components explain
+> > around 50%, and 20 principal components explain around 75%. Many principal 
+> > components explain very little variation. Looking at the scree plot, the
+> > 'elbow' appears to be around 4-5 principal components, indicating that this
+> > may be a suitable number of principal components. However, these principal components 
+> > cumulatively explain only 51-55% of the variance in the dataset. Although the fact we 
+> > are able to summarise most of the information in the complex dataset in 4-5 principal components
+> > may be a useful result, we may opt to retain more principal 
+> > components (for example, 20) to capture more of the variability 
+> > in the dataset depending on research question.
 > {: .solution}
 {: .challenge}
 
 ## Investigating the principal components 
 
 Once the most important principal components have been identified using
-`screeplot()`, these can be explored in more detail by plotting principal components
+`screeplot()` and explored, these can be explored in more detail by plotting principal components
 against each other and highlighting points based on variables in the metadata.
 This will allow any potential clustering of points according to demographic or
 phenotypic variables to be seen.
