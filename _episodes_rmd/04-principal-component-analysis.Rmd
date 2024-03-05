@@ -314,10 +314,27 @@ deviation of 1.
 > {: .solution}
 {: .challenge}
 
-Next we will carry out a PCA using the `prcomp()` function in base R. The input
-data (`pros2`) is in the form of a matrix. Note that the `scale = TRUE` argument
-is used to standardise the variables to have a mean 0 and standard deviation of
-1.
+## Performing PCA
+
+Throughout this episode, we will carry out a PCA using the Bioconductor package **`PCAtools`**.
+This package provides several functions that can be used to explore data via PCA and
+produce useful figures and analysis tools. The package is made for the somewhat unusual
+Bioconductor style of data tables (observations in columns, features in rows). When
+using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
+Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
+options for performing PCA, including a base R function, `prcomp()`. Equivalent functions for 
+the common implementations are summarised below.
+
+| library::command()| PC scores | Loadings |
+|-------------------|-----------|----------|
+| stats::prcomp()   | $x         | $rotation |
+| stats::princomp() | $scores    | $loadings | 
+| PCAtools::pca()   | $rotated   | $loadings | 
+
+
+Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. The input
+data (`pros2`) is in the form of a matrix and we set the `scale = TRUE` argument
+to standardise the variables to have a mean 0 and standard deviation of 1. 
 
 ```{r prcomp}
 pca.pros <- prcomp(pros2, scale = TRUE, center = TRUE)
@@ -452,22 +469,10 @@ loadings are scaled by the standard deviation of the principal components
 Finally, you need to know that PC scores and rotations may have different slot names, 
 depending on the PCA implementation you use. Here are some examples:
 
-| library::command()| PC scores | Loadings |
-|-------------------|-----------|----------|
-| stats::prcomp()   | $x         | $rotation |
-| stats::princomp() | $scores    | $loadings | 
-| PCAtools::pca()   | $rotated   | $loadings | 
-
 
 
 # Using PCA to analyse gene expression data 
 
-In this section you will carry out your own PCA using the Bioconductor package **`PCAtools`** 
-applied to gene expression data to explore the topics covered above. 
-**`PCAtools`** provides functions that can be used to explore data via PCA and
-produce useful figures and analysis tools. The package is made for the somewhat unusual
-Bioconductor style of data tables (observations in columns, features in rows). When
-using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
 
 ##  A gene expression dataset of cancer patients
 
@@ -478,7 +483,7 @@ The dataset we will be analysing in this lesson includes two subsets of data:
 * metadata associated with the gene expression results detailing information
   from patients from whom samples were taken.
 
-Let's load the **`PCAtools`** package and the data.
+In this section, we will work through Challenges and you will apply your own PCA to the high-dimensional gene expression data using what we have learnt so far. Let's load the **`PCAtools`** package and the data.
 
 ```{r pcatools}
 library("PCAtools")
