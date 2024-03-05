@@ -43,7 +43,7 @@ set of variables.
 There are two types of FA, called exploratory and confirmatory factor analysis
 (EFA and CFA). Both EFA and CFA aim to reproduce the observed relationships
 among a group of features with a smaller set of latent variables. EFA
-is used in a descriptive, data-driven manner to uncover which
+is used in a descriptive (exploratory) manner to uncover which
 measured variables are reasonable indicators of the various latent dimensions.
 In contrast, CFA is conducted in an a priori,
 hypothesis-testing manner that requires strong empirical or theoretical foundations.
