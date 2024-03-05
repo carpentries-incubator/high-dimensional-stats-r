@@ -446,7 +446,9 @@ is by creating a biplot. Biplots usually show two principal components plotted
 against each other. Observations are sometimes labelled with numbers. The
 contribution of each original variable to the principal components displayed
 is then shown by arrows (generated from those two columns of the rotation matrix that
-correspond to the principal components shown). NB, there are several biplot
+correspond to the principal components shown). See `help("PCAtools::biplot")` for
+arguments and their meaning. For instance, `lab` or `colBy` may be useful.
+Note that there are several biplot
 implementations in different R libraries. It is thus a good idea to specify
 the desired package when calling `biplot()`. A biplot of the first two principal
 components can be generated as follows:
@@ -639,7 +641,7 @@ proportion of variance explained.
 > > ```{r scree-ex, fig.cap="Caption", fig.cap="Alt"}
 > > pc <- pca(mat, metadata = metadata)
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
-> > drawCumulativeSumPoints > > = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
+> > drawCumulativeSumPoints = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
 > > as.numeric(pc$variance))) #add line to scree plot to visualise the elbow
 > > ``` 
 > > 
@@ -673,8 +675,7 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > ## Challenge 5
 > 
 > Create a biplot of the first two principal components from your PCA
-> using `biplot()` function in **`PCAtools`**. See `help("PCAtools::biplot")` for
-> arguments and their meaning. For instance, `lab` or `colBy` may be useful.
+> using `biplot()` function in **`PCAtools`**. 
 > 
 > Examine whether the data appear to form clusters. Explain your results.
 > 
