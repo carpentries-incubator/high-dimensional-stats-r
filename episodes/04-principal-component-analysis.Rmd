@@ -340,12 +340,16 @@ library("PCAtools")
 
 
 The input data (`pros2`) is in the form of a matrix and we need to take the transpose of this 
-matrix for use within the **`PCAtools`** package. We can do this by setting the 
-`transposed = TRUE` argument. We also set the `scale = TRUE` argument
-to standardise the variables to have a mean 0 and standard deviation of 1 as above.
+matrix for use within the **`PCAtools`** package. We set the `scale = TRUE` argument
+to standardise the variables to have a mean 0 and standard deviation of 1 as above. 
 
 ```{r prcomp}
-pca.pros <- pca(t(pros2), scale = TRUE, center = TRUE, transposed = TRUE)
+pros2t <- data.frame(t(pros2))  #create transposed data frame
+colnames(pros2t)<-seq(1:dim(pros2t)[2]) #rename columns for use within PCAtools
+pmetadata= data.frame("M"=rep(1, dim(pros2t)[2]), row.names = colnames(pros2t)) #create fake metadata for use with PCA tools
+
+##implement PCA
+pca.pros <- pca(pros2t, scale = TRUE, center = TRUE,metadata = pmetadata)
 pca.pros$loadings #return pca loadings 
 ```
 
@@ -448,7 +452,7 @@ the desired package when calling `biplot()`. A biplot of the first two principal
 components can be generated as follows:
 
 ```{r stats-biplot, fig.cap="Caption", fig.cap="Alt"}
-PCAtools::biplot(pca.pros, xlim = c(-0.3, 0.3))
+PCAtools::biplot(pca.pros, lab=NULL, singlecol=TRUE) #plot biplot using a single colour for the points
 ```
 
 This biplot shows the position of each patient on a 2-dimensional plot where
