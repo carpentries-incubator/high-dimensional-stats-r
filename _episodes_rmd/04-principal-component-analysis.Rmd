@@ -636,6 +636,7 @@ proportion of variance explained.
 > > ## Solution
 > > 
 > > ```{r scree-ex, fig.cap="Caption", fig.cap="Alt"}
+> > pc <- pca(mat, metadata = metadata)
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
 > > ```
 > > Note that first principal component (PC1) explains more variation than
