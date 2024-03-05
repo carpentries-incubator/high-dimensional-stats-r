@@ -36,7 +36,7 @@ called principal component analysis (PCA), which expressed new dimension-reduced
 as linear combinations of the original features in the dataset. Principal components can therefore 
 be difficult to interpret. Here, we introduce a more interpretable
 method called factor analysis (FA), which constructs new components, called _factors_, 
-that explicitly represent underlying _latent_ constructs in our data and are thus more interpretable.
+that explicitly represent underlying _(latent)_ constructs in our data and are thus more interpretable.
  
 There are two types of FA, called exploratory and confirmatory factor analysis
 (EFA and CFA). Both EFA and CFA aim to reproduce the observed relationships
