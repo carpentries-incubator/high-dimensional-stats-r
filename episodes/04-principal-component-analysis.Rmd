@@ -332,8 +332,14 @@ output labels for the common implementations are summarised below.
 | PCAtools::pca()   | $rotated   | $loadings | 
 
 
-Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. The input
-data (`pros2`) is in the form of a matrix and we set the `scale = TRUE` argument
+Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. Let's load the **`PCAtools`** package and the data.
+
+```{r pcatools}
+library("PCAtools")
+```
+
+
+The input data (`pros2`) is in the form of a matrix and we set the `scale = TRUE` argument
 to standardise the variables to have a mean 0 and standard deviation of 1. 
 
 ```{r prcomp}
@@ -483,11 +489,7 @@ The dataset we will be analysing in this lesson includes two subsets of data:
 * metadata associated with the gene expression results detailing information
   from patients from whom samples were taken.
 
-In this section, we will work through Challenges and you will apply your own PCA to the high-dimensional gene expression data using what we have learnt so far. Let's load the **`PCAtools`** package and the data.
-
-```{r pcatools}
-library("PCAtools")
-```
+In this section, we will work through Challenges and you will apply your own PCA to the high-dimensional gene expression data using what we have learnt so far. 
 
 We will first load the microarray breast cancer gene expression data and
 associated metadata, downloaded from the
