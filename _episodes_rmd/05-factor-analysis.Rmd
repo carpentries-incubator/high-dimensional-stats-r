@@ -34,10 +34,12 @@ to extract underlying features – they need to carry out dimensionality
 reduction. The last episode dealt with one method to achieve this,
 called principal component analysis (PCA), which expressed new dimension-reduced components 
 as linear combinations of the original features in the dataset. Principal components can therefore 
-be difficult to interpret. Here, we introduce a more interpretable
+be difficult to interpret. Here, we introduce a related but more interpretable
 method called factor analysis (FA), which constructs new components, called _factors_, 
-that explicitly represent underlying _(latent)_ constructs in our data and are thus more interpretable.
- 
+that explicitly represent underlying _(latent)_ constructs in our data. FA is therefore often 
+more interpretable and useful when we would like to extract meaning from our dimension-reduced
+set of variables.
+
 There are two types of FA, called exploratory and confirmatory factor analysis
 (EFA and CFA). Both EFA and CFA aim to reproduce the observed relationships
 among a group of features with a smaller set of latent variables. EFA
