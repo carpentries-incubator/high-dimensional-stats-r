@@ -321,7 +321,8 @@ This package provides several functions that are useful for exploring data via P
 producing useful figures and analysis tools. The package is made for the somewhat unusual
 Bioconductor style of data tables (observations in columns, features in rows). When
 using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
-Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
+You can use the help files in PCAtools to find out about the `pca()`
+function (type `help("pca")` or `?pca` in R). Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
 options for performing PCA, including a base R function, `prcomp()`. Equivalent functions and 
 output labels for the common implementations are summarised below.
 
@@ -332,7 +333,7 @@ output labels for the common implementations are summarised below.
 | PCAtools::pca()   | $rotated   | $loadings | 
 
 
-Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. First, let's load the **`PCAtools`** package and the data.
+Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. First, let's load the **`PCAtools`** package.
 
 ```{r pcatools}
 library("PCAtools")
@@ -340,8 +341,7 @@ library("PCAtools")
 
 
 The input data (`pros2`) is in the form of a matrix and we need to take the transpose of this 
-matrix for use within the **`PCAtools`** package. We set the `scale = TRUE` argument
-to standardise the variables to have a mean 0 and standard deviation of 1 as above. 
+matrix and convert it to a data frame for use within the **`PCAtools`** package. We set the `scale = TRUE` argument to standardise the variables to have a mean 0 and standard deviation of 1 as above. 
 
 ```{r prcomp}
 pros2t <- data.frame(t(pros2))  #create transposed data frame
@@ -367,7 +367,7 @@ prop.var
 ```
 
 This returns the proportion of variance in the data explained by each of the
-(p = 5) principal components. In this example, the first principal component, PC1, explains approximately
+principal components. In this example, the first principal component, PC1, explains approximately
 `r round(prop.var[[1]])`% of variance in the data, PC2 `r round(prop.var[[2]])`% of variance,
 PC3 a further `r round(prop.var[[3]])`%, PC4 approximately `r round(prop.var[[4]])`% and PC5
 around `r round(prop.var[[5]])`%.
@@ -382,20 +382,20 @@ which may be discarded after the elbow.
 
 We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 
-
 ```{r varexp}
-screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8)
+screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8, 
+          drawCumulativeSumLine = FALSE, drawCumulativeSumPoints = FALSE) +
+    geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
+#add line to scree plot to visualise the elbow
 ```
 
-The scree plot (blue bars) show that the first principal component explains most of the
-variance in the data (>50%) and each subsequent principal component explains
-less and less of the total variance. The red line displays the cumulative variance explained
-by the principal components and shows that the first two principal components
-explain >70% of variance in the data. But what do these two principal
-components mean?
+The scree plot shows that the first principal component explains most of the
+variance in the data (>50%), the first two principal components
+explain >70% of variance in the data, and and each subsequent principal component explains
+less and less of the total variance.
 
 
-## What are loadings and principal component scores?
+## Loadings and principal component scores
 
 Most PCA functions will produce two main output matrices: the
 *principal component scores* and the *loadings*. The matrix of principal component scores
@@ -544,7 +544,7 @@ representing groups of genes would help visualise the data and address
 research questions regarding the effect different groups of genes have on
 disease progression.
 
-Using the **`PCAtools`** we will apply a PCA to the cancer
+Using the **`PCAtools`**, we will apply a PCA to the cancer
 gene expression data, plot the amount of variation in the data explained by
 each principal component and plot the most important principal components
 against each other as well as understanding what each principal component
@@ -554,8 +554,7 @@ represents.
 > ## Challenge 3
 > 
 > Apply a PCA to the cancer gene expression data using the `pca()` function from
-> **`PCAtools`**. You can use the help files in PCAtools to find out about the `pca()`
-> function (type `help("pca")` or `?pca` in R).
+> **`PCAtools`**. 
 > 
 > Let us assume we only care about the principal components accounting for the top
 > 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
@@ -639,14 +638,15 @@ proportion of variance explained.
 > > 
 > > ```{r scree-ex, fig.cap="Caption", fig.cap="Alt"}
 > > pc <- pca(mat, metadata = metadata)
-> > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
-> > ```
-> > The red line shows the cumulative percentage of explained
-> > variation with increasing principal components. The first 
-> > principal component explains around 33% of the 
+> > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
+> > drawCumulativeSumPoints > > = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
+> > as.numeric(pc$variance))) #add line to scree plot to visualise the elbow
+> > ``` 
+> > 
+> > The first principal component explains around 33% of the 
 > > variance in the microarray data, the first 4 principal components explain
 > > around 50%, and 20 principal components explain around 75%. Many principal 
-> > components explain very little variation. Looking at the scree plot, the
+> > components explain very little variation. The
 > > 'elbow' appears to be around 4-5 principal components, indicating that this
 > > may be a suitable number of principal components. However, these principal components 
 > > cumulatively explain only 51-55% of the variance in the dataset. Although the fact we 
