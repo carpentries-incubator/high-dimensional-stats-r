@@ -340,11 +340,12 @@ library("PCAtools")
 
 
 The input data (`pros2`) is in the form of a matrix and we need to take the transpose of this 
-matrix for use within the **`PCAtools`** package. We set the `scale = TRUE` argument
-to standardise the variables to have a mean 0 and standard deviation of 1. 
+matrix for use within the **`PCAtools`** package. We can do this by setting the 
+`transposed = TRUE` argument. We also set the `scale = TRUE` argument
+to standardise the variables to have a mean 0 and standard deviation of 1 as above.
 
 ```{r prcomp}
-pca.pros <- pca(t(pros2), scale = TRUE, center = TRUE)
+pca.pros <- pca(t(pros2), scale = TRUE, center = TRUE, transposed = TRUE)
 pca.pros$loadings #return pca loadings 
 ```
 
@@ -382,7 +383,7 @@ We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8)
 ```
 
-The scree plot shown by the blue bars shows that the first principal component explains most of the
+The scree plot (blue bars) show that the first principal component explains most of the
 variance in the data (>50%) and each subsequent principal component explains
 less and less of the total variance. The red line displays the cumulative variance explained
 by the principal components and shows that the first two principal components
@@ -400,11 +401,12 @@ The matrix of loadings (also called rotation matrix) has as many rows as there
 are features in the original data. It contains information about how the
 (usually centered and scaled) original data relate to the PC scores.
 
-When calling a PCA object generated with `prcomp()`, the loadings are printed by default:
+We can print the loadings for the **`PCAtools`** implementation using 
 
 ```{r pca-pros}
-pca.pros
+pca.pros$loadings
 ```
+
 
 The principal component scores are obtained by carrying out matrix multiplication of the
 (usually centered and scaled) original data times the loadings. The following
@@ -424,7 +426,7 @@ callout demonstrates this.
 > my.pros2.pcs <- pros2.scaled %*% pros2.eigen$vectors
 > # compare results
 > par(mfrow=c(1,2))
-> plot(pca.pros$x[,1:2], main="prcomp()")
+> plot(pca.pros$rotated[,1:2], main="PCAtools")
 > abline(h=0, v=0, lty=2)
 > plot(my.pros2.pcs[,1:2], main="\"By hand\"", xlab="PC1", ylab="PC2")
 > abline(h=0, v=0, lty=2)
@@ -446,7 +448,7 @@ the desired package when calling `biplot()`. A biplot of the first two principal
 components can be generated as follows:
 
 ```{r stats-biplot, fig.cap="Caption", fig.cap="Alt"}
-stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
+PCAtools::biplot(pca.pros, xlim = c(-0.3, 0.3))
 ```
 
 This biplot shows the position of each patient on a 2-dimensional plot where
