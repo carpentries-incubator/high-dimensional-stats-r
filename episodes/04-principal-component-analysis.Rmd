@@ -332,19 +332,20 @@ output labels for the common implementations are summarised below.
 | PCAtools::pca()   | $rotated   | $loadings | 
 
 
-Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. Let's load the **`PCAtools`** package and the data.
+Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. First, let's load the **`PCAtools`** package and the data.
 
 ```{r pcatools}
 library("PCAtools")
 ```
 
 
-The input data (`pros2`) is in the form of a matrix and we set the `scale = TRUE` argument
+The input data (`pros2`) is in the form of a matrix and we need to take the transpose of this 
+matrix for use within the **`PCAtools`** package. We set the `scale = TRUE` argument
 to standardise the variables to have a mean 0 and standard deviation of 1. 
 
 ```{r prcomp}
-pca.pros <- prcomp(pros2, scale = TRUE, center = TRUE)
-pca.pros
+pc <- pca(t(pros2), scale = TRUE, center = TRUE)
+pc$loadings #return pca loadings 
 ```
 
 # How many principal components do we need?
