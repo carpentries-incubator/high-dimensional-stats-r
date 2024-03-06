@@ -76,31 +76,6 @@ as many principal components as there are features in the dataset, each
 component representing a different linear combination of features. The principal
 components are ordered by the amount of variance they account for.
 
-# Advantages and disadvantages of Factor Analysis
-
-There are several advantages and disadvantages of using FA as a
-dimensionality reduction method.
-
-Advantages:
-
-* FA is a useful way of combining different groups of data into known
-  representative factors, thus reducing dimensionality in a dataset.
-* FA can take into account researchers' expert knowledge when choosing
-  the number of factors to use, and can be used to identify latent or hidden
-  variables which may not be apparent from using other analysis methods.
-* It is easy to implement with many software tools available to carry out FA.
-* Confirmatory FA can be used to test hypotheses.
-
-Disadvantages:
-
-* Justifying the choice of
-  number of factors to use may be difficult if little is known about the
-  structure of the data before analysis is carried out.
-* Sometimes, it can be difficult to interpret what factors mean after
-  analysis has been completed. 
-* Like PCA, standard methods of carrying out FA assume that input variables
-  are continuous, although extensions to FA allow ordinal and binary
-  variables to be included (after transforming the input matrix).
 
 # Prostate cancer patient data
 
@@ -288,6 +263,31 @@ text(
 > {: .solution}
 {: .challenge}
 
+# Advantages and disadvantages of Factor Analysis
+
+There are several advantages and disadvantages of using FA as a
+dimensionality reduction method.
+
+Advantages:
+
+* FA is a useful way of combining different groups of data into known
+  representative factors, thus reducing dimensionality in a dataset.
+* FA can take into account researchers' expert knowledge when choosing
+  the number of factors to use, and can be used to identify latent or hidden
+  variables which may not be apparent from using other analysis methods.
+* It is easy to implement with many software tools available to carry out FA.
+* Confirmatory FA can be used to test hypotheses.
+
+Disadvantages:
+
+* Justifying the choice of
+  number of factors to use may be difficult if little is known about the
+  structure of the data before analysis is carried out.
+* Sometimes, it can be difficult to interpret what factors mean after
+  analysis has been completed. 
+* Like PCA, standard methods of carrying out FA assume that input variables
+  are continuous, although extensions to FA allow ordinal and binary
+  variables to be included (after transforming the input matrix).
 
 
 
