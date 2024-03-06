@@ -165,7 +165,8 @@ earlier in the course - dimensionality reduction. Dimensionality reduction
 allows us to visualise this incredibly complex data in a small number of
 dimensions. In this case, we'll be using principal component analysis (PCA) to
 compress the data by identifying the major axes of variation in the data,
-before running our clustering algorithms on this lower-dimensional data.
+before running our clustering algorithms on this lower-dimensional data to explore
+the similarity of features.
 
 The `scater` package has some easy-to-use tools to calculate a PCA for
 `SummarizedExperiment` objects.
