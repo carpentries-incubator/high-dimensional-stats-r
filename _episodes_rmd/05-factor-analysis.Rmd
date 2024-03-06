@@ -178,6 +178,7 @@ factors, while negative values show a negative relationship between variables
 and factors. Loading values are missing for some variables because R does not
 print loadings less than 0.1. 
 
+# How many factors do we need?
 There are numerous ways to select the “best” number of factors. One is to use
 the minimum number of features that does not leave a significant amount of
 variance unaccounted for. In practise, we repeat the factor
