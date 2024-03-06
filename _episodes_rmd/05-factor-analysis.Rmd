@@ -117,9 +117,6 @@ library("here")
 prostate <- readRDS(here("data/prostate.rds"))
 ```
 
-```{r view, eval=FALSE}
-View(prostate)
-```
 
 ```{r dims}
 nrow(prostate)
