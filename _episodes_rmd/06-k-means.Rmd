@@ -368,7 +368,7 @@ belong to.
 {: .callout}
 
 
-# Cluster robustness
+# Cluster robustness: bootstrapping
 
 When we cluster data, we want to be sure that the clusters we identify are
 not a result of the exact properties of the input data. That is, if the
@@ -407,33 +407,32 @@ replicate(10, sample(data, 5, replace = TRUE))
 ```
 
 
-> ## Bootstrapping
-> 
-> The bootstrap is a powerful and common statistical technique.
-> 
-> We would like to know about the sampling distribution of a statistic,
-> but we don't have any knowledge of its behaviour under the null hypothesis.
-> 
-> For example, we might want to understand the uncertainty around an estimate
-> of the mean of our data. To do this, we could resample the data with
-> replacement and calculate the mean of each average.
-> 
-> ```{r boots}
-> boots <- replicate(1000, mean(sample(data, 5, replace = TRUE)))
-> hist(boots,
->     breaks = "FD",
->     main = "1,000 bootstrap samples",
->     xlab = "Mean of sample"
-> )
-> ```
-> 
-> In this case, the example is simple, but it's possible to
-> devise more complex statistical tests using this kind of approach.
-> 
-> The bootstrap, along with permutation testing, can be a very flexible and 
-> general solution to many statistical problems.
-> 
-{: .callout}
+## Bootstrapping
+ 
+Bootstrapping is a powerful and common statistical technique.
+ 
+We would like to know about the sampling distribution of a statistic,
+but we don't have any knowledge of its behaviour under the null hypothesis.
+ 
+For example, we might want to understand the uncertainty around an estimate
+of the mean of our data. To do this, we could resample the data with
+replacement and calculate the mean of each average.
+ 
+```{r boots}
+boots <- replicate(1000, mean(sample(data, 5, replace = TRUE)))
+hist(boots,
+    breaks = "FD",
+    main = "1,000 bootstrap samples",
+    xlab = "Mean of sample"
+ )
+```
+ 
+In this case, the example is simple, but it's possible to
+devise more complex statistical tests using this kind of approach.
+ 
+The bootstrap, along with permutation testing, can be a very flexible and 
+general solution to many statistical problems.
+ 
 
 In applying the bootstrap to clustering, we want to see two things:
 1. Will observations within a cluster consistently cluster together in
