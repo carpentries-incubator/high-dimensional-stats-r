@@ -36,7 +36,8 @@ called principal component analysis (PCA), which expressed new dimension-reduced
 as linear combinations of the original features in the dataset. Principal components can therefore 
 be difficult to interpret. Here, we introduce a related but more interpretable
 method called factor analysis (FA), which constructs new components, called _factors_, 
-that explicitly represent underlying _(latent)_ constructs in our data. FA is therefore often 
+that explicitly represent underlying _(latent)_ constructs in our data. Like PCA, FA uses 
+linear combinations, but uses latent constructs instead. FA is therefore often 
 more interpretable and useful when we would like to extract meaning from our dimension-reduced
 set of variables.
 
