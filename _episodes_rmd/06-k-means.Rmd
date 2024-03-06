@@ -245,9 +245,10 @@ here?
 
 # Cluster separation
 When performing clustering, it is important for us to be able to measure
-how well our clusters are separated. One measure to test this is silhouette width.
-This is a number that is computed for every observation. It can range from -1 to 1.
-A high silhouette width means an observation is closer to other observations
+how well our clusters are separated. One measure to test this is silhouette width,
+which measures how similar a data point is to points in the same cluster compared
+to other clusters. The silhouette width is computed for every observation and can
+range from -1 to 1. A high silhouette width means an observation is closer to other observations
 within the same cluster. For each cluster, the silhouette widths can then be
 averaged or an overall average can be taken.
 
