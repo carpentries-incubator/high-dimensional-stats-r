@@ -201,7 +201,7 @@ here?
 
 > ## Challenge 1
 > 
-> Cluster the data using a $K$ of 5, and plot it using `plotReducedDim`.
+> Perform clustering to group the data into $K=5$ clusters, and plot it using `plotReducedDim`.
 > Save this with a variable name that's different to what we just used,
 > because we'll use this again later.
 > 
