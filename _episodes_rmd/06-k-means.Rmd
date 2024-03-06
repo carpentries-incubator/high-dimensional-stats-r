@@ -313,7 +313,7 @@ belong to.
 > ## Challenge 2
 > 
 > Calculate the silhouette width for the K of 5 clustering we did earlier.
-> Is it better or worse than before?
+> Are 5 clusters appropriate? Why/why not?
 >
 > Can you identify where the differences lie?
 > 
