@@ -186,7 +186,7 @@ variance unaccounted for. In practice, we repeat the factor
 analysis for different numbers of factors (by specifying different values 
 in the `factors` argument). If we have an
 idea of how many factors there will be before analysis, we can start with
-that number. The final section of the analysis output shows the results of
+that number. The final section of the analysis output then shows the results of
 a hypothesis test in which the null hypothesis is that the number of factors
 used in the model is sufficient to capture most of the variation in the
 dataset. If the p-value is less than 0.05, we reject the null hypothesis
