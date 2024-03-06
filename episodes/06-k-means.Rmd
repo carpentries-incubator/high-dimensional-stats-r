@@ -75,9 +75,9 @@ The distance between data points within a cluster is
 used as a measure of within-cluster variation.
 
 To carry out K-means clustering, we first pick $k$ initial points as centres or 
-"centroids" of our clusters. There are a few ways to choose these initial "centroids",
-but for simplicity let's imagine we just pick three random co-ordinates.
-We then follow these two steps until convergence:
+"centroids" of our clusters. There are a few ways to choose these initial "centroids"
+and this is discussed below. Once we have picked intitial points, we then follow 
+these two steps until appropriate clusters have been formed:
 
 1. Assign each data point to the cluster with the closest centroid
 2. Update centroid positions as the average of the points in that cluster
