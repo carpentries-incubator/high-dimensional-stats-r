@@ -32,31 +32,35 @@ knitr_fig_path("08-")
 
 # Introduction
 
-High-dimensional data, especially in biological settings,  has
-many sources of heterogeneity. Some of these are stochastic variation
-arising from measurement error or random differences between organisms. 
-In some cases, a known grouping causes this heterogeneity (sex, treatment
-groups, etc). In other cases, this heterogeneity arises from the presence of
-unknown subgroups in the data. **Clustering** is a set of techniques that allows
-us to discover unknown groupings like this, which we can often use to
-discover the nature of the heterogeneity we're investigating.
+As we saw in previous episodes, visualising high-dimensional 
+data with a large amount of features is difficult and can 
+limit our understanding of the data and associated processes.
+In some cases, a known grouping causes this heterogeneity 
+(sex, treatment groups, etc). In other cases, heterogeneity 
+may arise from the presence of unknown subgroups in the data. 
+While PCA can be used to reduce the dimension of the dataset 
+into a smaller set of uncorrelated variables and factor analysis 
+can be used to identify underlying factors, clustering is a set 
+of techniques that allow us to discover unknown groupings. 
 
-**Cluster analysis** involves finding groups of observations that are more
-similar to each other (according to some feature) than they are to observations
-in other groups. Cluster analysis is a useful statistical tool for exploring
-high-dimensional datasets as 
-visualising data with large numbers of features is difficult. It is commonly
-used in fields such as bioinformatics, genomics, and image processing in which
-large datasets that include many features are often produced. Once groups
-(or clusters) of observations have been identified using cluster analysis,
-further analyses or interpretation can be carried out on the groups, for
-example, using metadata to further explore groups.
+Cluster analysis involves finding groups of observations that 
+are more similar to each other (according to some feature) 
+than they are to observations in other groups and are thus 
+likely to represent the same source of heterogeneity. 
+Once groups (or clusters) of observations have been identified 
+using cluster analysis, further analyses or interpretation can be
+carried out on the groups, for example, using metadata to further 
+explore groups.
+
+Cluster analysis is commonly used to discover unknown groupings 
+in fields such as bioinformatics, genomics, and image processing, 
+in which large datasets that include many features are often produced.
 
 There are various ways to look for clusters of observations in a dataset using
 different *clustering algorithms*. One way of clustering data is to minimise
 distance between observations within a cluster and maximise distance between
-proposed clusters. Clusters can be updated in an iterative process so that over
-time we can become more confident in size and shape of clusters.
+proposed clusters. Using this process, we can also iteratively update clusters 
+so that we become more confident about the shape and size of the clusters.
 
 
 # Believing in clusters
