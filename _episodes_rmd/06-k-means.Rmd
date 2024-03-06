@@ -371,10 +371,10 @@ belong to.
 # Cluster robustness: bootstrapping
 
 When we cluster data, we want to be sure that the clusters we identify are
-not a result of the exact properties of the input data. That is, if the
-data we observed were slightly different, the clusters we would identify
-in this different data would be very similar. This makes it more
-likely that these can be reproduced.
+not a result of the exact properties of the input data. That is, we want 
+to ensure that the clusters identified do not change substantially 
+if the observed data change slightly. This makes it more
+likely that the clusters can be reproduced.
 
 To assess this, we can use the *bootstrap*. What we do here is to take a sample
 from the data with replacement. Sampling with replacement means that in the 
