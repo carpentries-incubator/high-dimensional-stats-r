@@ -154,7 +154,7 @@ number of clusters that the data should be partitioned into.
 # K-means clustering applied to single-cell RNAseq data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
-We're going to work with single-cell RNAseq data in these clustering challenges,
+We're going to work with single-cell RNAseq data, `scranseq`, in these clustering challenges,
 which is often *very* high-dimensional. Commonly, experiments profile the
 expression level of 10,000+ genes in thousands of cells. Even after filtering
 the data to remove low quality observations, the dataset we're using in this
@@ -169,7 +169,7 @@ before running our clustering algorithms on this lower-dimensional data.
 
 The `scater` package has some easy-to-use tools to calculate a PCA for
 `SummarizedExperiment` objects.
-Let's load the `scRNAseq` data and calculate some principal components.
+Let's load the `scrnaseq` data and calculate some principal components.
 
 ```{r data}
 library("SingleCellExperiment")
@@ -185,7 +185,7 @@ we can visualise those easily, and they're a quantitative representation of
 the underlying data, representing the two largest axes of variation. 
 
 We can now run K-means clustering on the first and second principal components
-of the `scRNAseq` data using the `kmeans` function.
+of the `scrnaseq` data using the `kmeans` function.
 
 ```{r kmeans, fig.cap = "Title", fig.alt = "Alt"}
 set.seed(42)
