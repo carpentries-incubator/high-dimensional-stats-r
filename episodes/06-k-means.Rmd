@@ -73,9 +73,6 @@ within-cluster variation adn thus the amount that
 data points within a cluster differ from each other. 
 The distance between data points within a cluster is 
 used as a measure of within-cluster variation.
-Using a specified clustering algorithm like K-means clustering 
-increases our confidence
-that our data can be partitioned into groups.
 
 To carry out K-means clustering, we first pick $k$ initial points as centres or 
 "centroids" of our clusters. There are a few ways to choose these initial "centroids",
