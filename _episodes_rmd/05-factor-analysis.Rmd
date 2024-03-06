@@ -209,7 +209,7 @@ for by the FA model.
 *Uniqueness* is the opposite of communality and represents the amount of
 variation in a variable that is not accounted for by the FA model. Uniqueness is
 calculated by subtracting the communality value from 1. If uniqueness is high for
-a given variable, that means this variable is not well explaind/accounted for
+a given variable, that means this variable is not well explained/accounted for
 by the factors identified.
 
 ```{r common-unique}
