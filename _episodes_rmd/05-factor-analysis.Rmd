@@ -219,7 +219,7 @@ Similar to a biplot as we produced in the PCA episode, we can “plot the
 loadings”. This shows how each original variable contributes to each of
 the factors we chose to visualise.
 
-```{r biplot}
+```{r biplot, fig.cap = "Factor 2 loadings versus factor 1 loadings for each feature.", fig.alt="A scatter plot of the factor 2 loadings for each feature versus the factor 2 loadings for each feature. The lpsa, lcavol and lcp feature points are located in the east of the plot, indicating a high loading on factor 1 and close to zero loading on factor 2. The lbph and lweight features are located in the north of the plot, indicating a close to zero loading on factor 1 and a high loading on factor 2."}
 #First, carry out factor analysis using two factors
 pros_fa <- factanal(pros2, factors = 2)
 
