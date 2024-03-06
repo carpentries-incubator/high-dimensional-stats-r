@@ -56,7 +56,7 @@ exploratory data analysis methods (including PCA) to provide an initial estimate
 of how many factors adequately explain the variation observed in a dataset.
 In practice, a range of different values is usually tested.
 
-## An example
+## Motivating example: student scores 
 
 One scenario for using FA would be whether student scores in different subjects
 can be summarised by certain subject categories. Take a look at the hypothetical
