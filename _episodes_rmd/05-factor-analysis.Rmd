@@ -254,7 +254,7 @@ text(
 > the results of your analysis.
 > 
 > What variables are most important in explaining each factor? Do you think
-> this makes sense biologically? Discuss in groups.
+> this makes sense biologically? Consider or discuss in groups.
 > 
 > > ## Solution
 > > 
