@@ -63,51 +63,6 @@ proposed clusters. Using this process, we can also iteratively update clusters
 so that we become more confident about the shape and size of the clusters.
 
 
-# Believing in clusters
-
-When using clustering, it's important to realise that data may seem to
-group together even when these groups are created randomly. It's especially 
-important to remember this when making plots that add extra visual aids to
-distinguish clusters. 
-For example, if we cluster data from a single 2D normal distribution and draw
-ellipses around the points, these clusters suddenly become almost visually
-convincing. This is a somewhat extreme example, since there is genuinely no
-heterogeneity in the data, but it does reflect what can happen if you allow
-yourself to read too much into faint signals.
-
-Let's explore this further using an example. We create two columns of data
-('x' and 'y') and partition these data into three groups ('a', 'b', 'c')
-according to data values. We then plot these data and their allocated clusters
-and put ellipses around the clusters using the `stat_ellipse` function
-in `ggplot`.
-
-```{r fake-cluster, echo = FALSE}
-set.seed(11)
-library("MASS")
-library("ggplot2")
-data <- mvrnorm(n = 200, mu = rep(1, 2), Sigma = matrix(runif(4), ncol = 2))
-data <- as.data.frame(data)
-colnames(data) <- c("x", "y")
-
-data$cluster <- ifelse(
-    data$y < (data$x * -0.06 + 0.9),
-    "a",
-    ifelse(
-        data$y < 1.15,
-        "b",
-        "c"
-    )
-)
-ggplot(data, aes(x, y, colour = cluster)) +
-    geom_point() +
-    stat_ellipse()
-```
-The randomly created data used here appear to form three clusters when we
-plot the data. Putting ellipses around the clusters can further convince us
-that the clusters are 'real'. But how do we tell if clusters identified
-visually are 'real'?
-
-
 # What is K-means clustering?
 
 **K-means clustering** is a clustering method which groups data points into a 
@@ -154,6 +109,51 @@ number of clusters that the data should be partitioned into.
 > manually, or running the algorithm from multiple different starting points.
 >
 {: .callout}
+
+
+# Believing in clusters
+
+When using clustering, it's important to realise that data may seem to
+group together even when these groups are created randomly. It's especially 
+important to remember this when making plots that add extra visual aids to
+distinguish clusters. 
+For example, if we cluster data from a single 2D normal distribution and draw
+ellipses around the points, these clusters suddenly become almost visually
+convincing. This is a somewhat extreme example, since there is genuinely no
+heterogeneity in the data, but it does reflect what can happen if you allow
+yourself to read too much into faint signals.
+
+Let's explore this further using an example. We create two columns of data
+('x' and 'y') and partition these data into three groups ('a', 'b', 'c')
+according to data values. We then plot these data and their allocated clusters
+and put ellipses around the clusters using the `stat_ellipse` function
+in `ggplot`.
+
+```{r fake-cluster, echo = FALSE}
+set.seed(11)
+library("MASS")
+library("ggplot2")
+data <- mvrnorm(n = 200, mu = rep(1, 2), Sigma = matrix(runif(4), ncol = 2))
+data <- as.data.frame(data)
+colnames(data) <- c("x", "y")
+
+data$cluster <- ifelse(
+    data$y < (data$x * -0.06 + 0.9),
+    "a",
+    ifelse(
+        data$y < 1.15,
+        "b",
+        "c"
+    )
+)
+ggplot(data, aes(x, y, colour = cluster)) +
+    geom_point() +
+    stat_ellipse()
+```
+The randomly created data used here appear to form three clusters when we
+plot the data. Putting ellipses around the clusters can further convince us
+that the clusters are 'real'. But how do we tell if clusters identified
+visually are 'real'?
 
 # K-means clustering applied to single-cell RNAseq data
 
