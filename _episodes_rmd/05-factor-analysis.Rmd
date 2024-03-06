@@ -86,6 +86,7 @@ about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
 Although not strictly a high-dimensional dataset, as with other episodes,
 we use this dataset to explore the method.
 
+
 Columns are:
 
 
