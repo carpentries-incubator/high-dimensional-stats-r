@@ -183,7 +183,8 @@ print loadings less than 0.1.
 There are numerous ways to select the “best” number of factors. One is to use
 the minimum number of features that does not leave a significant amount of
 variance unaccounted for. In practice, we repeat the factor
-analysis using different values in the `factors` argument. If we have an
+analysis for different numbers of factors (by specifying different values 
+in the `factors` argument). If we have an
 idea of how many factors there will be before analysis, we can start with
 that number. The final section of the analysis output shows the results of
 a hypothesis test in which the null hypothesis is that the number of factors
