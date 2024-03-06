@@ -184,15 +184,17 @@ There are numerous ways to select the “best” number of factors. One is to us
 the minimum number of features that does not leave a significant amount of
 variance unaccounted for. In practice, we repeat the factor
 analysis for different numbers of factors (by specifying different values 
-in the `factors` argument). If we have an
-idea of how many factors there will be before analysis, we can start with
-that number. The final section of the analysis output then shows the results of
+in the `factors` argument). If we have an idea of how many factors there 
+will be before analysis, we can start with that number. The final 
+section of the analysis output then shows the results of
 a hypothesis test in which the null hypothesis is that the number of factors
 used in the model is sufficient to capture most of the variation in the
-dataset. If the p-value is less than 0.05, we reject the null hypothesis
-and accept that the number of factors included is too small. If the p-value
-is greater than 0.05, we accept the null hypothesis that the number of
-factors used captures variation in the data.
+dataset. If the p-value is less than our significance level (for example 0.05),
+we reject the null hypothesis that the number of factors is sufficient and we repeat the analysis with 
+more factors. When the p-value is greater than our significance level, we do not reject 
+the null hypothesis that the number of factors used captures variation
+in the data. We may therefore conclude that 
+this number of factors is sufficient. 
 
 Like PCA, the fewer factors that can explain most of the variation in the
 dataset, the better. It is easier to explore and interpret results using a
