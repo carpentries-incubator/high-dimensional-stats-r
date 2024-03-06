@@ -83,6 +83,8 @@ The prostate dataset represents data from 97 men who have prostate cancer.
 The data come from a study which examined the correlation between the level
 of prostate specific antigen and a number of clinical measures in men who were
 about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
+Although not strictly a high-dimensional dataset, as with other episodes,
+we use this dataset to initially explore the method.
 
 Columns are:
 
