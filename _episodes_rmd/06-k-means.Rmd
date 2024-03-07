@@ -140,8 +140,8 @@ number of clusters that the data should be partitioned into.
 > configuration can have a significant effect on the final configuration of the
 > clusters, so dealing with this limitation is an important part 
 > of K-means clustering. Some strategies to deal with this problem are:
-> - Choose $K$ points at random from the data as the cluster centroids.
-> - Randomly split the data into $K$ groups, and then average these groups.
+> - Choose $k$ points at random from the data as the cluster centroids.
+> - Randomly split the data into $k$ groups, and then average these groups.
 > - Use the K-means++ algorithm to choose initial values.
 > 
 > These each have advantages and disadvantages. In general, it's good to be
@@ -201,7 +201,7 @@ here?
 
 > ## Challenge 1
 > 
-> Perform clustering to group the data into $K=5$ clusters, and plot it using `plotReducedDim`.
+> Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim`.
 > Save this with a variable name that's different to what we just used,
 > because we'll use this again later.
 > 
@@ -312,7 +312,7 @@ belong to.
 
 > ## Challenge 2
 > 
-> Calculate the silhouette width for the K of 5 clustering we did earlier.
+> Calculate the silhouette width for the k of 5 clustering we did earlier.
 > Are 5 clusters appropriate? Why/why not?
 >
 > Can you identify where the differences lie?
@@ -341,7 +341,7 @@ belong to.
 > > ```
 > > This seems to be because some observations in clusters 3 and 5 seem to be
 > > more similar to other clusters than the one they have been assigned to.
-> > This may indicate that K is too high.
+> > This may indicate that k is too high.
 > {: .solution}
 {: .challenge}
 
@@ -469,7 +469,7 @@ These are “good” (despite missing in the colour bar).
 
 > ## Challenge 3
 >
-> Repeat the bootstrapping process with K=5. Do the results appear better or worse?
+> Repeat the bootstrapping process with k=5. Do the results appear better or worse?
 > Can you identify where the differences occur on the `plotReducedDim`?
 > 
 > > ## Solution
@@ -486,7 +486,7 @@ These are “good” (despite missing in the colour bar).
 > >     breaks = seq(0, 1, length.out = 10)
 > > )
 > > ```
-> > When K=5, we can see that the values on the diagonal of the matrix are 
+> > When k=5, we can see that the values on the diagonal of the matrix are 
 > > smaller, indicating that the clusters aren't exactly reproducible in the
 > > bootstrap samples. 
 > > 
@@ -510,7 +510,7 @@ These are “good” (despite missing in the colour bar).
 > 
 > This is really computationally demanding but has been shown to perform very
 > well in some situations. It also allows you to visualise how cluster
-> membership changes over different values of K.
+> membership changes over different values of k.
 > 
 {: .callout}
 
@@ -536,7 +536,7 @@ These are “good” (despite missing in the colour bar).
 > 
 > Similarly, approximate nearest neighbour methods like 
 > [Annoy](https://pypi.org/project/annoy/) can be used to identify what the
-> $K$ closest points are in the data, and this can be used in some clustering 
+> $k$ closest points are in the data, and this can be used in some clustering 
 > methods (for example, graph-based clustering).
 > 
 > Generally, these methods sacrifice a bit of accuracy for a big gain in speed.
