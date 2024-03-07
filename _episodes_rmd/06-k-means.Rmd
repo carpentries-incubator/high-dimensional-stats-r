@@ -230,7 +230,7 @@ here?
 > The following example shows how cluster centroids differ when created using 
 > medians rather than means.
 >
-> ```{r}
+> ```{r, fig.cap="Scatter plot of random data y versus x with the (mean(x), mean(y)) co-ordinate point shown in red and the (median(x), median(y)) co-ordinate point shown in blue.", fig.alt="Scatter plot of random data y versus x. There are many black points on the plot representing the data. Two additional points are shown: the (mean(x), mean(y)) co-ordinate point in red and the (median(x), median(y)) co-ordinate point in blue. The median co-ordinate point in blue has a lower x value and is shown to the left of the red mean co-ordinate point."}
 > x <- rnorm(20)
 > y <- rnorm(20)
 > x[10] <- x[10] + 10
