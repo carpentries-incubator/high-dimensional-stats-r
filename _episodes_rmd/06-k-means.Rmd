@@ -501,7 +501,7 @@ These are “good” (despite missing in the colour bar).
 > ## Consensus clustering
 > 
 > One useful and generic method of clustering is *consensus clustering*.
-> This method can use k-means, or other clustering methods.
+> This method can use k-means or other clustering methods.
 > 
 > The idea behind this is to bootstrap the data repeatedly, and cluster
 > it each time, perhaps using different numbers of clusters.
