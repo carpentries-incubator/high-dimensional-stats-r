@@ -124,7 +124,7 @@ We then follow these two steps until convergence:
 
 We can see this process in action in this animation:
 
-```{r kmeans-animation, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
+```{r kmeans-animation, echo = FALSE, fig.cap="Animation showing the iterative process of K-means clustering on data y versus x.", fig.alt="An animated scatter plot of data y versus x. The animation starts by identifying 3 initial points, delineated by different colours. The animations then colour codes all points by an associated cluster colour, delineating three distinct and non-overlapping clusters in the space of the scatter plot."}
 knitr::include_graphics("../fig/kmeans.gif")
 ```
 While K-means has some advantages over other clustering methods (easy to implement and
