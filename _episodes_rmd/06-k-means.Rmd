@@ -376,9 +376,11 @@ to ensure that the clusters identified do not change substantially
 if the observed data change slightly. This makes it more
 likely that the clusters can be reproduced.
 
-To assess this, we can use the *bootstrap*. What we do here is to take a sample
-from the data with replacement. Sampling with replacement means that in the 
-sample that we take, we can include points from the input data more than once.
+To assess this, we can *bootstrap*. To bootstrap, we first
+resample the data with replacement to 
+reproduce a 'new' data set. We can then calculate new clusters for this 
+data set and compare these to the to the clusters on the original data set, 
+thus helping us to see how the clusters may change for small changes in the data.
 This is maybe easier to see with an example. First, we define some data:
 
 ```{r bs-data}
