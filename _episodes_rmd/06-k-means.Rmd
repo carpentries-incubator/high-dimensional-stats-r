@@ -186,7 +186,7 @@ we can visualise those easily, and they're a quantitative representation of
 the underlying data, representing the two largest axes of variation. 
 
 We can now run K-means clustering on the first and second principal components
-of the `scrnaseq` data using the `kmeans` function.
+of the scRNAseq data using the `kmeans` function.
 
 ```{r kmeans, fig.cap = "Scatter plot of principal component 2 versus principal component 1 with points colour coded according to the cluster to which they belong.", fig.alt = "A scatter plot of principal component 2 versus principal component 1 of the scrnaseq data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data."}
 set.seed(42)
