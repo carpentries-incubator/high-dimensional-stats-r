@@ -76,8 +76,8 @@ and put ellipses around the clusters using the `stat_ellipse` function
 in `ggplot`.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-08-fake-cluster-1.png" alt="plot of chunk fake-cluster" width="432" />
-<p class="caption">plot of chunk fake-cluster</p>
+<img src="../fig/rmd-08-fake-cluster-1.png" alt="A scatter plot of random data y versus x. The points are horizontally partitioned at 2 random groups, forming three colour coded clusters. Circles are drawn around each cluster. The data shown appears to have no clusters but the colours and circles give the appearance of clusters artificially." width="432" />
+<p class="caption">Example of artificial clusters fitted to data points.</p>
 </div>
 The randomly created data used here appear to form three clusters when we
 plot the data. Putting ellipses around the clusters can further convince us
@@ -106,8 +106,8 @@ We then follow these two steps until convergence:
 We can see this process in action in this animation:
 
 <div class="figure" style="text-align: center">
-<img src="../fig/kmeans.gif" alt="Alt"  />
-<p class="caption">Cap</p>
+<img src="../fig/kmeans.gif" alt="An animated scatter plot of data y versus x. The animation starts by identifying 3 initial points, delineated by different colours. The animations then colour codes all points by an associated cluster colour, delineating three distinct and non-overlapping clusters in the space of the scatter plot."  />
+<p class="caption">Animation showing the iterative process of K-means clustering on data y versus x.</p>
 </div>
 While K-means has some advantages over other clustering methods (easy to implement and
 to understand), it does have some disadvantages, namely difficulties in identifying 
@@ -122,8 +122,8 @@ number of clusters that the data should be partitioned into.
 > configuration can have a significant effect on the final configuration of the
 > clusters, so dealing with this limitation is an important part 
 > of K-means clustering. Some strategies to deal with this problem are:
-> - Choose $K$ points at random from the data as the cluster centroids.
-> - Randomly split the data into $K$ groups, and then average these groups.
+> - Choose $k$ points at random from the data as the cluster centroids.
+> - Randomly split the data into $k$ groups, and then average these groups.
 > - Use the K-means++ algorithm to choose initial values.
 > 
 > These each have advantages and disadvantages. In general, it's good to be
@@ -133,10 +133,10 @@ number of clusters that the data should be partitioned into.
 >
 {: .callout}
 
-# K-means clustering applied to single-cell RNAseq data
+# K-means clustering applied to the single-cell RNA sequencing data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
-We're going to work with single-cell RNAseq data in these clustering challenges,
+We're going to work with single-cell RNA sequencing data, "scRNAseq", in these clustering challenges,
 which is often *very* high-dimensional. Commonly, experiments profile the
 expression level of 10,000+ genes in thousands of cells. Even after filtering
 the data to remove low quality observations, the dataset we're using in this
@@ -147,11 +147,12 @@ earlier in the course - dimensionality reduction. Dimensionality reduction
 allows us to visualise this incredibly complex data in a small number of
 dimensions. In this case, we'll be using principal component analysis (PCA) to
 compress the data by identifying the major axes of variation in the data,
-before running our clustering algorithms on this lower-dimensional data.
+before running our clustering algorithms on this lower-dimensional data to explore
+the similarity of features.
 
 The `scater` package has some easy-to-use tools to calculate a PCA for
 `SummarizedExperiment` objects.
-Let's load the `scRNAseq` data and calculate some principal components.
+Let's load the scRNAseq data and calculate some principal components.
 
 
 ~~~
@@ -169,7 +170,7 @@ we can visualise those easily, and they're a quantitative representation of
 the underlying data, representing the two largest axes of variation. 
 
 We can now run K-means clustering on the first and second principal components
-of the `scRNAseq` data using the `kmeans` function.
+of the scRNAseq data using the `kmeans` function.
 
 
 ~~~
@@ -181,8 +182,8 @@ plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-08-kmeans-1.png" alt="Alt" width="432" />
-<p class="caption">Title</p>
+<img src="../fig/rmd-08-kmeans-1.png" alt="A scatter plot of principal component 2 versus principal component 1 of the scrnaseq data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data." width="432" />
+<p class="caption">Scatter plot of principal component 2 versus principal component 1 with points colour coded according to the cluster to which they belong.</p>
 </div>
 
 We can see that this produces a sensible-looking partition of the data. 
@@ -191,7 +192,7 @@ here?
 
 > ## Challenge 1
 > 
-> Cluster the data using a $K$ of 5, and plot it using `plotReducedDim`.
+> Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim`.
 > Save this with a variable name that's different to what we just used,
 > because we'll use this again later.
 > 
@@ -239,8 +240,8 @@ here?
 > {: .language-r}
 > 
 > <div class="figure" style="text-align: center">
-> <img src="../fig/rmd-08-unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" width="432" />
-> <p class="caption">plot of chunk unnamed-chunk-1</p>
+> <img src="../fig/rmd-08-unnamed-chunk-1-1.png" alt="Scatter plot of random data y versus x. There are many black points on the plot representing the data. Two additional points are shown: the (mean(x), mean(y)) co-ordinate point in red and the (median(x), median(y)) co-ordinate point in blue. The median co-ordinate point in blue has a lower x value and is shown to the left of the red mean co-ordinate point." width="432" />
+> <p class="caption">Scatter plot of random data y versus x with the (mean(x), mean(y)) co-ordinate point shown in red and the (median(x), median(y)) co-ordinate point shown in blue.</p>
 > </div>
 > PAM can be carried out using `pam()` form the **`cluster`** package.
 > 
@@ -249,9 +250,10 @@ here?
 
 # Cluster separation
 When performing clustering, it is important for us to be able to measure
-how well our clusters are separated. One measure to test this is silhouette width.
-This is a number that is computed for every observation. It can range from -1 to 1.
-A high silhouette width means an observation is closer to other observations
+how well our clusters are separated. One measure to test this is silhouette width,
+which measures how similar a data point is to points in the same cluster compared
+to other clusters. The silhouette width is computed for every observation and can
+range from -1 to 1. A high silhouette width means an observation is closer to other observations
 within the same cluster. For each cluster, the silhouette widths can then be
 averaged or an overall average can be taken.
 
@@ -287,8 +289,8 @@ plot(sil, border = NA)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-08-silhouette-1.png" alt="plot of chunk silhouette" width="432" />
-<p class="caption">plot of chunk silhouette</p>
+<img src="../fig/rmd-08-silhouette-1.png" alt="Plot with horizontal axis silhoutte width. The plot shows the silhouette width for each point in the data set according to cluster. Cluster 4 contains over half of the points in the data set and largely consists of points with a large silhouette list, leading to a bar that extends to the right side of the graph. The other clusters contain many fewer points and have slightly lower silhouette widths. The bars therefore reach further to the left than cluster 4." width="432" />
+<p class="caption">Silhouette plot for each point according to cluster.</p>
 </div>
 
 
@@ -329,8 +331,8 @@ ggplot(pc) +
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-08-plot-silhouette-1.png" alt="plot of chunk plot-silhouette" width="432" />
-<p class="caption">plot of chunk plot-silhouette</p>
+<img src="../fig/rmd-08-plot-silhouette-1.png" alt="A scatter plot of the random y versus x data. Cluster membership is delineated using different point characters. Data points in the same cluster have the same point character. Each point is coloured by its silhouette width: solid red delineating a silhouette width of 1 and white delineating a silhouette width of 0. Colours in between delineate the intermediate colours. Many points are red and fade to white at the boundaries of each cluster. " width="432" />
+<p class="caption">Scatter plot of y versus x coloured according to silhouette width and point characters grouped according to cluster membership.</p>
 </div>
 
 This plot shows that silhouette values for individual observations tends to be
@@ -341,8 +343,8 @@ belong to.
 
 > ## Challenge 2
 > 
-> Calculate the silhouette width for the K of 5 clustering we did earlier.
-> Is it better or worse than before?
+> Calculate the silhouette width for the k of 5 clustering we did earlier.
+> Are 5 clusters appropriate? Why/why not?
 >
 > Can you identify where the differences lie?
 > 
@@ -386,7 +388,7 @@ belong to.
 > > </div>
 > > This seems to be because some observations in clusters 3 and 5 seem to be
 > > more similar to other clusters than the one they have been assigned to.
-> > This may indicate that K is too high.
+> > This may indicate that k is too high.
 > {: .solution}
 {: .challenge}
 
@@ -415,17 +417,19 @@ belong to.
 {: .callout}
 
 
-# Cluster robustness
+# Cluster robustness: bootstrapping
 
 When we cluster data, we want to be sure that the clusters we identify are
-not a result of the exact properties of the input data. That is, if the
-data we observed were slightly different, the clusters we would identify
-in this different data would be very similar. This makes it more
-likely that these can be reproduced.
+not a result of the exact properties of the input data. That is, we want 
+to ensure that the clusters identified do not change substantially 
+if the observed data change slightly. This makes it more
+likely that the clusters can be reproduced.
 
-To assess this, we can use the *bootstrap*. What we do here is to take a sample
-from the data with replacement. Sampling with replacement means that in the 
-sample that we take, we can include points from the input data more than once.
+To assess this, we can *bootstrap*. We first
+resample the data with replacement to 
+reproduce a 'new' data set. We can then calculate new clusters for this 
+data set and compare these to those on the original data set, 
+thus helping us to see how the clusters may change for small changes in the data.
 This is maybe easier to see with an example. First, we define some data:
 
 
@@ -493,40 +497,39 @@ replicate(10, sample(data, 5, replace = TRUE))
 {: .output}
 
 
-> ## Bootstrapping
-> 
-> The bootstrap is a powerful and common statistical technique.
-> 
-> We would like to know about the sampling distribution of a statistic,
-> but we don't have any knowledge of its behaviour under the null hypothesis.
-> 
-> For example, we might want to understand the uncertainty around an estimate
-> of the mean of our data. To do this, we could resample the data with
-> replacement and calculate the mean of each average.
-> 
-> 
-> ~~~
-> boots <- replicate(1000, mean(sample(data, 5, replace = TRUE)))
-> hist(boots,
->     breaks = "FD",
->     main = "1,000 bootstrap samples",
->     xlab = "Mean of sample"
-> )
-> ~~~
-> {: .language-r}
-> 
-> <div class="figure" style="text-align: center">
-> <img src="../fig/rmd-08-boots-1.png" alt="plot of chunk boots" width="432" />
-> <p class="caption">plot of chunk boots</p>
-> </div>
-> 
-> In this case, the example is simple, but it's possible to
-> devise more complex statistical tests using this kind of approach.
-> 
-> The bootstrap, along with permutation testing, can be a very flexible and 
-> general solution to many statistical problems.
-> 
-{: .callout}
+## Bootstrapping
+ 
+Bootstrapping is a powerful and common statistical technique.
+ 
+We would like to know about the sampling distribution of a statistic,
+but we don't have any knowledge of its behaviour under the null hypothesis.
+ 
+For example, we might want to understand the uncertainty around an estimate
+of the mean of our data. To do this, we could resample the data with
+replacement and calculate the mean of each average.
+ 
+
+~~~
+boots <- replicate(1000, mean(sample(data, 5, replace = TRUE)))
+hist(boots,
+    breaks = "FD",
+    main = "1,000 bootstrap samples",
+    xlab = "Mean of sample"
+ )
+~~~
+{: .language-r}
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-08-boots-1.png" alt="A histogram of the mean of each bootstrapped sample. The histogram appears roughly symmetric around 2.8 on the x axis." width="432" />
+<p class="caption">Histogram of mean of bootstapped samples.</p>
+</div>
+ 
+In this case, the example is simple, but it's possible to
+devise more complex statistical tests using this kind of approach.
+ 
+The bootstrap, along with permutation testing, can be a very flexible and 
+general solution to many statistical problems.
+ 
 
 In applying the bootstrap to clustering, we want to see two things:
 1. Will observations within a cluster consistently cluster together in
@@ -559,8 +562,8 @@ pheatmap(ratios,
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-08-bs-heatmap-1.png" alt="plot of chunk bs-heatmap" width="432" />
-<p class="caption">plot of chunk bs-heatmap</p>
+<img src="../fig/rmd-08-bs-heatmap-1.png" alt="Grid of 16 squares labelled 1-4 on each of the x and y axes. The diagonal and off-diagonal squares of the grid are coloured in green, indicating the highest scoring value of 1 according to the legend. The lower triangular squares are coloured in grey, indicating NA values since these would be the same as the upper triangular squares." width="432" />
+<p class="caption">Grid of empirical cluster swapping behaviour estimated by the bootstrap samples.</p>
 </div>
 
 Yellow boxes indicate values slightly greater than 1, which may be observed.
@@ -568,7 +571,7 @@ These are “good” (despite missing in the colour bar).
 
 > ## Challenge 3
 >
-> Repeat the bootstrapping process with K=5. Are the results better or worse?
+> Repeat the bootstrapping process with k=5. Do the results appear better or worse?
 > Can you identify where the differences occur on the `plotReducedDim`?
 > 
 > > ## Solution
@@ -592,7 +595,7 @@ These are “good” (despite missing in the colour bar).
 > > <img src="../fig/rmd-08-bs-ex-1.png" alt="plot of chunk bs-ex" width="432" />
 > > <p class="caption">plot of chunk bs-ex</p>
 > > </div>
-> > When K=5, we can see that the values on the diagonal of the matrix are 
+> > When k=5, we can see that the values on the diagonal of the matrix are 
 > > smaller, indicating that the clusters aren't exactly reproducible in the
 > > bootstrap samples. 
 > > 
@@ -607,7 +610,7 @@ These are “good” (despite missing in the colour bar).
 > ## Consensus clustering
 > 
 > One useful and generic method of clustering is *consensus clustering*.
-> This method can use k-means, or other clustering methods.
+> This method can use k-means or other clustering methods.
 > 
 > The idea behind this is to bootstrap the data repeatedly, and cluster
 > it each time, perhaps using different numbers of clusters.
@@ -616,7 +619,7 @@ These are “good” (despite missing in the colour bar).
 > 
 > This is really computationally demanding but has been shown to perform very
 > well in some situations. It also allows you to visualise how cluster
-> membership changes over different values of K.
+> membership changes over different values of k.
 > 
 {: .callout}
 
@@ -642,7 +645,7 @@ These are “good” (despite missing in the colour bar).
 > 
 > Similarly, approximate nearest neighbour methods like 
 > [Annoy](https://pypi.org/project/annoy/) can be used to identify what the
-> $K$ closest points are in the data, and this can be used in some clustering 
+> $k$ closest points are in the data, and this can be used in some clustering 
 > methods (for example, graph-based clustering).
 > 
 > Generally, these methods sacrifice a bit of accuracy for a big gain in speed.
