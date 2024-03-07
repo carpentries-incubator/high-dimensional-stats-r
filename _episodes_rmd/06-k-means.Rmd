@@ -151,7 +151,7 @@ number of clusters that the data should be partitioned into.
 >
 {: .callout}
 
-# K-means clustering applied to the single-cell RNA sequence data
+# K-means clustering applied to the single-cell RNA sequencing data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
 We're going to work with single-cell RNA sequence data, `scranseq`, in these clustering challenges,
