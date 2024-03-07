@@ -77,7 +77,7 @@ according to data values. We then plot these data and their allocated clusters
 and put ellipses around the clusters using the `stat_ellipse` function
 in `ggplot`.
 
-```{r fake-cluster, echo = FALSE}
+```{r fake-cluster, echo = FALSE, fig.cap = "Example of artificial clusters fitted to data points.", fig.alt="A scatter plot of random data y versus x. The points are horizontally partitioned at 2 random groups, forming three colour coded clusters. Circles are drawn around each cluster. The data shown appears to have no clusters but the colours and circles give the appearance of clusters artificially."}
 set.seed(11)
 library("MASS")
 library("ggplot2")
