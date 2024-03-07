@@ -170,7 +170,7 @@ the similarity of features.
 
 The `scater` package has some easy-to-use tools to calculate a PCA for
 `SummarizedExperiment` objects.
-Let's load the `scrnaseq` data and calculate some principal components.
+Let's load the scRNAseq data and calculate some principal components.
 
 ```{r data}
 library("SingleCellExperiment")
