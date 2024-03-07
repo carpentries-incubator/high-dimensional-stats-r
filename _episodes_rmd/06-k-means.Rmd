@@ -286,7 +286,7 @@ Let's plot the silhouette score on the original dimensions used to cluster
 the data. Here, we're mapping cluster membership to point shape, and silhouette
 width to colour.
 
-```{r plot-silhouette}
+```{r plot-silhouette, fig.cap="Scatter plot of y versus x coloured according to silhouette width and point characters grouped according to cluster membership.", fig.alt="A scatter plot of the random y versus x data. Cluster membership is delineated using different point characters. Data points in the same cluster have the same point character. Each point is coloured by its silhouette width: solid red delineating a silhouette width of 1 and white delineating a silhouette width of 0. Colours in between delineate the intermediate colours. Many points are red and fade to white at the boundaries of each cluster. "}
 pc <- as.data.frame(pcs)
 colnames(pc) <- c("x", "y")
 pc$sil <- sil[, "sil_width"]
