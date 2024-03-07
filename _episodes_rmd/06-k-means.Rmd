@@ -420,7 +420,7 @@ For example, we might want to understand the uncertainty around an estimate
 of the mean of our data. To do this, we could resample the data with
 replacement and calculate the mean of each average.
  
-```{r boots}
+```{r boots, fig.cap="Histogram of mean of bootstapped samples.", fig.alt="A histogram of the mean of each bootstrapped sample. The histogram appears roughly symmetric around 2.8 on the x axis."}
 boots <- replicate(1000, mean(sample(data, 5, replace = TRUE)))
 hist(boots,
     breaks = "FD",
