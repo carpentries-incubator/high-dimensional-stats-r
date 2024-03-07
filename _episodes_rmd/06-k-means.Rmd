@@ -448,7 +448,7 @@ boostrap replicate. Similarly, the off-diagonal elements represent how often
 observations swap between clusters in bootstrap replicates. High scores 
 indicate that observations rarely swap between clusters.
 
-```{r bs-heatmap}
+```{r bs-heatmap, fig.cap="Grid of empirical cluster swapping behaviour estimated by the bootstrap samples.", fig.alt="Grid of 16 squares labelled 1-4 on each of the x and y axes. The diagonal and off-diagonal squares of the grid are coloured in green, indicating the highest scoring value of 1 according to the legend. The lower triangular squares are coloured in grey, indicating NA values since these would be the same as the upper triangular squares.}
 library("pheatmap")
 library("bluster")
 library("viridis")
