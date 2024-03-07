@@ -274,7 +274,7 @@ Here we use the `silhouette` function from the `cluster` package to calculate th
 silhouette width of our K-means clustering using a distance matrix of distances
 between points in the clusters.
 
-```{r silhouette}
+```{r silhouette, fig.cap="Silhouette plot for each point according to cluster.", fig.alt="Plot with horizontal axis silhoutte width. The plot shows the silhouette width for each point in the data set according to cluster. Cluster 4 contains over half of the points in the data set and largely consists of points with a large silhouette list, leading to a bar that extends to the right side of the graph. The other clusters contain many fewer points and have slightly lower silhouette widths. The bars therefore reach further to the left than cluster 4."}
 library("cluster")
 dist_mat <- dist(pcs)
 sil <- silhouette(cluster$cluster, dist = dist_mat)
