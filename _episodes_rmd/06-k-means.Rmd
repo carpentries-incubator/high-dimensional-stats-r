@@ -469,7 +469,7 @@ These are “good” (despite missing in the colour bar).
 
 > ## Challenge 3
 >
-> Repeat the bootstrapping process with K=5. Are the results better or worse?
+> Repeat the bootstrapping process with K=5. Do the results appear better or worse?
 > Can you identify where the differences occur on the `plotReducedDim`?
 > 
 > > ## Solution
