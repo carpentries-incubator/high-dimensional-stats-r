@@ -228,10 +228,7 @@ clustering.
 
 Let's generate 20 data points in 2D space. Each
 point is generated to belong to one of three classes/groups. Suppose we did not know which class
-data points belonged to and we want to identify these via cluster analysis.
-Hierarchical clustering carried out on the data can be used to produce a
-dendrogram showing how the data is partitioned into clusters. But how do we
-interpret this dendrogram? Let's explore this using our example data.
+data points belonged to and we want to identify these via cluster analysis. Let's first generate and plot our data:
 
 
 ```{r plotexample}
@@ -254,6 +251,9 @@ text(
 ## calculate distance matrix using euclidean distance
 dist_m <- dist(example_data, method = "euclidean")
 ```
+
+Hierarchical clustering carried out on the data can be used to produce a
+dendrogram showing how the data is partitioned into clusters. But how do we interpret this dendrogram? Let's explore this using our example data in a Challenge.
 
 > ## Challenge 1
 >
