@@ -286,7 +286,7 @@ groups (or clusters) where the number of desired groups is controlled by the
 user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut).
 
-```{r cutree}
+```{r cutree, fig.cap="Scatter plot of data x2 versus x1, coloured by cluster.", fig.alt="A scatter plot of the example data x2 versus x1, coloured by 8 different clusters. There are two clusters in the south east of the plot, 4 clusters in the north west of the plot, and a final cluster consisting of one point in the north east of the plot."}
 ## k is a user defined parameter determining
 ## the desired number of clusters at which to cut the treee
 cutree(clust, k = 3)
@@ -305,7 +305,7 @@ count(example_cl, cluster)
 
 #plot cluster each point belongs to on original scatterplot
 library(ggplot2)
-ggplot(example_cl, aes(x = x2, y = x1, color = factor(cluster))) + geom_point()
+ggplot(example_cl, aes(x = x1, y = x2, color = factor(cluster))) + geom_point()
 ```
 
 Note that this cut produces 8 clusters (two before the cut and another six
