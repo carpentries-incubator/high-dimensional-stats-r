@@ -508,7 +508,7 @@ Heatmap(as.matrix(cor_example))
 ```
 
 We can see that more clearly if we do a line plot:
-```{r lineplot-cor-example}
+```{r lineplot-cor-example, fig.cap="Line plot of simulated value versus observation number, coloured by sample.", fig.alt="A line plot of simulated value versus observation number, coloured by sample. Samples a and b are concentrated at the bottom of the plot, while sample c is concentrated at the top of the plot."}
 ## create a blank plot (type = "n" means don't draw anything)
 ## with an x range to hold the number of features we have.
 ## the range of y needs to be enough to show all the values for every feature
