@@ -331,7 +331,7 @@ the dendrogram to determine number of clusters at different heights
 using `cutree()`. This function cuts a dendrogram into several
 groups (or clusters) where the number of desired groups is controlled by the
 user, by defining either `k` (number of groups) or `h` (height at which tree is
-cut).
+cut). The function outputs the cluster labels of each data point in order.
 
 ```{r cutree}
 clust <- hclust(dist_m, method = "complete")
