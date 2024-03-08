@@ -662,7 +662,7 @@ between sets of clusters with larger values being preferred.
 The figures below show in a more systematic way how changing the values of `k` and
 `h` using `cutree()` affect the Dunn index.
 
-```{r hclust-fig3, echo=TRUE, fig.cap="Figure 3: Dunn index"}
+```{r hclust-fig3, echo=TRUE, fig.cap="Dunn index versus cut height for methylation data.", fig.alt="Scatter plot of Dunn index versus cut height for methylation data. The Dunn index is high (around 1.6) for height values up to 20. The Dunn index drops around height 20 and the points fluctuate around 0.8 and 1 as height increases."}
 h_seq <- 70:10
 h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x)))
 k_seq <- seq(2, 10)
