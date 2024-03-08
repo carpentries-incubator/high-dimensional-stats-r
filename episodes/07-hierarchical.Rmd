@@ -598,7 +598,7 @@ Dunn index, the better defined the clusters.
 Let's calculate the Dunn index for clustering carried out on the
 `methyl_mat` dataset using the **`clValid`** package.
 
-```{r plot-clust-dunn}
+```{r plot-clust-dunn, fig.cap="Dendogram for clustering of methylation data.", fig.alt="A dendogram for clustering of methylation data. Identical to that in the section Highlighting dendrogram branches, without the colour overlay to show clusters."}
 ## calculate dunn index
 ## (ratio of the smallest distance between obs not in the same cluster
 ## to the largest intra-cluster distance)
