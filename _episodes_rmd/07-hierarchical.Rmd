@@ -300,7 +300,7 @@ In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
 ```{r plot-clust-method}
-## create a distance matrix using euclidean method
+## create a distance matrix using euclidean distance
 distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
 clust <- hclust(distmat)
