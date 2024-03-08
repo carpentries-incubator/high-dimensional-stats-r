@@ -119,7 +119,7 @@ Looking at a heatmap of these data, we may spot some patterns -- many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
-```{r heatmap-noclust, echo=FALSE}
+```{r heatmap-noclust, echo=FALSE, fig.cap="Heat map of methylation data.", fig.alt="Heat map of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4), blue delineates low methylation levels (to around -4) and white delineates methylation levels close to zero. There are many vertical blue and red stripes."}
 
 Heatmap(methyl_mat,
   name = "Methylation level",
