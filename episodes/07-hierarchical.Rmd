@@ -117,11 +117,6 @@ methyl <- readRDS(here("data/methylation.rds"))
 methyl_mat <- t(assay(methyl))
 ```
 
-Looking at a heatmap of these data, we may spot some patterns -- looking at the
-vertical stripes, many columns
-appear to have a similar methylation levels across all rows. However, they are
-all quite jumbled at the moment, so it's hard to tell how many line up exactly.
-
 ```{r heatmap-noclust, echo=FALSE}
 
 Heatmap(methyl_mat,
@@ -131,6 +126,11 @@ Heatmap(methyl_mat,
   row_title="Individuals", column_title = "Methylation sites"
 )
 ```
+
+Looking at a heatmap of these data, we may spot some patterns -- looking at the
+vertical stripes, many columns
+appear to have a similar methylation levels across all rows. However, they are
+all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
 We can order these data to make the patterns more clear using hierarchical
 clustering. To do this, we can change the arguments we pass to 
