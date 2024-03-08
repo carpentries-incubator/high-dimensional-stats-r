@@ -214,9 +214,9 @@ method used.
 
 Complete linkage (the default in `hclust()`) works by computing all pairwise
 dissimilarities between data points in different clusters. For each pair of two clusters,
-it sets their dissimilarity ($d$) to the maximum dissimilarity value observed
+it sets their dissimilarity to the maximum dissimilarity value observed
 between any of these clusters' constituent points. The two clusters
-with smallest value of $d$ are then fused.
+with smallest dissimilarity value are then fused.
 
 # Computing a dendrogram
 
