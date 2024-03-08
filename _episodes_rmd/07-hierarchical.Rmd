@@ -104,7 +104,7 @@ clustering is really useful, and then we can understand how to apply it in more
 detail. To do this, we'll return to the large methylation dataset we worked
 with in the regression lessons. Let's load the data and look at it.
 
-```{r, fig.cap="Heat map of methylation data.", fig.alt="Heat map of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4) and blue delineates low methylation levels (to around -4). The plot shows many vertical blue and red stripes."}
+```{r, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4) and blue delineates low methylation levels (to around -4). The plot shows many vertical blue and red stripes."}
 library("minfi")
 library("here")
 library("ComplexHeatmap")
@@ -119,7 +119,7 @@ Looking at a heatmap of these data, we may spot some patterns -- many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
-```{r heatmap-noclust, echo=FALSE, fig.cap="Heat map of methylation data.", fig.alt="Heat map of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4), blue delineates low methylation levels (to around -4) and white delineates methylation levels close to zero. There are many vertical blue and red stripes."}
+```{r heatmap-noclust, echo=FALSE, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4), blue delineates low methylation levels (to around -4) and white delineates methylation levels close to zero. There are many vertical blue and red stripes."}
 
 Heatmap(methyl_mat,
   name = "Methylation level",
@@ -135,7 +135,7 @@ clustering. To do this, we can change the arguments we pass to
 groups features based on dissimilarity (here, Euclidean distance) and orders
 rows and columns to show clustering of features and observations.
 
-```{r heatmap-clust, fig.cap="Heat map of methylation data clustered by methylation sites and individuals.", fig.alt="Heat map of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4), blue delineates low methylation levels (to around -4) and white delineates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."}
+```{r heatmap-clust, fig.cap="Heatmap of methylation data clustered by methylation sites and individuals.", fig.alt="Heatmap of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4), blue delineates low methylation levels (to around -4) and white delineates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."}
 Heatmap(methyl_mat,
   name = "Methylation level",
   cluster_rows = TRUE, cluster_columns = TRUE,
@@ -503,7 +503,7 @@ being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
 
-```{r heatmap-cor-example, fig.cap="Heat map of simulated data.", fig.alt="Heat map of simulated data: feature versus sample. The grid cells of the heat map are coloured from red (high) to blue (low) according to value of the simulated data."}
+```{r heatmap-cor-example, fig.cap="Heatmap of simulated data.", fig.alt="Heatmap of simulated data: feature versus sample. The grid cells of the heatmap are coloured from red (high) to blue (low) according to value of the simulated data."}
 Heatmap(as.matrix(cor_example))
 ```
 
@@ -562,7 +562,7 @@ or unusual data. It's often possible to use correlation and other custom
 distance functions in functions that perform hierarchical clustering, such as
 `pheatmap()` and `stats::heatmap()`:
 
-```{r heatmap-cor-cor-example, fig.cap="Heat maps of features versus samples clustered in the samples according to correlation.", fig.alt="Heat maps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot."}
+```{r heatmap-cor-cor-example, fig.cap="Heatmaps of features versus samples clustered in the samples according to correlation.", fig.alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot."}
 ## pheatmap allows you to select correlation directly
 pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 ## Using the built-in stats::heatmap 
