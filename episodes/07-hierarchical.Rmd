@@ -104,7 +104,7 @@ clustering is really useful, and then we can understand how to apply it in more
 detail. To do this, we'll return to the large methylation dataset we worked
 with in the regression lessons. Let's load the data and look at it.
 
-```{r, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4) and blue delineates low methylation levels (to around -4). The plot shows many vertical blue and red stripes."}
+```{r}
 library("minfi")
 library("here")
 library("ComplexHeatmap")
