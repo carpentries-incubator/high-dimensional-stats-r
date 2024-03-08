@@ -515,7 +515,9 @@ We can see that more clearly if we do a line plot:
 plot(
   1:nrow(cor_example),
   rep(range(cor_example), 5),
-  type = "n"
+  type = "n", 
+  xlab = "Feature number",
+  ylab = "Value"
 )
 ## draw a red line for sample_a
 lines(cor_example$sample_a, col = "firebrick")
