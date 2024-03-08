@@ -85,7 +85,7 @@ To start with, we measure distance
 of the dendrogram, each observation is considered to be in its own individual
 cluster. We start the clustering procedure by fusing the two observations that
 are most similar according to a distance matrix. Next, the next-most similar observations are fused
-so that the total number of clusters is *number of observations* - 2 (see
+so that the total number of clusters is *number of observations* minus 2 (see
 panel below). Groups of observations may then be merged into a larger cluster
 (see next panel below, green box). This process continues until all the observations are included
 in a single cluster.
