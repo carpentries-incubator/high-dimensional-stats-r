@@ -220,7 +220,7 @@ with smallest dissimilarity value are then fused.
 
 # Computing a dendrogram
 
-Dendograms are useful tools to visualise the grouping of points and clusters into bigger clusters.
+Dendograms are useful tools that plot the grouping of points and clusters into bigger clusters.
 We can create and plot dendrograms in R using `hclust()` which takes
 a distance matrix as input and creates the associated tree using hierarchical
 clustering. Here we create some example data to carry out hierarchical
