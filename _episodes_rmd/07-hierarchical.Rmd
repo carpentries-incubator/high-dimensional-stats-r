@@ -533,7 +533,7 @@ the values, they have a high distance to each other.
 We can see that if we cluster and plot the data ourselves using Euclidean
 distance:
 
-```{r clust-euc-cor-example}
+```{r clust-euc-cor-example, fig.cap="Dendogram of the example simulated data.", fig.alt="A dendogram of the example simulated data. The dendogram shows that sample c definitely forms its own cluster for any cut height and sammples b and a merge into a cluster at a height of around 6."}
 clust_dist <- hclust(dist(t(cor_example)))
 plot(clust_dist)
 ```
