@@ -468,7 +468,7 @@ other crescent and so it splits both crescents.
 
 So far, we've been using Euclidean distance to define the dissimilarity
 or distance between observations. However, this isn't always the best
-metric for how dissimilar different observations are. Let's make an
+metric for how dissimilar the observations are. Let's make an
 example to demonstrate. Here, we're creating two samples each with
 ten observations of random noise:
 
