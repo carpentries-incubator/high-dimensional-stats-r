@@ -50,9 +50,10 @@ of the algorithm's progression.
 Here, we describe *hierarchical clustering*. Unlike K-means clustering, 
 hierarchical clustering does not require the
 number of clusters $k$ to be specified by the user before the analysis is carried
-out. Hierarchical clustering also provides an attractive *dendrogram*, a
-tree-like diagram showing the degree of similarity between clusters. 
+out. 
 
+Hierarchical clustering also provides an attractive *dendrogram*, a
+tree-like diagram showing the degree of similarity between clusters. 
 The dendrogram is a key feature of hierarchical clustering. This tree-shaped graph allows
 the similarity between data points in a dataset to be visualised and the
 arrangement of clusters produced by the analysis to be illustrated. Dendrograms are created
