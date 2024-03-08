@@ -161,6 +161,8 @@ cause of this is -- it could be a batch effect, or a known grouping (e.g., old
 vs young samples). However, clustering like this can be a useful part of
 exploratory analysis of data to build hypotheses.
 
+# Hierarchical clustering 
+
 Now, let's cover the inner workings of hierarchical clustering in more detail.
 There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
