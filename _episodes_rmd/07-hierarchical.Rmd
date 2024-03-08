@@ -503,7 +503,7 @@ being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
 
-```{r heatmap-cor-example}
+```{r heatmap-cor-example, fig.cap="Heat map of simulated data.", fig.alt="Heat map of simulated data: feature versus sample. The grid cells of the heat map are coloured from red (high) to blue (low) according to value of the simulated data."}
 Heatmap(as.matrix(cor_example))
 ```
 
