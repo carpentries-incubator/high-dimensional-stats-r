@@ -271,7 +271,8 @@ dendrogram showing how the data is partitioned into clusters. But how do we inte
 > {: .solution}
 {: .challenge}
 
-This dendrogram shows similarities/differences in distances between data points.
+A dendrogram, such as the one generated in Challenge 1,
+shows similarities/differences in distances between data points.
 Each leaf of the dendrogram represents one of the 20 data points. These leaves
 fuse into branches as the height increases. Observations that are similar fuse into
 the same branches. The height at which any two
