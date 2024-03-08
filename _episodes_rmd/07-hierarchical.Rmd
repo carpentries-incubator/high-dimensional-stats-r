@@ -227,7 +227,7 @@ clustering. Here we create some example data to carry out hierarchical
 clustering. 
 
 Let's generate 20 data points in 2D space. Each
-point belongs to one of three classes. Suppose we did not know which class
+point is generated to belong to one of three classes/groups. Suppose we did not know which class
 data points belonged to and we want to identify these via cluster analysis.
 Hierarchical clustering carried out on the data can be used to produce a
 dendrogram showing how the data is partitioned into clusters. But how do we
