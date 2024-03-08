@@ -164,7 +164,8 @@ exploratory analysis of data to build hypotheses.
 # Hierarchical clustering 
 
 Now, let's cover the inner workings of hierarchical clustering in more detail.
-There are two things to consider before carrying out clustering:
+Hierarchical clustering is a type of clustering that also allows us to estimate the number
+of clusters. There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
 
