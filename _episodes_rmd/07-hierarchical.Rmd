@@ -131,6 +131,8 @@ Looking at a heatmap of these data, we may spot some patterns -- looking at the
 vertical stripes, many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
+In addition, it is challenging to tell how many groups containing similar methylation 
+levels we may have or what the similarities and differences are between groups.
 
 We can order these data to make the patterns more clear using hierarchical
 clustering. To do this, we can change the arguments we pass to 
