@@ -291,8 +291,43 @@ we can count the vertical lines we encounter crossing the horizontal cut. For
 example, a cut at height 10 produces 2 downstream clusters for the dendogram in Challenge 1,
 while a cut at height 5 produces 5 downstream clusters.
 
+
+
+# Dendogram visualisation
+
+We can first visualise cluster membership by highlight branches in dendograms. 
+In this example, we calculate a distance matrix between
+samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
+
+```{r plot-clust-method}
+## create a distance matrix using euclidean method
+distmat <- dist(methyl_mat)
+## hierarchical clustering using complete method
+clust <- hclust(distmat)
+## plot resulting dendrogram
+plot(clust)
+
+## draw border around three clusters
+rect.hclust(clust, k = 3, border = 2:6)
+## draw border around two clusters
+rect.hclust(clust, k = 2, border = 2:6)
+```
+We can also colour clusters downstream of a specified cut using `color_branches()`
+from the **`dendextend`** package.
+
+```{r plot-coloured-branches}
+## cut tree at height = 4
+cut <- cutree(clust, h = 50)
+
+library("dendextend")
+avg_dend_obj <- as.dendrogram(clust)      
+## colour branches of dendrogram depending on clusters
+plot(color_branches(avg_dend_obj, h = 50))
+```
+
 ## Numerical visualisation
-We can cut the dendrogram to determine number of clusters at different heights
+In addition to visualising clusters directly on the dendogram, we can cut
+the dendrogram to determine number of clusters at different heights
 using `cutree()`. This function cuts a dendrogram into several
 groups (or clusters) where the number of desired groups is controlled by the
 user, by defining either `k` (number of groups) or `h` (height at which tree is
@@ -353,38 +388,6 @@ downstream of the cut).
 > > corresponding value of `k`.
 > {: .solution}
 {: .challenge}
-
-# Dendogram visualisation
-
-In addition to visualising cluster identity in scatter plots, it is also possible to
-highlight branches in dendograms. In this example, we calculate a distance matrix between
-samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
-
-```{r plot-clust-method}
-## create a distance matrix using euclidean method
-distmat <- dist(methyl_mat)
-## hierarchical clustering using complete method
-clust <- hclust(distmat)
-## plot resulting dendrogram
-plot(clust)
-
-## draw border around three clusters
-rect.hclust(clust, k = 3, border = 2:6)
-## draw border around two clusters
-rect.hclust(clust, k = 2, border = 2:6)
-```
-We can also colour clusters downstream of a specified cut using `color_branches()`
-from the **`dendextend`** package.
-
-```{r plot-coloured-branches}
-## cut tree at height = 4
-cut <- cutree(clust, h = 50)
-
-library("dendextend")
-avg_dend_obj <- as.dendrogram(clust)      
-## colour branches of dendrogram depending on clusters
-plot(color_branches(avg_dend_obj, h = 50))
-```
 
 # The effect of different linkage methods
 Now let us look into changing the default behaviour of `hclust()`. Imagine we have two crescent-shaped point clouds as shown below.
