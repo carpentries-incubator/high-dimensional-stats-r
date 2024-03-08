@@ -364,7 +364,7 @@ rect.hclust(clust, k = 2, border = 2:6)
 We can also colour clusters downstream of a specified cut using `color_branches()`
 from the **`dendextend`** package.
 
-```{r plot-coloured-branches}
+```{r plot-coloured-branches, fig.cap="Dendogram with coloured branches delineating different clusters.", fig.alt="A dendogram with the different clusters in 4 different colours."}
 ## cut tree at height = 4
 cut <- cutree(clust, h = 50)
 
