@@ -687,7 +687,7 @@ clustering results, due to its high sensitivity to noise in the dataset.
 An alternative is to use silhouette scores (see the k-means clustering episode).
 
 As we said before (see previous episode), clustering is a non-trivial task.
-It is important to think about the nature of your data and your expactations
+It is important to think about the nature of your data and your expectations
 rather than blindly using a some algorithm for clustering or cluster validation.
 
 # Further reading 
