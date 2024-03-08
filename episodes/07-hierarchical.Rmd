@@ -356,7 +356,7 @@ downstream of the cut).
 # Highlighting dendrogram branches
 
 In addition to visualising cluster identity in scatter plots, it is also possible to
-highlight branches in dentrograms. In this example, we calculate a distance matrix between
+highlight branches in dendograms. In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
 ```{r plot-clust-method}
