@@ -334,6 +334,7 @@ user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut).
 
 ```{r cutree}
+clust <- hclust(dist_m, method = "complete")
 ## k is a user defined parameter determining
 ## the desired number of clusters at which to cut the treee
 cutree(clust, k = 3)
