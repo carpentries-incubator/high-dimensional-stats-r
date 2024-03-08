@@ -169,7 +169,7 @@ of clusters. There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
 
-# Creating the distance matrix
+# Defining the dissimilarity between observations: creating the distance matrix
 Agglomerative hierarchical clustering is performed in two steps: calculating
 the distance matrix (containing distances between pairs of observations) and
 iteratively grouping observations into clusters using this matrix.
@@ -192,7 +192,7 @@ clustering can have a big effect on the resulting tree. The decision of which
 distance matrix to use before carrying out hierarchical clustering depends on the
 type of data and question to be addressed. 
 
-# Linkage methods
+# Defining the dissimilarity between clusters: Linkage methods
 
 The second step in performing hierarchical clustering after defining the
 distance matrix (or another function defining similarity between data points)
