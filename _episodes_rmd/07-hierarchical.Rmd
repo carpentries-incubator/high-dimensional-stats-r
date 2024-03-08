@@ -226,7 +226,7 @@ dendrogram showing how the data is partitioned into clusters. But how do we
 interpret this dendrogram? Let's explore this using our example data.
 
 
-```{r plotexample}
+```{r plotexample, fig.cap="Scatter plot of randomly-generated data x2 versus x1.", fig.alt="A scatter plot of randomly-generated data x2 versus x1. The points appear fairly randomly scattered, arguably centered towards the bottom of the plot."}
 #First, create some example data with two variables x1 and x2
 set.seed(450)
 example_data <- data.frame(
