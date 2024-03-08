@@ -308,7 +308,7 @@ clust <- hclust(distmat)
 plot(clust)
 
 ## draw border around three clusters
-rect.hclust(clust, k = 3, border = 2:6)
+rect.hclust(clust, k = 3, border = 2:6) #border argument specifies the colours
 ## draw border around two clusters
 rect.hclust(clust, k = 2, border = 2:6)
 ```
