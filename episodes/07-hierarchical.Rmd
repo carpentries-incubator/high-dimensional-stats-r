@@ -508,7 +508,7 @@ Heatmap(as.matrix(cor_example))
 ```
 
 We can see that more clearly if we do a line plot:
-```{r lineplot-cor-example, fig.cap="Line plot of simulated value versus observation number, coloured by sample.", fig.alt="A line plot of simulated value versus observation number, coloured by sample. Samples a and b are concentrated at the bottom of the plot, while sample c is concentrated at the top of the plot."}
+```{r lineplot-cor-example, fig.cap="Line plot of simulated value versus observation number, coloured by sample.", fig.alt="A line plot of simulated value versus observation number, coloured by sample. Samples a and b are concentrated at the bottom of the plot, while sample c is concentrated at the top of the plot. Samples a and c have exactly the same vertical pattern."}
 ## create a blank plot (type = "n" means don't draw anything)
 ## with an x range to hold the number of features we have.
 ## the range of y needs to be enough to show all the values for every feature
@@ -533,7 +533,7 @@ the values, they have a high distance to each other.
 We can see that if we cluster and plot the data ourselves using Euclidean
 distance:
 
-```{r clust-euc-cor-example, fig.cap="Dendogram of the example simulated data.", fig.alt="A dendogram of the example simulated data. The dendogram shows that sample c definitely forms its own cluster for any cut height and sammples b and a merge into a cluster at a height of around 6."}
+```{r clust-euc-cor-example, fig.cap="Dendogram of the example simulated data clustered according to Euclidean distance.", fig.alt="A dendogram of the example simulated data clustered according to Euclidean distance. The dendogram shows that sample c definitively forms its own cluster for any cut height and samples a and b merge into a cluster at a height of around 6."}
 clust_dist <- hclust(dist(t(cor_example)))
 plot(clust_dist)
 ```
@@ -548,7 +548,7 @@ we can use `1 - cor(x)` as the distance metric.
 The input to `hclust()` must be a `dist` object, so we also need to call
 `as.dist()` on it before passing it in.
 
-```{r clust-cor-cor-example}
+```{r clust-cor-cor-example, fig.cap="Dendogram of the example simulated data clustered according to correlation.", fig.alt="A dendogram of the example simulated data clustered according to correlation. The dendogram shows that sample b definitively forms its own cluster and samples a and c form definitively form their own cluster for any cut height."}
 cor_as_dist <- as.dist(1 - cor(cor_example))
 clust_cor <- hclust(cor_as_dist)
 plot(clust_cor)
