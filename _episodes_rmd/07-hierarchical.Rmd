@@ -135,7 +135,7 @@ clustering. To do this, we can change the arguments we pass to
 groups features based on dissimilarity (here, Euclidean distance) and orders
 rows and columns to show clustering of features and observations.
 
-```{r heatmap-clust, fig.cap="Heatmap of methylation data clustered by methylation sites and individuals.", fig.alt="Heatmap of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4), blue delineates low methylation levels (to around -4) and white delineates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."}
+```{r heatmap-clust, fig.cap="Heatmap of methylation data clustered by methylation sites and individuals.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis, clustered by methylation sites and individuals. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."}
 Heatmap(methyl_mat,
   name = "Methylation level",
   cluster_rows = TRUE, cluster_columns = TRUE,
