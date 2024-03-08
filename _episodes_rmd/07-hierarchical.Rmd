@@ -88,12 +88,12 @@ panel below). Groups of observations may then be merged into a larger cluster
 (see next panel below, green box). This process continues until all the observations are included
 in a single cluster.
 
-```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Figure 1a: Example data showing two clusters of observation pairs"}
+```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Example data showing two clusters of observation pairs.", fig.alt="Scatter plot of observations x2 versus x1. Two clusters of pairs of observations are shown by blue and red boxes, each grouping two observations that are close in the space."}
 knitr::include_graphics("../fig/hierarchical_clustering_1.png")
 ```
 
 
-```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Figure 1b: Example data showing fusing of one observation into larger cluster"}
+```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Example data showing fusing of one observation into larger cluster.", fig.alt="Scatter plot of observations x2 versus x1. Three boxes are shown this time, blue and red boxes containing two observations each and separated in the space. A third green box is shown encompassing the blue box and an additional data point."}
 knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 ```
 
