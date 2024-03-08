@@ -675,7 +675,7 @@ is not very useful - cutting the given tree at a low `h` value like 15 leads to 
 ending up each in its own cluster. More relevant is the second maximum in the plot, around `h=55`.
 Looking at the dendrogram, this corresponds to `k=4`.
 
-```{r hclust-fig4, echo=TRUE, fig.cap="Figure 4: Dunn index continued"}
+```{r hclust-fig4, echo=TRUE, fig.cap="Scatter plot of Dunn index versus the number of clusters for the methylation data.", fig.alt="A scatter plot of the Dunn index versus the number of clusters for the methylation data. The points appear randomly scattered around the space between Dunn indices of 0.77 to 0.85, apart from for 4 clusters where the Dunn index reaches just over 0.88."}
 plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
 grid()
 ```
