@@ -117,7 +117,8 @@ methyl <- readRDS(here("data/methylation.rds"))
 methyl_mat <- t(assay(methyl))
 ```
 
-Looking at a heatmap of these data, we may spot some patterns -- many columns
+Looking at a heatmap of these data, we may spot some patterns -- looking at the
+vertical stripes, many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
