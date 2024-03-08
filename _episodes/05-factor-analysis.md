@@ -29,16 +29,22 @@ math: yes
 
 Biologists often encounter high-dimensional datasets from which they wish
 to extract underlying features – they need to carry out dimensionality
-reduction. The last episode dealt with one method to achieve this this,
-called principal component analysis (PCA). Here, we introduce more general
-set of methods called factor analysis (FA).
- 
+reduction. The last episode dealt with one method to achieve this,
+called principal component analysis (PCA), which expressed new dimension-reduced components 
+as linear combinations of the original features in the dataset. Principal components can therefore 
+be difficult to interpret. Here, we introduce a related but more interpretable
+method called factor analysis (FA), which constructs new components, called _factors_, 
+that explicitly represent underlying _(latent)_ constructs in our data. Like PCA, FA uses 
+linear combinations, but uses latent constructs instead. FA is therefore often 
+more interpretable and useful when we would like to extract meaning from our dimension-reduced
+set of variables.
+
 There are two types of FA, called exploratory and confirmatory factor analysis
 (EFA and CFA). Both EFA and CFA aim to reproduce the observed relationships
 among a group of features with a smaller set of latent variables. EFA
-is used in a descriptive, data-driven manner to uncover which
+is used in a descriptive (exploratory) manner to uncover which
 measured variables are reasonable indicators of the various latent dimensions.
-In contrast, CFA is conducted in an a-priori,
+In contrast, CFA is conducted in an _a priori_,
 hypothesis-testing manner that requires strong empirical or theoretical foundations.
 We will mainly focus on EFA here, which is used to group features into a specified
 number of latent factors.
@@ -49,7 +55,7 @@ exploratory data analysis methods (including PCA) to provide an initial estimate
 of how many factors adequately explain the variation observed in a dataset.
 In practice, a range of different values is usually tested.
 
-## An example
+## Motivating example: student scores 
 
 One scenario for using FA would be whether student scores in different subjects
 can be summarised by certain subject categories. Take a look at the hypothetical
@@ -59,8 +65,8 @@ labelled these hypothetical factors “mathematical ability” and “writing ab
 
 
 <div class="figure" style="text-align: center">
-<img src="../fig/table_for_fa.png" alt="plot of chunk table"  />
-<p class="caption">plot of chunk table</p>
+<img src="../fig/table_for_fa.png" alt="A table displaying data of student scores across several subjects. Each row displays the scores across different subjects for a given individual. The plot is annotated at the top with a curly bracket labelled Factor 1: mathematical ability and encompasses the data for the student scores is Arithmetic, Algebra, Geometry, and Statistics. Similarly, the subjects Creative Writing, Literature, Spelling/Grammar are encompassed by a different curly bracket with label Factor 2: writing ability."  />
+<p class="caption">Student scores data across several subjects with hypothesised factors.</p>
 </div>
 So, EFA is designed to identify a specified number of unobservable factors from
 observable features contained in the original dataset. This is slightly
@@ -69,31 +75,6 @@ as many principal components as there are features in the dataset, each
 component representing a different linear combination of features. The principal
 components are ordered by the amount of variance they account for.
 
-# Advantages and disadvantages of Factor Analysis
-
-There are several advantages and disadvantages of using FA as a
-dimensionality reduction method.
-
-Advantages:
-
-* FA is a useful way of combining different groups of data into known
-  representative factors, thus reducing dimensionality in a dataset.
-* FA can take into account researchers' expert knowledge when choosing
-  the number of factors to use, and can be used to identify latent or hidden
-  variables which may not be apparent from using other analysis methods.
-* It is easy to implement with many software tools available to carry out FA.
-* Confirmatory FA can be used to test hypotheses.
-
-Disadvantages:
-
-* Justifying the choice of
-  number of factors to use may be difficult if little is known about the
-  structure of the data before analysis is carried out.
-* Sometimes, it can be difficult to interpret what factors mean after
-  analysis has been completed. 
-* Like PCA, standard methods of carrying out FA assume that input variables
-  are continuous, although extensions to FA allow ordinal and binary
-  variables to be included (after transforming the input matrix).
 
 # Prostate cancer patient data
 
@@ -101,6 +82,9 @@ The prostate dataset represents data from 97 men who have prostate cancer.
 The data come from a study which examined the correlation between the level
 of prostate specific antigen and a number of clinical measures in men who were
 about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
+Although not strictly a high-dimensional dataset, as with other episodes,
+we use this dataset to explore the method.
+
 
 Columns are:
 
@@ -128,15 +112,11 @@ for the purposes of this episode:
 
 
 ~~~
+library("here")
 prostate <- readRDS(here("data/prostate.rds"))
 ~~~
 {: .language-r}
 
-
-~~~
-View(prostate)
-~~~
-{: .language-r}
 
 
 ~~~
@@ -327,18 +307,23 @@ factors, while negative values show a negative relationship between variables
 and factors. Loading values are missing for some variables because R does not
 print loadings less than 0.1. 
 
+# How many factors do we need?
+
 There are numerous ways to select the “best” number of factors. One is to use
 the minimum number of features that does not leave a significant amount of
-variance unaccounted for. In practise, we repeat the factor
-analysis using different values in the `factors` argument. If we have an
-idea of how many factors there will be before analysis, we can start with
-that number. The final section of the analysis output shows the results of
+variance unaccounted for. In practice, we repeat the factor
+analysis for different numbers of factors (by specifying different values 
+in the `factors` argument). If we have an idea of how many factors there 
+will be before analysis, we can start with that number. The final 
+section of the analysis output then shows the results of
 a hypothesis test in which the null hypothesis is that the number of factors
 used in the model is sufficient to capture most of the variation in the
-dataset. If the p-value is less than 0.05, we reject the null hypothesis
-and accept that the number of factors included is too small. If the p-value
-is greater than 0.05, we accept the null hypothesis that the number of
-factors used captures variation in the data.
+dataset. If the p-value is less than our significance level (for example 0.05),
+we reject the null hypothesis that the number of factors is sufficient and we repeat the analysis with 
+more factors. When the p-value is greater than our significance level, we do not reject 
+the null hypothesis that the number of factors used captures variation
+in the data. We may therefore conclude that 
+this number of factors is sufficient. 
 
 Like PCA, the fewer factors that can explain most of the variation in the
 dataset, the better. It is easier to explore and interpret results using a
@@ -353,7 +338,7 @@ for by the FA model.
 *Uniqueness* is the opposite of communality and represents the amount of
 variation in a variable that is not accounted for by the FA model. Uniqueness is
 calculated by subtracting the communality value from 1. If uniqueness is high for
-a given variable, that means this variable is not well explaind/accounted for
+a given variable, that means this variable is not well explained/accounted for
 by the factors identified.
 
 
@@ -418,8 +403,8 @@ text(
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-06-biplot-1.png" alt="plot of chunk biplot" width="432" />
-<p class="caption">plot of chunk biplot</p>
+<img src="../fig/rmd-06-biplot-1.png" alt="A scatter plot of the factor 2 loadings for each feature versus the factor 2 loadings for each feature. The lpsa, lcavol and lcp feature points are located in the east of the plot, indicating a high loading on factor 1 and close to zero loading on factor 2. The lbph and lweight features are located in the north of the plot, indicating a close to zero loading on factor 1 and a high loading on factor 2." width="432" />
+<p class="caption">Factor 2 loadings versus factor 1 loadings for each feature.</p>
 </div>
 
 
@@ -429,7 +414,7 @@ text(
 > the results of your analysis.
 > 
 > What variables are most important in explaining each factor? Do you think
-> this makes sense biologically? Discuss in groups.
+> this makes sense biologically? Consider or discuss in groups.
 > 
 > > ## Solution
 > > 
@@ -447,6 +432,31 @@ text(
 > {: .solution}
 {: .challenge}
 
+# Advantages and disadvantages of Factor Analysis
+
+There are several advantages and disadvantages of using FA as a
+dimensionality reduction method.
+
+Advantages:
+
+* FA is a useful way of combining different groups of data into known
+  representative factors, thus reducing dimensionality in a dataset.
+* FA can take into account researchers' expert knowledge when choosing
+  the number of factors to use, and can be used to identify latent or hidden
+  variables which may not be apparent from using other analysis methods.
+* It is easy to implement with many software tools available to carry out FA.
+* Confirmatory FA can be used to test hypotheses.
+
+Disadvantages:
+
+* Justifying the choice of
+  number of factors to use may be difficult if little is known about the
+  structure of the data before analysis is carried out.
+* Sometimes, it can be difficult to interpret what factors mean after
+  analysis has been completed. 
+* Like PCA, standard methods of carrying out FA assume that input variables
+  are continuous, although extensions to FA allow ordinal and binary
+  variables to be included (after transforming the input matrix).
 
 
 
