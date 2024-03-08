@@ -93,7 +93,7 @@ knitr::include_graphics("../fig/hierarchical_clustering_1.png")
 ```
 
 
-```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Example data showing fusing of one observation into larger cluster.", fig.alt="Scatter plot of observations x2 versus x1. Three boxes are shown this time, blue and red boxes containing two observations each. The two boxes encompass points that are relatively far apart. A third green box is shown encompassing the blue box and an additional data point."}
+```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Example data showing fusing of one observation into larger cluster.", fig.alt="Scatter plot of observations x2 versus x1. Three boxes are shown this time, blue and red boxes containing two observations each. The two boxes contain points that are relatively far apart. A third green box is shown encompassing the blue box and an additional data point."}
 knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 ```
 
