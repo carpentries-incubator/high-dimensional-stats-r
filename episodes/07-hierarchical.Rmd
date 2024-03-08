@@ -498,7 +498,7 @@ head(cor_example)
 ```
 
 If we plot a heatmap of this, we can see that `sample_a` and `sample_b` are
-grouped together because they have a small distance to each other, despite
+grouped together because they have a small distance from each other, despite
 being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
