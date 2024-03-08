@@ -399,7 +399,7 @@ plot(cres)
 We might expect that the crescents are resolved into separate clusters. But if we
 run hierarchical clustering with the default arguments, we get this:
 
-```{r cresClustDefault}
+```{r cresClustDefault, fig.cap="Scatter plot of crescent-shaped simulated data, coloured according to clusters calculated using Euclidean distance.", fig.alt="A scatter plot of the crescent-shaped simulated data calculated using Euclidean distance. The points are coloured in black or red according to their membership to 2 clusters. The points in the tails of each crescent have inherited the colour of the opposite crescent."}
 cresClass <- cutree(hclust(dist(cres)), k=2) # save partition for colouring
 plot(cres, col=cresClass) # colour scatterplot by partition
 ```
