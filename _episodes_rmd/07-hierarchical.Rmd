@@ -285,11 +285,11 @@ the scatterplot with their position on the tree.
 
 # Identifying the number of clusters
 
-To do this, we can make a horizontal cut through the dendrogram at a user-defined height. 
+To identify the number of clusters, we can make a horizontal cut through the dendrogram at a user-defined height. 
 The sets of observations beneath this cut can be thought of as distinct clusters. Equivalently,
 we can count the vertical lines we encounter crossing the horizontal cut. For
 example, a cut at height 10 produces 2 downstream clusters for the dendogram in Challenge 1,
-while a cut at height 5 produces 5 downstream clusters.
+while a cut at height 4 produces 6 downstream clusters.
 
 
 
