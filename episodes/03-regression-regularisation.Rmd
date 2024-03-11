@@ -1,8 +1,8 @@
 ---
 title: "Regularised regression"
 source: Rmd
-teaching: 60
-exercises: 20
+teaching: 110
+exercises: 60
 questions:
 - "What is regularisation?"
 - "How does regularisation work?"
