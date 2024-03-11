@@ -3,8 +3,8 @@
 # Instead, please edit 07-hierarchical.md in _episodes_rmd/
 title: "Hierarchical clustering"
 source: Rmd
-teaching: 60
-exercises: 10
+teaching: 70
+exercises: 20
 questions:
 - What is hierarchical clustering and how does it differ from other clustering methods?
 - How do we carry out hierarchical clustering in R?

@@ -5,7 +5,7 @@ title: "Principal component analysis"
 author: "GS Robertson"
 source: Rmd
 teaching: 90
-exercises: 30
+exercises: 40
 questions:
 - What is principal component analysis (PCA) and when can it be used?
 - How can we perform a PCA in R?
