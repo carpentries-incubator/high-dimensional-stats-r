@@ -1,8 +1,8 @@
 ---
 title: "Regression with many outcomes"
 source: Rmd
-teaching: 60
-exercises: 30
+teaching: 70
+exercises: 50
 questions:
 - "How can we apply linear regression in a high-dimensional setting?"
 - "How can we benefit from the fact that we have many outcomes?"

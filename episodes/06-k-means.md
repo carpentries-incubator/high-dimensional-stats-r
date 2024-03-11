@@ -3,8 +3,8 @@
 # Instead, please edit 06-k-means.md in _episodes_rmd/
 title: "K-means"
 source: Rmd
-teaching: 45
-exercises: 15
+teaching: 60
+exercises: 20
 questions:
   - How do we detect real clusters in high-dimensional data?
   - How does K-means work and when should it be used?

@@ -3,8 +3,8 @@
 # Instead, please edit 02-high-dimensional-regression.md in _episodes_rmd/
 title: "Regression with many outcomes"
 source: Rmd
-teaching: 60
-exercises: 30
+teaching: 70
+exercises: 50
 questions:
 - "How can we apply linear regression in a high-dimensional setting?"
 - "How can we benefit from the fact that we have many outcomes?"
@@ -128,6 +128,36 @@ the first 6 samples:
 knitr::kable(head(colData(methylation)), row.names = FALSE)
 ~~~
 {: .language-r}
+
+
+
+~~~
+Warning in as.data.frame.integer(col, optional = optional): Direct call of
+'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.integer(col, optional = optional): Direct call of
+'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+~~~
+{: .warning}
+
+
+
+~~~
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+~~~
+{: .warning}
 
 
 

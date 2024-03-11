@@ -3,8 +3,8 @@
 # Instead, please edit 03-regression-regularisation.md in _episodes_rmd/
 title: "Regularised regression"
 source: Rmd
-teaching: 60
-exercises: 20
+teaching: 110
+exercises: 60
 questions:
 - "What is regularisation?"
 - "How does regularisation work?"

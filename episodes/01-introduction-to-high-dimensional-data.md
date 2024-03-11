@@ -4,7 +4,7 @@
 title: "Introduction to high-dimensional data"
 author: "GS Robertson"
 source: Rmd
-teaching: 20
+teaching: 30
 exercises: 20
 questions:
 - What are high-dimensional data and what do these data look like in the
