@@ -13,7 +13,7 @@ Session 1:
 - Regression with many outcomes (episode 2): 70 minutes of teaching time, 50 minutes for exercises (total: 120 minutes).
 
 Session 2:
-- Regression with many outcomes (episode 3): 110 minutes of teaching time, 60 minutes for exercises (total: 170 minutes).
+- Regularised regression (episode 3): 110 minutes of teaching time, 60 minutes for exercises (total: 170 minutes).
 
 Session 3:
 - Principal component analysis (episode 4): 90 minutes of teaching time, 40 minutes for exercises (total: 130 minutes).
