@@ -946,7 +946,7 @@ simply due to chance.
 
 > ## Challenge 5
 >
-> 1.  If we run `r nrow(methylation)` tests,
+> 1. If we run `r nrow(methylation)` tests, even if there are no true differences,
 >     how many of them (on average) will be statistically significant at
 >     a threshold of $p < 0.05$?
 > 2.  Why would we want to be conservative in labelling features as
