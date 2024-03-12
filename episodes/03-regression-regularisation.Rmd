@@ -81,7 +81,7 @@ because of "singularities". We clarify what singularities are in the note below
 but this essentially means that R couldn't find a way to
 perform the calculations necessary to fit the model. Large effect sizes and singularities are common
 when naively fitting linear regression models with a large number of features (i.e., to high-dimensional data),
-often since the model cannot distinguish between the effects of many, correlated features and 
+often since the model cannot distinguish between the effects of many, correlated features or
 when we have more features than observations. 
 
 > ## Singularities
