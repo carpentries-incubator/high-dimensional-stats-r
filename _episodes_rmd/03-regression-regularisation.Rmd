@@ -568,7 +568,7 @@ pred_ridge <- predict(ridge_fit, newx = test_mat)
 err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col)) 
 min_err_ridge <- min(err_ridge)
 
-##Save some results for later analysis 
+# Identify the lambda value that results in the lowest MSE (ie, the "best" lambda value)
 which_min_err <- which.min(err_ridge)
 pred_min_ridge <- pred_ridge[, which_min_err]
 
