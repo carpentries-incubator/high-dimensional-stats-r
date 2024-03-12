@@ -118,7 +118,7 @@ when we have more features than observations.
 > are often multiple features that contain redundant information (correlated features).
 > If we visualise the level of 
 > correlation between sites in the methylation dataset, we can see that many 
-> of the features essentially represent the same information - there are many 
+> of the features represent the same information - there are many 
 > off-diagonal cells, which are deep red or blue. For example, the following
 > heatmap visualises the correlations for the first 500 features in the 
 > `methylation` dataset (we selected 500 features only as it can be hard to
