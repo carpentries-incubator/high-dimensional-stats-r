@@ -555,7 +555,7 @@ or correlated predictors. As we reduce the importance of one feature, we can
 weight to another feature that represents similar information.
 
 Since we split the data into test and training data, we can prove that ridge
-regression gives us a better prediction compared to the model with no regularisation. 
+regression predicts the test data better than the model with no regularisation. 
 Let's generate our predictions under the ridge regression model and calculate
 the mean squared error in the test set:
 
