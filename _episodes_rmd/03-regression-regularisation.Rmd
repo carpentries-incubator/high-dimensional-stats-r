@@ -572,7 +572,7 @@ min_err_ridge <- min(err_ridge)
 which_min_err <- which.min(err_ridge)
 pred_min_ridge <- pred_ridge[, which_min_err]
 
-##Return errors
+## Return errors
 min_err_ridge
 ```
 
