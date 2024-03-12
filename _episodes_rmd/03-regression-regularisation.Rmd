@@ -560,7 +560,7 @@ Let's generate our predictions under the ridge regression model and calculate
 the mean squared error in the test set:
 
 ```{r pred-ridge-lm, fig.width = 10, fig.cap="Cap", fig.alt="Alt"}
-# obtain a matrix of predictions from the ridge model,
+# Obtain a matrix of predictions from the ridge model,
 # where each column corresponds to a different lambda value
 pred_ridge <- predict(ridge_fit, newx = test_mat)
 
