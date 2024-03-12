@@ -412,7 +412,7 @@ about a year!
 > > ```
 > > 
 > > The mean squared error for the test set is the mean of the squared 
-> > error of the predicted values and true test data.
+> > error between the predicted values and true test data.
 > > ```{r testerror}
 > > err_lm <- mse(test_age, pred_lm)
 > > err_lm
