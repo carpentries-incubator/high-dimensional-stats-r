@@ -782,7 +782,11 @@ plot(lasso)
 
 # Extract the coefficients corresponding to the lowest mean squared error from cross-validation
 coefl <- coef(lasso, lasso$lambda.min)
-selected_coefs <- as.matrix(coefl)[which(coefl != 0), 1] ; selected_coefs
+# select only non-zero coefficients
+selection <- which(coefl != 0)
+# and convert to a normal matrix
+selected_coefs <- as.matrix(coefl)[selection, 1]
+selected_coefs
 ```
 
 We can see that cross-validation has selected a value of $\lambda$ resulting in `r length(selected_coefs)-1` features and the intercept. We can cross-reference these features with the Hovarth data to compare the features to the Hovarth signature:
