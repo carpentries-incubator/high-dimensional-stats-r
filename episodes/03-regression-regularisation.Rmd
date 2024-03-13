@@ -42,11 +42,12 @@ feature selection and it is particularly useful when dealing with high-dimension
 One reason that we need special statistical tools for high-dimensional data is
 that standard linear models cannot handle high-dimensional data sets -- one cannot fit
 a linear model where there are more features (predictor variables) than there are observations
-(data points). In the previous lesson we dealt with this problem by fitting individual
+(data points). In the previous lesson, we dealt with this problem by fitting individual
 models for each feature and sharing information among these models. Now we will
-take a look at an alternative approach called regularisation. Regularisation can be used to
-stabilise coefficient estimates (and thus to fit models with more features than observations)
-and even to select a subset of relevant features.
+take a look at an alternative approach that can be used to fit models with more 
+features than observations by stabilising coefficient estimates. This approach is called
+regularisation. Compared to many other methods, regularisation is also often very fast 
+and can therefore be extremely useful in practice. 
 
 First, let us check out what happens if we try to fit a linear model to high-dimensional
 data! We start by reading in the data from the last lesson:
@@ -76,34 +77,34 @@ summary(fit)
 You can see that we're able to get some effect size estimates, but they seem very 
 high! The summary also says that we were unable to estimate
 effect sizes for `r format(sum(is.na(coef(fit))), big.mark=",")` features
-because of "singularities". What this means is that R couldn't find a way to
-perform the calculations necessary due to the fact that we have more features
-than observations.
-
+because of "singularities". We clarify what singularities are in the note below
+but this means that R couldn't find a way to
+perform the calculations necessary to fit the model. Large effect sizes and singularities are common
+when naively fitting linear regression models with a large number of features (i.e., to high-dimensional data),
+often since the model cannot distinguish between the effects of many, correlated features or
+when we have more features than observations. 
 
 > ## Singularities
 > 
 > The message that `lm` produced is not necessarily the most intuitive. What
-> are "singularities", and why are they an issue? A singular matrix 
+> are "singularities" and why are they an issue? A singular matrix 
 > is one that cannot be
-> [inverted](https://en.wikipedia.org/wiki/Invertible_matrix).
-> The inverse of an $n \times n$ square matrix $A$ is the matrix $B$ for which
-> $AB = BA = I_n$, where $I_n$ is the $n \times n$ identity matrix.
-> 
-> Why is the inverse important? Well, to find the
-> coefficients of a linear model of a matrix of predictor features $X$ and an
-> outcome vector $y$, we may perform the calculation 
+> [inverted](https://en.wikipedia.org/wiki/Invertible_matrix). R uses 
+> inverse operations to fit linear models (find the coefficients) using: 
 > 
 > $$
->     (X^TX)^{-1}X^Ty
+>     (X^TX)^{-1}X^Ty,
 > $$
 > 
-> You can see that, if we're unable to find the inverse of the matrix $X^TX$,
-> then we'll be unable to find the regression coefficients. 
+> where $X$ is a matrix of predictor features and $y$ is the outcome vector.
+> Thus, if the matrix $X^TX$ cannot be inverted to give $(X^TX)^{-1}$, R 
+> cannot fit the model and returns the error that there are singularities.
 > 
-> Why might this be the case?
+> Why might R be unable to calculate $(X^TX)^{-1}$ and return the error that there are singularities?
 > Well, when the [determinant](https://en.wikipedia.org/wiki/Determinant)
-> of the matrix is zero, we are unable to find its inverse.
+> of the matrix is zero, we are unable to find its inverse. The determinant 
+> of the matrix is zero when there are more features than observations or often when
+> the features are highly correlated.
 > 
 > ```{r determinant}
 > xtx <- t(methyl_mat) %*% methyl_mat
@@ -113,14 +114,11 @@ than observations.
 
 > ## Correlated features -- common in high-dimensional data
 > 
-> So, we can't fit a standard linear model to high-dimensional data. But there
-> is another issue. In high-dimensional datasets, there
+> In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
->
-> We have seen in the first episode that correlated features can make it hard 
-> (or impossible) to correctly infer parameters. If we visualise the level of 
+> If we visualise the level of 
 > correlation between sites in the methylation dataset, we can see that many 
-> of the features essentially represent the same information - there are many 
+> of the features represent the same information - there are many 
 > off-diagonal cells, which are deep red or blue. For example, the following
 > heatmap visualises the correlations for the first 500 features in the 
 > `methylation` dataset (we selected 500 features only as it can be hard to
@@ -138,10 +136,6 @@ library("ComplexHeatmap")
 > )
 > ```
 > 
-> Correlation between features can be problematic for technical reasons. If it is 
-> very severe, it may even make it impossible to fit a model! This is in addition to
-> the fact that with more features than observations, we can't even estimate
-> the model properly. Regularisation can help us to deal with correlated features.
 {: .callout}
 
 
