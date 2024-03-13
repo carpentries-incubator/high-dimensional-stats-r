@@ -789,16 +789,10 @@ selected_coefs <- as.matrix(coefl)[selection, 1]
 selected_coefs
 ```
 
-We can see that cross-validation has selected a value of $\lambda$ resulting in `r length(selected_coefs)-1` features and the intercept. We can cross-reference these features with the Hovarth data to compare the features to the Hovarth signature:
-
-```{r lasso-cv-2}
-coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
-## We select some of the same features! Hooray
-intersect(names(selected_coefs), coef_horvath$CpGmarker)
-```
+We can see that cross-validation has selected a value of $\lambda$ resulting in `r length(selected_coefs)-1` features and the intercept. 
 
 
-```{r heatmap-lasso, echo = FALSE, fig.cap="Heatmap showing methylation values for the selected CpG and how the vary with age.", fig.alt="Overall, we observe either increasing or decreasing methylation patterns as a function of age."}
+```{r heatmap-lasso, echo = FALSE, fig.cap="Heatmap showing methylation values for the selected CpG and how they vary with age.", fig.alt="Overall, we observe either increasing or decreasing methylation patterns as a function of age."}
 hmat <- t(scale(methyl_mat[, names(selected_coefs)[-1]]))
 ord <- order(age)
 hmat_ord <- hmat[, ord]
