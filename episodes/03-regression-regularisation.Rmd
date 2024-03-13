@@ -792,31 +792,6 @@ selected_coefs
 We can see that cross-validation has selected a value of $\lambda$ resulting in `r length(selected_coefs)-1` features and the intercept. 
 
 
-```{r heatmap-lasso, echo = FALSE, fig.cap="Heatmap showing methylation values for the selected CpG and how they vary with age.", fig.alt="Overall, we observe either increasing or decreasing methylation patterns as a function of age."}
-hmat <- t(scale(methyl_mat[, names(selected_coefs)[-1]]))
-ord <- order(age)
-hmat_ord <- hmat[, ord]
-age_ord <- age[ord]
-col <- circlize::colorRamp2(seq(min(age), max(age), length.out = 100), viridis(100))
-Heatmap(
-    hmat_ord,
-    name = "Scaled\nmethylation level",
-    top_annotation = columnAnnotation(
-        age = age_ord,
-        col = list(age = col)
-    ),
-    show_column_names = FALSE,
-    column_title = "Sample",
-    row_title = "Feature",
-    row_names_side = "left",
-    row_title_side = "left",
-    column_title_side = "bottom",
-    show_row_dend = FALSE,
-    cluster_columns = FALSE
-)
-```
-
-
 # Elastic nets: blending ridge regression and the LASSO 
 
 So far, we've used ridge regression (where `alpha = 0`) and LASSO regression,
