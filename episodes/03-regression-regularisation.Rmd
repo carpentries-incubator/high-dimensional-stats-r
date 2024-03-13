@@ -780,7 +780,7 @@ that minimises the error across each of the test and training splits. In R:
 lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 plot(lasso)
 
-# Extract the coefficients corresponding to the lowest mean squared error from cross-validation
+# Extract the coefficients from the model with the lowest mean squared error from cross-validation
 coefl <- coef(lasso, lasso$lambda.min)
 # select only non-zero coefficients
 selection <- which(coefl != 0)
