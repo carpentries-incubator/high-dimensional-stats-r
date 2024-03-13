@@ -585,7 +585,7 @@ err_lm
 
 We can see where on the continuum of lambdas we've picked a model by plotting
 the coefficient paths again. In this case, we've picked a model with fairly
-modest shrinkage.
+modest coefficient shrinking.
 
 ```{r chooselambda, fig.cap="Cap", fig.alt="Alt"}
 chosen_lambda <- ridge_fit$lambda[which.min(err_ridge)]
