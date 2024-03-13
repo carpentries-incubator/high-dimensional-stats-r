@@ -113,7 +113,7 @@ In this episode, we will focus on the association between age and
 methylation. The following heatmap summarises age and methylation levels 
 available in the methylation dataset:
 
-```{r heatmap, fig.cap="Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.", fig.alt="Heatmap of methylation values across all features. Samples are ordered according to age."}
+```{r heatmap, fig.cap="Heatmap of methylation values across all features.", fig.alt="Heatmap of methylation values across all features showing that there are many features. Samples are ordered according to age."}
 age <- methylation$Age
 
 library("ComplexHeatmap")
@@ -130,26 +130,11 @@ Heatmap(methyl_mat_ord,
         column_title =  "Sample",
         top_annotation = columnAnnotation(age = age_ord))
 ```
-Depending on the scientific question of interest, two types of high-dimensional 
-problems could be explored in this context:
-
-1. To predict age using methylation levels as predictors. In this case, we would 
-have a single outcome (age) which will be predicted using 5000 covariates 
-(methylation levels across the genome). 
-
-2. To predict methylation levels using age as a predictor. In this case, we 
-would have 5000 outcomes (methylation levels across the genome) and a single 
-covariate (age). 
-
-The examples in this episode will focus on the second type of problem, whilst 
-the next episode will focus on the first.
 
 > ## Challenge 1
 >
-> Why can we not just fit many linear regression models, one for each of the columns
-> in the `colData` above against each of the features in the matrix of
-> assays, and choose all of the significant results at a p-value of
-> 0.05?
+> Why can we not just fit many linear regression models relating every combination of feature 
+> (`colData` and assays) and draw conclusions by associating all variables with significant model p-values?
 >
 > > ## Solution
 > >
@@ -172,6 +157,19 @@ the next episode will focus on the first.
 > >
 > {: .solution}
 {: .challenge}
+
+In general, it is scientifically interesting to explore two modelling problems using the three types of data:
+
+1. Predicting methylation levels using age as a predictor. In this case, we 
+would have 5000 outcomes (methylation levels across the genome) and a single 
+covariate (age). 
+
+2. Predicting age using methylation levels as predictors. In this case, we would 
+have a single outcome (age) which will be predicted using 5000 covariates 
+(methylation levels across the genome). 
+
+The examples in this episode will focus on the first type of problem, whilst 
+the next episode will focus on the second.
 
 > ## Measuring DNA Methylation
 >
@@ -229,12 +227,12 @@ to help us understand how ageing manifests.
 
 Using linear regression, it is possible to identify differences like
 these. However, high-dimensional data like the ones we're working with
-require some special considerations. A primary consideration, as we saw
+require some special considerations. A first consideration, as we saw
 above, is that there are far too many features to fit each one-by-one as
 we might do when analysing low-dimensional datasets (for example using
 `lm` on each feature and checking the linear model assumptions). A
-secondary consideration is that statistical approaches may behave
-slightly differently in very high-dimensional data, compared to
+second consideration is that statistical approaches may behave
+slightly differently when applied to very high-dimensional data, compared to
 low-dimensional data. A third consideration is the speed at which we can
 actually compute statistics for data this large -- methods optimised for
 low-dimensional data may be very slow when applied to high-dimensional
@@ -521,7 +519,7 @@ p-value is small ($p=`r round(table_age_methyl1$p.value[[1]], digits =
 this is larger, relative to the total area of the distribution, therefore the 
 p-value is larger than the one for the intercept term 
 ($p=`r round(table_age_methyl1$p.value[[2]], digits = 3)`$). The
-the p-value is a function of the test statistic: the ratio between the effect size 
+p-value is a function of the test statistic: the ratio between the effect size 
 we're estimating and the uncertainty we have in that effect. A large effect with large
 uncertainty may not lead to a small p-value, and a small effect with
 small uncertainty may lead to a small p-value.
@@ -708,7 +706,7 @@ while the y-axis is the $-\log_{10}(\text{p-value})$, where larger
 values indicate increasing statistical evidence of a non-zero effect
 size. A positive effect size represents increasing methylation with
 increasing age, and a negative effect size represents decreasing
-methylation with increasing age. Points higher on the x-axis represent
+methylation with increasing age. Points higher on the y-axis represent
 features for which we think the results we observed would be very
 unlikely under the null hypothesis.
 
@@ -749,7 +747,7 @@ or information sharing that **`limma`** performs has on our results. To do
 this, let us compare the effect sizes estimates and p-values from the two
 approaches.
 
-```{r plot-limma-lm-effect, echo = FALSE}
+```{r plot-limma-lm-effect, echo = FALSE, fig.cap = "Plot of effect sizes using limma vs. those using lm.", fig.alt = "A scatter plot of the effect size using limmma vs. those using lm. The plot also shows a straight line through all points showing that the effect sizes are the same."}
 plot(
     coef_df[["estimate"]],
     toptab_age[coef_df[["feature"]], "logFC"],
@@ -769,7 +767,7 @@ or moderate the effect size estimates, in the case of **`DESeq2`** by again
 sharing information between features about sample-to-sample variability.
 In contrast, let us look at the p-values from **`limma`** and R's built-in `lm()` function:
 
-```{r plot-limma-lm-pval, echo = FALSE}
+```{r plot-limma-lm-pval, echo = FALSE, fig.cap = "Plot of p-values using limma vs. those using lm.", fig.alt = "A scatter plot of the p-values using limma vs. those using lm. A straight line is also displayed, showing that the p-values for limma tend to be smaller than those using lm towards the left of the plot and higher towards the right of the plot."}
 plot(
     coef_df[["p.value"]],
     toptab_age[coef_df[["feature"]], "P.Value"],
@@ -782,7 +780,7 @@ plot(
 abline(0:1, lty = "dashed")
 ```
 
-we can see that for the vast majority of features, the results are
+We can see that for the vast majority of features, the results are
 broadly similar. There seems to be a minor general tendency for **`limma`**
 to produce smaller p-values, but for several features, the p-values from
 limma are considerably larger than the p-values from `lm()`. This is
@@ -925,6 +923,7 @@ run the same test again:
 
 ```{r volcplotfake, fig.cap="Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results.", fig.alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level."}
 
+set.seed(123) 
 age_perm <- age[sample(ncol(methyl_mat), ncol(methyl_mat))]
 design_age_perm <- model.matrix(~age_perm)
 
@@ -951,7 +950,7 @@ simply due to chance.
 
 > ## Challenge 5
 >
-> 1.  If we run `r nrow(methylation)` tests under the null hypothesis,
+> 1. If we run `r nrow(methylation)` tests, even if there are no true differences,
 >     how many of them (on average) will be statistically significant at
 >     a threshold of $p < 0.05$?
 > 2.  Why would we want to be conservative in labelling features as
@@ -1047,7 +1046,7 @@ tests we performed! This is not ideal sometimes, because unfortunately
 we usually don't have very large sample sizes in health sciences.
 
 The second main way of controlling for multiple tests is to control the
-*false discovery rate*.[^3] This is the proportion of false positives,
+*false discovery rate (FDR)*.[^3] This is the proportion of false positives,
 or false discoveries, we'd expect to get each time if we repeated the
 experiment over and over.
 
