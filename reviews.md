@@ -1,4 +1,4 @@
-# Reviews: high dimensional statistics with R
+# Reviews
 The purpose of this document is to summarise and track how the lesson has developed in response to peer reviews, feedback from instructors and Carpentries advice. We also detail the main changes that still need to be made and thus define a roadmap to publication. 
 
 Note that the lesson has been developed over around 3 years and iteratively improved. This document only highlights reviews contributed by reviewers external to the main authors, except following rounds of teaching. Details of other improvements can be found throughout the repository and the list of authors is given in [AUTHORS](AUTHORS).
