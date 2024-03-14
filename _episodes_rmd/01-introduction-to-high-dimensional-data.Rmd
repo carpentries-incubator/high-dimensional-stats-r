@@ -2,7 +2,7 @@
 title: "Introduction to high-dimensional data"
 author: "GS Robertson"
 source: Rmd
-teaching: 20
+teaching: 30
 exercises: 20
 questions:
 - What are high-dimensional data and what do these data look like in the
@@ -38,36 +38,30 @@ knitr_fig_path("01-")
 
 # What are high-dimensional data? 
 
-*High-dimensional data* are defined as data in which the number of features (variables observed),
-$p$, are close to or larger than the number of observations (or data points), $n$.
-The opposite is *low-dimensional data* in which the number of observations,
-$n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which
-refers to data with numerous features irrespective of the number of observations (similarly,
-*tall data* is often used to denote data with a large number of observations).
-Analyses of high-dimensional data require consideration of potential problems that
-come from having more features than observations.
+*High-dimensional data* are defined as data with many features (variables observed).
+In recent years, advances in information technology have allowed large amounts of data to
+be collected and stored with relative ease. As such, high-dimensional
+data have become more common in many scientific fields, including the biological sciences, 
+where datasets in subjects like genomics and medical sciences often have a large numbers of features.
+For example, hospital data may record many variables, including symptoms,
+blood test results, behaviours, and general health. An example of what high-dimensional data might look like 
+in a biomedical study is shown in the figure below. 
 
-High-dimensional data have become more common in many scientific fields as new
-automated data collection techniques have been developed. More and more datasets
-have a large number of features and some have as many features as there are rows
-in the dataset. Datasets in which $p \geq n$ are becoming more common. Such datasets
-pose a challenge for data analysis as standard methods of analysis, such as linear
-regression, are no longer appropriate.
 
-High-dimensional datasets are common in the biological sciences. Data sets in subjects like
-genomics and medical sciences are often tall (with large $n$) and wide
-(with large $p$), and can be difficult to analyse or visualise using
-standard statistical tools. An example of high-dimensional data in biological
-sciences may include data collected from hospital patients recording symptoms,
-blood test results, behaviours, and general health, resulting in datasets with
-large numbers of features. Researchers often want to relate these features to
-specific patient outcomes (e.g. survival, length of time spent in hospital).
-An example of what high-dimensional data might look like in a biomedical study
-is shown in the figure below. 
 
 ```{r table-intro, echo = FALSE, fig.cap = "Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.", fig.alt = "Table displaying a high-dimensional data set with many features in individual columns relating to health data such as blood pressure, heart rate and respiratory rate. Each row contains the data for individual patients."}
 knitr::include_graphics(here::here("fig/intro-table.png"))
 ```
+
+Researchers often want to relate such features to specific patient outcomes
+(e.g. survival, length of time spent in hospital). However, analysing 
+high-dimensional data can be extremely challenging since standard methods of analysis, 
+such as individual plots of features and linear regression, 
+are no longer appropriate when we have many features.
+In this lesson, we will learn alternative methods 
+for dealing with high-dimensional data and discover how these can be applied 
+for practical high-dimensional data analysis in the biological sciences. 
+
 
 
 
@@ -92,10 +86,10 @@ knitr::include_graphics(here::here("fig/intro-table.png"))
 > 
 > > ## Solution
 > > 
-> > 1. No. The number of observations (100 patients) is far greater than the number of features (3).
-> > 2. Yes, this is an example of high-dimensional data. There are only 100 observations but 200,000+3 features.
-> > 3. No. There are many more observations (200 patients) than features (5). 
-> > 4. Yes. There is only one observation of more than 20,000 features.
+> > 1. No. The number of features is relatively small (4 including the response variable since this is an observed variable).
+> > 2. Yes, this is an example of high-dimensional data. There are 200,004 features.
+> > 3. No. The number of features is relatively small (6).
+> > 4. Yes. There are 20,008 features.
 > {: .solution}
 {: .challenge}
 
@@ -107,20 +101,15 @@ about the challenges we face in analysing them.
 # Why is dealing with high-dimensional data challenging? 
 
 Most classical statistical methods are set up for use on low-dimensional data
-(i.e. data where the number of observations $n$ is much larger than the number
-of features $p$). This is because low-dimensional data were much more common in
-the past when data collection was more difficult and time consuming. In recent
-years advances in information technology have allowed large amounts of data to
-be collected and stored with relative ease. This has allowed large numbers of
-features to be collected, meaning that datasets in which $p$ matches or exceeds
-$n$ are common (collecting observations is often more difficult or expensive
-than collecting many features from a single observation).
+(i.e. with a small number of features, $p$). 
+This is because low-dimensional data were much more common in
+the past when data collection was more difficult and time consuming. 
 
-Datasets with large numbers of features are difficult to visualise. When
-exploring low-dimensional datasets, it is possible to plot the response variable
-against each of the limited number of explanatory variables to get an idea which
-of these are important predictors of the response. With high-dimensional data
-the large number of explanatory variables makes doing this difficult. In some
+One challenge when analysing high-dimensional data is visualising the many variables. 
+When exploring low-dimensional datasets, it is possible to plot the response variable
+against each of features to get an idea which
+of these are important predictors of the response. With high-dimensional data,
+the large number of features makes doing this difficult. In addition, in some
 high-dimensional datasets it can also be difficult to identify a single response
 variable, making standard data exploration and analysis techniques less useful.
 
@@ -189,13 +178,16 @@ of the challenges we are facing when working with high-dimensional data.
 > improve the reproducibility of an analysis.
 {: .callout}
 
-Imagine we are carrying out least squares regression on a dataset with 25
+As well as many variables causing problems when working with high-dimensional data,
+having relatively few observations ($n$) compared to the number of features ($p$) causes 
+additional challenges. To illustrate these challenges,
+imagine we are carrying out least squares regression on a dataset with 25
 observations. Fitting a best fit line through these data produces a plot shown
 in the left-hand panel of the figure below.
 
 However, imagine a situation in which the number of observations and features in a
 dataset are almost equal. In that situation the effective number of observations
-per features is low. The result of fitting a best fit line through
+per feature is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE, fig.cap = "Scatter plot of two variables (x and y) from a data set with 25 observations (left) and 2 observations (right) with a fitted regression line (red).", fig.alt = "Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points."}
@@ -258,7 +250,7 @@ explore why high correlations might be an issue in a Challenge.
 > > ```
 > >
 > > Based on these results we conclude that both `gleason` and `pgg45` have a 
-> > statistically significan univariate effect (also referred to as a marginal
+> > statistically significant univariate effect (also referred to as a marginal
 > > effect) as predictors of age (5% significance level). 
 > >
 > > Fitting a multivariate regression model using both both `gleason` and `pgg45` 
@@ -294,15 +286,11 @@ regression.
 
 # What statistical methods are used to analyse high-dimensional data? 
 
-As we found out in the above challenges, carrying out linear regression on
-datasets with large numbers of features can be difficult due to: high levels of correlation
-between variables; difficulty in identifying a clear response variable; and risk
-of overfitting. These problems are common to the analysis of many high-dimensional datasets,
-for example, those using genomics data with multiple genes, or species
-composition data in an environment where the relative abundance of different species
-within a community is of interest. For such datasets, other statistical methods
-may be used to examine whether groups of observations show similar characteristics
-and whether these groups may relate to other features in the data (e.g.
+We have discussed so far that high-dimensional data analysis can be challenging since variables are difficult to visualise, 
+leading to challenges identifying relationships between variables and suitable response variables; we may have
+relatively few observations compared to features, leading to over-fitting; and features may be highly correlated, leading to
+challenges interpreting models. We therefore require alternative approaches to examine whether, for example,
+groups of observations show similar characteristics and whether these groups may relate to other features in the data (e.g.
 phenotype in genetics data). 
 
 In this course, we will cover four methods that help in dealing with high-dimensional data:

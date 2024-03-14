@@ -3,8 +3,8 @@
 # Instead, please edit 02-high-dimensional-regression.md in _episodes_rmd/
 title: "Regression with many outcomes"
 source: Rmd
-teaching: 60
-exercises: 30
+teaching: 70
+exercises: 50
 questions:
 - "How can we apply linear regression in a high-dimensional setting?"
 - "How can we benefit from the fact that we have many outcomes?"
@@ -131,6 +131,36 @@ knitr::kable(head(colData(methylation)), row.names = FALSE)
 
 
 
+~~~
+Warning in as.data.frame.integer(col, optional = optional): Direct call of
+'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.integer(col, optional = optional): Direct call of
+'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+~~~
+{: .warning}
+
+
+
+~~~
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+~~~
+{: .warning}
+
+
+
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
 |:-----------|:-----------|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|
 |A07         |PCA0612     |     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|
@@ -165,29 +195,14 @@ Heatmap(methyl_mat_ord,
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-02-heatmap-1.png" alt="Heatmap of methylation values across all features. Samples are ordered according to age." width="432" />
-<p class="caption">Visualising the data as a heatmap, it's clear that there's too many models to fit 'by hand'.</p>
+<img src="../fig/rmd-02-heatmap-1.png" alt="Heatmap of methylation values across all features showing that there are many features. Samples are ordered according to age." width="432" />
+<p class="caption">Heatmap of methylation values across all features.</p>
 </div>
-Depending on the scientific question of interest, two types of high-dimensional 
-problems could be explored in this context:
-
-1. To predict age using methylation levels as predictors. In this case, we would 
-have a single outcome (age) which will be predicted using 5000 covariates 
-(methylation levels across the genome). 
-
-2. To predict methylation levels using age as a predictor. In this case, we 
-would have 5000 outcomes (methylation levels across the genome) and a single 
-covariate (age). 
-
-The examples in this episode will focus on the second type of problem, whilst 
-the next episode will focus on the first.
 
 > ## Challenge 1
 >
-> Why can we not just fit many linear regression models, one for each of the columns
-> in the `colData` above against each of the features in the matrix of
-> assays, and choose all of the significant results at a p-value of
-> 0.05?
+> Why can we not just fit many linear regression models relating every combination of feature 
+> (`colData` and assays) and draw conclusions by associating all variables with significant model p-values?
 >
 > > ## Solution
 > >
@@ -210,6 +225,19 @@ the next episode will focus on the first.
 > >
 > {: .solution}
 {: .challenge}
+
+In general, it is scientifically interesting to explore two modelling problems using the three types of data:
+
+1. Predicting methylation levels using age as a predictor. In this case, we 
+would have 5000 outcomes (methylation levels across the genome) and a single 
+covariate (age). 
+
+2. Predicting age using methylation levels as predictors. In this case, we would 
+have a single outcome (age) which will be predicted using 5000 covariates 
+(methylation levels across the genome). 
+
+The examples in this episode will focus on the first type of problem, whilst 
+the next episode will focus on the second.
 
 > ## Measuring DNA Methylation
 >
@@ -267,12 +295,12 @@ to help us understand how ageing manifests.
 
 Using linear regression, it is possible to identify differences like
 these. However, high-dimensional data like the ones we're working with
-require some special considerations. A primary consideration, as we saw
+require some special considerations. A first consideration, as we saw
 above, is that there are far too many features to fit each one-by-one as
 we might do when analysing low-dimensional datasets (for example using
 `lm` on each feature and checking the linear model assumptions). A
-secondary consideration is that statistical approaches may behave
-slightly differently in very high-dimensional data, compared to
+second consideration is that statistical approaches may behave
+slightly differently when applied to very high-dimensional data, compared to
 low-dimensional data. A third consideration is the speed at which we can
 actually compute statistics for data this large -- methods optimised for
 low-dimensional data may be very slow when applied to high-dimensional
@@ -548,7 +576,7 @@ p-value is small ($p=0.013$). The blue-ish shaded region represents the same mea
 this is larger, relative to the total area of the distribution, therefore the 
 p-value is larger than the one for the intercept term 
 ($p=0.381$). The
-the p-value is a function of the test statistic: the ratio between the effect size 
+p-value is a function of the test statistic: the ratio between the effect size 
 we're estimating and the uncertainty we have in that effect. A large effect with large
 uncertainty may not lead to a small p-value, and a small effect with
 small uncertainty may lead to a small p-value.
@@ -830,7 +858,7 @@ while the y-axis is the $-\log_{10}(\text{p-value})$, where larger
 values indicate increasing statistical evidence of a non-zero effect
 size. A positive effect size represents increasing methylation with
 increasing age, and a negative effect size represents decreasing
-methylation with increasing age. Points higher on the x-axis represent
+methylation with increasing age. Points higher on the y-axis represent
 features for which we think the results we observed would be very
 unlikely under the null hypothesis.
 
@@ -872,8 +900,8 @@ this, let us compare the effect sizes estimates and p-values from the two
 approaches.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-02-plot-limma-lm-effect-1.png" alt="plot of chunk plot-limma-lm-effect" width="432" />
-<p class="caption">plot of chunk plot-limma-lm-effect</p>
+<img src="../fig/rmd-02-plot-limma-lm-effect-1.png" alt="A scatter plot of the effect size using limmma vs. those using lm. The plot also shows a straight line through all points showing that the effect sizes are the same." width="432" />
+<p class="caption">Plot of effect sizes using limma vs. those using lm.</p>
 </div>
 
 These are exactly identical! This is because **`limma`** does not perform
@@ -885,11 +913,11 @@ sharing information between features about sample-to-sample variability.
 In contrast, let us look at the p-values from **`limma`** and R's built-in `lm()` function:
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-02-plot-limma-lm-pval-1.png" alt="plot of chunk plot-limma-lm-pval" width="432" />
-<p class="caption">plot of chunk plot-limma-lm-pval</p>
+<img src="../fig/rmd-02-plot-limma-lm-pval-1.png" alt="A scatter plot of the p-values using limma vs. those using lm. A straight line is also displayed, showing that the p-values for limma tend to be smaller than those using lm towards the left of the plot and higher towards the right of the plot." width="432" />
+<p class="caption">Plot of p-values using limma vs. those using lm.</p>
 </div>
 
-we can see that for the vast majority of features, the results are
+We can see that for the vast majority of features, the results are
 broadly similar. There seems to be a minor general tendency for **`limma`**
 to produce smaller p-values, but for several features, the p-values from
 limma are considerably larger than the p-values from `lm()`. This is
@@ -1012,6 +1040,7 @@ run the same test again:
 
 
 ~~~
+set.seed(123) 
 age_perm <- age[sample(ncol(methyl_mat), ncol(methyl_mat))]
 design_age_perm <- model.matrix(~age_perm)
 
@@ -1036,7 +1065,7 @@ Since we have generated a random sequence of ages, we have no reason to
 suspect that there is a true association between methylation levels and
 this sequence of random numbers. However, you can see that the p-value
 for many features is still lower than a traditional significance level
-of $p=0.05$. In fact, here 235
+of $p=0.05$. In fact, here 226
 features are significant at p \< 0.05. If we were to use this fixed
 threshold in a real experiment, it is likely that we would identify many
 features as associated with age, when the results we are observing are
@@ -1044,7 +1073,7 @@ simply due to chance.
 
 > ## Challenge 5
 >
-> 1.  If we run 5000 tests under the null hypothesis,
+> 1. If we run 5000 tests, even if there are no true differences,
 >     how many of them (on average) will be statistically significant at
 >     a threshold of $p < 0.05$?
 > 2.  Why would we want to be conservative in labelling features as
@@ -1147,7 +1176,7 @@ tests we performed! This is not ideal sometimes, because unfortunately
 we usually don't have very large sample sizes in health sciences.
 
 The second main way of controlling for multiple tests is to control the
-*false discovery rate*.[^3] This is the proportion of false positives,
+*false discovery rate (FDR)*.[^3] This is the proportion of false positives,
 or false discoveries, we'd expect to get each time if we repeated the
 experiment over and over.
 
