@@ -28,6 +28,10 @@ Look for the tag
 This indicates that the maintainers will welcome a pull request fixing this
 issue.
 
+## Reviews
+
+The lesson has been iteratively developed and improved. For information on the development process, reviews and feedback from instructors following teaching see [REVIEWS](reviews.md).
+
 ## Maintainer(s)
 
 Current maintainers of this lesson are
