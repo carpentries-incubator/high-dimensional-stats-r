@@ -185,7 +185,7 @@ when we have more features than observations.
 
 > ## Challenge 1
 > 
-> Discuss in  groups:
+> Consider or discuss in groups:
 > 
 > 1. Why would we observe correlated features in high-dimensional biological
 >    data?
@@ -207,6 +207,13 @@ when we have more features than observations.
 > > 
 > {: .solution}
 {: .challenge}
+
+Regularisation can help us to deal with correlated features, as well as effectively reduce
+the number of features in our model. Before we describe regularisation, let's recap what's 
+going on when we fit a linear model.
+
+
+
 
 # Coefficient estimates of a linear model
 
@@ -248,10 +255,7 @@ the sum above is the line of best fit through our data when considering
 this goal of minimising the sum of squared error. However, it is not the only 
 possible line we could use! For example, we might want to err on the side of
 caution when estimating effect sizes (coefficients). That is, we might want to 
-avoid estimating very large effect sizes. This can help us to create *generalisable*
-models. This is important when models that are fitted (trained) on one dataset
-and then used to predict outcomes from a new dataset. Restricting parameter
-estimates is particularly important when analysing high-dimensional data.
+avoid estimating very large effect sizes. 
 
 
 > ## Challenge 2
@@ -312,6 +316,13 @@ use methylation markers alone to predict the biological age of an individual.
 This is useful in studying age-related disease amongst many other things.
 
 
+To compare the training and test errors for a model for age using the Hovarth data, we'll split the
+data into training and test sets, fit a linear model and calculate the errors. First, let's
+calculate the training error. Let's start by splitting the data into training and test sets: 
+
+
+
+
 ~~~
 coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
 methylation <- readRDS(here::here("data/methylation.rds"))
@@ -327,96 +338,88 @@ horvath_mat <- methyl_mat[, features]
 ## Generate an index to split the data
 set.seed(42)
 train_ind <- sample(nrow(methyl_mat), 25)
+
+## Split the data 
+train_mat <- horvath_mat[train_ind, ]
+train_age <- age[train_ind]
+test_mat <- horvath_mat[-train_ind, ]
+test_age <- age[-train_ind]
 ~~~
 {: .language-r}
 
+Now let's fit a linear model to our training data and calculate the training error. Here we use the mean of the squared difference between our predictions and the observed data, or "mean squared error" (MSE).
+
+
+~~~
+## Fit a linear model
+# as.data.frame() converts train_mat into a data.frame
+# Using the `.` syntax above together with a `data` argument will lead to
+# the same result as using `train_age ~ train_mat`: R will fit a multivariate 
+# regression model in which each of the columns in `train_mat` is used as 
+# a predictor. We opted to use the `.` syntax because it will help us to 
+# obtain model predictions using the `predict()` function. 
+
+fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
+
+## Function to calculate the (mean squared) error
+ mse <- function(true, prediction) { 
+     mean((true - prediction)^2) 
+ } 
+
+## Calculate the training error 
+err_lm_train <- mse(train_age, fitted(fit_horvath)) 
+err_lm_train
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] 1.319628
+~~~
+{: .output}
+
+The training error appears very low here -- on average we're only off by 
+about a year! 
+
 > ## Challenge 3
 > 
-> 1. Split the methylation data matrix and the age vector
->    into training and test sets.
-> 2. Fit a model on the training data matrix and training age 
->    vector.
-> 3. Check the mean squared error on this model.
+> For the fitted model above, calculate the mean squared error for the test set. 
 >
 > 
 > > ## Solution
 > >
-> > 1. Splitting the data involves using our index to split up the matrix and
-> >    the age vector into two each. We can use a negative subscript to create
-> >    the test data.
-> >    
-> >    
-> >    ~~~
-> >    train_mat <- horvath_mat[train_ind, ]
-> >    train_age <- age[train_ind]
-> >    test_mat <- horvath_mat[-train_ind, ]
-> >    test_age <- age[-train_ind]
-> >    ~~~
-> >    {: .language-r}
-> >   The solution to this exercise is important because the generated objects 
-> >   (`train_mat`, `train_age`, `test_mat` and `test_age`) will be used later in 
-> >   this episode. Please make sure that you use the same object names. 
-> > 2. We can fit a model using the training data and the `lm` function.
-> >    
-> >    ~~~
-> >    # we convert train_mat to a data frame to use the `.` syntax in lm
-> >    fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
-> >    ~~~
-> >    {: .language-r}
-> >   
-> >   Using the `.` syntax above together with a `data` argument will lead to
-> >   the same result as usign `train_age ~ tran_mat`: R will fit a multivariate 
-> >   regression model in which each of the colums in `train_mat` is used as 
-> >   a predictor. We opted to use the `.` syntax because it will help us to 
-> >   obtain model predictions using the `predict()` function. 
+> > First, let's find the predicted values for the 'unseen' test data:
 > > 
-> > 3. The mean squared error of the model is the mean of the square of the
-> >    residuals. This seems very low here -- on average we're only off by 
-> >    about a year!
-> >    
-> >    ~~~
-> >    mean(residuals(fit_horvath)^2)
-> >    ~~~
-> >    {: .language-r}
-> >    
-> >    
-> >    
-> >    ~~~
-> >    [1] 1.319628
-> >    ~~~
-> >    {: .output}
+> > ~~~
+> > pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat)) 
+> > ~~~
+> > {: .language-r}
+> > 
+> > The mean squared error for the test set is the mean of the squared 
+> > error between the predicted values and true test data.
+> > 
+> > ~~~
+> > err_lm <- mse(test_age, pred_lm)
+> > err_lm
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 223.3571
+> > ~~~
+> > {: .output}
 > >
 > {: .solution}
 {: .challenge}
 
-Having trained this model, now we can check how well it does in predicting age
-from new dataset (the test data).
-Here we use the mean of the squared difference between our predictions and the
-true ages for the test data, or "mean squared error" (MSE). Unfortunately, it
-seems like this is a lot higher than the error on the training data!
 
-
-
-~~~
-mse <- function(true, prediction) {
-    mean((true - prediction)^2)
-}
-pred_lm <- predict(fit_horvath, newdata = as.data.frame(test_mat))
-err_lm <- mse(test_age, pred_lm)
-err_lm
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] 223.3571
-~~~
-{: .output}
-
-Further, if we plot true age against predicted age for the samples in the test
-set, we can see how well we're really doing - ideally these would line up
-exactly!
+Unfortunately, the test error is a lot higher than the training error.
+If we plot true age against predicted age for the samples in the test
+set, we can gain more insight into the performance of the model on the test set. 
+Ideally, the predicted values should be close to the test data.
 
 
 ~~~
@@ -437,17 +440,16 @@ good, the dots should follow a line. Regularisation can help us to make the
 model more generalisable, improving predictions for the test dataset (or any 
 other dataset that is not used when fitting our model). 
 
-# Using regularisation to impove generalisability
+# Regularisation
 
-As stated above, restricting model parameter estimates can improve a model's
-generalisability. This can be done with *regularisation*. The idea to add another
-condition to the problem we're solving with linear regression. This condition
-controls the total size of the  coefficients that come out. 
+Regularisation can be used to reduce correlation between predictors, the number of features, 
+and improve generalisability by restricting model parameter estimates. Essentially, we 
+add another condition to the problem we're solving with linear regression that controls the 
+total size of the coefficients that come out and shrinks many coefficients to zero (or near zero).
+
+
 For example, we might say that the point representing the slope and intercept
-must fall within a certain distance of the origin, $(0, 0)$. Note that we are 
-still trying to solve for the line that minimises the square of the residuals; 
-we are just adding this extra constraint to our solution. 
-
+must fall within a certain distance of the origin, $(0, 0)$. 
 For the 2-parameter model (slope and intercept), we could
 visualise this constraint as a circle with a given radius. We 
 want to find the "best" solution (in terms of minimising the 
@@ -461,8 +463,10 @@ residuals) that also falls within a circle of a given radius
 <p class="caption">Illustrative example demonstrated how regression coefficients are inferred under a linear model framework, with (blue line) and without (red line) regularisation. A ridge penalty is used in this example</p>
 </div>
 
-There are multiple ways to define the distance that our solution must fall in,
-though. The one we've plotted above controls the squared sum of the 
+# Ridge regression
+
+There are multiple ways to define the distance that our solution must fall in.
+The one we've plotted above controls the squared sum of the 
 coefficients, $\beta$.
 This is also sometimes called the $L^2$ norm. This is defined as
 
@@ -479,21 +483,17 @@ $$
      \sum_{i=1}^N \biggl( y_i - x'_i\beta\biggr)^2  + \lambda \left\lVert \beta \right\lVert_2 ^2
 $$
 
+This type of regularisation is called *ridge regression*. 
 Another way of thinking about this is that when finding the best model, we're
 weighing up a balance of the ordinary least squares objective and a "penalty"
 term that punishes models with large coefficients. The balance between the
 penalty and the ordinary least squares objective is controlled by $\lambda$ - 
-when $\lambda$ is large, we care a lot about the size of the coefficients.
-When it's small, we don't really care a lot. When it's zero, we're back to
-just using ordinary least squares. This type of regularisation is called *ridge regression*.
+when $\lambda$ is large, we want to penalise large coefficients. In other words, we care a lot about the size of the coefficients
+and we want to reduce the complexity of our model.
+When $\lambda$ is small, we don't really care a lot about shrinking our coefficients and we opt for a more complex model. When it's zero, we're back to
+just using ordinary least squares. We see how a penalty term, $\lambda$, might be chosen later in this episode.
 
-# Why would we want to restrict our model?
-
-It may seem an odd thing to do: to restrict the possible values of our model
-parameters! Why would we want to do this? Firstly, as discussed earlier, our 
-model estimates can be very unstable or even difficult to calculate when we have 
-many correlated features. Secondly, this type of approach can make our model more 
-generalisable to new data. To show this, we'll fit a model using the same set
+For now, to see how regularisation might improve a model, let's fit a model using the same set
 of 20 features (stored as `features`) selected earlier in this episode (these
 are a subset of the features identified by Horvarth et al), using both 
 regularised and ordinary least squares.
@@ -522,7 +522,7 @@ This plot shows how the estimated coefficients for each CpG site change
 as we increase the penalty, $\lambda$. That is,
 as we decrease the size of the region that solutions can fall into, the values
 of the coefficients that we get back tend to decrease. In this case,
-coefficients trend towards zero but generally don't reach it until the penalty
+coefficients tend towards zero but generally don't reach it until the penalty
 gets very large. We can see that initially, some parameter estimates are really,
 really large, and these tend to shrink fairly rapidly.
 
@@ -533,13 +533,26 @@ or correlated predictors. As we reduce the importance of one feature, we can
 weight to another feature that represents similar information.
 
 Since we split the data into test and training data, we can prove that ridge
-regression gives us a better prediction in this case:
+regression predicts the test data better than the model with no regularisation. 
+Let's generate our predictions under the ridge regression model and calculate
+the mean squared error in the test set:
 
 
 ~~~
+# Obtain a matrix of predictions from the ridge model,
+# where each column corresponds to a different lambda value
 pred_ridge <- predict(ridge_fit, newx = test_mat)
-err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col))
-min(err_ridge)
+
+# Calculate MSE for every column of the prediction matrix against the vector of true ages
+err_ridge <- apply(pred_ridge, 2, function(col) mse(test_age, col)) 
+min_err_ridge <- min(err_ridge)
+
+# Identify the lambda value that results in the lowest MSE (ie, the "best" lambda value)
+which_min_err <- which.min(err_ridge)
+pred_min_ridge <- pred_ridge[, which_min_err]
+
+## Return errors
+min_err_ridge
 ~~~
 {: .language-r}
 
@@ -550,10 +563,11 @@ min(err_ridge)
 ~~~
 {: .output}
 
+This is much lower than the test error for the model without regularisation:
 
 
 ~~~
-err_lm
+err_lm  
 ~~~
 {: .language-r}
 
@@ -565,17 +579,9 @@ err_lm
 {: .output}
 
 
-
-~~~
-which_min_err <- which.min(err_ridge)
-min_err_ridge <- min(err_ridge)
-pred_min_ridge <- pred_ridge[, which_min_err]
-~~~
-{: .language-r}
-
 We can see where on the continuum of lambdas we've picked a model by plotting
 the coefficient paths again. In this case, we've picked a model with fairly
-modest shrinkage.
+modest coefficient shrinking.
 
 
 ~~~
@@ -589,6 +595,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 <img src="../fig/rmd-03-chooselambda-1.png" alt="Alt" width="432" />
 <p class="caption">Cap</p>
 </div>
+
 
 
 > ## Challenge 4
@@ -713,26 +720,30 @@ diagonal (i.e., one or more coefficient is exactly zero).
 
 # Cross-validation to find the best value of $\lambda$
 
-There are various methods to select the "best"
-value for $\lambda$. One is to split
+Ideally, we want $\lambda$ to be large enough to reduce the complexity of
+our model, thus reducing the number of and correlations between the features, and improving generalisability. However, 
+we don't want the value of $\lambda$ to be so large that we lose a lot of the valuable information in the features.
+
+Various methods can be used to balance this trade-off and thus select the "best"
+value for $\lambda$. One method splits
 the data into $K$ chunks. We then use $K-1$ of
 these as the training set, and the remaining $1$ chunk
 as the test set. We can repeat this until we've rotated through all $K$ chunks,
 giving us a good estimate of how well each of the lambda values work in our
 data. This is called cross-validation, and doing this repeated test/train split
-gives us a better estimate of how generalisable our model is. Cross-validation
-is a really deep topic that we're not going to cover in more detail today, though!
+gives us a better estimate of how generalisable our model is. 
 
 <div class="figure" style="text-align: center">
 <img src="../fig/cross_validation.png" alt="The data is divided into $K$ chunks. For each cross-validation iteration, one data chunk is used as the test set. The remaining $K-1$ chunks are combined into a training set."  />
 <p class="caption">Schematic representiation of a $K$-fold cross-validation procedure.</p>
 </div>
 
-We can use this new idea to choose a lambda value, by finding the lambda
-that minimises the error across each of the test and training splits.
+We can use this new idea to choose a lambda value by finding the lambda
+that minimises the error across each of the test and training splits. In R:
 
 
 ~~~
+# fit lasso model with cross-validation across a range of lambda values
 lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
 plot(lasso)
 ~~~
@@ -744,33 +755,47 @@ plot(lasso)
 </div>
 
 ~~~
+# Extract the coefficients from the model with the lowest mean squared error from cross-validation
 coefl <- coef(lasso, lasso$lambda.min)
-selected_coefs <- as.matrix(coefl)[which(coefl != 0), 1]
-
-## load the horvath signature to compare features
-coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
-## We select some of the same features! Hooray
-intersect(names(selected_coefs), coef_horvath$CpGmarker)
+# select only non-zero coefficients
+selection <- which(coefl != 0)
+# and convert to a normal matrix
+selected_coefs <- as.matrix(coefl)[selection, 1]
+selected_coefs
 ~~~
 {: .language-r}
 
 
 
 ~~~
-[1] "cg02388150" "cg06493994" "cg22449114" "cg22736354" "cg03330058"
-[6] "cg09809672" "cg11299964" "cg19761273" "cg26162695"
+  (Intercept)    cg02388150    cg06493994    cg22449114    cg22736354 
+-8.4133296328  0.6966503392  0.1615535465  6.4255580409 12.0507794749 
+   cg03330058    cg09809672    cg11299964    cg19761273    cg26162695 
+-0.0002362055 -0.7487594618 -2.0399663416 -5.2538055304 -0.4486970332 
+   cg09502015    cg24771684    cg08446924    cg13215762    cg24549277 
+ 1.0787003366  4.5743800395 -0.5960137381  0.1481402638  0.6290915767 
+   cg12304482    cg13131095    cg17962089    cg13842639    cg04080666 
+-1.0167896196  2.8860222552  6.3065284096  0.1590465147  2.4889065761 
+   cg06147194    cg03669936    cg14230040    cg19848924    cg23964682 
+-0.6838637838 -0.0352696698  0.1280760909 -0.0006938337  1.3378854603 
+   cg13578928    cg02745847    cg17410295    cg17459023    cg06223736 
+-0.8601170264  2.2346315955 -2.3008028295  0.0370389967  1.6158734083 
+   cg06717750    cg20138604    cg12851161    cg20972027    cg23878422 
+ 2.3401693309  0.0084327521 -3.3033355652  0.2442751682  1.1059030593 
+   cg16612298    cg03762081    cg14428146    cg16908369    cg16271524 
+ 0.0050053190 -6.5228858163  0.3167227488  0.2302773154 -1.3787104336 
+   cg22071651    cg04262805    cg24969251    cg11233105    cg03156032 
+ 0.3480551279  1.1841804186  8.3024629942  0.6130598151 -1.1121959544 
 ~~~
 {: .output}
 
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-03-heatmap-lasso-1.png" alt="Overall, we observe either increasing or decreasing methylation patterns as a function of age." width="432" />
-<p class="caption">Heatmap showing methylation values for the selected CpG and how the vary with age.</p>
-</div>
+We can see that cross-validation has selected a value of $\lambda$ resulting in 44 features and the intercept. 
 
-# Blending ridge regression and the LASSO - elastic nets
 
-So far, we've used ridge regression, where `alpha = 0`, and LASSO regression,
-where `alpha = 1`. What if `alpha` is set to a value between zero and one?
+# Elastic nets: blending ridge regression and the LASSO 
+
+So far, we've used ridge regression (where `alpha = 0`) and LASSO regression,
+(where `alpha = 1`). What if `alpha` is set to a value between zero and one?
 Well, this actually lets us blend the properties of ridge and LASSO
 regression. This allows us to have the nice properties of the LASSO, where
 uninformative variables are dropped automatically, and the nice properties
