@@ -597,7 +597,7 @@ represents.
 > > pc$loadings[which.max(pc$loadings[, 2]), ] # principal component loadings for the feature
 > > with the maximal loading on the second principal component.
 > > ```
-> > The function `pca()` is used to perform PCA, and uses as inputs a matrix
+> > The function `pca()` is used to perform PCA, and uses as input a matrix
 > > (`mat`) containing continuous numerical data
 > > in which rows are data variables and columns are samples, and `metadata`
 > > associated with the matrix in which rows represent samples and columns
