@@ -118,11 +118,13 @@ in the underlying dataset. The second principal component derived explains the s
 
 To see what these new principal components may look like, 
 Figure 1 shows biodiversity index versus percentage area left
-fallow for 50 farms in southern England. The red line represents the first
-principal component scores, which pass through the points with the greatest 
-variability. The points along this line give the first principal component.
-The second principal component explains the next highest amount of variability 
-in the data and is represented by the line perpendicular to the first (green line).
+fallow for 50 farms in southern England. Principal components are a collection of new, artificial data points called _scores_. 
+The red line on the plot represents the line passing through the scores (points) of the first principal component.
+The angle that the first principal component line passes through the data points at is set to the direction with the highest 
+variability. The plotted first principal components can therefore be thought of reflecting the 
+effect in the data that has the highest variability. The second principal component explains the next highest amount of variability 
+in the data and is represented by the line perpendicular to the first (the green line). The second principal component can be thought of as
+capturing the overall effect in the data that has the second-highest variability.
 
 
 ```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
