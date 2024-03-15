@@ -390,7 +390,7 @@ dataset. We may also choose another criterion, such as an arbitrary cut-off for
 the proportion of the variance explained compared to other principal components. 
 Essentially, the criterion used to select principal components should be determined 
 based on what is deemed a sufficient level of information retention for a specific 
-dataset.
+dataset and question.
 
 
 
