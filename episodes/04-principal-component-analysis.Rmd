@@ -642,7 +642,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 > 
 > Using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
 > proportion of variance explained by each principal component. Explain the
-> output of the scree plot in terms of proportion of variance in data explained
+> output of the scree plot in terms of the proportion of variance in the data explained
 > by each principal component and suggest an appropriate number of principal
 > components.
 > 
