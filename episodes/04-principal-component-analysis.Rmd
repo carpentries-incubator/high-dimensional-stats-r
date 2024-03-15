@@ -383,7 +383,7 @@ from a practical dimension reduction perspective. There are no clear guidelines
 on how many principal components should be included in PCA. 
 We often look at the 'elbow’ on the scree plot as an
 indicator that the addition of principal components does not drastically
-contribute to explain the remaining variance. In this case, the 'elbow' of the scree plot appears
+contribute to explaining the remaining variance. In this case, the 'elbow' of the scree plot appears
 to be at the third principal component. We may therefore conclude that three principal
 components are sufficient to explain the majority of the variability in the original 
 dataset. We may also choose another criterion, such as an arbitrary cut-off for 
