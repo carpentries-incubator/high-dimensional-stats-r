@@ -130,7 +130,7 @@ in the data and is represented by the line perpendicular to the first (green lin
 knitr::include_graphics(here("fig/bio_index_vs_percentage_fallow.png"))
 ```
 
-The animation below illustrates how principal components are calculated iteratively from
+The animation below illustrates how principal components are calculated from
 data. You can imagine that the black line is a rod and each red dashed line is
 a spring. The energy of each spring is proportional to its squared length. The
 direction of the first principal component is the one that minimises the total
