@@ -180,7 +180,7 @@ components as there are variables in your dataset, but as we'll see, some are
 more useful at explaining your data than others. By definition, the first
 principal component explains more variation than other principal components.
 
-```{r fig1, echo=FALSE, fig.cap="Scatter plots of the farm data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the farm data. The left figure displays a scatter plot of biodiversity versus percentage area fallow. The first principal component is overlain and shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
+```{r fig1, echo=FALSE, fig.cap="Scatter plots of the farm data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the farm data. The left figure displays a scatter plot of biodiversity versus percentage area fallow. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
 # ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
 knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
 ```
