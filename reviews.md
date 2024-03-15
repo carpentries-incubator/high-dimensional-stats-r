@@ -129,7 +129,7 @@ The instructors liked teaching the course and found it fun to teach. Comments la
 - Testing that the lesson is appropriate for the target audience identified, is accurate, descriptive and easy to understand and is structured to manage cognitive load. 
 - Does not use dismissive language.
 - All lesson tools are open source and the data sets are accessible.
-- Tools and data checked for CC0 license compatibility. Most are compatible, exceptions to check are listed below.
+- Tools and data checked for CC0 license compatibility.
 - Data sets are representative of data typically encountered in the domain.
 - Tests that the example tasks and narrative of the lesson are appropriate and realistic.
 - Tested that the solutions to all exercises are accurate and sufficiently explained, and that the tasks and formats are appropriate for the expected experience level of the target audience.
@@ -140,16 +140,13 @@ The instructors liked teaching the course and found it fun to teach. Comments la
 -  The setup and installation instructions are complete, accurate, and easy to follow.
 - It has been taught at least two times by Instructors who had not been heavily involved in the development of the 
 lesson before that point.
+- Check that the lesson includes exercises in a variety of formats. 
 
 &#x2612; The points still to be addressed are:
 
 - Conversion to The Carpentries Workbench
 - Alt text for Episode 3 and Challenge figures in Episode 4, 6 and 7 required.
-- Ensuring that Alt text is accessible from the  WAVE Web Accessibility Evaluation Tool or associated browser extensions.
-- Ensure tools and data sets have CC0 compatible license: CC0 (required by Carpentries) vs GPL (>= 2) license ("genridge" for prostate data, limma, glmnet, cluster, pheatmap, dendextend), GPL-3 (PCAtools, SingleCellExperiment, scater, bluster, ), Artistic-2.0 (for BiocManager, minfi, SummarizedExperiment packages), GPL (knitr) compatibility, CC-BY (Horvath data), LGPL-3 (clValid).
 - The lesson does not make use of superfluous data sets: ensuring that later uses of microarray and scrnaseq data is justified (as opposed to prostate/methylation).
-- Ensuring that the lesson content does not make extensive use of contractions ("can’t" instead of "cannot" etc).
 - The example data sets are described.
 - All key terms are contained in the internal lesson glossary.
-- Check that the lesson includes exercises in a variety of formats. 
 - All lesson and episode objectives are assessed by exercises or another opportunity for formative assessment. Mostly complete apart from Challenges needed to test "Understand the importance of clustering in high-dimensional data" in Episode 6, and "Understand when to use hierarchical clustering on high-dimensional data" and "Explore different distance matrix methods" in Episode 7.
