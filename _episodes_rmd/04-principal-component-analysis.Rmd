@@ -579,7 +579,7 @@ represents.
 > > ## Solution
 > > 
 > > ```{r pca-ex}
-> > pc <- pca(mat, metadata = metadata) #implement a PCA
+> > pc <- pca(mat, metadata = metadata) # implement a PCA
 > > #We can check the scree plot to see that many principal components explain a very small amount of
 > > the total variance in the data
 > > 
