@@ -337,7 +337,7 @@ summary(pca.pros)
 ```
 
 ```{r, echo = FALSE}
-# Get proportions of variance explained by each principal component (rounded to 2 DP)
+# Get proportions of variance explained by each principal component (rounded to 2 decimal places)
 prop.var <- round(summary(pca.pros)$importance["Proportion of Variance", ], 2) *
   100
 ```
