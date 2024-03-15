@@ -590,7 +590,7 @@ represents.
 > > pc$loadings[1:5, 1:5] #obtain the first 5 principal component loadings for the first 5 features
 > > 
 > > which.max(pc$loadings[, 1]) # index of the maximal loading for the first principal component
-> > pc$loadings[which.max(pc$loadings[, 1]), ] #principal component loadings for the feature
+> > pc$loadings[which.max(pc$loadings[, 1]), ] # principal component loadings for the feature
 > > with the maximal loading on the first principal component.
 > > 
 > > which.max(pc$loadings[, 2]) #index of the maximal loading for the second principal component
