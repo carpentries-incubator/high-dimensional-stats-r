@@ -624,7 +624,7 @@ represents.
 >
 > Note that this is different from normalising gene expression data. Gene expression
 > data have to be normalised before donwstream analyses can be
-> carried out. This is to reduce to effect technical and other potentially confounding
+> carried out. This is to reduce technical and other potentially confounding
 > factors. We assume that the expression data we use had been normalised previously.
 {: .callout}
 
