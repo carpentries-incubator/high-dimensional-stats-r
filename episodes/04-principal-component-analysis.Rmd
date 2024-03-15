@@ -61,7 +61,7 @@ PCA might reduce several variables representing aspects of patient health
 (blood pressure, heart rate, respiratory rate) into a single feature capturing
 an overarching "patient health" effect. This is useful from an exploratory point 
 of view, discovering how variables might be associated and combined. The 
-associated principal component could also be used as an effect in further analysis 
+resulting principal component could also be used as an effect in further analysis 
 (e.g. linear regression). 
 
 
