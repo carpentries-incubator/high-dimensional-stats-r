@@ -29,7 +29,7 @@ keypoints:
 - The first principal component represents the dimension along which there is
   maximum variation in the data. Subsequent principal components represent
   dimensions with progressively less variation.
-- "scree plots and biplots may be used to show:  
+- "Scree plots and biplots may be used to show:  
   1. how much variation in the data is explained by each principal component and
   2. how data points cluster according to principal component scores and which
   variables are associated with these scores."
