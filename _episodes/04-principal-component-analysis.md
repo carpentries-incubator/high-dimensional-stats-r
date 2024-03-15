@@ -31,7 +31,7 @@ keypoints:
 - The first principal component represents the dimension along which there is
   maximum variation in the data. Subsequent principal components represent
   dimensions with progressively less variation.
-- "Screeplots and biplots may be used to show:  
+- "Scree plots and biplots may be used to show:  
   1. how much variation in the data is explained by each principal component and
   2. how data points cluster according to principal component scores and which
   variables are associated with these scores."
@@ -159,7 +159,7 @@ Disadvantages:
 The first principal component is the direction of the data along which the
 observations vary the most. The second principal component is the direction of
 the data along which the observations show the next highest amount of variation.
-For example, Figure 1 shows biodiversity index versus percentage area left
+For example, the figure below shows biodiversity index versus percentage area left
 fallow for 50 farms in southern England. The red line represents the first
 principal component direction of the data, which is the direction along which
 there is greatest variability in the data. Projecting points onto this line
@@ -175,8 +175,8 @@ more useful at explaining your data than others. By definition, the first
 principal component explains more variation than other principal components.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/bio_index_vs_percentage_fallow.png" alt="Alt"  />
-<p class="caption">Cap</p>
+<img src="../fig/bio_index_vs_percentage_fallow.png" alt="Side-by-side scatter plots of the farm data. The left figure displays a scatter plot of biodiversity versus percentage area fallow. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."  />
+<p class="caption">Scatter plots of the farm data with the first principal component in red and second principal component in green.</p>
 </div>
 
 The animation below illustrates how principal components are calculated from
@@ -190,8 +190,8 @@ principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
 <div class="figure" style="text-align: center">
-<img src="../fig/pendulum.gif" alt="Alt"  />
-<p class="caption">Cap</p>
+<img src="../fig/pendulum.gif" alt="Animated scatter plot displaying the iterative process by which principal components are found. The data points are shown in blue and the principal component is shown by a solid black line. The distances of the points from the line are shown by red dashed lines. The animation initially starts with the principal component far away from the direction of variability in the points and, as time goes on, eventually finds the direction of variability exhibiting a springing motion."  />
+<p class="caption">Animation showing the iterative process by which principal components are found. Data points are shown in blue, distances from the line as red dashed lines and the principal component is shown by a black line.</p>
 </div>
 
 
@@ -225,14 +225,14 @@ Columns include:
    outer walls of prostate),
 - `gleason` (Gleason score; grade of cancer cells),
 - `pgg45` (percentage Gleason scores 4 or 5),
-- `lpsa` (log-tranformed prostate specific antigen; level of PSA in blood).
+- `lpsa` (log-transformed prostate specific antigen; level of PSA in blood).
 - `age` (patient age in years).
 
 Here we will calculate principal component scores for each of the rows in this
 dataset, using five principal components (one for each variable included in the
 PCA). We will include five clinical variables in our PCA, each of the continuous
 variables in the prostate dataset, so that we can create fewer variables
-representing clinical markers of cancer progression. Standard PCAs are carried
+representing clinical markers of cancer progression. Standard PCA is carried
 out using continuous variables only.
 
 First, we will examine the `prostate` dataset (originally part of the
@@ -316,8 +316,8 @@ hist(pros2$lbph, breaks = "FD")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-05-var-hist-1.png" alt="Alt" width="432" />
-<p class="caption">Alt</p>
+<img src="../fig/rmd-05-var-hist-1.png" alt="Side-by-side histograms of two variables from the dataset, lweight on the left and lbph on the right. The histogram for the lweight data ranges from around 2 to 6 on the x axis, while the histogram for the lbph ranges from around -2 to 3 on the x axis." width="432" />
+<p class="caption">Histograms of two variables from the prostate data set.</p>
 </div>
 
 Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
@@ -446,20 +446,36 @@ varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
 
 
 ~~~
-plot(varDF)
+plot(varDF, type="b")
 ~~~
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-05-vardf-plot-1.png" alt="Alt" width="432" />
-<p class="caption">Alt</p>
+<img src="../fig/rmd-05-vardf-plot-1.png" alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs." width="432" />
+<p class="caption">Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.</p>
 </div>
 
-The screeplot shows that the first principal component explains most of the
+The scree plot shows that the first principal component explains most of the
 variance in the data (>50%) and each subsequent principal component explains
 less and less of the total variance. The first two principal components
-explain >70% of variance in the data. But what do these two principal
-components mean?
+explain >70% of variance in the data. 
+
+Selecting a subset of principal components results in loss of 
+information from the original dataset but selecting principal components to 
+summarise the _majority_ of the information in the original dataset is useful
+from a practical dimension reduction perspective. There are no clear guidelines 
+on how many principal components should be included in PCA. 
+We often look at the 'elbow’ on the scree plot as an
+indicator that the addition of principal components does not drastically
+contribute to explaining the remaining variance. In this case, the 'elbow' of the scree plot appears
+to be at the third principal component. We may therefore conclude that three principal
+components are sufficient to explain the majority of the variability in the original 
+dataset. We may also choose another criterion, such as an arbitrary cut-off for 
+the proportion of the variance explained compared to other principal components. 
+Essentially, the criterion used to select principal components should be determined 
+based on what is deemed a sufficient level of information retention for a specific 
+dataset and question.
+
 
 
 ## What are loadings and principal component scores?
@@ -470,7 +486,7 @@ has as many rows as there were observations in the input matrix. These
 scores are what is usually visualised or used for down-stream analyses.
 The matrix of loadings (also called rotation matrix) has as many rows as there
 are features in the original data. It contains information about how the
-(usually centered and scaled) original data relate to the PC scores.
+(usually centered and scaled) original data relate to the principal component scores.
 
 When calling a PCA object generated with `prcomp()`, the loadings are printed by default:
 
@@ -503,11 +519,11 @@ callout demonstrates this.
 > ## Computing a PCA "by hand"
 > The rotation matrix obtained in a PCA is identical to the eigenvectors
 > of the covariance matrix of the data. Multiplying these with the (centered and scaled)
-> data yields the PC scores:
+> data yields the principal component scores:
 > 
 > ~~~
-> pros2.scaled <- scale(pros2) # centre and scale the Prostate data
-> pros2.cov <- cov(pros2.scaled)   #generate covariance matrix
+> pros2.scaled <- scale(pros2) # centre and scale the prostate data
+> pros2.cov <- cov(pros2.scaled)   # generate covariance matrix
 > pros2.cov
 > ~~~
 > {: .language-r}
@@ -552,7 +568,7 @@ callout demonstrates this.
 > 
 > 
 > ~~~
-> # generate PC scores by by hand, using matrix multiplication
+> # generate principal component scores by by hand, using matrix multiplication
 > my.pros2.pcs <- pros2.scaled %*% pros2.eigen$vectors
 > # compare results
 > par(mfrow=c(1,2))
@@ -564,8 +580,8 @@ callout demonstrates this.
 > {: .language-r}
 > 
 > <div class="figure" style="text-align: center">
-> <img src="../fig/rmd-05-pca-by-hand-1.png" alt="plot of chunk pca-by-hand" width="432" />
-> <p class="caption">plot of chunk pca-by-hand</p>
+> <img src="../fig/rmd-05-pca-by-hand-1.png" alt="Side-by-side scatter plots of the second versus first principal components calculated by prcomp() (left) and by hand (right). The left scatter plot is the same as the right scatter plot but with swapped axes." width="432" />
+> <p class="caption">Scatter plots of the second versus first principal components calculated by prcomp() (left) and by hand (right).</p>
 > </div>
 > 
 > ~~~
@@ -594,8 +610,8 @@ stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-05-stats-biplot-1.png" alt="Alt" width="432" />
-<p class="caption">Alt</p>
+<img src="../fig/rmd-05-stats-biplot-1.png" alt="Scatter plot of the second principal component versus the first principal component. Observations as points, numerically labelled. The loadings are shown by red arrows, each labelled by their associated variable." width="432" />
+<p class="caption">Scatter plot of the first two principal components with observations numerically labelled. The loadings are shown by red arrows.</p>
 </div>
 
 This biplot shows the position of each patient on a 2-dimensional plot where
@@ -610,15 +626,14 @@ on the top and right of the plot are used to interpret the loadings, where
 loadings are scaled by the standard deviation of the principal components
 (`pca.pros$sdev`) times the square root the number of observations.
 
-Finally, you need to know that PC scores and rotations may have different slot names, 
+Finally, you need to know that principal component scores and rotations may have different slot names, 
 depending on the PCA implementation you use. Here are some examples:
 
-| library::command()| PC scores | Loadings |
+| library::command()| principal component scores | Loadings |
 |-------------------|-----------|----------|
 | stats::prcomp()   | $x         | $rotation |
 | stats::princomp() | $scores    | $loadings | 
 | PCAtools::pca()   | $rotated   | $loadings | 
-
 
 
 # Using PCA to analyse gene expression data 
@@ -662,7 +677,7 @@ metadata <- colData(cancer)
 
 
 ~~~
-View(mat)
+head(mat)
 #nrow=22215 probes
 #ncol=91 samples
 ~~~
@@ -670,7 +685,7 @@ View(mat)
 
 
 ~~~
-View(metadata)
+head(metadata)
 #nrow=91
 #ncol=8
 ~~~
@@ -707,12 +722,11 @@ was involved in their cancer and the grade and size of the cancer for each
 sample (represented by rows).
 
 Microarray data are difficult to analyse for several reasons. Firstly, 
-they are typically high-dimensional and therefore are subject to the same
-difficulties associated with analysing high dimensional data outlined above
-(i.e. *p*>*n*, large numbers of rows, multiple possible response variables,
-curse of dimensionality). Secondly, formulating a research question using
-microarray data can be difficult, especially if not much is known a priori
-about which genes code for particular phenotypes of interest. Finally,
+formulating a research question using microarray data can be difficult,
+especially if not much is known a priori
+about which genes code for particular phenotypes of interest.
+Secondly, they are typically high-dimensional and therefore are subject to the same
+difficulties associated with analysing high-dimensional data. Finally,
 exploratory analysis, which can be used to help formulate research questions
 and display relationships, is difficult using microarray data due to the number
 of potentially interesting response variables (i.e. expression data from probes
@@ -741,7 +755,7 @@ represents.
 > 
 > Let us assume we only care about the principal components accounting for the top
 > 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
-> the PCs accounting for the bottom 20%.
+> the principal components accounting for the bottom 20%.
 > 
 > As in the example using prostate data above, examine the first 5 rows and
 > columns of rotated data and loadings from your PCA.
@@ -750,174 +764,36 @@ represents.
 > > 
 > > 
 > > ~~~
-> > pc <- pca(mat, metadata = metadata)
-> > #Many PCs explain a very small amount of the total variance in the data
-> > #Remove the lower 20% of PCs with lower variance
+> > pc <- pca(mat, metadata = metadata) # implement a PCA
+> > #We can check the scree plot to see that many principal components explain a very small amount of
+> > the total variance in the data
+> > 
+> > #Let's remove the principal components with lowest 20% of the variance
 > > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
 > > #Explore other arguments provided in pca
-> > pc$rotated[1:5, 1:5]
+> > pc$rotated[1:5, 1:5] # obtain the first 5 principal component scores for the first 5 observations
+> > pc$loadings[1:5, 1:5] #obtain the first 5 principal component loadings for the first 5 features
+> > 
+> > which.max(pc$loadings[, 1]) # index of the maximal loading for the first principal component
+> > pc$loadings[which.max(pc$loadings[, 1]), ] # principal component loadings for the feature
+> > with the maximal loading on the first principal component.
+> > 
+> > which.max(pc$loadings[, 2]) # index of the maximal loading for the second principal component
+> > pc$loadings[which.max(pc$loadings[, 2]), ] # principal component loadings for the feature
+> > with the maximal loading on the second principal component.
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> >                PC1        PC2        PC3        PC4        PC5
-> > GSM65752 -29.79105  43.866788   3.255903 -40.663138 15.3427597
-> > GSM65753 -37.33911 -15.244788  -4.948201  -6.182795  9.4725870
-> > GSM65755 -29.41462   7.846858 -22.880525 -16.149669 22.3821009
-> > GSM65757 -33.35286   1.343573 -22.579568   2.200329 15.0082786
-> > GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772
+> > Error: <text>:3:5: unexpected symbol
+> > 2: #We can check the scree plot to see that many principal components explain a very small amount of
+> > 3: the total
+> >        ^
 > > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
-> > pc$loadings[1:5, 1:5]
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> >                     PC1          PC2          PC3        PC4          PC5
-> > 206378_at -0.0024680993 -0.053253543 -0.004068209 0.04068635  0.015078376
-> > 205916_at -0.0051557973  0.001315022 -0.009836545 0.03992371  0.038552048
-> > 206799_at  0.0005684075 -0.050657061 -0.009515725 0.02610233  0.006208078
-> > 205242_at  0.0130742288  0.028876408  0.007655420 0.04449641 -0.001061205
-> > 206509_at  0.0019031245 -0.054698479 -0.004667356 0.01566468  0.001306807
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
-> > which.max(pc$loadings[, 1])
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > [1] 49
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
-> > pc$loadings[49, ]
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> >                    PC1          PC2         PC3          PC4          PC5
-> > 215281_x_at 0.03752947 -0.007369379 0.006243377 -0.008242589 -0.004783206
-> >                    PC6          PC7         PC8         PC9          PC10
-> > 215281_x_at 0.01194012 -0.002822407 -0.01216792 0.001137451 -0.0009056616
-> >                    PC11          PC12       PC13         PC14          PC15
-> > 215281_x_at -0.00196034 -0.0001676705 0.00699201 -0.002897995 -0.0005044658
-> >                      PC16        PC17         PC18        PC19         PC20
-> > 215281_x_at -0.0004547916 0.002277035 -0.006199078 0.002708574 -0.006217326
-> >                   PC21        PC22        PC23        PC24        PC25
-> > 215281_x_at 0.00516745 0.007625912 0.003434534 0.005460017 0.001477415
-> >                    PC26         PC27          PC28         PC29       PC30
-> > 215281_x_at 0.002350428 0.0007183107 -0.0006195515 0.0006349803 0.00413627
-> >                     PC31        PC32         PC33         PC34         PC35
-> > 215281_x_at 0.0001322301 0.003182956 -0.002123462 -0.001042769 -0.001729869
-> >                     PC36        PC37        PC38          PC39        PC40
-> > 215281_x_at -0.006556369 0.005766949 0.002537993 -0.0002846248 -0.00018195
-> >                      PC41        PC42         PC43          PC44         PC45
-> > 215281_x_at -0.0007970789 0.003888626 -0.008210075 -0.0009570174 0.0007998935
-> >                      PC46         PC47        PC48        PC49         PC50
-> > 215281_x_at -0.0006931441 -0.005717836 0.005189649 0.002591188 0.0007810259
-> >                    PC51        PC52         PC53         PC54        PC55
-> > 215281_x_at 0.006610815 0.005371134 -0.001704796 -0.002286475 0.001365417
-> >                    PC56         PC57        PC58         PC59         PC60
-> > 215281_x_at 0.003529892 0.0003375981 0.009895923 -0.001564423 -0.006989092
-> >                    PC61        PC62         PC63          PC64        PC65
-> > 215281_x_at 0.000971273 0.001345406 -0.003575415 -0.0005588113 0.006516669
-> >                     PC66        PC67       PC68         PC69        PC70
-> > 215281_x_at -0.008770186 0.006699641 0.01284606 -0.005041574 0.007845653
-> >                    PC71        PC72         PC73         PC74        PC75
-> > 215281_x_at 0.003964697 -0.01104367 -0.001506485 -0.001583824 0.003798343
-> >                    PC76         PC77         PC78         PC79          PC80
-> > 215281_x_at 0.004817252 -0.001290033 -0.004402926 -0.003440367 -0.0001646198
-> >                    PC81        PC82          PC83         PC84        PC85
-> > 215281_x_at 0.003923775 0.003179556 -0.0004388192 9.664648e-05 0.003501335
-> >                    PC86        PC87          PC88         PC89         PC90
-> > 215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
-> >                    PC91
-> > 215281_x_at -0.00383085
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
-> > which.max(pc$loadings[, 2])
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > [1] 27
-> > ~~~
-> > {: .output}
-> > 
-> > 
-> > 
-> > ~~~
-> > pc$loadings[27, ]
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> >                    PC1        PC2          PC3        PC4          PC5
-> > 211122_s_at 0.01649085 0.05090275 -0.003378728 0.05178144 -0.003742393
-> >                     PC6         PC7          PC8        PC9        PC10
-> > 211122_s_at -0.00543753 -0.03522848 -0.006333521 0.01575401 0.004732546
-> >                    PC11        PC12        PC13        PC14       PC15
-> > 211122_s_at 0.004687599 -0.01349892 0.005207937 -0.01731898 0.02323893
-> >                    PC16       PC17        PC18       PC19        PC20
-> > 211122_s_at -0.02069509 0.01477432 0.005658529 0.02667751 -0.01333503
-> >                     PC21        PC22       PC23         PC24        PC25
-> > 211122_s_at -0.003254036 0.003572342 0.01416779 -0.005511838 -0.02582847
-> >                   PC26        PC27       PC28        PC29       PC30      PC31
-> > 211122_s_at 0.03405417 -0.01797345 0.01826328 0.005123959 0.01300763 0.0127127
-> >                    PC32       PC33       PC34        PC35        PC36
-> > 211122_s_at 0.002477672 0.01933214 0.03017661 -0.01935071 -0.01960912
-> >                    PC37        PC38        PC39        PC40       PC41
-> > 211122_s_at 0.004411188 -0.01263612 -0.02019279 -0.01441513 -0.0310399
-> >                    PC42         PC43        PC44        PC45        PC46
-> > 211122_s_at -0.02540426 0.0007949801 -0.00200195 -0.01748543 0.006881834
-> >                    PC47         PC48        PC49         PC50        PC51
-> > 211122_s_at 0.006690698 -0.004000732 -0.02747926 -0.006963189 -0.02232332
-> >                      PC52        PC53        PC54        PC55       PC56
-> > 211122_s_at -0.0003089115 -0.01604491 0.005649511 -0.02629501 0.02332997
-> >                    PC57        PC58        PC59        PC60         PC61
-> > 211122_s_at -0.01248022 -0.01563245 0.005369433 0.009445262 -0.005209349
-> >                   PC62       PC63       PC64        PC65        PC66
-> > 211122_s_at 0.01787645 0.01629425 0.02457665 -0.02384242 0.002814479
-> >                     PC67        PC68         PC69         PC70       PC71
-> > 211122_s_at 0.0004584731 0.007939733 -0.009554166 -0.003967123 0.01825668
-> >                    PC72        PC73        PC74        PC75        PC76
-> > 211122_s_at -0.00580374 -0.02236727 0.001295688 -0.02264723 0.006855855
-> >                    PC77         PC78       PC79         PC80        PC81
-> > 211122_s_at 0.004995447 -0.008404118 0.00442875 -0.001027912 0.006104406
-> >                    PC82        PC83         PC84       PC85       PC86
-> > 211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
-> >                     PC87        PC88        PC89        PC90        PC91
-> > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.004593411
-> > ~~~
-> > {: .output}
-> > The function `pca()` is used to perform PCA, and uses as inputs a matrix
+> > {: .error}
+> > The function `pca()` is used to perform PCA, and uses as input a matrix
 > > (`mat`) containing continuous numerical data
 > > in which rows are data variables and columns are samples, and `metadata`
 > > associated with the matrix in which rows represent samples and columns
@@ -944,32 +820,27 @@ represents.
 >
 > Note that this is different from normalising gene expression data. Gene expression
 > data have to be normalised before donwstream analyses can be
-> carried out. This is to reduce to effect technical and other potentially confounding
-> factors. We assume that the expression data we use had been noralised previously.
+> carried out. This is to reduce technical and other potentially confounding
+> factors. We assume that the expression data we use had been normalised previously.
 {: .callout}
 
 ## Choosing how many components are important to explain the variance in the data
 
-As in the example using the `prostate` dataset we can use a screeplot to
+As in the example using the `prostate` dataset, we can use a scree plot to
 compare the proportion of variance in the data explained by each principal
 component. This allows us to understand how much information in the microarray
 dataset is lost by projecting the observations onto the first few principal
 components and whether these principal components represent a reasonable
 amount of the variation. The proportion of variance explained should sum to one.
 
-There are no clear guidelines on how many principal components should be
-included in PCA: your choice depends on the total variability of the data and
-the size of the dataset. We often look at the 'elbow’ on the screeplot as an
-indicator that the addition of principal components does not drastically
-contribute to explain the remaining variance or choose an arbitory cut off for
-proportion of variance explained.
 
 > ## Challenge 4
 > 
-> Using the `screeplot()` function in **`PCAtools`**, create a screeplot to show 
+> Using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
 > proportion of variance explained by each principal component. Explain the
-> output of the screeplot in terms of proportion of variance in data explained
-> by each principal component.
+> output of the scree plot in terms of the proportion of variance in the data explained
+> by each principal component and suggest an appropriate number of principal
+> components.
 > 
 > > ## Solution
 > > 
@@ -979,22 +850,24 @@ proportion of variance explained.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-05-scree-ex-1.png" alt="Alt" width="432" />
-> > <p class="caption">Alt</p>
-> > </div>
+> > 
+> > 
+> > ~~~
+> > Error in pcaobj$components: object of type 'closure' is not subsettable
+> > ~~~
+> > {: .error}
 > > Note that first principal component (PC1) explains more variation than
-> > other principal components (which is always the case in PCA). The screeplot
+> > other principal components (which is always the case in PCA). The scree plot
 > > shows that the first principal component only explains ~33% of the total
-> > variation in the micrarray data and many principal components explain very 
+> > variation in the microarray data and many principal components explain very 
 > > little variation. The red line shows the cumulative percentage of explained
 > > variation with increasing principal components. Note that in this case 18
 > > principal components are needed to explain over 75% of variation in the
 > > data. This is not an unusual result for complex biological datasets
 > > including genetic information as clear relationships between groups are
-> > sometimes difficult to observe in the data. The screeplot shows that using
+> > sometimes difficult to observe in the data. The scree plot shows that using
 > > a PCA we have reduced 91 predictors to 18 in order to explain a significant
-> > amount of variation in the data. See additional arguments in screeplot
+> > amount of variation in the data. See additional arguments in scree plot
 > > function for improving the appearance of the plot.
 > {: .solution}
 {: .challenge}
@@ -1016,7 +889,7 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > 
 > Create a biplot of the first two principal components from your PCA
 > using `biplot()` function in **`PCAtools`**. See `help("PCAtools::biplot")` for
-> arguments and their meaning. For instance, `lab` or `colBy` may be useful.
+> arguments and their meaning. For instance, `lab` or `colby` may be useful.
 > 
 > Examine whether the data appear to form clusters. Explain your results.
 > 
@@ -1028,10 +901,12 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > > ~~~
 > > {: .language-r}
 > > 
-> > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-05-biplot-ex-1.png" alt="Alt" width="432" />
-> > <p class="caption">Alt</p>
-> > </div>
+> > 
+> > 
+> > ~~~
+> > Error in pcaobj$rotated: object of type 'closure' is not subsettable
+> > ~~~
+> > {: .error}
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
 > > axis according to expressions of different genes while no separation can be
@@ -1070,15 +945,9 @@ Let's consider this biplot in more detail, and also display the loadings:
 > > 
 > > 
 > > ~~~
-> > Warning: ggrepel: 35 unlabeled data points (too many overlaps). Consider
-> > increasing max.overlaps
+> > Error in pcaobj$rotated: object of type 'closure' is not subsettable
 > > ~~~
-> > {: .warning}
-> > 
-> > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-05-pca-biplot-ex2-1.png" alt="Alt" width="432" />
-> > <p class="caption">Alt</p>
-> > </div>
+> > {: .error}
 > > It appears that one cluster has more ER+ samples than the other group.
 > {: .solution}
 {: .challenge}
@@ -1093,10 +962,12 @@ pairsplot(pc)
 ~~~
 {: .language-r}
 
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-05-pairsplot-1.png" alt="Alt" width="432" />
-<p class="caption">Alt</p>
-</div>
+
+
+~~~
+Error in pcaobj$components: object of type 'closure' is not subsettable
+~~~
+{: .error}
 
 The plots show two apparent clusters involving the first principal component
 only. No other clusters are found involving other principal components. Each dot
@@ -1108,7 +979,7 @@ you to set custom colours.
 Finally, it can sometimes be of interest to compare how certain variables contribute
 to different principal components. This can be visualised with `plotloadings()` from
 the **`PCAtools`** package. The function checks the range of loadings for each
-principal component specified (default: first five PCs). It then selects the features
+principal component specified (default: first five principal components). It then selects the features
 in the top and bottom 5% of these ranges and displays their loadings. This behaviour
 can be adjusted with the `rangeRetain` argument, which has 0.1 as the default value (i.e.
 5% on each end of the range). NB, if there are too many labels to be plotted, you will see
@@ -1120,35 +991,44 @@ plotloadings(pc, c("PC1"), rangeRetain = 0.1)
 ~~~
 {: .language-r}
 
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-05-loadingsplots-1.png" alt="plot of chunk loadingsplots" width="432" />
-<p class="caption">plot of chunk loadingsplots</p>
-</div>
+
+
+~~~
+Error in pcaobj$loadings: object of type 'closure' is not subsettable
+~~~
+{: .error}
+
+
 
 ~~~
 plotloadings(pc, c("PC2"), rangeRetain = 0.1)
 ~~~
 {: .language-r}
 
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-05-loadingsplots-2.png" alt="plot of chunk loadingsplots" width="432" />
-<p class="caption">plot of chunk loadingsplots</p>
-</div>
+
+
+~~~
+Error in pcaobj$loadings: object of type 'closure' is not subsettable
+~~~
+{: .error}
+
+
 
 ~~~
 plotloadings(pc, c("PC1", "PC2"), rangeRetain = 0.1)
 ~~~
 {: .language-r}
 
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-05-loadingsplots-3.png" alt="plot of chunk loadingsplots" width="432" />
-<p class="caption">plot of chunk loadingsplots</p>
-</div>
 
-You can see how the third code line prooces more dots, some of which do not have
-extreme loadings. This is because all loadings selected for any PC are shown for all
-other PCs. For instance, it is plausible that features which have high loadings on
-PC1 may have lower ones on PC2.
+
+~~~
+Error in pcaobj$loadings: object of type 'closure' is not subsettable
+~~~
+{: .error}
+
+You can see how the third code line produces more dots, some of which do not have
+extreme loadings. This is because all loadings selected for any principal component
+are shown for all other principal components. For instance, it is plausible that features which have high loadings on PC1 may have lower ones on PC2.
 
 
 # Using PCA output in further analysis
@@ -1170,7 +1050,7 @@ they can be included together in a single linear regression.
 > and it allows researchers to examine the effect of several correlated
 > explanatory variables on a single response variable in cases where a high
 > degree of correlation initially prevents them from being included in the same
-> model. This is called principal componenet regression (PCR) and is just one
+> model. Principal component regression (PCR) is just one
 > example of how principal components can be used in further analysis of data.
 > When carrying out PCR, the variable of interest (response/dependent variable)
 > is regressed against the principal components calculated using PCA, rather
