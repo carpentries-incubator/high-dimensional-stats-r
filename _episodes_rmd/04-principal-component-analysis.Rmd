@@ -122,7 +122,7 @@ fallow for 50 farms in southern England. The red line represents the first
 principal component scores, which pass through the points with the greatest 
 variability. The points along this line give the first principal component.
 The second principal component explains the next highest amount of variability 
-in the data and are represented by the line perpendicular to the first (green line).
+in the data and is represented by the line perpendicular to the first (green line).
 
 
 ```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
