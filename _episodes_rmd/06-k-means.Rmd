@@ -85,7 +85,7 @@ these two steps until appropriate clusters have been formed:
 We can see this process in action in this animation:
 
 ```{r kmeans-animation, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
-knitr::include_graphics(here::here("fig/kmeans.gif"))
+knitr::include_graphics("../fig/kmeans.gif")
 ```
 While K-means has some advantages over other clustering methods (easy to implement and
 to understand), it does have some disadvantages, namely difficulties in identifying 
