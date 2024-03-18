@@ -123,7 +123,7 @@ capturing the overall effect in the data that has the second-highest variability
 
 ```{r fig1, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
 # ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
-knitr::include_graphics(here("fig/bio_index_vs_percentage_fallow.png"))
+knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
 ```
 
 The animation below illustrates how principal components are calculated from
