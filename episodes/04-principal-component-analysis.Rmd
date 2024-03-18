@@ -137,7 +137,7 @@ principal component.
 This is explained in more detail on [this Q&A website](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues).
 
 ```{r pendulum, echo=FALSE, fig.cap="Cap", fig.alt="Alt"}
-knitr::include_graphics(here("fig/pendulum.gif"))
+knitr::include_graphics("../fig/pendulum.gif")
 ```
 
 > ## Mathematical description of PCA 
