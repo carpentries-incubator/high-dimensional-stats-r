@@ -47,11 +47,10 @@ in a biomedical study is shown in the figure below.
 
 
 
-
-~~~
-Error in knitr::include_graphics(here::here("fig/intro-table.png")): Cannot find the file(s): "fig/intro-table.png"
-~~~
-{: .error}
+<div class="figure" style="text-align: center">
+<img src="../fig/intro-table.png" alt="Table displaying a high-dimensional data set with many features in individual columns relating to health data such as blood pressure, heart rate and respiratory rate. Each row contains the data for individual patients."  />
+<p class="caption">Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.</p>
+</div>
 
 Researchers often want to relate such features to specific patient outcomes
 (e.g. survival, length of time spent in hospital). However, analysing 
@@ -216,11 +215,10 @@ dataset are almost equal. In that situation the effective number of observations
 per feature is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
-
-~~~
-Error in knitr::include_graphics(here::here("fig/intro-scatterplot.png")): Cannot find the file(s): "fig/intro-scatterplot.png"
-~~~
-{: .error}
+<div class="figure" style="text-align: center">
+<img src="../fig/intro-scatterplot.png" alt="Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points."  />
+<p class="caption">Scatter plot of two variables (x and y) from a data set with 25 observations (left) and 2 observations (right) with a fitted regression line (red).</p>
+</div>
 
 In the first situation, the least squares regression line does not fit the data
 perfectly and there is some error around the regression line. But, when there are
