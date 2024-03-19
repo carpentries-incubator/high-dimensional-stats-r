@@ -298,7 +298,7 @@ In this course, we will cover four methods that help in dealing with high-dimens
 (3) dimensionality reduction, and (4) clustering. Here are some examples of when each of 
 these approaches may be used:
 
-(1) Regression with numerous outcomes refers to situations in which there are 
+1. Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
 levels for many sites in the genome) and when one is interested in assessing 
 whether these variables are associated with a specific covariate of interest, 
@@ -308,7 +308,7 @@ predictor) could be fitted independently. In the context of high-dimensional
 molecular data, a typical example are *differential gene expression* analyses. 
 We will explore this type of analysis in the *Regression with many outcomes* episode.
 
-(2) Regularisation (also known as *regularised regression* or *penalised regression*) 
+2. Regularisation (also known as *regularised regression* or *penalised regression*) 
 is typically used to fit regression models when there is a single outcome 
 variable or interest but the number of potential predictors is large, e.g. 
 there are more predictors than observations. Regularisation can help to prevent 
@@ -318,14 +318,14 @@ been often used when building *epigenetic clocks*, where methylation values
 across several thousands of genomic sites are used to predict chronological age. 
 We will explore this in more detail in the *Regularised regression* episode. 
 
-(3) Dimensionality reduction is commonly used on high-dimensional datasets for 
+3. Dimensionality reduction is commonly used on high-dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
 For instance, a low-dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
 This course contains two episodes that explore dimensionality reduction
 techniques: *Principal component analysis* and *Factor analysis*. 
 
-(4) Clustering methods can be used to identify potential grouping patterns 
+4. Clustering methods can be used to identify potential grouping patterns 
 within a dataset. A popular example is the *identification of distinct cell types*
 through clustering cells with similar gene expression patterns. The *K-means*
 episode will explore a specific method to perform clustering analysis. 
