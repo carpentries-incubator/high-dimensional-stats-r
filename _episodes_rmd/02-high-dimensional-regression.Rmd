@@ -669,7 +669,8 @@ of the input matrix.
 
 ```{r ebayes-toptab}
 toptab_age <- topTable(fit_age, coef = 2, number = nrow(fit_age))
-orderEffSize <- rev(order(abs(toptab_age$logFC))) # order by effect size (absolute log-fold change)
+# order by effect size (absolute log-fold change)
+orderEffSize <- order(abs(toptab_age$logFC), decreasing = TRUE)
 head(toptab_age[orderEffSize, ])
 ```
 
