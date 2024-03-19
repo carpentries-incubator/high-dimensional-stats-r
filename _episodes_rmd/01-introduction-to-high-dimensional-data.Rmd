@@ -238,15 +238,15 @@ explore why high correlations might be an issue in a Challenge.
 > > as predictors.
 > > 
 > > ```{r univariate-prostate}
-> > model1 <- lm(age ~ gleason, data = prostate)
-> > model2 <- lm(age ~ pgg45, data = prostate)
+> > model_gleason <- lm(age ~ gleason, data = prostate)
+> > model_pgg45 <- lm(age ~ pgg45, data = prostate)
 > > ```
 > >
 > > Check which covariates have a significant efffect
 > >
 > > ```{r summary-prostate}
-> > summary(model1)
-> > summary(model2)
+> > summary(model_gleason)
+> > summary(model_pgg45)
 > > ```
 > >
 > > Based on these results we conclude that both `gleason` and `pgg45` have a 
@@ -257,8 +257,8 @@ explore why high correlations might be an issue in a Challenge.
 > > as predictors
 > >
 > > ```{r multivariate-prostate}
-> > model3 <- lm(age ~ gleason + pgg45, data = prostate)
-> > summary(model3)
+> > model_multivar <- lm(age ~ gleason + pgg45, data = prostate)
+> > summary(model_multivar)
 > > ```
 > >
 > > Although `gleason` and `pgg45` have statistically significant univariate effects,
