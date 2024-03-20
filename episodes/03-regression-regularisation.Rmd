@@ -188,9 +188,9 @@ different combinations of slope and intercept accomplish this objective.
 library("viridis")
 set.seed(42)
 noise_sd <- 1
-nobs <- 50
-slope <- 2
-intercept <- 2
+nobs <- 200
+slope <- 1
+intercept <- 3
 
 maxlim <- max(abs(slope), abs(intercept)) * 2
 maxlim <- max(maxlim, 5)
@@ -648,8 +648,8 @@ drawplot <- function() {
     set.seed(42)
     noise_sd <- 1
     nobs <- 200
-    slope <- 2
-    intercept <- 2
+    slope <- 1
+    intercept <- 3
     maxlim <- max(abs(slope), abs(intercept)) * 2
     maxlim <- max(maxlim, 5)
     lims <- c(-maxlim, maxlim)
@@ -771,7 +771,7 @@ that minimises the error across each of the test and training splits. In R:
 
 ```{r lasso-cv, fig.cap="Cross-validated mean squared error for different values of lambda under a LASSO penalty.", fig.alt="Alt"}
 # fit lasso model with cross-validation across a range of lambda values
-lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
+lasso <- cv.glmnet(methyl_mat, age, alpha = 1)
 plot(lasso)
 
 # Extract the coefficients from the model with the lowest mean squared error from cross-validation
