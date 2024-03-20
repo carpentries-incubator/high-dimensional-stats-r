@@ -385,9 +385,9 @@ Now let's fit a linear model to our training data and calculate the training err
 fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 
 ## Function to calculate the (mean squared) error
- mse <- function(true, prediction) { 
-     mean((true - prediction)^2) 
- } 
+mse <- function(true, prediction) { 
+    mean((true - prediction)^2) 
+} 
 
 ## Calculate the training error 
 err_lm_train <- mse(train_age, fitted(fit_horvath)) 
