@@ -822,7 +822,7 @@ plot_elastic <- function(alpha) {
     noise_sd <- 1
     nobs <- 100
     slope <- 1
-    intercept <- 1
+    intercept <- 3
     norm <- 1
 
     maxlim <- max(abs(slope), abs(intercept)) * 2
