@@ -50,7 +50,7 @@ in a biomedical study is shown in the figure below.
 
 
 ```{r table-intro, echo = FALSE, fig.cap = "Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.", fig.alt = "Table displaying a high-dimensional data set with many features in individual columns relating to health data such as blood pressure, heart rate and respiratory rate. Each row contains the data for individual patients."}
-knitr::include_graphics(here::here("fig/intro-table.png"))
+knitr::include_graphics("../fig/intro-table.png")
 ```
 
 Researchers often want to relate such features to specific patient outcomes
@@ -191,7 +191,7 @@ per feature is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE, fig.cap = "Scatter plot of two variables (x and y) from a data set with 25 observations (left) and 2 observations (right) with a fitted regression line (red).", fig.alt = "Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points."}
-knitr::include_graphics(here::here("fig/intro-scatterplot.png"))
+knitr::include_graphics("../fig/intro-scatterplot.png")
 ```
 
 In the first situation, the least squares regression line does not fit the data
