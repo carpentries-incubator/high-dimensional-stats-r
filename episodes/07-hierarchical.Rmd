@@ -88,12 +88,11 @@ panel below). Groups of observations may then be merged into a larger cluster
 (see next panel below, green box). This process continues until all the observations are included
 in a single cluster.
 
-```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Figure 1a: Example data showing two clusters of observation pairs"}
+```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Example data showing two clusters of observation pairs"}
 knitr::include_graphics("../fig/hierarchical_clustering_1.png")
 ```
 
-
-```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Figure 1b: Example data showing fusing of one observation into larger cluster"}
+```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Example data showing fusing of one observation into larger cluster"}
 knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 ```
 
@@ -256,7 +255,7 @@ dist_m <- dist(example_data, method = "euclidean")
 >
 > > ## Solution:
 > >
-> > ```{r plotclustex}
+> > ```{r plotclustex, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other)."}
 > > clust <- hclust(dist_m, method = "complete")
 > > plot(clust)
 > > ```
@@ -286,7 +285,7 @@ groups (or clusters) where the number of desired groups is controlled by the
 user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut).
 
-```{r cutree}
+```{r cutree, fig.cap="A scatter plot of the x and y variables of the example data, with points coloured by cluster.", fig.alt="Plot of x1 against x2 in the example data. Points are coloured by cluster, with 8 different clusters being organised into groups around the plot. There is no clear pattern in the data, although nearby points generally share the same colour."}
 ## k is a user defined parameter determining
 ## the desired number of clusters at which to cut the treee
 cutree(clust, k = 3)
@@ -318,7 +317,7 @@ downstream of the cut).
 >
 > > ## Solution:
 > >
-> > ```{r h-k-ex-plot}
+> > ```{r h-k-ex-plot, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other). A dashed horizontal line at a height of 5 indicates the cut point used to divide the data into clusters."}
 > > plot(clust)
 > > ## create horizontal line at height = 5
 > > abline(h = 5, lty = 2)
@@ -331,7 +330,9 @@ downstream of the cut).
 > > library(dplyr)
 > > example_cl <- mutate(example_data, cluster = five_cut)
 > > count(example_cl, cluster)
-> >
+> > ```
+> > 
+> > ```{r plot-clusters, fig.cap="A scatter plot of the x and y variables of the example data, with points coloured by cluster.", fig.alt="Plot of x1 against x2 in the example data. Points are coloured by cluster, with 8 different clusters being organised into groups around the plot. There is no clear pattern in the data, although nearby points generally share the same colour."}
 > > library(ggplot2)
 > > ggplot(example_cl, aes(x=x2, y = x1, color = factor(cluster))) + geom_point()
 > > ```
@@ -348,7 +349,7 @@ In addition to visualising cluster identity in scatter plots, it is also possibl
 highlight branches in dentrograms. In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
-```{r plot-clust-method}
+```{r plot-clust-method, fig.cap="A dendrogram of the methylation data, with boxes showing different possible cut points.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other). A set of coloured boxes depict cut points to divide the data into two or three clusters."}
 ## create a distance matrix using euclidean method
 distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
@@ -364,10 +365,7 @@ rect.hclust(clust, k = 2, border = 2:6)
 We can also colour clusters downstream of a specified cut using `color_branches()`
 from the **`dendextend`** package.
 
-```{r plot-coloured-branches}
-## cut tree at height = 4
-cut <- cutree(clust, h = 50)
-
+```{r plot-coloured-branches, fig.cap="A dendrogram of the methylation data, with branches coloured by cluster.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other). A set of coloured boxes depict cut points to divide the data into two or three clusters."}
 library("dendextend")
 avg_dend_obj <- as.dendrogram(clust)      
 ## colour branches of dendrogram depending on clusters
@@ -375,31 +373,17 @@ plot(color_branches(avg_dend_obj, h = 50))
 ```
 
 # The effect of different linkage methods
-Now let us look into changing the default behaviour of `hclust()`. Imagine we have two crescent-shaped point clouds as shown below.
-```{r crescents}
-# These two functions are to help us make crescents. Don't worry it you do not understand all this code.
-# The importent bit is the object "cres", which consists of two columns (x and y coordinates of two crescents).
-is.insideCircle <- function(co, r=0.5, offs=c(0,0)){
-  sqrt((co[,1]+offs[1])^2 + (co[,2]+offs[2])^2) <= r
-}
-make.crescent <- function(n){
-  raw <- cbind(x=runif(n)-0.5, y=runif(n)-0.5)
-  raw[is.insideCircle(raw) & !is.insideCircle(raw, offs=c(0, -0.2)),]
-}
-# make x/y data in shape of two crescents
-set.seed(123)
-cres1 <- make.crescent(1000) # 1st crescent
-cres2 <- make.crescent(1000) # 2nd crescent
-cres2[,2] <- -cres2[,2] -0.1 # flip 2nd crescent upside-down and shift down
-cres2[,1] <- cres2[,1] + 0.5 # shift second crescent to the right
+Now let us look into changing the default behaviour of `hclust()`. First, we'll load a synthetic dataset, comprised of two variables representing two crescent-shaped point clouds:
 
-cres <- rbind(cres1, cres2) # concatente x/y values
+```{r crescents, fig.cap="A scatter plot of synthetic data.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters."}
+cres <- readRDS(here::here("data/cres.rds"))
 plot(cres)
 ```
+
 We might expect that the crescents are resolved into separate clusters. But if we
 run hierarchical clustering with the default arguments, we get this:
 
-```{r cresClustDefault}
+```{r cresClustDefault, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
 cresClass <- cutree(hclust(dist(cres)), k=2) # save partition for colouring
 plot(cres, col=cresClass) # colour scatterplot by partition
 ```
@@ -418,33 +402,33 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 >
 > > ## Solution:
 > >
-> > ```{r plot-clust-comp}
+> > ```{r plot-clust-comp, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with single linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
 > > #?hclust
 > > # "complete", "single", "ward.D", "ward.D2", "average", "mcquitty", "median" or "centroid"
 > > cresClassSingle <- cutree(hclust(dist(cres),method = "single"), k=2)
 > > plot(cres, col=cresClassSingle, main="single")
 > > ```
-> > ```{r plot-clust-wardD}
+> > ```{r plot-clust-wardD, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with ward.D linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
 > > cresClassWard.D <- cutree(hclust(dist(cres), method="ward.D"), k=2)
 > > plot(cres, col=cresClassWard.D, main="ward.D")
 > > ```
-> > ```{r plot-clust-wardD2}
+> > ```{r plot-clust-wardD2, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with ward.D2 linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
 > > cresClassWard.D2 <- cutree(hclust(dist(cres), method="ward.D2"), k=2)
 > > plot(cres, col=cresClassWard.D2, main="ward.D2")
 > > ```
-> > ```{r plot-clust-average}
+> > ```{r plot-clust-average, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with average linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
 > > cresClassAverage <- cutree(hclust(dist(cres), method="average"), k=2)
 > > plot(cres, col=cresClassAverage, main="average")
 > > ```
-> > ```{r plot-clust-mcq}
+> > ```{r plot-clust-mcq, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with mcquitty linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
 > > cresClassMcquitty <- cutree(hclust(dist(cres), method="mcquitty"), k=2)
 > > plot(cres, col=cresClassMcquitty, main="mcquitty")
 > > ```
-> > ```{r plot-clust-median}
+> > ```{r plot-clust-median, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with median linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
 > > cresClassMedian<- cutree(hclust(dist(cres), method="median"), k=2) 
 > > plot(cres, col=cresClassMedian, main="median")
 > > ```
-> > ```{r plot-clust-centroid}
+> > ```{r plot-clust-centroid, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with centroid linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
 > > cresClassCentroid<- cutree(hclust(dist(cres), method="centroid"), k=2)
 > > plot(cres, col=cresClassCentroid, main="centroid")
 > > ```
@@ -503,12 +487,12 @@ being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
 
-```{r heatmap-cor-example}
+```{r heatmap-cor-example, fig.cap="Heatmap of synthetic data.", fig.alt = "A heatmap of synthetic data, with red indicating high values and blue indicating low values. Samples A and B cluster together, while sample C clusters separately."}
 Heatmap(as.matrix(cor_example))
 ```
 
 We can see that more clearly if we do a line plot:
-```{r lineplot-cor-example}
+```{r lineplot-cor-example, fig.cap="Line plot of synthetic data.", fig.alt = "A line plot of synthetic data. Red and green lines follow the same pattern but are separated by vertical distance. A blue line is close in vertical space to the red line, but follows a dissimilar pattern."}
 ## create a blank plot (type = "n" means don't draw anything)
 ## with an x range to hold the number of features we have.
 ## the range of y needs to be enough to show all the values for every feature
@@ -546,7 +530,7 @@ we can use `1 - cor(x)` as the distance metric.
 The input to `hclust()` must be a `dist` object, so we also need to call
 `as.dist()` on it before passing it in.
 
-```{r clust-cor-cor-example}
+```{r clust-cor-cor-example, fig.cap="Demo", fig.alt="No"}
 cor_as_dist <- as.dist(1 - cor(cor_example))
 clust_cor <- hclust(cor_as_dist)
 plot(clust_cor)
@@ -627,7 +611,6 @@ between sets of clusters with larger values being preferred.
 > >
 > > distmat <- dist(methyl_mat)
 > > clust <- hclust(distmat, method = "complete")
-> > plot(clust)
 > >
 > > #Varying h
 > > ## Obtaining the clusters
@@ -673,7 +656,7 @@ is not very useful - cutting the given tree at a low `h` value like 15 leads to 
 ending up each in its own cluster. More relevant is the second maximum in the plot, around `h=55`.
 Looking at the dendrogram, this corresponds to `k=4`.
 
-```{r hclust-fig4, echo=TRUE, fig.cap="Figure 4: Dunn index continued"}
+```{r hclust-fig4, echo=TRUE, fig.cap="Dunn index continued"}
 plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
 grid()
 ```
