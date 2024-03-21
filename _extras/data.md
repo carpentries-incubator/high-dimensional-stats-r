@@ -40,8 +40,38 @@ Illumina Human Methylation data from EPIC on sorted peripheral adult blood cell 
     - Array: type of array from the EPIC array library
     - Slide: slide identifier
  
-  # Horvath data
+# Horvath data
 
+[Source](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0014821#s5)
+
+Methylation markers across different age groups. 
+
+- CpGmarker:
+- CoefficientTraining     
+- CoefficientTrainingShrunk:
+- varByCpG:
+- minByCpG:
+- maxByCpG:
+- medianByCpG:
+- medianByCpGYoung:
+- medianByCpGOld:
+- Gene_ID:
+- GenomeBuild:
+- Chr:
+- MapInfo:
+- SourceVersion:
+- TSS_Coordinate:
+- Gene_Strand:
+- Symbol:
+- Synonym:
+- Accession:
+- GID:
+- Annotation:
+- Product:
+- Marginal.Age.Relationship:
+
+  Can't find these data or a full data description in the paper? It's also not clear to me what these data record? Methylation markers by age?
+  
   # Breast cancer gene expression data
 
   # Single-cell RNA sequencing data
