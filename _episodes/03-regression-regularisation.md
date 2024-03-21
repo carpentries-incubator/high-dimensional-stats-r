@@ -744,7 +744,7 @@ that minimises the error across each of the test and training splits. In R:
 
 ~~~
 # fit lasso model with cross-validation across a range of lambda values
-lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
+lasso <- cv.glmnet(methyl_mat, age, alpha = 1)
 plot(lasso)
 ~~~
 {: .language-r}
@@ -895,7 +895,7 @@ like for different values of `alpha`.
 > >    
 > >    
 > >    ~~~
-> >    [1] 4955
+> >    [1] 4956
 > >    ~~~
 > >    {: .output}
 > >    
@@ -908,14 +908,29 @@ like for different values of `alpha`.
 > >        xlab = "LASSO coefficients",
 > >        ylab = "Elastic net coefficients"
 > >    )
+> >    ~~~
+> >    {: .language-r}
+> >    
+> >    
+> >    
+> >    ~~~
+> >    Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+> >    ~~~
+> >    {: .error}
+> >    
+> >    
+> >    
+> >    ~~~
 > >    abline(0:1, lty = "dashed")
 > >    ~~~
 > >    {: .language-r}
 > >    
-> >    <div class="figure" style="text-align: center">
-> >    <img src="../fig/rmd-03-elastic-plot-1.png" alt="Alt" width="432" />
-> >    <p class="caption">LASSO-Elastic</p>
-> >    </div>
+> >    
+> >    
+> >    ~~~
+> >    Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+> >    ~~~
+> >    {: .error}
 > > 4. You could pick an arbitrary value of `alpha`, because arguably pure ridge
 > >    regression or pure LASSO regression are also arbitrary model choices.
 > >    To be rigorous and to get the best-performing model and the best 
