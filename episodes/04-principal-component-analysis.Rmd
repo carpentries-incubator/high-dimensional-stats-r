@@ -314,14 +314,43 @@ deviation of 1.
 > {: .solution}
 {: .challenge}
 
-Next we will carry out a PCA using the `prcomp()` function in base R. The input
-data (`pros2`) is in the form of a matrix. Note that the `scale = TRUE` argument
-is used to standardise the variables to have a mean 0 and standard deviation of
-1.
+## Performing PCA
+
+Throughout this episode, we will carry out PCA using the Bioconductor package **`PCAtools`**.
+This package provides several functions that are useful for exploring data via PCA and
+producing useful figures and analysis tools. The package is made for the somewhat unusual
+Bioconductor style of data tables (observations in columns, features in rows). When
+using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
+You can use the help files in PCAtools to find out about the `pca()`
+function (type `help("pca")` or `?pca` in R). Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
+options for performing PCA, including a base R function, `prcomp()`. Equivalent functions and 
+output labels for the common implementations are summarised below.
+
+| library::command()| PC scores | Loadings |
+|-------------------|-----------|----------|
+| stats::prcomp()   | $x         | $rotation |
+| stats::princomp() | $scores    | $loadings | 
+| PCAtools::pca()   | $rotated   | $loadings | 
+
+
+Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. First, let's load the **`PCAtools`** package.
+
+```{r pcatools}
+library("PCAtools")
+```
+
+
+The input data (`pros2`) is in the form of a matrix and we need to take the transpose of this 
+matrix and convert it to a data frame for use within the **`PCAtools`** package. We set the `scale = TRUE` argument to standardise the variables to have a mean 0 and standard deviation of 1 as above. 
 
 ```{r prcomp}
-pca.pros <- prcomp(pros2, scale = TRUE, center = TRUE)
-pca.pros
+pros2t <- data.frame(t(pros2))  #create transposed data frame
+colnames(pros2t)<-seq(1:dim(pros2t)[2]) #rename columns for use within PCAtools
+pmetadata= data.frame("M"=rep(1, dim(pros2t)[2]), row.names = colnames(pros2t)) #create fake metadata for use with PCA tools
+
+##implement PCA
+pca.pros <- pca(pros2t, scale = TRUE, center = TRUE,metadata = pmetadata)
+pca.pros$loadings #return pca loadings 
 ```
 
 # How many principal components do we need?
@@ -330,9 +359,11 @@ We have calculated one principal component for each variable in the original
 dataset. How do we choose how many of these are necessary to represent the true
 variation in the data, without having extra components that are unnecessary?
 
-Let's look at the relative importance of each component using `summary`.
+Let's look at the relative importance of (percentage of the variance explained by) the components:
 
 ```{r summ}
+prop.var <- round(pca.pros$variance, 4) #round to 4 decimal places
+prop.var
 summary(pca.pros)
 ```
 
@@ -343,28 +374,26 @@ prop.var <- round(summary(pca.pros)$importance["Proportion of Variance", ], 2) *
 ```
 
 This returns the proportion of variance in the data explained by each of the
-(p = 5) principal components. In this example, PC1 explains approximately
-`r prop.var[[1]]`% of variance in the data, PC2 `r prop.var[[2]]`% of variance,
-PC3 a further `r prop.var[[3]]`%, PC4 approximately `r prop.var[[4]]`% and PC5
-around `r prop.var[[5]]`%.
+principal components. In this example, the first principal component, PC1, explains approximately
+`r round(prop.var[[1]])`% of variance in the data, PC2 `r round(prop.var[[2]])`% of variance,
+PC3 a further `r round(prop.var[[3]])`%, PC4 approximately `r round(prop.var[[4]])`% and PC5
+around `r round(prop.var[[5]])`%.
 
-Let us visualise this. A plot of the amount of variance accounted for by each PC
-is also called a scree plot. Note that the amount of variance accounted for by a principal
-component is also called eigenvalue and thus the y-axis in scree plots if often
-labelled “eigenvalue”.
-
-Often, scree plots show a characteristic pattern where initially, the variance drops
+Let's visualise this. A plot of the amount of variance accounted for by each PC
+is also called a scree plot. Often, scree plots show a characteristic pattern 
+where initially, the variance drops
 rapidly with each additional principal component. But then there is an “elbow” after which the
 variance decreases more slowly. The total variance explained up to the elbow point is sometimes
 interpreted as structural variance that is relevant and should be retained versus noise
 which may be discarded after the elbow. 
 
+We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 
 ```{r varexp}
-# calculate percentage variance explained using output from the PCA
-varExp <- (pca.pros$sdev^2) / sum(pca.pros$sdev^2) * 100
-# create new dataframe with five rows, one for each principal component
-varDF <- data.frame(Dimensions = 1:length(varExp), varExp = varExp)
+screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8, 
+          drawCumulativeSumLine = FALSE, drawCumulativeSumPoints = FALSE) +
+    geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
+#add line to scree plot to visualise the elbow
 ```
 
 ```{r vardf-plot, fig.cap="Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.", fig.alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."}
@@ -393,8 +422,7 @@ based on what is deemed a sufficient level of information retention for a specif
 dataset and question.
 
 
-
-## What are loadings and principal component scores?
+## Loadings and principal component scores
 
 Most PCA functions will produce two main output matrices: the
 *principal component scores* and the *loadings*. The matrix of principal component scores
@@ -404,11 +432,12 @@ The matrix of loadings (also called rotation matrix) has as many rows as there
 are features in the original data. It contains information about how the
 (usually centered and scaled) original data relate to the principal component scores.
 
-When calling a PCA object generated with `prcomp()`, the loadings are printed by default:
+We can print the loadings for the **`PCAtools`** implementation using 
 
 ```{r pca-pros}
-pca.pros
+pca.pros$loadings
 ```
+
 
 The principal component scores are obtained by carrying out matrix multiplication of the
 (usually centered and scaled) original data times the loadings. The following
@@ -428,7 +457,7 @@ callout demonstrates this.
 > my.pros2.pcs <- pros2.scaled %*% pros2.eigen$vectors
 > # compare results
 > par(mfrow=c(1,2))
-> plot(pca.pros$x[,1:2], main="prcomp()")
+> plot(pca.pros$rotated[,1:2], main="PCAtools")
 > abline(h=0, v=0, lty=2)
 > plot(my.pros2.pcs[,1:2], main="\"By hand\"", xlab="PC1", ylab="PC2")
 > abline(h=0, v=0, lty=2)
@@ -444,10 +473,13 @@ is by creating a biplot. Biplots usually show two principal components plotted
 against each other. Observations are sometimes labelled with numbers. The
 contribution of each original variable to the principal components displayed
 is then shown by arrows (generated from those two columns of the rotation matrix that
-correspond to the principal components shown). NB, there are several biplot
+correspond to the principal components shown). See `help("PCAtools::biplot")` for
+arguments and their meaning. For instance, `lab` or `colBy` may be useful.
+Note that there are several biplot
 implementations in different R libraries. It is thus a good idea to specify
 the desired package when calling `biplot()`. A biplot of the first two principal
 components can be generated as follows:
+
 
 ```{r stats-biplot, fig.cap="Scatter plot of the first two principal components with observations numerically labelled. The loadings are shown by red arrows.", fig.alt="Scatter plot of the second principal component versus the first principal component. Observations as points, numerically labelled. The loadings are shown by red arrows, each labelled by their associated variable."}
 stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
@@ -468,21 +500,8 @@ loadings are scaled by the standard deviation of the principal components
 Finally, you need to know that principal component scores and rotations may have different slot names, 
 depending on the PCA implementation you use. Here are some examples:
 
-| library::command()| principal component scores | Loadings |
-|-------------------|-----------|----------|
-| stats::prcomp()   | $x         | $rotation |
-| stats::princomp() | $scores    | $loadings | 
-| PCAtools::pca()   | $rotated   | $loadings | 
-
-
 # Using PCA to analyse gene expression data 
 
-In this section you will carry out your own PCA using the Bioconductor package **`PCAtools`** 
-applied to gene expression data to explore the topics covered above. 
-**`PCAtools`** provides functions that can be used to explore data via PCA and
-produce useful figures and analysis tools. The package is made for the somewhat unusual
-Bioconductor style of data tables (observations in columns, features in rows). When
-using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
 
 ##  A gene expression dataset of cancer patients
 
@@ -493,11 +512,7 @@ The dataset we will be analysing in this lesson includes two subsets of data:
 * metadata associated with the gene expression results detailing information
   from patients from whom samples were taken.
 
-Let's load the **`PCAtools`** package and the data.
-
-```{r pcatools}
-library("PCAtools")
-```
+In this section, we will work through Challenges and you will apply your own PCA to the high-dimensional gene expression data using what we have learnt so far. 
 
 We will first load the microarray breast cancer gene expression data and
 associated metadata, downloaded from the
@@ -556,7 +571,7 @@ representing groups of genes would help visualise the data and address
 research questions regarding the effect different groups of genes have on
 disease progression.
 
-Using the **`PCAtools`** we will apply a PCA to the cancer
+Using the **`PCAtools`**, we will apply a PCA to the cancer
 gene expression data, plot the amount of variation in the data explained by
 each principal component and plot the most important principal components
 against each other as well as understanding what each principal component
@@ -566,8 +581,7 @@ represents.
 > ## Challenge 3
 > 
 > Apply a PCA to the cancer gene expression data using the `pca()` function from
-> **`PCAtools`**. You can use the help files in PCAtools to find out about the `pca()`
-> function (type `help("pca")` or `?pca` in R).
+> **`PCAtools`**. 
 > 
 > Let us assume we only care about the principal components accounting for the top
 > 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
@@ -642,15 +656,29 @@ amount of the variation. The proportion of variance explained should sum to one.
 > 
 > Using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
 > proportion of variance explained by each principal component. Explain the
-> output of the scree plot in terms of the proportion of variance in the data explained
-> by each principal component and suggest an appropriate number of principal
-> components.
+> output of the screeplot in terms of proportion of the variance in the data explained
+> by each principal component.
 > 
 > > ## Solution
 > > 
 > > ```{r scree-ex, fig.cap="A scree plot of the gene expression data.", fig.alt="A bar and line plot showing the variance explained by principal components (PCs) of gene expression data. Blue bars depict the variance explained by each PC, while a red line depicts the cumulative variance explained by these PCs. The first principal component explains roughly 30\% of the variance, while succeeding PCs explain less than 10%."}
-> > screeplot(pc)
-> > ```
+> > pc <- pca(mat, metadata = metadata)
+> > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
+> > drawCumulativeSumPoints = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
+> > as.numeric(pc$variance))) #add line to scree plot to visualise the elbow
+> > ``` 
+> > 
+> > The first principal component explains around 33% of the 
+> > variance in the microarray data, the first 4 principal components explain
+> > around 50%, and 20 principal components explain around 75%. Many principal 
+> > components explain very little variation. The
+> > 'elbow' appears to be around 4-5 principal components, indicating that this
+> > may be a suitable number of principal components. However, these principal components 
+> > cumulatively explain only 51-55% of the variance in the dataset. Although the fact we 
+> > are able to summarise most of the information in the complex dataset in 4-5 principal components
+> > may be a useful result, we may opt to retain more principal 
+> > components (for example, 20) to capture more of the variability 
+> > in the dataset depending on research question.> > ```
 > > Note that first principal component (PC1) explains more variation than
 > > other principal components (which is always the case in PCA). The scree plot
 > > shows that the first principal component only explains ~33% of the total
@@ -670,7 +698,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 ## Investigating the principal components 
 
 Once the most important principal components have been identified using
-`screeplot()`, these can be explored in more detail by plotting principal components
+`screeplot()` and explored, these can be explored in more detail by plotting principal components
 against each other and highlighting points based on variables in the metadata.
 This will allow any potential clustering of points according to demographic or
 phenotypic variables to be seen.
