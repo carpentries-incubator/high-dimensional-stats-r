@@ -73,9 +73,24 @@ Methylation markers across different age groups.
   Can't find these data or a full data description in the paper? It's also not clear to me what these data record? Methylation markers by age?
   Is the source the right reference?
   
-  # Breast cancer gene expression data
+# Breast cancer gene expression data
 
-  # Single-cell RNA sequencing data
+[Source](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990)
+
+Gene expression data showing microarray results for different probes used to examine gene expression profiles in 91 different breast cancer patient samples and metdata for the sampled patients.
+
+- assay(data): gene expression data for each individual
+- colData(data): individual-level information
+  - Study: study identifier 
+  - Age: age in years
+  - Distant.RFS: indicator of distant relapse free survival  
+  - ER: estrogen receptor positive or negative status
+  - GGI: gene expression grade index 
+  - Grade: histologic grade 
+  - Size: tumour size in cm
+  - Time.RFS: time between the date of surgery and diagnosis of relapse (time in relapse free survival, RFS)
+
+# Single-cell RNA sequencing data
 
 {% include links.md %}
 
