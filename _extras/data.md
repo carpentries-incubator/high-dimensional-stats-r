@@ -38,7 +38,13 @@ Illumina Human Methylation data from EPIC on sorted peripheral adult blood cell 
     - Ethnic_self: ethnicity, self-identified
     - smoker: yes/no indicator of smoker status
     - Array: type of array from the EPIC array library
-    - Slide: slide identifier 
+    - Slide: slide identifier
+ 
+  # Horvath data
+
+  # Breast cancer gene expression data
+
+  # Single-cell RNA sequencing data
 
 {% include links.md %}
 
