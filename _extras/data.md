@@ -92,5 +92,24 @@ Gene expression data showing microarray results for different probes used to exa
 
 # Single-cell RNA sequencing data
 
+[Source](https://pubmed.ncbi.nlm.nih.gov/25700174/)
+
+Gene expression measurements for over 9000 genes in over 3000 mouse cortex and hippocampus cells. These data are an excerpt of the original source.
+
+- assay(data): gene expression data 
+- colData(data): individual cell-level information
+  - tissue: tissue type
+  - group #: group number
+  - total mRNA mol:
+  - well:
+  - sex: sex
+  - age: age 
+  - diameter:
+  - cell_id: cell identifier 
+  - level1class:
+  - level2class:
+  - sizeFactor:   
+
+
 {% include links.md %}
 
