@@ -364,13 +364,6 @@ Let's look at the relative importance of (percentage of the variance explained b
 ```{r summ}
 prop.var <- round(pca.pros$variance, 4) #round to 4 decimal places
 prop.var
-summary(pca.pros)
-```
-
-```{r, echo = FALSE}
-# Get proportions of variance explained by each principal component (rounded to 2 decimal places)
-prop.var <- round(summary(pca.pros)$importance["Proportion of Variance", ], 2) *
-  100
 ```
 
 This returns the proportion of variance in the data explained by each of the
@@ -389,15 +382,11 @@ which may be discarded after the elbow.
 
 We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 
-```{r varexp}
+```{r varexp, fig.cap="Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.", fig.alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."}
 screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8, 
           drawCumulativeSumLine = FALSE, drawCumulativeSumPoints = FALSE) +
     geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
 #add line to scree plot to visualise the elbow
-```
-
-```{r vardf-plot, fig.cap="Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.", fig.alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."}
-plot(varDF, type="b")
 ```
 
 The scree plot shows that the first principal component explains most of the
@@ -481,8 +470,8 @@ the desired package when calling `biplot()`. A biplot of the first two principal
 components can be generated as follows:
 
 
-```{r stats-biplot, fig.cap="Scatter plot of the first two principal components with observations numerically labelled. The loadings are shown by red arrows.", fig.alt="Scatter plot of the second principal component versus the first principal component. Observations as points, numerically labelled. The loadings are shown by red arrows, each labelled by their associated variable."}
-stats::biplot(pca.pros, xlim = c(-0.3, 0.3))
+```{r stats-biplot, fig.cap="Scatter plot of the first two principal components with observations numerically labelled.", fig.alt="Scatter plot of the second principal component versus the first principal component. Observations as points, numerically labelled."}
+PCAtools::biplot(pca.pros)
 ```
 
 This biplot shows the position of each patient on a 2-dimensional plot where
@@ -595,7 +584,7 @@ represents.
 > > ```{r pca-ex}
 > > pc <- pca(mat, metadata = metadata) # implement a PCA
 > > #We can check the scree plot to see that many principal components explain a very small amount of
-> > the total variance in the data
+> > #the total variance in the data
 > > 
 > > #Let's remove the principal components with lowest 20% of the variance
 > > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
@@ -604,12 +593,14 @@ represents.
 > > pc$loadings[1:5, 1:5] #obtain the first 5 principal component loadings for the first 5 features
 > > 
 > > which.max(pc$loadings[, 1]) # index of the maximal loading for the first principal component
-> > pc$loadings[which.max(pc$loadings[, 1]), ] # principal component loadings for the feature
-> > with the maximal loading on the first principal component.
+> > # principal component loadings for the feature
+> > #with the maximal loading on the first principal component:
+> > pc$loadings[which.max(pc$loadings[, 1]), ] 
 > > 
 > > which.max(pc$loadings[, 2]) # index of the maximal loading for the second principal component
-> > pc$loadings[which.max(pc$loadings[, 2]), ] # principal component loadings for the feature
-> > with the maximal loading on the second principal component.
+> > # principal component loadings for the feature
+> > #with the maximal loading on the second principal component:
+> > pc$loadings[which.max(pc$loadings[, 2]), ] 
 > > ```
 > > The function `pca()` is used to perform PCA, and uses as input a matrix
 > > (`mat`) containing continuous numerical data
@@ -663,9 +654,10 @@ amount of the variation. The proportion of variance explained should sum to one.
 > > 
 > > ```{r scree-ex, fig.cap="Caption", fig.cap="Alt"}
 > > pc <- pca(mat, metadata = metadata)
+> > #Add line to scree plot to visualise the elbow
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
 > > drawCumulativeSumPoints = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
-> > as.numeric(pc$variance))) #add line to scree plot to visualise the elbow
+> > as.numeric(pc$variance))) 
 > > ``` 
 > > 
 > > The first principal component explains around 33% of the 
