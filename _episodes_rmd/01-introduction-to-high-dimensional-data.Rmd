@@ -150,7 +150,7 @@ of the challenges we are facing when working with high-dimensional data.
 > > head(Prostate)   #print the first 6 rows
 > > ```
 > > 
-> > ```{r pairs-prostate}
+> > ```{r pairs-prostate, fig.cap="Pairwise plots of the 'prostate' dataset.", fig.alt="A set of pairwise scatterplots of variables in the 'prostate' dataset, namely lcavol, lweight, age, lbph, svi, lcp, gleason, pgg45, lpsa. The plots are shown in a grid."}
 > > names(Prostate)  #examine column names
 > >
 > > pairs(Prostate)  #plot each pair of variables against each other

@@ -268,8 +268,8 @@ Now we compare the variances between variables in the dataset.
 ```{r var-hist, fig.cap="Histograms of two variables from the prostate data set.", fig.alt="Side-by-side histograms of two variables from the dataset, lweight on the left and lbph on the right. The histogram for the lweight data ranges from around 2 to 6 on the x axis, while the histogram for the lbph ranges from around -2 to 3 on the x axis."}
 apply(pros2, 2, var)
 par(mfrow = c(1, 2))
-hist(pros2$lweight, breaks = "FD")
-hist(pros2$lbph, breaks = "FD")
+hist(pros2$lweight)
+hist(pros2$lbph)
 ```
 
 Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
@@ -648,8 +648,8 @@ amount of the variation. The proportion of variance explained should sum to one.
 > 
 > > ## Solution
 > > 
-> > ```{r scree-ex}
-> > screeplot(pc, axisLabSize = 5, titleLabSize = 8)
+> > ```{r scree-ex, fig.cap="A scree plot of the gene expression data.", fig.alt="A bar and line plot showing the variance explained by principal components (PCs) of gene expression data. Blue bars depict the variance explained by each PC, while a red line depicts the cumulative variance explained by these PCs. The first principal component explains roughly 30\% of the variance, while succeeding PCs explain less than 10%."}
+> > screeplot(pc)
 > > ```
 > > Note that first principal component (PC1) explains more variation than
 > > other principal components (which is always the case in PCA). The scree plot
@@ -690,8 +690,8 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > 
 > > ## Solution
 > > 
-> > ```{r biplot-ex}
-> > biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
+> > ```{r biplot-ex, fig.cap="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade.", fig.alt="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on Grade across these two groups."}
+> > biplot(pc, lab = NULL, colby = 'Grade')
 > > ```
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
@@ -718,11 +718,10 @@ Let's consider this biplot in more detail, and also display the loadings:
 > 
 > > ## Solution
 > > 
-> > ```{r pca-biplot-ex2}
+> > ```{r pca-biplot-ex2, fig.cap="A biplot of PC2 against PC1 in the gene expression data, coloured by ER status with patient ages overlaid.", fig.alt="A biplot of PC2 against PC1 in the gene expression data, coloured by ER status. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on ER across these two groups, although there are more ER- samples in the rightmost cluster. Patient ages are overlaid as text near the points, but there is again no clear pattern."}
 > >   PCAtools::biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
-> >     hline = 0, vline = 0,
 > >     legendPosition = 'right')
 > > ```
 > > It appears that one cluster has more ER+ samples than the other group.

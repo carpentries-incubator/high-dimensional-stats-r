@@ -94,7 +94,7 @@ methyl_mat <- assay(methylation)
 The distribution of these M-values looks like this:
 
 ```{r histx, fig.cap="Methylation levels are generally bimodally distributed.", fig.alt="Histogram of M-values for all features. The distribution appears to be bimodal, with a large number of unmethylated features as well as many methylated features, and many intermediate features."}
-hist(methyl_mat, breaks = "FD", xlab = "M-value")
+hist(methyl_mat, xlab = "M-value")
 ```
 
 You can see that there are two peaks in this distribution, corresponding
@@ -105,7 +105,11 @@ sample-level metadata we have relating to these data. In this case, the
 metadata, phenotypes, and groupings in the `colData` look like this for
 the first 6 samples:
 
-```{r datatable}
+```{r, eval=FALSE}
+head(colData(methylation))
+```
+
+```{r datatable, echo=FALSE}
 knitr::kable(head(colData(methylation)), row.names = FALSE)
 ```
 
@@ -1030,15 +1034,10 @@ conservative, especially with a lot of features!
 ```{r p-fwer, fig.cap="Bonferroni correction often produces very large p-values, especially with low sample sizes.", fig.alt="Plot of Bonferroni-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
 p_raw <- toptab_age$P.Value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
-library("ggplot2")
-ggplot() +
-    aes(p_raw, p_fwer) +
-    geom_point() +
-    scale_x_log10() + scale_y_log10() +
-    geom_abline(slope = 1, linetype = "dashed") +
-    geom_hline(yintercept = 0.05, linetype = "dashed", col = "red") +
-    geom_vline(xintercept = 0.05, linetype = "dashed", col = "red") +
-    labs(x = "Raw p-value", y = "Bonferroni p-value")
+plot(p_raw, p_fwer, pch = 16, log="xy")
+abline(0:1, lty = "dashed")
+abline(v = 0.05, lty = "dashed", col = "red")
+abline(h = 0.05, lty = "dashed", col = "red")
 ```
 
 You can see that the p-values are exactly one for the vast majority of
@@ -1091,7 +1090,7 @@ experiment over and over.
 > >          \frac{0.05}{100} = 0.0005
 > >     $$
 > >
-> > 2.  Trick question! We can't say what proportion of these genes are
+> > 2.  We can't say what proportion of these genes are
 > >     truly different. However, if we repeated this experiment and
 > >     statistical test over and over, on average 5% of the results
 > >     from each run would be false discoveries.
@@ -1101,25 +1100,17 @@ experiment over and over.
 > >
 > >     ```{r p-fdr, fig.cap="Benjamini-Hochberg correction is less conservative than Bonferroni", fig.alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
 > >     p_fdr <- p.adjust(p_raw, method = "BH")
-> >     ggplot() +
-> >         aes(p_raw, p_fdr) +
-> >         geom_point() +
-> >         scale_x_log10() + scale_y_log10() +
-> >         geom_abline(slope = 1, linetype = "dashed") +
-> >         geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
-> >         geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
-> >         labs(x = "Raw p-value", y = "Benjamini-Hochberg p-value")
+> >     plot(p_raw, p_fdr, pch = 16, log="xy")
+> >     abline(0:1, lty = "dashed")
+> >     abline(v = 0.05, lty = "dashed", col = "red")
+> >     abline(h = 0.05, lty = "dashed", col = "red")
 > >     ```
 > >
 > >     ```{r plot-fdr-fwer, fig.alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against Bonferroni-adjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds."}
-> >     ggplot() +
-> >         aes(p_fdr, p_fwer) +
-> >         geom_point() +
-> >         scale_x_log10() + scale_y_log10() +
-> >         geom_abline(slope = 1, linetype = "dashed") +
-> >         geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
-> >         geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
-> >         labs(x = "Benjamini-Hochberg p-value", y = "Bonferroni p-value")
+> >     plot(p_fwer, p_fdr, pch = 16, log="xy")
+> >     abline(0:1, lty = "dashed")
+> >     abline(v = 0.05, lty = "dashed", col = "red")
+> >     abline(h = 0.05, lty = "dashed", col = "red")
 > >     ```
 > >
 > {: .solution}
