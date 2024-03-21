@@ -101,13 +101,7 @@ The learners found the lessons relevant to their work, particularly episodes 4 a
 
 Many of the comments related to timings (allowing more time) and clarifying wording. 
 
-&#x2611; Changes were made in response to most comments in [#86](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/86), [#89](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/88) and many remaining changes are evident in the current lesson.
-
-&#x2612; The remaining points to be addressed are:
-
-- Providing function definitions or access to function documentation (i.e., clarifying arguments). This noted by both instructors and learners. 
-- Removing or clarifying example 2 of Challenge 1, Episode 4. The instructors noted that it could be interpreted as PCA-appropriate.
-- Rewording Challenge 2 in Episode 4. The instructors noted that some of the learners said it seemed like a trick question.
+&#x2611; Changes were made in response to most comments in [#86](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/86), [#89](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/88) and [#167](https://github.com/carpentries-incubator/high-dimensional-stats-r/pull/167), and any remaining changes are evident in the current lesson.
 
 **Feedback from February 2024 teaching ([#145](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/145))**
 
@@ -115,7 +109,6 @@ The instructors liked teaching the course and found it fun to teach. Comments la
 
 &#x2612; Changes in response to this feedback are ongoing and documented in the issue. The points that remain to be addressed are:
 
- - Possibly could describe the R packages/rationalise them in greater detail to reduce the risk of technical issues.
  - The factor analysis episode could be combined into another episode (potentially doesn't need to be its own episode) since the course is pitched at biologists. This could be combined into the PCA episode in a callout.
 - In episode 2, the DNA methylation data discussion could be moved to episode 1, the broom package is possibly unnecessary and we could just use summary(), the advanced content to compute the t-statistics by hand would probably be better off in a sidebar.
 - In episode 3, the Introduction and coefficient estimates section could be moved to episode 2, the coefficient estimates section should probably go before discussion of singularities, more explanation of the heat map in the cross-validation section required to clarify what it shows.
