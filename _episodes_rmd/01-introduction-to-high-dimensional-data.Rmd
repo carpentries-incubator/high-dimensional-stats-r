@@ -124,11 +124,11 @@ of the challenges we are facing when working with high-dimensional data.
 > encountered when working with many features in a high-dimensional data set.
 >
 > First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
-> Next, let's Load the `Prostate` dataset as follows:
+> Next, let's Load the `prostate` dataset as follows:
 >
 > ```{r prostate}
 > library("here")
-> Prostate <- readRDS(here("data/prostate.rds"))
+> prostate <- readRDS(here("data/prostate.rds"))
 > ```
 >
 > Examine the dataset (in which each row represents a single patient) to:
@@ -142,21 +142,21 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ```{r dim-prostate, eval = FALSE}
-> > dim(Prostate)   #print the number of rows and columns
+> > dim(prostate)   #print the number of rows and columns
 > > ```
 > >
 > > ```{r head-prostate, eval = FALSE}
-> > names(Prostate) # examine the variable names
-> > head(Prostate)   #print the first 6 rows
+> > names(prostate) # examine the variable names
+> > head(prostate)   #print the first 6 rows
 > > ```
 > > 
 > > ```{r pairs-prostate}
-> > names(Prostate)  #examine column names
+> > names(prostate)  #examine column names
 > >
-> > pairs(Prostate)  #plot each pair of variables against each other
+> > pairs(prostate)  #plot each pair of variables against each other
 > > ```
 > > The `pairs()` function plots relationships between each of the variables in
-> > the `Prostate` dataset. This is possible for datasets with smaller numbers
+> > the `prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
@@ -215,7 +215,7 @@ explore why high correlations might be an issue in a Challenge.
 > ## Challenge 3
 > 
 > Use the `cor()` function to examine correlations between all variables in the 
-> `Prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
+> `prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
 > 0.75 for the correlation coefficients?
 >
 > Use the `lm()` function to fit univariate regression models to predict patient 
@@ -228,11 +228,11 @@ explore why high correlations might be an issue in a Challenge.
 > 
 > > ## Solution
 > >
-> > Create a correlation matrix of all variables in the Prostate dataset
+> > Create a correlation matrix of all variables in the `prostate` dataset
 > >
 > > ```{r cor-prostate}
-> > cor(Prostate)
-> > round(cor(Prostate), 2) # rounding helps to visualise the correlations
+> > cor(prostate)
+> > round(cor(prostate), 2) # rounding helps to visualise the correlations
 > > ```
 > > 
 > > As seen above, some variables are highly correlated. In particular, the 
@@ -242,15 +242,15 @@ explore why high correlations might be an issue in a Challenge.
 > > as predictors.
 > > 
 > > ```{r univariate-prostate}
-> > model1 <- lm(age ~ gleason, data = Prostate)
-> > model2 <- lm(age ~ pgg45, data = Prostate)
+> > model_gleason <- lm(age ~ gleason, data = prostate)
+> > model_pgg45 <- lm(age ~ pgg45, data = prostate)
 > > ```
 > >
 > > Check which covariates have a significant efffect
 > >
 > > ```{r summary-prostate}
-> > summary(model1)
-> > summary(model2)
+> > summary(model_gleason)
+> > summary(model_pgg45)
 > > ```
 > >
 > > Based on these results we conclude that both `gleason` and `pgg45` have a 
@@ -261,8 +261,8 @@ explore why high correlations might be an issue in a Challenge.
 > > as predictors
 > >
 > > ```{r multivariate-prostate}
-> > model3 <- lm(age ~ gleason + pgg45, data = Prostate)
-> > summary(model3)
+> > model_multivar <- lm(age ~ gleason + pgg45, data = prostate)
+> > summary(model_multivar)
 > > ```
 > >
 > > Although `gleason` and `pgg45` have statistically significant univariate effects,
@@ -302,7 +302,7 @@ In this course, we will cover four methods that help in dealing with high-dimens
 (3) dimensionality reduction, and (4) clustering. Here are some examples of when each of 
 these approaches may be used:
 
-(1) Regression with numerous outcomes refers to situations in which there are 
+1. Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
 levels for many sites in the genome) and when one is interested in assessing 
 whether these variables are associated with a specific covariate of interest, 
@@ -312,7 +312,7 @@ predictor) could be fitted independently. In the context of high-dimensional
 molecular data, a typical example are *differential gene expression* analyses. 
 We will explore this type of analysis in the *Regression with many outcomes* episode.
 
-(2) Regularisation (also known as *regularised regression* or *penalised regression*) 
+2. Regularisation (also known as *regularised regression* or *penalised regression*) 
 is typically used to fit regression models when there is a single outcome 
 variable or interest but the number of potential predictors is large, e.g. 
 there are more predictors than observations. Regularisation can help to prevent 
@@ -322,14 +322,14 @@ been often used when building *epigenetic clocks*, where methylation values
 across several thousands of genomic sites are used to predict chronological age. 
 We will explore this in more detail in the *Regularised regression* episode. 
 
-(3) Dimensionality reduction is commonly used on high-dimensional datasets for 
+3. Dimensionality reduction is commonly used on high-dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
 For instance, a low-dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
 This course contains two episodes that explore dimensionality reduction
 techniques: *Principal component analysis* and *Factor analysis*. 
 
-(4) Clustering methods can be used to identify potential grouping patterns 
+4. Clustering methods can be used to identify potential grouping patterns 
 within a dataset. A popular example is the *identification of distinct cell types*
 through clustering cells with similar gene expression patterns. The *K-means*
 episode will explore a specific method to perform clustering analysis. 
