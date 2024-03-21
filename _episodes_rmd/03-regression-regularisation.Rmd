@@ -337,7 +337,7 @@ use methylation markers alone to predict the biological age of an individual.
 This is useful in studying age-related disease amongst many other things.
 
 
-To compare the training and test errors for a model for age using the Hovarth data, we'll split the
+To compare the training and test errors for a model for age using the Horvath data, we'll split the
 data into training and test sets, fit a linear model and calculate the errors. First, let's
 calculate the training error. Let's start by splitting the data into training and test sets: 
 
