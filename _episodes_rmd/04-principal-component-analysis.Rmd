@@ -295,8 +295,8 @@ deviation of 1.
 > >    It also won't affect how quickly the output will be calculated, whether
 > >    continuous and categorical variables are present or not.
 > > 
-> >    It is done to ensure that all features have equal weighting in the resulting
-> >    PCs.
+> >    It is done to ensure that features with different ranges of values
+> >     have equal weighting in the resulting PCs (point 2).
 > > 
 > >  2. You may not want to standardise datasets which contain continuous variables
 > >    all measured on the same scale (e.g. gene expression data or RNA sequencing
