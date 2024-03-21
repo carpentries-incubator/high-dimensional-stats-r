@@ -124,7 +124,7 @@ when we have more features than observations.
 > `methylation` dataset (we selected 500 features only as it can be hard to
 > visualise patterns when there are too many features!). 
 > 
-> ```{r corr-mat-meth, fig.cap="A feature-feature correlation heatmap of methylation data.", fig.alt="A heatmap showing pairwise feature-feature correlations in a methylation dataset. Red corresponds to large positive correlations and blue to large negative correlations. There are a number of large blocks of highly (positively or negatively) correlated features."}
+> ```{r corr-mat-meth, fig.cap="Heatmap of pairwise feature-feature correlations between CpG sites in DNA methylation data", fig.alt="A symmetrical heatmap where rows and columns are features in a DNA methylation dataset. Colour corresponds to correlation, with red being large positive correlations and blue being large negative correlations. There are large blocks of deep red and blue throughout the plot."}
 > library("ComplexHeatmap")
 > small <- methyl_mat[, 1:500]
 > cor_mat <- cor(small)
@@ -295,7 +295,11 @@ avoid estimating very large effect sizes.
 > >    "ordinary least squares". The "ordinary" really means "original" here,
 > >    to distinguish between this method, which dates back to ~1800, and some
 > >    more "recent" (think 1940s...) methods.
-> > 2. Least squares assumes that, when we account for the change in the mean of
+> > 2. Squared error is useful because it ignores the *sign* of the residuals
+> >    (whether they are positive or negative).
+> >    It also penalises large errors much more than small errors.
+> >    On top of all this, it also makes the solution very easy to compute mathematically.
+> >    Least squares assumes that, when we account for the change in the mean of
 > >    the outcome based on changes in the income, the data are normally
 > >    distributed. That is, the *residuals* of the model, or the error 
 > >    left over after we account for any linear relationships in the data,
@@ -387,9 +391,9 @@ Now let's fit a linear model to our training data and calculate the training err
 fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 
 ## Function to calculate the (mean squared) error
- mse <- function(true, prediction) { 
-     mean((true - prediction)^2) 
- } 
+mse <- function(true, prediction) { 
+    mean((true - prediction)^2) 
+} 
 
 ## Calculate the training error 
 err_lm_train <- mse(train_age, fitted(fit_horvath)) 
