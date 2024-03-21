@@ -580,12 +580,12 @@ represents.
 > > 
 > > ```{r pca-ex}
 > > pc <- pca(mat, metadata = metadata) # implement a PCA
-> > #We can check the scree plot to see that many principal components explain a very small amount of
-> > the total variance in the data
+> > # We can check the scree plot to see that many principal components
+> > # explain a very small amount of the total variance in the data
 > > 
 > > #Let's remove the principal components with lowest 20% of the variance
 > > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
-> > #Explore other arguments provided in pca
+> > # Explore other arguments provided in pca
 > > pc$rotated[1:5, 1:5] # obtain the first 5 principal component scores for the first 5 observations
 > > pc$loadings[1:5, 1:5] #obtain the first 5 principal component loadings for the first 5 features
 > > 
