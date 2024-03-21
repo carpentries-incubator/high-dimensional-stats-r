@@ -131,6 +131,36 @@ knitr::kable(head(colData(methylation)), row.names = FALSE)
 
 
 
+~~~
+Warning in as.data.frame.integer(col, optional = optional): Direct call of
+'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.integer(col, optional = optional): Direct call of
+'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+~~~
+{: .warning}
+
+
+
+~~~
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+Warning in as.data.frame.numeric(col, optional = optional): Direct call of
+'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
+'as.data.frame()' instead
+~~~
+{: .warning}
+
+
+
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
 |:-----------|:-----------|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|
 |A07         |PCA0612     |     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|
@@ -685,7 +715,7 @@ head(design_age)
 > that minimises the differences between outcome values and those values 
 > predicted by using the covariates (or predictor variables). But how do we get 
 > from a set of predictors and regression coefficients to predicted values? This 
-> is done via matrix multipliciation. The matrix of predictors is (matrix) 
+> is done via matrix multiplication. The matrix of predictors is (matrix) 
 > multiplied by the vector of coefficients. That matrix is called the 
 > **model matrix** (or design matrix). It has one row for each observation and 
 > one column for each predictor plus (by default) one aditional column of ones 
@@ -770,21 +800,20 @@ of the input matrix.
 
 ~~~
 toptab_age <- topTable(fit_age, coef = 2, number = nrow(fit_age))
-orderEffSize <- rev(order(abs(toptab_age$logFC))) # order by effect size (absolute log-fold change)
-head(toptab_age[orderEffSize, ])
+head(toptab_age)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-                 logFC    AveExpr         t    P.Value adj.P.Val         B
-cg22160073 -0.07615967  0.2261869 -2.200534 0.03410063 0.2563957 -5.536033
-cg02371766 -0.07480442  1.6744282 -2.032526 0.04933710 0.3004092 -5.861179
-cg18633711 -0.07221177 -0.1668962 -2.254569 0.03017881 0.2459313 -5.427228
-cg01267675 -0.06393861  1.2496114 -2.127641 0.04010694 0.2758387 -5.679584
-cg07334644 -0.05880317  0.9591176 -2.297448 0.02735916 0.2339981 -5.339467
-cg01387455 -0.05873510  0.5872700 -2.051339 0.04737637 0.2964936 -5.825782
+                 logFC    AveExpr         t      P.Value   adj.P.Val        B
+cg08446924 -0.02571353 -0.4185868 -6.039068 5.595675e-07 0.002797837 5.131574
+cg06493994  0.01550941 -2.1057877  5.593988 2.239813e-06 0.005599533 3.747986
+cg17661642  0.02266668 -2.0527722  5.358739 4.658336e-06 0.006048733 3.019698
+cg05168977  0.02276336 -2.2918472  5.346500 4.838987e-06 0.006048733 2.981904
+cg24549277  0.01975577 -1.7466088  4.939242 1.708355e-05 0.011508818 1.731821
+cg04436528 -0.01943612  0.7033503 -4.917179 1.828563e-05 0.011508818 1.664608
 ~~~
 {: .output}
 
