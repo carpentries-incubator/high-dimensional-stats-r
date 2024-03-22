@@ -2,7 +2,7 @@
 title: "Introduction to high-dimensional data"
 author: "GS Robertson"
 source: Rmd
-teaching: 20
+teaching: 30
 exercises: 20
 questions:
 - What are high-dimensional data and what do these data look like in the
@@ -38,36 +38,30 @@ knitr_fig_path("01-")
 
 # What are high-dimensional data? 
 
-*High-dimensional data* are defined as data in which the number of features (variables observed),
-$p$, are close to or larger than the number of observations (or data points), $n$.
-The opposite is *low-dimensional data* in which the number of observations,
-$n$, far outnumbers the number of features, $p$. A related concept is *wide data*, which
-refers to data with numerous features irrespective of the number of observations (similarly,
-*tall data* is often used to denote data with a large number of observations).
-Analyses of high-dimensional data require consideration of potential problems that
-come from having more features than observations.
+*High-dimensional data* are defined as data with many features (variables observed).
+In recent years, advances in information technology have allowed large amounts of data to
+be collected and stored with relative ease. As such, high-dimensional
+data have become more common in many scientific fields, including the biological sciences, 
+where datasets in subjects like genomics and medical sciences often have a large numbers of features.
+For example, hospital data may record many variables, including symptoms,
+blood test results, behaviours, and general health. An example of what high-dimensional data might look like 
+in a biomedical study is shown in the figure below. 
 
-High-dimensional data have become more common in many scientific fields as new
-automated data collection techniques have been developed. More and more datasets
-have a large number of features and some have as many features as there are rows
-in the dataset. Datasets in which $p \geq n$ are becoming more common. Such datasets
-pose a challenge for data analysis as standard methods of analysis, such as linear
-regression, are no longer appropriate.
 
-High-dimensional datasets are common in the biological sciences. Data sets in subjects like
-genomics and medical sciences are often tall (with large $n$) and wide
-(with large $p$), and can be difficult to analyse or visualise using
-standard statistical tools. An example of high-dimensional data in biological
-sciences may include data collected from hospital patients recording symptoms,
-blood test results, behaviours, and general health, resulting in datasets with
-large numbers of features. Researchers often want to relate these features to
-specific patient outcomes (e.g. survival, length of time spent in hospital).
-An example of what high-dimensional data might look like in a biomedical study
-is shown in the figure below. 
 
 ```{r table-intro, echo = FALSE, fig.cap = "Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.", fig.alt = "Table displaying a high-dimensional data set with many features in individual columns relating to health data such as blood pressure, heart rate and respiratory rate. Each row contains the data for individual patients."}
-knitr::include_graphics(here::here("fig/intro-table.png"))
+knitr::include_graphics("../fig/intro-table.png")
 ```
+
+Researchers often want to relate such features to specific patient outcomes
+(e.g. survival, length of time spent in hospital). However, analysing 
+high-dimensional data can be extremely challenging since standard methods of analysis, 
+such as individual plots of features and linear regression, 
+are no longer appropriate when we have many features.
+In this lesson, we will learn alternative methods 
+for dealing with high-dimensional data and discover how these can be applied 
+for practical high-dimensional data analysis in the biological sciences. 
+
 
 
 
@@ -92,10 +86,10 @@ knitr::include_graphics(here::here("fig/intro-table.png"))
 > 
 > > ## Solution
 > > 
-> > 1. No. The number of observations (100 patients) is far greater than the number of features (3).
-> > 2. Yes, this is an example of high-dimensional data. There are only 100 observations but 200,000+3 features.
-> > 3. No. There are many more observations (200 patients) than features (5). 
-> > 4. Yes. There is only one observation of more than 20,000 features.
+> > 1. No. The number of features is relatively small (4 including the response variable since this is an observed variable).
+> > 2. Yes, this is an example of high-dimensional data. There are 200,004 features.
+> > 3. No. The number of features is relatively small (6).
+> > 4. Yes. There are 20,008 features.
 > {: .solution}
 {: .challenge}
 
@@ -107,20 +101,15 @@ about the challenges we face in analysing them.
 # Why is dealing with high-dimensional data challenging? 
 
 Most classical statistical methods are set up for use on low-dimensional data
-(i.e. data where the number of observations $n$ is much larger than the number
-of features $p$). This is because low-dimensional data were much more common in
-the past when data collection was more difficult and time consuming. In recent
-years advances in information technology have allowed large amounts of data to
-be collected and stored with relative ease. This has allowed large numbers of
-features to be collected, meaning that datasets in which $p$ matches or exceeds
-$n$ are common (collecting observations is often more difficult or expensive
-than collecting many features from a single observation).
+(i.e. with a small number of features, $p$). 
+This is because low-dimensional data were much more common in
+the past when data collection was more difficult and time consuming. 
 
-Datasets with large numbers of features are difficult to visualise. When
-exploring low-dimensional datasets, it is possible to plot the response variable
-against each of the limited number of explanatory variables to get an idea which
-of these are important predictors of the response. With high-dimensional data
-the large number of explanatory variables makes doing this difficult. In some
+One challenge when analysing high-dimensional data is visualising the many variables. 
+When exploring low-dimensional datasets, it is possible to plot the response variable
+against each of features to get an idea which
+of these are important predictors of the response. With high-dimensional data,
+the large number of features makes doing this difficult. In addition, in some
 high-dimensional datasets it can also be difficult to identify a single response
 variable, making standard data exploration and analysis techniques less useful.
 
@@ -135,11 +124,11 @@ of the challenges we are facing when working with high-dimensional data.
 > encountered when working with many features in a high-dimensional data set.
 >
 > First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
-> Next, let's Load the `Prostate` dataset as follows:
+> Next, let's Load the `prostate` dataset as follows:
 >
 > ```{r prostate}
 > library("here")
-> Prostate <- readRDS(here("data/prostate.rds"))
+> prostate <- readRDS(here("data/prostate.rds"))
 > ```
 >
 > Examine the dataset (in which each row represents a single patient) to:
@@ -153,21 +142,21 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ```{r dim-prostate, eval = FALSE}
-> > dim(Prostate)   #print the number of rows and columns
+> > dim(prostate)   #print the number of rows and columns
 > > ```
 > >
 > > ```{r head-prostate, eval = FALSE}
-> > names(Prostate) # examine the variable names
-> > head(Prostate)   #print the first 6 rows
+> > names(prostate) # examine the variable names
+> > head(prostate)   #print the first 6 rows
 > > ```
 > > 
 > > ```{r pairs-prostate}
-> > names(Prostate)  #examine column names
+> > names(prostate)  #examine column names
 > >
-> > pairs(Prostate)  #plot each pair of variables against each other
+> > pairs(prostate)  #plot each pair of variables against each other
 > > ```
 > > The `pairs()` function plots relationships between each of the variables in
-> > the `Prostate` dataset. This is possible for datasets with smaller numbers
+> > the `prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
@@ -189,17 +178,20 @@ of the challenges we are facing when working with high-dimensional data.
 > improve the reproducibility of an analysis.
 {: .callout}
 
-Imagine we are carrying out least squares regression on a dataset with 25
+As well as many variables causing problems when working with high-dimensional data,
+having relatively few observations ($n$) compared to the number of features ($p$) causes 
+additional challenges. To illustrate these challenges,
+imagine we are carrying out least squares regression on a dataset with 25
 observations. Fitting a best fit line through these data produces a plot shown
 in the left-hand panel of the figure below.
 
 However, imagine a situation in which the number of observations and features in a
 dataset are almost equal. In that situation the effective number of observations
-per features is low. The result of fitting a best fit line through
+per feature is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 ```{r intro-figure, echo = FALSE, fig.cap = "Scatter plot of two variables (x and y) from a data set with 25 observations (left) and 2 observations (right) with a fitted regression line (red).", fig.alt = "Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points."}
-knitr::include_graphics(here::here("fig/intro-scatterplot.png"))
+knitr::include_graphics("../fig/intro-scatterplot.png")
 ```
 
 In the first situation, the least squares regression line does not fit the data
@@ -219,7 +211,7 @@ explore why high correlations might be an issue in a Challenge.
 > ## Challenge 3
 > 
 > Use the `cor()` function to examine correlations between all variables in the 
-> `Prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
+> `prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
 > 0.75 for the correlation coefficients?
 >
 > Use the `lm()` function to fit univariate regression models to predict patient 
@@ -232,11 +224,11 @@ explore why high correlations might be an issue in a Challenge.
 > 
 > > ## Solution
 > >
-> > Create a correlation matrix of all variables in the Prostate dataset
+> > Create a correlation matrix of all variables in the `prostate` dataset
 > >
 > > ```{r cor-prostate}
-> > cor(Prostate)
-> > round(cor(Prostate), 2) # rounding helps to visualise the correlations
+> > cor(prostate)
+> > round(cor(prostate), 2) # rounding helps to visualise the correlations
 > > ```
 > > 
 > > As seen above, some variables are highly correlated. In particular, the 
@@ -246,27 +238,27 @@ explore why high correlations might be an issue in a Challenge.
 > > as predictors.
 > > 
 > > ```{r univariate-prostate}
-> > model1 <- lm(age ~ gleason, data = Prostate)
-> > model2 <- lm(age ~ pgg45, data = Prostate)
+> > model_gleason <- lm(age ~ gleason, data = prostate)
+> > model_pgg45 <- lm(age ~ pgg45, data = prostate)
 > > ```
 > >
 > > Check which covariates have a significant efffect
 > >
 > > ```{r summary-prostate}
-> > summary(model1)
-> > summary(model2)
+> > summary(model_gleason)
+> > summary(model_pgg45)
 > > ```
 > >
 > > Based on these results we conclude that both `gleason` and `pgg45` have a 
-> > statistically significan univariate effect (also referred to as a marginal
+> > statistically significant univariate effect (also referred to as a marginal
 > > effect) as predictors of age (5% significance level). 
 > >
 > > Fitting a multivariate regression model using both both `gleason` and `pgg45` 
 > > as predictors
 > >
 > > ```{r multivariate-prostate}
-> > model3 <- lm(age ~ gleason + pgg45, data = Prostate)
-> > summary(model3)
+> > model_multivar <- lm(age ~ gleason + pgg45, data = prostate)
+> > summary(model_multivar)
 > > ```
 > >
 > > Although `gleason` and `pgg45` have statistically significant univariate effects,
@@ -294,15 +286,11 @@ regression.
 
 # What statistical methods are used to analyse high-dimensional data? 
 
-As we found out in the above challenges, carrying out linear regression on
-datasets with large numbers of features can be difficult due to: high levels of correlation
-between variables; difficulty in identifying a clear response variable; and risk
-of overfitting. These problems are common to the analysis of many high-dimensional datasets,
-for example, those using genomics data with multiple genes, or species
-composition data in an environment where the relative abundance of different species
-within a community is of interest. For such datasets, other statistical methods
-may be used to examine whether groups of observations show similar characteristics
-and whether these groups may relate to other features in the data (e.g.
+We have discussed so far that high-dimensional data analysis can be challenging since variables are difficult to visualise, 
+leading to challenges identifying relationships between variables and suitable response variables; we may have
+relatively few observations compared to features, leading to over-fitting; and features may be highly correlated, leading to
+challenges interpreting models. We therefore require alternative approaches to examine whether, for example,
+groups of observations show similar characteristics and whether these groups may relate to other features in the data (e.g.
 phenotype in genetics data). 
 
 In this course, we will cover four methods that help in dealing with high-dimensional data:
@@ -310,7 +298,7 @@ In this course, we will cover four methods that help in dealing with high-dimens
 (3) dimensionality reduction, and (4) clustering. Here are some examples of when each of 
 these approaches may be used:
 
-(1) Regression with numerous outcomes refers to situations in which there are 
+1. Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
 levels for many sites in the genome) and when one is interested in assessing 
 whether these variables are associated with a specific covariate of interest, 
@@ -320,7 +308,7 @@ predictor) could be fitted independently. In the context of high-dimensional
 molecular data, a typical example are *differential gene expression* analyses. 
 We will explore this type of analysis in the *Regression with many outcomes* episode.
 
-(2) Regularisation (also known as *regularised regression* or *penalised regression*) 
+2. Regularisation (also known as *regularised regression* or *penalised regression*) 
 is typically used to fit regression models when there is a single outcome 
 variable or interest but the number of potential predictors is large, e.g. 
 there are more predictors than observations. Regularisation can help to prevent 
@@ -330,14 +318,14 @@ been often used when building *epigenetic clocks*, where methylation values
 across several thousands of genomic sites are used to predict chronological age. 
 We will explore this in more detail in the *Regularised regression* episode. 
 
-(3) Dimensionality reduction is commonly used on high-dimensional datasets for 
+3. Dimensionality reduction is commonly used on high-dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
 For instance, a low-dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
 This course contains two episodes that explore dimensionality reduction
 techniques: *Principal component analysis* and *Factor analysis*. 
 
-(4) Clustering methods can be used to identify potential grouping patterns 
+4. Clustering methods can be used to identify potential grouping patterns 
 within a dataset. A popular example is the *identification of distinct cell types*
 through clustering cells with similar gene expression patterns. The *K-means*
 episode will explore a specific method to perform clustering analysis. 
