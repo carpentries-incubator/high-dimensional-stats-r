@@ -108,7 +108,7 @@ resulting principal component could also be used as an effect in further analysi
 # Principal component analysis
 
 PCA transforms a dataset of continuous variables into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
-in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed to principal components, we can extract a subset of the principal components as new variables that sufficiently explain the variability in the dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset. 
+in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed into principal components, we can extract a subset of the principal components in order of the variance they explain (starting with the first principal component that by definition explains the most variability, and then the second), giving new variables that explain a lot of the variability in the original dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset.
 
 To see what these new principal components may look like, 
 Figure 1 shows biodiversity index versus percentage area left
