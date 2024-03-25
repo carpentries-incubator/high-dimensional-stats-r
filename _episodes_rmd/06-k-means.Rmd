@@ -69,7 +69,7 @@ so that we become more confident about the shape and size of the clusters.
 user-defined number of distinct, non-overlapping clusters. 
 To create clusters of 'similar' data points, K-means 
 clustering creates clusters that minimise the 
-within-cluster variation adn thus the amount that
+within-cluster variation and thus the amount that
 data points within a cluster differ from each other. 
 The distance between data points within a cluster is 
 used as a measure of within-cluster variation.
