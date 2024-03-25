@@ -76,31 +76,24 @@ resulting principal component could also be used as an effect in further analysi
 >    hospital with infectious respiratory disease. They would like to determine
 >    whether length of stay in hospital differs in patients with different
 >    respiratory diseases.
-> 2. An online retailer has collected data on user interactions with its online
->    app and has information on the number of times each user interacted with
->    the app, what products they viewed per interaction, and the type and cost
->    of these products. The retailer would like to use this information to
->    predict whether or not a user will be interested in a new product.
-> 3. A scientist has assayed gene expression levels in 1000 cancer patients and
+> 2. A scientist has assayed gene expression levels in 1000 cancer patients and
 >    has data from probes targeting different genes in tumour samples from
 >    patients. She would like to create new variables representing relative
 >    abundance of different groups of genes to i) find out if genes form
 >    subgroups based on biological function and ii) use these new variables
 >    in a linear regression examining how gene expression varies with disease
 >    severity.
-> 4. All of the above.
+> 3. Both of the above.
 > 
 > > ## Solution
 > > 
 > >
 > > In the first case, a regression model would be more suitable; perhaps a
 > > survival model.
-> > In the second, again a regression model, likely linear or logistic, would
-> > be more suitable.
-> > In the third example, PCA can help to identify modules of correlated
+> > In the second example, PCA can help to identify modules of correlated
 > > features that explain a large amount of variation within the data.
 > >
-> > Therefore the answer here is 3.
+> > Therefore the answer here is 2.
 > {: .solution}
 {: .challenge}
 
@@ -241,8 +234,8 @@ deviation of 1.
 > >    It also won't affect how quickly the output will be calculated, whether
 > >    continuous and categorical variables are present or not.
 > > 
-> >    It is done to ensure that all features have equal weighting in the resulting
-> >    PCs.
+> >    It is done to ensure that features with different ranges of values
+> >    have equal weighting in the resulting PCs (point 2).
 > > 
 > >  2. You may not want to standardise datasets which contain continuous variables
 > >    all measured on the same scale (e.g. gene expression data or RNA sequencing
