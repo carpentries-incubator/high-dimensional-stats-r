@@ -559,7 +559,7 @@ are grouped together, while `sample_b` is seen as distant because it has a
 different pattern, even though its values are closer to `sample_a`.
 Using your own distance function is often useful, especially if you have missing
 or unusual data. It's often possible to use correlation and other custom
-distance functions in functions that perform hierarchical clustering, such as
+dissimilarity measures in functions that perform hierarchical clustering, such as
 `pheatmap()` and `stats::heatmap()`:
 
 ```{r heatmap-cor-cor-example, fig.cap="Heatmaps of features versus samples clustered in the samples according to correlation.", fig.alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot."}
