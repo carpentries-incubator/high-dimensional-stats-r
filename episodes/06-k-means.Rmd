@@ -32,31 +32,84 @@ knitr_fig_path("08-")
 
 # Introduction
 
-High-dimensional data, especially in biological settings,  has
-many sources of heterogeneity. Some of these are stochastic variation
-arising from measurement error or random differences between organisms. 
-In some cases, a known grouping causes this heterogeneity (sex, treatment
-groups, etc). In other cases, this heterogeneity arises from the presence of
-unknown subgroups in the data. **Clustering** is a set of techniques that allows
-us to discover unknown groupings like this, which we can often use to
-discover the nature of the heterogeneity we're investigating.
+As we saw in previous episodes, visualising high-dimensional 
+data with a large amount of features is difficult and can 
+limit our understanding of the data and associated processes.
+In some cases, a known grouping causes this heterogeneity 
+(sex, treatment groups, etc). In other cases, heterogeneity 
+may arise from the presence of unknown subgroups in the data. 
+While PCA can be used to reduce the dimension of the dataset 
+into a smaller set of uncorrelated variables and factor analysis 
+can be used to identify underlying factors, clustering is a set 
+of techniques that allow us to discover unknown groupings. 
 
-**Cluster analysis** involves finding groups of observations that are more
-similar to each other (according to some feature) than they are to observations
-in other groups. Cluster analysis is a useful statistical tool for exploring
-high-dimensional datasets as 
-visualising data with large numbers of features is difficult. It is commonly
-used in fields such as bioinformatics, genomics, and image processing in which
-large datasets that include many features are often produced. Once groups
-(or clusters) of observations have been identified using cluster analysis,
-further analyses or interpretation can be carried out on the groups, for
-example, using metadata to further explore groups.
+Cluster analysis involves finding groups of observations that 
+are more similar to each other (according to some feature) 
+than they are to observations in other groups and are thus 
+likely to represent the same source of heterogeneity. 
+Once groups (or clusters) of observations have been identified 
+using cluster analysis, further analyses or interpretation can be
+carried out on the groups, for example, using metadata to further 
+explore groups.
+
+Cluster analysis is commonly used to discover unknown groupings 
+in fields such as bioinformatics, genomics, and image processing, 
+in which large datasets that include many features are often produced.
 
 There are various ways to look for clusters of observations in a dataset using
 different *clustering algorithms*. One way of clustering data is to minimise
 distance between observations within a cluster and maximise distance between
-proposed clusters. Clusters can be updated in an iterative process so that over
-time we can become more confident in size and shape of clusters.
+proposed clusters. Using this process, we can also iteratively update clusters 
+so that we become more confident about the shape and size of the clusters.
+
+
+# What is K-means clustering?
+
+**K-means clustering** groups data points into a 
+user-defined number of distinct, non-overlapping clusters. 
+To create clusters of 'similar' data points, K-means 
+clustering creates clusters that minimise the 
+within-cluster variation and thus the amount that
+data points within a cluster differ from each other. 
+The distance between data points within a cluster is 
+used as a measure of within-cluster variation.
+
+To carry out K-means clustering, we first pick $k$ initial points as centres or 
+"centroids" of our clusters. There are a few ways to choose these initial "centroids"
+and this is discussed below. Once we have picked intitial points, we then follow 
+these two steps until appropriate clusters have been formed:
+
+1. Assign each data point to the cluster with the closest centroid
+2. Update centroid positions as the average of the points in that cluster.
+
+We can see this process in action in this animation:
+
+```{r kmeans-animation, echo = FALSE, fig.cap="Cap", fig.alt="Alt"}
+knitr::include_graphics("../fig/kmeans.gif")
+```
+While K-means has some advantages over other clustering methods (easy to implement and
+to understand), it does have some disadvantages, particularly difficulties in identifying 
+initial clusters which observations belong to and the need for the user to specify the
+number of clusters that the data should be partitioned into.
+
+> ## Initialisation
+>
+> The algorithm used in K-means clustering finds a *local* rather than a
+> *global* optimum, so that results of clustering are dependent on the initial
+> cluster that each observation is randomly assigned to. This initial
+> configuration can have a significant effect on the final configuration of the
+> clusters, so dealing with this limitation is an important part 
+> of K-means clustering. Some strategies to deal with this problem are:
+> - Choose $K$ points at random from the data as the cluster centroids.
+> - Randomly split the data into $K$ groups, and then average these groups.
+> - Use the K-means++ algorithm to choose initial values.
+> 
+> These each have advantages and disadvantages. In general, it's good to be
+> aware of this limitation of K-means clustering and that this limitation can
+> be addressed by choosing a good initialisation method, initialising clusters
+> manually, or running the algorithm from multiple different starting points.
+>
+{: .callout}
 
 
 # Believing in clusters
