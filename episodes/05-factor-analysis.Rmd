@@ -2,7 +2,7 @@
 title: "Factor analysis"
 author: "GS Robertson"
 source: Rmd
-teaching: 25
+teaching: 30
 exercises: 10
 questions:
 - What is factor analysis and when can it be used?
