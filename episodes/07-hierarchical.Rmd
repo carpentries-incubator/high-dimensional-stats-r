@@ -295,8 +295,6 @@ we can count the vertical lines we encounter crossing the horizontal cut. For
 example, a cut at height 10 produces 2 downstream clusters for the dendogram in Challenge 1,
 while a cut at height 4 produces 6 downstream clusters.
 
-
-
 # Dendogram visualisation
 
 We can first visualise cluster membership by highlight branches in dendograms. 
@@ -330,6 +328,7 @@ plot(color_branches(avg_dend_obj, h = 50))
 ```
 
 ## Numerical visualisation
+
 In addition to visualising clusters directly on the dendogram, we can cut
 the dendrogram to determine number of clusters at different heights
 using `cutree()`. This function cuts a dendrogram into several
