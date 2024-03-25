@@ -69,7 +69,7 @@ so that we become more confident about the shape and size of the clusters.
 user-defined number of distinct, non-overlapping clusters. 
 To create clusters of 'similar' data points, K-means 
 clustering creates clusters that minimise the 
-within-cluster variation adn thus the amount that
+within-cluster variation and thus the amount that
 data points within a cluster differ from each other. 
 The distance between data points within a cluster is 
 used as a measure of within-cluster variation.
@@ -80,7 +80,7 @@ and this is discussed below. Once we have picked intitial points, we then follow
 these two steps until appropriate clusters have been formed:
 
 1. Assign each data point to the cluster with the closest centroid
-2. Update centroid positions as the average of the points in that cluster
+2. Update centroid positions as the average of the points in that cluster.
 
 We can see this process in action in this animation:
 
@@ -88,8 +88,8 @@ We can see this process in action in this animation:
 knitr::include_graphics("../fig/kmeans.gif")
 ```
 While K-means has some advantages over other clustering methods (easy to implement and
-to understand), it does have some disadvantages, namely difficulties in identifying 
-initial clusters which observations belong to and the need for the user to specifiy the
+to understand), it does have some disadvantages, particularly difficulties in identifying 
+initial clusters which observations belong to and the need for the user to specify the
 number of clusters that the data should be partitioned into.
 
 > ## Initialisation

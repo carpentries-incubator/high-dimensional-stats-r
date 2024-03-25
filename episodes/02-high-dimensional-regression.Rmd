@@ -625,7 +625,7 @@ head(design_age)
 > that minimises the differences between outcome values and those values 
 > predicted by using the covariates (or predictor variables). But how do we get 
 > from a set of predictors and regression coefficients to predicted values? This 
-> is done via matrix multipliciation. The matrix of predictors is (matrix) 
+> is done via matrix multiplication. The matrix of predictors is (matrix) 
 > multiplied by the vector of coefficients. That matrix is called the 
 > **model matrix** (or design matrix). It has one row for each observation and 
 > one column for each predictor plus (by default) one aditional column of ones 
@@ -673,8 +673,7 @@ of the input matrix.
 
 ```{r ebayes-toptab}
 toptab_age <- topTable(fit_age, coef = 2, number = nrow(fit_age))
-orderEffSize <- rev(order(abs(toptab_age$logFC))) # order by effect size (absolute log-fold change)
-head(toptab_age[orderEffSize, ])
+head(toptab_age)
 ```
 
 The output of `topTable` includes the coefficient, here termed a log
