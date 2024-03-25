@@ -44,72 +44,24 @@ math: yes
 
 # Introduction
 
-Imagine a dataset which contains many variables ($p$), close to the total number
-of rows in the dataset ($n$). Some of these variables are highly correlated and
-several form groups which you might expect to represent the same overall effect.
-Such datasets are challenging to analyse for several reasons, with the main
-problem being how to reduce dimensionality in the dataset while retaining the
-important features. 
+If a dataset contains many variables ($p$), it is likely that some of these 
+variables will be highly correlated. Variables may even be so highly correlated 
+that they represent the same overall effect. Such datasets are challenging 
+to analyse for several reasons, with the main problem being how to reduce 
+dimensionality in the dataset while retaining the important features. 
 
 In this episode we will explore *principal component analysis* (PCA) as a
-popular method of analysing high-dimensional data. PCA is an unsupervised
+popular method of analysing high-dimensional data. PCA is a
 statistical method which allows large datasets of correlated variables to be
 summarised into smaller numbers of uncorrelated principal components that
-explain most of the variability in the original dataset. This is useful,
-for example, during initial data exploration as it allows correlations among
-data points to be observed and principal components to be calculated for
-inclusion in further analysis (e.g. linear regression). An example of PCA might
-be reducing several variables representing aspects of patient health
-(blood pressure, heart rate, respiratory rate) into a single feature.
+explain most of the variability in the original dataset. As an example,
+PCA might reduce several variables representing aspects of patient health 
+(blood pressure, heart rate, respiratory rate) into a single feature capturing
+an overarching "patient health" effect. This is useful from an exploratory point 
+of view, discovering how variables might be associated and combined. The 
+resulting principal component could also be used as an effect in further analysis 
+(e.g. linear regression). 
 
-
-
-
-# Advantages and disadvantages of PCA
-
-Advantages:
-* It is a relatively easy to use and popular method. 
-* Various software/packages are available to run a PCA.
-* The calculations used in a PCA are easy to understand for statisticians and
-  non-statisticians alike.
-
-Disadvantages:
-* It assumes that variables in a dataset are correlated.
-* It is sensitive to the scale at which input variables are measured.
-  If input variables are measured at different scales, the variables
-  with large variance relative to the scale of measurement will have
-  greater impact on the principal components relative to variables with smaller
-  variance. In many cases, this is not desirable.
-* It is not robust against outliers, meaning that very large or small data
-  points can have a large effect on the output of the PCA.
-* PCA assumes a linear relationship between variables which is not always a
-  realistic assumption.
-* It can be difficult to interpret the meaning of the principal components,
-  especially when including them in further analyses (e.g. inclusion in a linear
-  regression).
-
-
-> ## Supervised vs unsupervised learning
-> Most statistical problems fall into one of two categories: supervised or
-> unsupervised learning. 
-> Examples of supervised learning problems include linear regression and include
-> analyses in which each observation has both at least one independent variable
-> ($x$) as well as a dependent variable ($y$). In supervised learning problems
-> the aim is to predict the value of the response given future observations or
-> to understand the relationship between the dependent variable and the
-> predictors. In unsupervised learning for each observation there is no
-> dependent variable ($y$), but only 
-> a series of independent variables. In this situation there is no need for
-> prediction, as there is no dependent variable to predict (hence the analysis
-> can be thought as being unsupervised by the dependent variable). Instead
-> statistical analysis can be used to understand relationships between the
-> independent variables or between observations themselves. Unsupervised
-> learning problems often occur when analysing high-dimensional datasets in
-> which there is no obvious dependent variable to be
-> predicted, but the analyst would like to understand more about patterns
-> between groups of observations or reduce dimensionality so that a supervised
-> learning process may be used.
-{: .callout}
 
 
 > ## Challenge 1 
@@ -151,28 +103,21 @@ Disadvantages:
 {: .challenge}
 
 
-# What is a principal component?
+# Principal component analysis
 
+PCA transforms a dataset of continuous variables into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
+in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed into principal components, we can extract a subset of the principal components in order of the variance they explain (starting with the first principal component that by definition explains the most variability, and then the second), giving new variables that explain a lot of the variability in the original dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset.
 
+To see what these new principal components may look like, 
+Figure 1 shows biodiversity index versus percentage area left
+fallow for 50 farms in southern England. Principal components are a collection of new, artificial data points, one for each individual observation called _scores_. 
+The red line on the plot represents the line passing through the scores (points) of the first principal component for each observation.
+The angle that the first principal component line passes through the data points at is set to the direction with the highest 
+variability. The plotted first principal components can therefore be thought of reflecting the 
+effect in the data that has the highest variability. The second principal component explains the next highest amount of variability 
+in the data and is represented by the line perpendicular to the first (the green line). The second principal component can be thought of as
+capturing the overall effect in the data that has the second-highest variability.
 
-
-The first principal component is the direction of the data along which the
-observations vary the most. The second principal component is the direction of
-the data along which the observations show the next highest amount of variation.
-For example, the figure below shows biodiversity index versus percentage area left
-fallow for 50 farms in southern England. The red line represents the first
-principal component direction of the data, which is the direction along which
-there is greatest variability in the data. Projecting points onto this line
-(i.e. by finding the location on the line closest to the point) would give a
-vector of points with the greatest possible variance. The next highest amount
-of variability in the data is represented by the line perpendicular to first
-regression line which represents the second principal component (green line).
-
-The second principal component is a linear combination of the variables that
-is uncorrelated with the first principal component. There are as many principal
-components as there are variables in your dataset, but as we'll see, some are
-more useful at explaining your data than others. By definition, the first
-principal component explains more variation than other principal components.
 
 <div class="figure" style="text-align: center">
 <img src="../fig/bio_index_vs_percentage_fallow.png" alt="Side-by-side scatter plots of the farm data. The left figure displays a scatter plot of biodiversity versus percentage area fallow. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."  />
@@ -194,23 +139,22 @@ This is explained in more detail on [this Q&A website](https://stats.stackexchan
 <p class="caption">Animation showing the iterative process by which principal components are found. Data points are shown in blue, distances from the line as red dashed lines and the principal component is shown by a black line.</p>
 </div>
 
+> ## Mathematical description of PCA 
+> Mathematically, each principal component is a linear combination 
+> of the variables in the dataset. That is, the first principal
+> component values or _scores_, $Z_1$, are a linear combination 
+> of variables in the dataset, $X_1...X_p$, given by
+> $$ Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p, $$
+> where $a_{11}...a_{p1}$ represent principal component _loadings_. 
+{: .callout} 
 
-The first principal component's scores ($Z_1$) are calculated using the equation:
-
-$$  
-  Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p
-$$
-
-$X_1...X_p$ represents variables in the original dataset and $a_{11}...a_{p1}$
-represent principal component loadings, which can be thought of as the degree to
-which each variable contributes to the calculation of the principal component.
-We will come back to principal component scores and loadings further below.
+In summary, the principal components' values are called _scores_. The loadings can
+be thought of as the degree to which each original variable contributes to 
+the principal component scores. In this episode, we will see how to perform PCA to summarise the information in high-dimensional datasets.
 
 # How do we perform a PCA?
 
-## A prostate cancer dataset
-
-The `prostate` dataset represents data from 97
+To illustrate how to perform PCA initially, we start with a low-dimensional dataset. The `prostate` dataset represents data from 97
 men who have prostate cancer. The data come from a study which examined the
 correlation between the level of prostate specific antigen and a number of
 clinical measures in men who were about to receive a radical prostatectomy.
@@ -228,12 +172,9 @@ Columns include:
 - `lpsa` (log-transformed prostate specific antigen; level of PSA in blood).
 - `age` (patient age in years).
 
-Here we will calculate principal component scores for each of the rows in this
-dataset, using five principal components (one for each variable included in the
-PCA). We will include five clinical variables in our PCA, each of the continuous
-variables in the prostate dataset, so that we can create fewer variables
-representing clinical markers of cancer progression. Standard PCA is carried
-out using continuous variables only.
+We will perform PCA on the five continuous clinical variables in our dataset
+so that we can create fewer variables representing clinical markers of cancer progression.
+
 
 First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
@@ -288,9 +229,11 @@ head(pros2)
 ~~~
 {: .output}
 
-## Do we need to standardise the data?
+## Do we need to scale the data?
 
-Now we compare the variances between variables in the dataset.
+PCA derives principal components based on the variance they explain in the data. Therefore, we may need to apply some pre-processing to scale variables in our dataset if we want to ensure that each variable is considered equally by the PCA. Scaling is essential if we want to avoid the PCA ignoring variables that may be important to our analysis just because they take low values and have low variance. We do not need to scale if we want variables with low variance to carry less weight in the PCA.
+
+In this example, we want each variable to be treated equally by the PCA since variables with lower values may be just as informative as variables with higher values. Let's therefore investigate the variables in our dataset to see if we need to scale our variables first:
 
 
 ~~~
@@ -320,10 +263,10 @@ hist(pros2$lbph, breaks = "FD")
 <p class="caption">Histograms of two variables from the prostate data set.</p>
 </div>
 
-Note that variance is greatest for `lbph` and lowest for `lweight`. It is clear
-from this output that we need to scale each of these variables before including
-them in a PCA analysis to ensure that differences in variances between variables
-do not drive the calculation of principal components. In this example we
+Note that variance is greatest for `lbph` and lowest for `lweight`. Since we 
+want each of the variables to be treated equally in our PCA, but there are large differences in the variances of the variables, we need to scale each of the variables before including
+them in a PCA to ensure that differences in variances 
+do not drive the calculation of principal components. In this example, we
 standardise all five variables to have a mean of 0 and a standard
 deviation of 1. 
 
@@ -363,8 +306,8 @@ deviation of 1.
 {: .challenge}
 
 Next we will carry out a PCA using the `prcomp()` function in base R. The input
-data (`pros2`) is in the form of a matrix. Note that the `scale = TRUE` argument
-is used to standardise the variables to have a mean 0 and standard deviation of
+data (`pros2`) is in the form of a matrix. Note that the `center = TRUE` and `scale = TRUE` arguments
+are used to standardise the variables to have a mean 0 and standard deviation of
 1.
 
 
@@ -396,7 +339,7 @@ We have calculated one principal component for each variable in the original
 dataset. How do we choose how many of these are necessary to represent the true
 variation in the data, without having extra components that are unnecessary?
 
-Let's look at the relative importance of each component using `summary`.
+Let's look at the relative importance of (variance explained by) each component using `summary`.
 
 
 ~~~
@@ -423,10 +366,7 @@ This returns the proportion of variance in the data explained by each of the
 PC3 a further 11%, PC4 approximately 8% and PC5
 around 5%.
 
-Let us visualise this. A plot of the amount of variance accounted for by each PC
-is also called a scree plot. Note that the amount of variance accounted for by a principal
-component is also called eigenvalue and thus the y-axis in scree plots if often
-labelled “eigenvalue”.
+Let us visualise this. A plot of the amount of variance accounted for by each PC is called a scree plot. Note that the amount of variance accounted for by a principal component is given by "eigenvalues". Thus, the y-axis in scree plots if often labelled "eigenvalue".
 
 Often, scree plots show a characteristic pattern where initially, the variance drops
 rapidly with each additional principal component. But then there is an “elbow” after which the
@@ -478,7 +418,7 @@ dataset and question.
 
 
 
-## What are loadings and principal component scores?
+## Loadings and principal component scores
 
 Most PCA functions will produce two main output matrices: the
 *principal component scores* and the *loadings*. The matrix of principal component scores
@@ -636,6 +576,30 @@ depending on the PCA implementation you use. Here are some examples:
 | PCAtools::pca()   | $rotated   | $loadings | 
 
 
+
+# Advantages and disadvantages of PCA
+
+Advantages:
+* It is a relatively easy to use and popular method. 
+* Various software/packages are available to run a PCA.
+* The calculations used in a PCA are simple to understand compared to other methods for dimension reduction. 
+
+Disadvantages:
+* It assumes that variables in a dataset are correlated.
+* It is sensitive to the scale at which input variables are measured.
+  If input variables are measured at different scales, the variables
+  with large variance relative to the scale of measurement will have
+  greater impact on the principal components relative to variables with smaller
+  variance. In many cases, this is not desirable.
+* It is not robust against outliers, meaning that very large or small data
+  points can have a large effect on the output of the PCA.
+* PCA assumes a linear relationship between variables which is not always a
+  realistic assumption.
+* It can be difficult to interpret the meaning of the principal components,
+  especially when including them in further analyses (e.g. inclusion in a linear
+  regression).
+
+
 # Using PCA to analyse gene expression data 
 
 In this section you will carry out your own PCA using the Bioconductor package **`PCAtools`** 
@@ -669,7 +633,7 @@ associated metadata, downloaded from the
 
 ~~~
 library("SummarizedExperiment")
-cancer <- readRDS(here::here("data/cancer_expression.rds"))
+cancer <- readRDS(here("data/cancer_expression.rds"))
 mat <- assay(cancer)
 metadata <- colData(cancer)
 ~~~
