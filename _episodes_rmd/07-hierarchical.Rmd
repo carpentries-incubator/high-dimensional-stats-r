@@ -121,8 +121,7 @@ Looking at a heatmap of these data, we may spot some patterns -- many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
-```{r heatmap-noclust, echo=FALSE, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of individual versus methylation sides, coloured by methylation level. Red delineates high methylation levels (up to around 4), blue delineates low methylation levels (to around -4) and white delineates methylation levels close to zero. There are many vertical blue and red stripes."}
-
+```{r heatmap-noclust, echo=FALSE, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. There are many vertical blue and red stripes."}
 Heatmap(methyl_mat,
   name = "Methylation level",
   cluster_rows = FALSE, cluster_columns = FALSE,
@@ -295,8 +294,6 @@ we can count the vertical lines we encounter crossing the horizontal cut. For
 example, a cut at height 10 produces 2 downstream clusters for the dendogram in Challenge 1,
 while a cut at height 4 produces 6 downstream clusters.
 
-
-
 # Dendogram visualisation
 
 We can first visualise cluster membership by highlight branches in dendograms. 
@@ -330,6 +327,7 @@ plot(color_branches(avg_dend_obj, h = 50))
 ```
 
 ## Numerical visualisation
+
 In addition to visualising clusters directly on the dendogram, we can cut
 the dendrogram to determine number of clusters at different heights
 using `cutree()`. This function cuts a dendrogram into several
@@ -338,7 +336,6 @@ user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut). The function outputs the cluster labels of each data point in order.
 
 ```{r cutree, fig.cap="Scatter plot of data x2 versus x1, coloured by cluster.", fig.alt="A scatter plot of the example data x2 versus x1, coloured by 8 different clusters. There are two clusters in the bottom right of the plot, 4 clusters in the top left of the plot, and a final cluster consisting of one point in the top right of the plot."}
-clust <- hclust(dist_m, method = "complete")
 ## k is a user defined parameter determining
 ## the desired number of clusters at which to cut the treee
 cutree(clust, k = 3)
@@ -395,14 +392,13 @@ downstream of the cut).
 > {: .solution}
 {: .challenge}
 
-<<<<<<< HEAD
 # Highlighting dendrogram branches
 
 In addition to visualising cluster identity in scatter plots, it is also possible to
 highlight branches in dentrograms. In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
-```{r plot-clust-method, fig.cap="Dendogram with boxes around clusters.", fig.alt="A dendogram for the methyl_mat data with boxes overlain on clusters. There are 5 clusters in total, each delineating a separate cluster."}
+```{r plot-clust-method, fig.cap="Dendogram with boxes around clusters.", fig.alt="A dendogram for the methyl_mat data with boxes overlaid on clusters. There are 5 boxes in total, each indicating separate clusters."}
 ## create a distance matrix using euclidean method
 distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
@@ -428,8 +424,6 @@ avg_dend_obj <- as.dendrogram(clust)
 plot(color_branches(avg_dend_obj, h = 50))
 ```
 
-=======
->>>>>>> mary-suggestions-task1plus-ep7
 # The effect of different linkage methods
 Now let us look into changing the default behaviour of `hclust()`. First, we'll load a synthetic dataset, comprised of two variables representing two crescent-shaped point clouds:
 
@@ -601,7 +595,7 @@ are grouped together, while `sample_b` is seen as distant because it has a
 different pattern, even though its values are closer to `sample_a`.
 Using your own distance function is often useful, especially if you have missing
 or unusual data. It's often possible to use correlation and other custom
-distance functions in functions that perform hierarchical clustering, such as
+dissimilarity measures in functions that perform hierarchical clustering, such as
 `pheatmap()` and `stats::heatmap()`:
 
 ```{r heatmap-cor-cor-example, fig.cap="Heatmaps of features versus samples clustered in the samples according to correlation.", fig.alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot."}
