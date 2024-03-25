@@ -123,12 +123,12 @@ of the challenges we are facing when working with high-dimensional data.
 > encountered when working with many features in a high-dimensional data set.
 >
 > First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
-> Next, let's Load the `Prostate` dataset as follows:
+> Next, let's Load the `prostate` dataset as follows:
 >
 > 
 > ~~~
 > library("here")
-> Prostate <- readRDS(here("data/prostate.rds"))
+> prostate <- readRDS(here("data/prostate.rds"))
 > ~~~
 > {: .language-r}
 >
@@ -144,20 +144,20 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > dim(Prostate)   #print the number of rows and columns
+> > dim(prostate)   #print the number of rows and columns
 > > ~~~
 > > {: .language-r}
 > >
 > > 
 > > ~~~
-> > names(Prostate) # examine the variable names
-> > head(Prostate)   #print the first 6 rows
+> > names(prostate) # examine the variable names
+> > head(prostate)   #print the first 6 rows
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > ~~~
-> > names(Prostate)  #examine column names
+> > names(prostate)  #examine column names
 > > ~~~
 > > {: .language-r}
 > > 
@@ -172,7 +172,7 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > pairs(Prostate)  #plot each pair of variables against each other
+> > pairs(prostate)  #plot each pair of variables against each other
 > > ~~~
 > > {: .language-r}
 > > 
@@ -181,7 +181,7 @@ of the challenges we are facing when working with high-dimensional data.
 > > <p class="caption">plot of chunk pairs-prostate</p>
 > > </div>
 > > The `pairs()` function plots relationships between each of the variables in
-> > the `Prostate` dataset. This is possible for datasets with smaller numbers
+> > the `prostate` dataset. This is possible for datasets with smaller numbers
 > > of variables, but for datasets in which $p$ is larger it becomes difficult
 > > (and time consuming) to visualise relationships between all variables in the
 > > dataset. Even where visualisation is possible, fitting models to datasets
@@ -237,7 +237,7 @@ explore why high correlations might be an issue in a Challenge.
 > ## Challenge 3
 > 
 > Use the `cor()` function to examine correlations between all variables in the 
-> `Prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
+> `prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
 > 0.75 for the correlation coefficients?
 >
 > Use the `lm()` function to fit univariate regression models to predict patient 
@@ -250,11 +250,11 @@ explore why high correlations might be an issue in a Challenge.
 > 
 > > ## Solution
 > >
-> > Create a correlation matrix of all variables in the Prostate dataset
+> > Create a correlation matrix of all variables in the `prostate` dataset
 > >
 > > 
 > > ~~~
-> > cor(Prostate)
+> > cor(prostate)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -287,7 +287,7 @@ explore why high correlations might be an issue in a Challenge.
 > > 
 > > 
 > > ~~~
-> > round(cor(Prostate), 2) # rounding helps to visualise the correlations
+> > round(cor(prostate), 2) # rounding helps to visualise the correlations
 > > ~~~
 > > {: .language-r}
 > > 
@@ -315,8 +315,8 @@ explore why high correlations might be an issue in a Challenge.
 > > 
 > > 
 > > ~~~
-> > model1 <- lm(age ~ gleason, data = Prostate)
-> > model2 <- lm(age ~ pgg45, data = Prostate)
+> > model_gleason <- lm(age ~ gleason, data = prostate)
+> > model_pgg45 <- lm(age ~ pgg45, data = prostate)
 > > ~~~
 > > {: .language-r}
 > >
@@ -324,7 +324,7 @@ explore why high correlations might be an issue in a Challenge.
 > >
 > > 
 > > ~~~
-> > summary(model1)
+> > summary(model_gleason)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -333,7 +333,7 @@ explore why high correlations might be an issue in a Challenge.
 > > ~~~
 > > 
 > > Call:
-> > lm(formula = age ~ gleason, data = Prostate)
+> > lm(formula = age ~ gleason, data = prostate)
 > > 
 > > Residuals:
 > >     Min      1Q  Median      3Q     Max 
@@ -355,7 +355,7 @@ explore why high correlations might be an issue in a Challenge.
 > > 
 > > 
 > > ~~~
-> > summary(model2)
+> > summary(model_pgg45)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -364,7 +364,7 @@ explore why high correlations might be an issue in a Challenge.
 > > ~~~
 > > 
 > > Call:
-> > lm(formula = age ~ pgg45, data = Prostate)
+> > lm(formula = age ~ pgg45, data = prostate)
 > > 
 > > Residuals:
 > >      Min       1Q   Median       3Q      Max 
@@ -392,8 +392,8 @@ explore why high correlations might be an issue in a Challenge.
 > >
 > > 
 > > ~~~
-> > model3 <- lm(age ~ gleason + pgg45, data = Prostate)
-> > summary(model3)
+> > model_multivar <- lm(age ~ gleason + pgg45, data = prostate)
+> > summary(model_multivar)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -402,7 +402,7 @@ explore why high correlations might be an issue in a Challenge.
 > > ~~~
 > > 
 > > Call:
-> > lm(formula = age ~ gleason + pgg45, data = Prostate)
+> > lm(formula = age ~ gleason + pgg45, data = prostate)
 > > 
 > > Residuals:
 > >     Min      1Q  Median      3Q     Max 
@@ -459,7 +459,7 @@ In this course, we will cover four methods that help in dealing with high-dimens
 (3) dimensionality reduction, and (4) clustering. Here are some examples of when each of 
 these approaches may be used:
 
-(1) Regression with numerous outcomes refers to situations in which there are 
+1. Regression with numerous outcomes refers to situations in which there are 
 many variables of a similar kind (expression values for many genes, methylation 
 levels for many sites in the genome) and when one is interested in assessing 
 whether these variables are associated with a specific covariate of interest, 
@@ -469,7 +469,7 @@ predictor) could be fitted independently. In the context of high-dimensional
 molecular data, a typical example are *differential gene expression* analyses. 
 We will explore this type of analysis in the *Regression with many outcomes* episode.
 
-(2) Regularisation (also known as *regularised regression* or *penalised regression*) 
+2. Regularisation (also known as *regularised regression* or *penalised regression*) 
 is typically used to fit regression models when there is a single outcome 
 variable or interest but the number of potential predictors is large, e.g. 
 there are more predictors than observations. Regularisation can help to prevent 
@@ -479,14 +479,14 @@ been often used when building *epigenetic clocks*, where methylation values
 across several thousands of genomic sites are used to predict chronological age. 
 We will explore this in more detail in the *Regularised regression* episode. 
 
-(3) Dimensionality reduction is commonly used on high-dimensional datasets for 
+3. Dimensionality reduction is commonly used on high-dimensional datasets for 
 data exploration or as a preprocessing step prior to other downstream analyses. 
 For instance, a low-dimensional visualisation of a gene expression dataset may
 be used to inform *quality control* steps (e.g. are there any anomalous samples?). 
 This course contains two episodes that explore dimensionality reduction
 techniques: *Principal component analysis* and *Factor analysis*. 
 
-(4) Clustering methods can be used to identify potential grouping patterns 
+4. Clustering methods can be used to identify potential grouping patterns 
 within a dataset. A popular example is the *identification of distinct cell types*
 through clustering cells with similar gene expression patterns. The *K-means*
 episode will explore a specific method to perform clustering analysis. 
