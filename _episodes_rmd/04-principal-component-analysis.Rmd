@@ -560,7 +560,7 @@ representing groups of genes would help visualise the data and address
 research questions regarding the effect different groups of genes have on
 disease progression.
 
-Using the `PCAtools`, we will apply a PCA to the cancer
+Using `PCAtools`, we will perform PCA on the cancer
 gene expression data, plot the amount of variation in the data explained by
 each principal component and plot the most important principal components
 against each other as well as understanding what each principal component
