@@ -343,6 +343,7 @@ Essentially, the criterion used to select principal components should be determi
 based on what is deemed a sufficient level of information retention for a specific 
 dataset and question.
 
+
 ## Loadings and principal component scores
 
 Most PCA functions will produce two main output matrices: the
@@ -440,7 +441,6 @@ Disadvantages:
 * It can be difficult to interpret the meaning of the principal components,
   especially when including them in further analyses (e.g. inclusion in a linear
   regression).
-
 
 # Using PCA to analyse gene expression data 
 

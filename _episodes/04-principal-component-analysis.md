@@ -432,6 +432,7 @@ Essentially, the criterion used to select principal components should be determi
 based on what is deemed a sufficient level of information retention for a specific 
 dataset and question.
 
+
 ## Loadings and principal component scores
 
 Most PCA functions will produce two main output matrices: the
@@ -602,7 +603,6 @@ Disadvantages:
 * It can be difficult to interpret the meaning of the principal components,
   especially when including them in further analyses (e.g. inclusion in a linear
   regression).
-
 
 # Using PCA to analyse gene expression data 
 
@@ -823,8 +823,8 @@ represents.
 > > 215281_x_at 0.003923775 0.003179556 -0.0004388192 9.664648e-05 0.003501335
 > >                    PC86        PC87          PC88         PC89         PC90
 > > 215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
-> >                     PC91
-> > 215281_x_at -0.002231113
+> >                    PC91
+> > 215281_x_at -0.00383085
 > > ~~~
 > > {: .output}
 > > 
@@ -889,7 +889,7 @@ represents.
 > >                    PC82        PC83         PC84       PC85       PC86
 > > 211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
 > >                     PC87        PC88        PC89        PC90        PC91
-> > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.003856584
+> > 211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.004593411
 > > ~~~
 > > {: .output}
 > > The function `pca()` is used to perform PCA, and uses as input a matrix
