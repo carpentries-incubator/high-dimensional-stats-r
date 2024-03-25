@@ -2,13 +2,11 @@ rmarkdown
 here
 knitr
 minfi
-circlize
 ComplexHeatmap
-RColorBrewer
-viridis
 ggplot2
 broom
 limma
+viridis
 SummarizedExperiment
 glmnet
 PCAtools
@@ -18,8 +16,8 @@ SingleCellExperiment
 cluster
 bluster
 pheatmap
-dplyr
 dendextend
+dplyr
 clValid
 BiocManager
 methylclock

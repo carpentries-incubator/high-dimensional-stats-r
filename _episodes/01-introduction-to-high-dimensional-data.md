@@ -113,7 +113,7 @@ high-dimensional datasets it can also be difficult to identify a single response
 variable, making standard data exploration and analysis techniques less useful.
 
 Let's have a look at a simple dataset with lots of features to understand some
-of the challenges we are facing when working with high-dimensional data.
+of the challenges we are facing when working with high-dimensional data. 
 
 
 > ## Challenge 2 
@@ -190,6 +190,10 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > {: .solution}
 {: .challenge}
+
+Note that function documentation and information on function arguments will be useful throughout
+this lesson. We can access these easily in R by running `?` followed by the package name.
+For example, the documentation for the `dim` package can be accessed by running `?dim`.
 
 > ## Locating data with R - the **`here`** package
 > 
