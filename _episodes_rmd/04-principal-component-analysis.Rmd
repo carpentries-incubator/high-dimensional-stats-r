@@ -316,13 +316,13 @@ deviation of 1.
 
 ## Performing PCA
 
-Throughout this episode, we will carry out PCA using the Bioconductor package `PCAtools`.
+Throughout this episode, we will carry out PCA using the Bioconductor package **`PCAtools`**.
 This package provides several functions that are useful for exploring data via PCA and
 producing useful figures and analysis tools. The package is made for the somewhat unusual
 Bioconductor style of data tables (observations in columns, features in rows). When
-using Bioconductor data sets and `PCAtools`, it is thus not necessary to transpose the data.
+using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
 You can use the help files in PCAtools to find out about the `pca()`
-function (type `help("pca")` or `?pca` in R). Note that, although we focus on PCA implementation using `PCAtools`, there are several other
+function (type `help("pca")` or `?pca` in R). Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
 options for performing PCA, including a base R function, `prcomp()`. Equivalent functions and 
 output labels for the common implementations are summarised below.
 
@@ -333,7 +333,7 @@ output labels for the common implementations are summarised below.
 | PCAtools::pca()   | $rotated   | $loadings | 
 
 
-Let's use the `PCAtools` package to perform PCA on the scaled `prostate` data. First, let's load the `PCAtools` package.
+Let's use the **`PCAtools`** package to perform PCA on the scaled `prostate` data. First, let's load the **`PCAtools`** package.
 
 ```{r pcatools}
 library("PCAtools")
@@ -341,7 +341,7 @@ library("PCAtools")
 
 
 The input data (`pros2`) is in the form of a matrix and we need to take the transpose of this 
-matrix and convert it to a data frame for use within the `PCAtools` package. We set the `scale = TRUE` argument to standardise the variables to have a mean 0 and standard deviation of 1 as above. 
+matrix and convert it to a data frame for use within the **`PCAtools`** package. We set the `scale = TRUE` argument to standardise the variables to have a mean 0 and standard deviation of 1 as above. 
 
 ```{r prcomp}
 pros2t <- data.frame(t(pros2))  #create transposed data frame
@@ -380,7 +380,7 @@ variance decreases more slowly. The total variance explained up to the elbow poi
 interpreted as structural variance that is relevant and should be retained versus noise
 which may be discarded after the elbow. 
 
-We can create a scree plot using the `PCAtools` function `screeplot()`:
+We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 
 ```{r varexp, fig.cap="Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.", fig.alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."}
 screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8, 
@@ -421,7 +421,7 @@ The matrix of loadings (also called rotation matrix) has as many rows as there
 are features in the original data. It contains information about how the
 (usually centered and scaled) original data relate to the principal component scores.
 
-We can print the loadings for the `PCAtools` implementation using 
+We can print the loadings for the **`PCAtools`** implementation using 
 
 ```{r pca-pros}
 pca.pros$loadings
@@ -560,7 +560,7 @@ representing groups of genes would help visualise the data and address
 research questions regarding the effect different groups of genes have on
 disease progression.
 
-Using `PCAtools`, we will perform PCA on the cancer
+Using **`PCAtools`**, we will perform PCA on the cancer
 gene expression data, plot the amount of variation in the data explained by
 each principal component and plot the most important principal components
 against each other as well as understanding what each principal component
@@ -570,7 +570,7 @@ represents.
 > ## Challenge 3
 > 
 > Apply a PCA to the cancer gene expression data using the `pca()` function from
-> `PCAtools`. 
+> **`PCAtools`**. 
 > 
 > Let us assume we only care about the principal components accounting for the top
 > 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
@@ -645,7 +645,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 
 > ## Challenge 4
 > 
-> Using the `screeplot()` function in `PCAtools`, create a scree plot to show 
+> Using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
 > proportion of variance explained by each principal component. Explain the
 > output of the screeplot in terms of proportion of the variance in the data explained
 > by each principal component.
@@ -683,14 +683,14 @@ This will allow any potential clustering of points according to demographic or
 phenotypic variables to be seen.
 
 We can use biplots to look for patterns in the output from the PCA. Note that there
-are two functions called `biplot()`, one in the package `PCAtools` and one in
+are two functions called `biplot()`, one in the package **`PCAtools`** and one in
 **`stats`**. Both functions produce biplots but their scales are different!
 
 
 > ## Challenge 5
 > 
 > Create a biplot of the first two principal components from your PCA
-> using `biplot()` function in `PCAtools`. See `help("PCAtools::biplot")` for
+> using `biplot()` function in **`PCAtools`**. See `help("PCAtools::biplot")` for
 > arguments and their meaning. For instance, `lab` or `colby` may be useful.
 > 
 > Examine whether the data appear to form clusters. Explain your results.
@@ -705,7 +705,7 @@ are two functions called `biplot()`, one in the package `PCAtools` and one in
 > > axis according to expressions of different genes while no separation can be
 > > seem along the PC2 axis. Labels of patient samples are automatically added
 > > in the biplot. Labels for each sample are added by default, but can be
-> > removed if there is too much overlap in names. Note that `PCAtools` does
+> > removed if there is too much overlap in names. Note that **`PCAtools`** does
 > > not scale biplot in the same way as biplot using the stats package.
 > {: .solution}
 {: .challenge}
@@ -737,7 +737,7 @@ Let's consider this biplot in more detail, and also display the loadings:
 {: .challenge}
 
 So far, we have only looked at a biplot of PC1 versus PC2 which only gives part
-of the picture. The `pairplots()` function in `PCAtools` can be used to create
+of the picture. The `pairplots()` function in **`PCAtools`** can be used to create
 multiple biplots including different principal components.
 
 ```{r pairsplot, fig.cap="Multiple biplots produced by pairsplot().", fig.alt="An upper triangular grid of scatter plots of each principal component versus the others."}
@@ -753,7 +753,7 @@ you to set custom colours.
 
 Finally, it can sometimes be of interest to compare how certain variables contribute
 to different principal components. This can be visualised with `plotloadings()` from
-the `PCAtools` package. The function checks the range of loadings for each
+the **`PCAtools`** package. The function checks the range of loadings for each
 principal component specified (default: first five principal components). It then selects the features
 in the top and bottom 5% of these ranges and displays their loadings. This behaviour
 can be adjusted with the `rangeRetain` argument, which has 0.1 as the default value (i.e.
