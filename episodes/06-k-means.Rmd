@@ -89,7 +89,7 @@ knitr::include_graphics("../fig/kmeans.gif")
 ```
 While K-means has some advantages over other clustering methods (easy to implement and
 to understand), it does have some disadvantages, particularly difficulties in identifying 
-initial clusters which observations belong to and the need for the user to specifiy the
+initial clusters which observations belong to and the need for the user to specify the
 number of clusters that the data should be partitioned into.
 
 > ## Initialisation
