@@ -80,7 +80,7 @@ and this is discussed below. Once we have picked intitial points, we then follow
 these two steps until appropriate clusters have been formed:
 
 1. Assign each data point to the cluster with the closest centroid
-2. Update centroid positions as the average of the points in that cluster
+2. Update centroid positions as the average of the points in that cluster.
 
 We can see this process in action in this animation:
 
