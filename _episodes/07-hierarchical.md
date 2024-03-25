@@ -87,14 +87,14 @@ panel below). Groups of observations may then be merged into a larger cluster
 in a single cluster.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/hierarchical_clustering_1.png" alt="Figure 1a: Example data showing two clusters of observation pairs" width="500px" />
-<p class="caption">Figure 1a: Example data showing two clusters of observation pairs</p>
+<img src="../fig/hierarchical_clustering_1.png" alt="Scatter plot of observations x2 versus x1. Two clusters of pairs of observations are shown by blue and red boxes, each grouping two observations that are close in their x and y distance." width="500px" />
+<p class="caption">Example data showing two clusters of observation pairs.</p>
 </div>
 
 
 <div class="figure" style="text-align: center">
-<img src="../fig/hierarchical_clustering_2.png" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" />
-<p class="caption">Figure 1b: Example data showing fusing of one observation into larger cluster</p>
+<img src="../fig/hierarchical_clustering_2.png" alt="Scatter plot of observations x2 versus x1. Three boxes are shown this time. Blue and red boxes contain two observations each. The two boxes contain points that are relatively far apart. A third green box is shown encompassing the blue box and an additional data point." width="500px" />
+<p class="caption">Example data showing fusing of one observation into larger cluster.</p>
 </div>
 
 # A motivating example
@@ -122,8 +122,8 @@ appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-noclust-1.png" alt="plot of chunk heatmap-noclust" width="432" />
-<p class="caption">plot of chunk heatmap-noclust</p>
+<img src="../fig/rmd-09-heatmap-noclust-1.png" alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. There are many vertical blue and red stripes." width="432" />
+<p class="caption">Heatmap of methylation data.</p>
 </div>
 
 We can order these data to make the patterns more clear using hierarchical
@@ -146,8 +146,8 @@ Heatmap(methyl_mat,
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-clust-1.png" alt="plot of chunk heatmap-clust" width="432" />
-<p class="caption">plot of chunk heatmap-clust</p>
+<img src="../fig/rmd-09-heatmap-clust-1.png" alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis, clustered by methylation sites and individuals. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot." width="432" />
+<p class="caption">Heatmap of methylation data clustered by methylation sites and individuals.</p>
 </div>
 
 We can see that clustering the features (CpG sites) results in an overall
@@ -251,8 +251,8 @@ text(
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plotexample-1.png" alt="plot of chunk plotexample" width="432" />
-<p class="caption">plot of chunk plotexample</p>
+<img src="../fig/rmd-09-plotexample-1.png" alt="A scatter plot of randomly-generated data x2 versus x1. The points appear fairly randomly scattered, arguably centered towards the bottom of the plot." width="432" />
+<p class="caption">Scatter plot of randomly-generated data x2 versus x1.</p>
 </div>
 
 ~~~
@@ -278,8 +278,8 @@ dist_m <- dist(example_data, method = "euclidean")
 > > {: .language-r}
 > > 
 > > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-09-plotclustex-1.png" alt="plot of chunk plotclustex" width="432" />
-> > <p class="caption">plot of chunk plotclustex</p>
+> > <img src="../fig/rmd-09-plotclustex-1.png" alt=" " width="432" />
+> > <p class="caption"> </p>
 > > </div>
 > {: .solution}
 {: .challenge}
@@ -373,13 +373,13 @@ count(example_cl, cluster)
 ~~~
 #plot cluster each point belongs to on original scatterplot
 library(ggplot2)
-ggplot(example_cl, aes(x = x2, y = x1, color = factor(cluster))) + geom_point()
+ggplot(example_cl, aes(x = x1, y = x2, color = factor(cluster))) + geom_point()
 ~~~
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-cutree-1.png" alt="plot of chunk cutree" width="432" />
-<p class="caption">plot of chunk cutree</p>
+<img src="../fig/rmd-09-cutree-1.png" alt="A scatter plot of the example data x2 versus x1, coloured by 8 different clusters. There are two clusters in the bottom right of the plot, 4 clusters in the top left of the plot, and a final cluster consisting of one point in the top right of the plot." width="432" />
+<p class="caption">Scatter plot of data x2 versus x1, coloured by cluster.</p>
 </div>
 
 Note that this cut produces 8 clusters (two before the cut and another six
@@ -498,8 +498,8 @@ rect.hclust(clust, k = 2, border = 2:6)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plot-clust-method-1.png" alt="plot of chunk plot-clust-method" width="432" />
-<p class="caption">plot of chunk plot-clust-method</p>
+<img src="../fig/rmd-09-plot-clust-method-1.png" alt="A dendogram for the methyl_mat data with boxes overlaid on clusters. There are 5 boxes in total, each indicating separate clusters." width="432" />
+<p class="caption">Dendogram with boxes around clusters.</p>
 </div>
 We can also colour clusters downstream of a specified cut using `color_branches()`
 from the **`dendextend`** package.
@@ -517,8 +517,8 @@ plot(color_branches(avg_dend_obj, h = 50))
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plot-coloured-branches-1.png" alt="plot of chunk plot-coloured-branches" width="432" />
-<p class="caption">plot of chunk plot-coloured-branches</p>
+<img src="../fig/rmd-09-plot-coloured-branches-1.png" alt="A dendogram with the different clusters in 4 different colours." width="432" />
+<p class="caption">Dendogram with coloured branches delineating different clusters.</p>
 </div>
 
 # The effect of different linkage methods
@@ -547,8 +547,8 @@ plot(cres)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-crescents-1.png" alt="plot of chunk crescents" width="432" />
-<p class="caption">plot of chunk crescents</p>
+<img src="../fig/rmd-09-crescents-1.png" alt="A scatter plot of data simulated to form two crescent shapes. The crescents are horizontally orientated with a a rough line of vertical symmetry." width="432" />
+<p class="caption">Scatter plot of data simulated according to two crescent-shaped point clouds.</p>
 </div>
 We might expect that the crescents are resolved into separate clusters. But if we
 run hierarchical clustering with the default arguments, we get this:
@@ -561,8 +561,8 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-cresClustDefault-1.png" alt="plot of chunk cresClustDefault" width="432" />
-<p class="caption">plot of chunk cresClustDefault</p>
+<img src="../fig/rmd-09-cresClustDefault-1.png" alt="A scatter plot of the crescent-shaped simulated data calculated using Euclidean distance. The points are coloured in black or red according to their membership to 2 clusters. The points in the tails of each crescent have inherited the colour of the opposite crescent." width="432" />
+<p class="caption">Scatter plot of crescent-shaped simulated data, coloured according to clusters calculated using Euclidean distance.</p>
 </div>
 
 
@@ -678,7 +678,7 @@ other crescent and so it splits both crescents.
 
 So far, we've been using Euclidean distance to define the dissimilarity
 or distance between observations. However, this isn't always the best
-metric for how dissimilar different observations are. Let's make an
+metric for how dissimilar the observations are. Let's make an
 example to demonstrate. Here, we're creating two samples each with
 ten observations of random noise:
 
@@ -727,7 +727,7 @@ Feature 6  0.5696061 -0.43742787 5.569606
 {: .output}
 
 If we plot a heatmap of this, we can see that `sample_a` and `sample_b` are
-grouped together because they have a small distance to each other, despite
+grouped together because they have a small distance from each other, despite
 being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
@@ -739,8 +739,8 @@ Heatmap(as.matrix(cor_example))
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-cor-example-1.png" alt="plot of chunk heatmap-cor-example" width="432" />
-<p class="caption">plot of chunk heatmap-cor-example</p>
+<img src="../fig/rmd-09-heatmap-cor-example-1.png" alt="Heatmap of simulated data: feature versus sample. The grid cells of the heatmap are coloured from red (high) to blue (low) according to value of the simulated data." width="432" />
+<p class="caption">Heatmap of simulated data.</p>
 </div>
 
 We can see that more clearly if we do a line plot:
@@ -752,7 +752,9 @@ We can see that more clearly if we do a line plot:
 plot(
   1:nrow(cor_example),
   rep(range(cor_example), 5),
-  type = "n"
+  type = "n", 
+  xlab = "Feature number",
+  ylab = "Value"
 )
 ## draw a red line for sample_a
 lines(cor_example$sample_a, col = "firebrick")
@@ -764,8 +766,8 @@ lines(cor_example$sample_c, col = "forestgreen")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-lineplot-cor-example-1.png" alt="plot of chunk lineplot-cor-example" width="432" />
-<p class="caption">plot of chunk lineplot-cor-example</p>
+<img src="../fig/rmd-09-lineplot-cor-example-1.png" alt="A line plot of simulated value versus observation number, coloured by sample. Samples a and b are concentrated at the bottom of the plot, while sample c is concentrated at the top of the plot. Samples a and c have exactly the same vertical pattern." width="432" />
+<p class="caption">Line plot of simulated value versus observation number, coloured by sample.</p>
 </div>
 
 We can see that `sample_a` and `sample_c` have exactly the same pattern across
@@ -782,8 +784,8 @@ plot(clust_dist)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-clust-euc-cor-example-1.png" alt="plot of chunk clust-euc-cor-example" width="432" />
-<p class="caption">plot of chunk clust-euc-cor-example</p>
+<img src="../fig/rmd-09-clust-euc-cor-example-1.png" alt="A dendogram of the example simulated data clustered according to Euclidean distance. The dendogram shows that sample c definitively forms its own cluster for any cut height and samples a and b merge into a cluster at a height of around 6." width="432" />
+<p class="caption">Dendogram of the example simulated data clustered according to Euclidean distance.</p>
 </div>
 
 In some cases, we might want to ensure that samples that have similar patterns,
@@ -805,8 +807,8 @@ plot(clust_cor)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-clust-cor-cor-example-1.png" alt="plot of chunk clust-cor-cor-example" width="432" />
-<p class="caption">plot of chunk clust-cor-cor-example</p>
+<img src="../fig/rmd-09-clust-cor-cor-example-1.png" alt="A dendogram of the example simulated data clustered according to correlation. The dendogram shows that sample b definitively forms its own cluster and samples a and c form definitively form their own cluster for any cut height." width="432" />
+<p class="caption">Dendogram of the example simulated data clustered according to correlation.</p>
 </div>
 
 Now, `sample_a` and `sample_c` that have identical patterns across the features
@@ -814,7 +816,7 @@ are grouped together, while `sample_b` is seen as distant because it has a
 different pattern, even though its values are closer to `sample_a`.
 Using your own distance function is often useful, especially if you have missing
 or unusual data. It's often possible to use correlation and other custom
-distance functions to functions that perform hierarchical clustering, such as
+dissimilarity measures in functions that perform hierarchical clustering, such as
 `pheatmap()` and `stats::heatmap()`:
 
 
@@ -825,8 +827,8 @@ pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-cor-cor-example-1.png" alt="plot of chunk heatmap-cor-cor-example" width="432" />
-<p class="caption">plot of chunk heatmap-cor-cor-example</p>
+<img src="../fig/rmd-09-heatmap-cor-cor-example-1.png" alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot." width="432" />
+<p class="caption">Heatmaps of features versus samples clustered in the samples according to correlation.</p>
 </div>
 
 ~~~
@@ -839,8 +841,8 @@ heatmap(
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-cor-cor-example-2.png" alt="plot of chunk heatmap-cor-cor-example" width="432" />
-<p class="caption">plot of chunk heatmap-cor-cor-example</p>
+<img src="../fig/rmd-09-heatmap-cor-cor-example-2.png" alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot." width="432" />
+<p class="caption">Heatmaps of features versus samples clustered in the samples according to correlation.</p>
 </div>
 
 
@@ -883,8 +885,8 @@ plot(clust)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plot-clust-dunn-1.png" alt="plot of chunk plot-clust-dunn" width="432" />
-<p class="caption">plot of chunk plot-clust-dunn</p>
+<img src="../fig/rmd-09-plot-clust-dunn-1.png" alt="A dendogram for clustering of methylation data. Identical to that in the section Highlighting dendrogram branches, without the colour overlay to show clusters." width="432" />
+<p class="caption">Dendogram for clustering of methylation data.</p>
 </div>
 
 ~~~
@@ -1067,8 +1069,8 @@ grid()
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-hclust-fig3-1.png" alt="Figure 3: Dunn index" width="432" />
-<p class="caption">Figure 3: Dunn index</p>
+<img src="../fig/rmd-09-hclust-fig3-1.png" alt="Scatter plot of Dunn index versus cut height for methylation data. The Dunn index is high (around 1.6) for height values up to 20. The Dunn index drops around height 20 and the points fluctuate around 0.8 and 1 as height increases." width="432" />
+<p class="caption">Dunn index versus cut height for methylation data.</p>
 </div>
 You can see that at low values of `h`, the Dunn index can be high. But this
 is not very useful - cutting the given tree at a low `h` value like 15 leads to allmost all observations
@@ -1083,8 +1085,8 @@ grid()
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-hclust-fig4-1.png" alt="Figure 4: Dunn index continued" width="432" />
-<p class="caption">Figure 4: Dunn index continued</p>
+<img src="../fig/rmd-09-hclust-fig4-1.png" alt="A scatter plot of the Dunn index versus the number of clusters for the methylation data. The points appear randomly scattered around the plot area between Dunn indices of 0.77 to 0.85, apart from for 4 clusters where the Dunn index reaches just over 0.88." width="432" />
+<p class="caption">Scatter plot of Dunn index versus the number of clusters for the methylation data.</p>
 </div>
 For the given range of `k` values explored, we obtain the highest Dunn index with `k=4`.
 This is in agreement with the previous plot.
@@ -1094,7 +1096,7 @@ clustering results, due to its high sensitivity to noise in the dataset.
 An alternative is to use silhouette scores (see the k-means clustering episode).
 
 As we said before (see previous episode), clustering is a non-trivial task.
-It is important to think about the nature of your data and your expactations
+It is important to think about the nature of your data and your expectations
 rather than blindly using a some algorithm for clustering or cluster validation.
 
 # Further reading 

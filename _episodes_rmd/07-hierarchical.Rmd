@@ -88,12 +88,12 @@ panel below). Groups of observations may then be merged into a larger cluster
 (see next panel below, green box). This process continues until all the observations are included
 in a single cluster.
 
-```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Figure 1a: Example data showing two clusters of observation pairs"}
+```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Example data showing two clusters of observation pairs.", fig.alt="Scatter plot of observations x2 versus x1. Two clusters of pairs of observations are shown by blue and red boxes, each grouping two observations that are close in their x and y distance."}
 knitr::include_graphics("../fig/hierarchical_clustering_1.png")
 ```
 
 
-```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Figure 1b: Example data showing fusing of one observation into larger cluster"}
+```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Example data showing fusing of one observation into larger cluster.", fig.alt="Scatter plot of observations x2 versus x1. Three boxes are shown this time. Blue and red boxes contain two observations each. The two boxes contain points that are relatively far apart. A third green box is shown encompassing the blue box and an additional data point."}
 knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 ```
 
@@ -119,7 +119,7 @@ Looking at a heatmap of these data, we may spot some patterns -- many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
-```{r heatmap-noclust, echo=FALSE}
+```{r heatmap-noclust, echo=FALSE, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. There are many vertical blue and red stripes."}
 
 Heatmap(methyl_mat,
   name = "Methylation level",
@@ -135,7 +135,7 @@ clustering. To do this, we can change the arguments we pass to
 groups features based on dissimilarity (here, Euclidean distance) and orders
 rows and columns to show clustering of features and observations.
 
-```{r heatmap-clust}
+```{r heatmap-clust, fig.cap="Heatmap of methylation data clustered by methylation sites and individuals.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis, clustered by methylation sites and individuals. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."}
 Heatmap(methyl_mat,
   name = "Methylation level",
   cluster_rows = TRUE, cluster_columns = TRUE,
@@ -226,7 +226,7 @@ dendrogram showing how the data is partitioned into clusters. But how do we
 interpret this dendrogram? Let's explore this using our example data.
 
 
-```{r plotexample}
+```{r plotexample, fig.cap="Scatter plot of randomly-generated data x2 versus x1.", fig.alt="A scatter plot of randomly-generated data x2 versus x1. The points appear fairly randomly scattered, arguably centered towards the bottom of the plot."}
 #First, create some example data with two variables x1 and x2
 set.seed(450)
 example_data <- data.frame(
@@ -256,7 +256,7 @@ dist_m <- dist(example_data, method = "euclidean")
 >
 > > ## Solution:
 > >
-> > ```{r plotclustex}
+> > ```{r plotclustex, fig.cap=" "}
 > > clust <- hclust(dist_m, method = "complete")
 > > plot(clust)
 > > ```
@@ -286,7 +286,7 @@ groups (or clusters) where the number of desired groups is controlled by the
 user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut).
 
-```{r cutree}
+```{r cutree, fig.cap="Scatter plot of data x2 versus x1, coloured by cluster.", fig.alt="A scatter plot of the example data x2 versus x1, coloured by 8 different clusters. There are two clusters in the bottom right of the plot, 4 clusters in the top left of the plot, and a final cluster consisting of one point in the top right of the plot."}
 ## k is a user defined parameter determining
 ## the desired number of clusters at which to cut the treee
 cutree(clust, k = 3)
@@ -305,7 +305,7 @@ count(example_cl, cluster)
 
 #plot cluster each point belongs to on original scatterplot
 library(ggplot2)
-ggplot(example_cl, aes(x = x2, y = x1, color = factor(cluster))) + geom_point()
+ggplot(example_cl, aes(x = x1, y = x2, color = factor(cluster))) + geom_point()
 ```
 
 Note that this cut produces 8 clusters (two before the cut and another six
@@ -348,7 +348,7 @@ In addition to visualising cluster identity in scatter plots, it is also possibl
 highlight branches in dentrograms. In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
-```{r plot-clust-method}
+```{r plot-clust-method, fig.cap="Dendogram with boxes around clusters.", fig.alt="A dendogram for the methyl_mat data with boxes overlaid on clusters. There are 5 boxes in total, each indicating separate clusters."}
 ## create a distance matrix using euclidean method
 distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
@@ -364,7 +364,7 @@ rect.hclust(clust, k = 2, border = 2:6)
 We can also colour clusters downstream of a specified cut using `color_branches()`
 from the **`dendextend`** package.
 
-```{r plot-coloured-branches}
+```{r plot-coloured-branches, fig.cap="Dendogram with coloured branches delineating different clusters.", fig.alt="A dendogram with the different clusters in 4 different colours."}
 ## cut tree at height = 4
 cut <- cutree(clust, h = 50)
 
@@ -376,7 +376,7 @@ plot(color_branches(avg_dend_obj, h = 50))
 
 # The effect of different linkage methods
 Now let us look into changing the default behaviour of `hclust()`. Imagine we have two crescent-shaped point clouds as shown below.
-```{r crescents}
+```{r crescents, fig.cap="Scatter plot of data simulated according to two crescent-shaped point clouds.", fig.alt="A scatter plot of data simulated to form two crescent shapes. The crescents are horizontally orientated with a a rough line of vertical symmetry."}
 # These two functions are to help us make crescents. Don't worry it you do not understand all this code.
 # The importent bit is the object "cres", which consists of two columns (x and y coordinates of two crescents).
 is.insideCircle <- function(co, r=0.5, offs=c(0,0)){
@@ -399,7 +399,7 @@ plot(cres)
 We might expect that the crescents are resolved into separate clusters. But if we
 run hierarchical clustering with the default arguments, we get this:
 
-```{r cresClustDefault}
+```{r cresClustDefault, fig.cap="Scatter plot of crescent-shaped simulated data, coloured according to clusters calculated using Euclidean distance.", fig.alt="A scatter plot of the crescent-shaped simulated data calculated using Euclidean distance. The points are coloured in black or red according to their membership to 2 clusters. The points in the tails of each crescent have inherited the colour of the opposite crescent."}
 cresClass <- cutree(hclust(dist(cres)), k=2) # save partition for colouring
 plot(cres, col=cresClass) # colour scatterplot by partition
 ```
@@ -468,7 +468,7 @@ other crescent and so it splits both crescents.
 
 So far, we've been using Euclidean distance to define the dissimilarity
 or distance between observations. However, this isn't always the best
-metric for how dissimilar different observations are. Let's make an
+metric for how dissimilar the observations are. Let's make an
 example to demonstrate. Here, we're creating two samples each with
 ten observations of random noise:
 
@@ -498,24 +498,26 @@ head(cor_example)
 ```
 
 If we plot a heatmap of this, we can see that `sample_a` and `sample_b` are
-grouped together because they have a small distance to each other, despite
+grouped together because they have a small distance from each other, despite
 being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
 
-```{r heatmap-cor-example}
+```{r heatmap-cor-example, fig.cap="Heatmap of simulated data.", fig.alt="Heatmap of simulated data: feature versus sample. The grid cells of the heatmap are coloured from red (high) to blue (low) according to value of the simulated data."}
 Heatmap(as.matrix(cor_example))
 ```
 
 We can see that more clearly if we do a line plot:
-```{r lineplot-cor-example}
+```{r lineplot-cor-example, fig.cap="Line plot of simulated value versus observation number, coloured by sample.", fig.alt="A line plot of simulated value versus observation number, coloured by sample. Samples a and b are concentrated at the bottom of the plot, while sample c is concentrated at the top of the plot. Samples a and c have exactly the same vertical pattern."}
 ## create a blank plot (type = "n" means don't draw anything)
 ## with an x range to hold the number of features we have.
 ## the range of y needs to be enough to show all the values for every feature
 plot(
   1:nrow(cor_example),
   rep(range(cor_example), 5),
-  type = "n"
+  type = "n", 
+  xlab = "Feature number",
+  ylab = "Value"
 )
 ## draw a red line for sample_a
 lines(cor_example$sample_a, col = "firebrick")
@@ -531,7 +533,7 @@ the values, they have a high distance to each other.
 We can see that if we cluster and plot the data ourselves using Euclidean
 distance:
 
-```{r clust-euc-cor-example}
+```{r clust-euc-cor-example, fig.cap="Dendogram of the example simulated data clustered according to Euclidean distance.", fig.alt="A dendogram of the example simulated data clustered according to Euclidean distance. The dendogram shows that sample c definitively forms its own cluster for any cut height and samples a and b merge into a cluster at a height of around 6."}
 clust_dist <- hclust(dist(t(cor_example)))
 plot(clust_dist)
 ```
@@ -546,7 +548,7 @@ we can use `1 - cor(x)` as the distance metric.
 The input to `hclust()` must be a `dist` object, so we also need to call
 `as.dist()` on it before passing it in.
 
-```{r clust-cor-cor-example}
+```{r clust-cor-cor-example, fig.cap="Dendogram of the example simulated data clustered according to correlation.", fig.alt="A dendogram of the example simulated data clustered according to correlation. The dendogram shows that sample b definitively forms its own cluster and samples a and c form definitively form their own cluster for any cut height."}
 cor_as_dist <- as.dist(1 - cor(cor_example))
 clust_cor <- hclust(cor_as_dist)
 plot(clust_cor)
@@ -557,10 +559,10 @@ are grouped together, while `sample_b` is seen as distant because it has a
 different pattern, even though its values are closer to `sample_a`.
 Using your own distance function is often useful, especially if you have missing
 or unusual data. It's often possible to use correlation and other custom
-distance functions to functions that perform hierarchical clustering, such as
+dissimilarity measures in functions that perform hierarchical clustering, such as
 `pheatmap()` and `stats::heatmap()`:
 
-```{r heatmap-cor-cor-example}
+```{r heatmap-cor-cor-example, fig.cap="Heatmaps of features versus samples clustered in the samples according to correlation.", fig.alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot."}
 ## pheatmap allows you to select correlation directly
 pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 ## Using the built-in stats::heatmap 
@@ -596,7 +598,7 @@ Dunn index, the better defined the clusters.
 Let's calculate the Dunn index for clustering carried out on the
 `methyl_mat` dataset using the **`clValid`** package.
 
-```{r plot-clust-dunn}
+```{r plot-clust-dunn, fig.cap="Dendogram for clustering of methylation data.", fig.alt="A dendogram for clustering of methylation data. Identical to that in the section Highlighting dendrogram branches, without the colour overlay to show clusters."}
 ## calculate dunn index
 ## (ratio of the smallest distance between obs not in the same cluster
 ## to the largest intra-cluster distance)
@@ -660,7 +662,7 @@ between sets of clusters with larger values being preferred.
 The figures below show in a more systematic way how changing the values of `k` and
 `h` using `cutree()` affect the Dunn index.
 
-```{r hclust-fig3, echo=TRUE, fig.cap="Figure 3: Dunn index"}
+```{r hclust-fig3, echo=TRUE, fig.cap="Dunn index versus cut height for methylation data.", fig.alt="Scatter plot of Dunn index versus cut height for methylation data. The Dunn index is high (around 1.6) for height values up to 20. The Dunn index drops around height 20 and the points fluctuate around 0.8 and 1 as height increases."}
 h_seq <- 70:10
 h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x)))
 k_seq <- seq(2, 10)
@@ -673,7 +675,7 @@ is not very useful - cutting the given tree at a low `h` value like 15 leads to 
 ending up each in its own cluster. More relevant is the second maximum in the plot, around `h=55`.
 Looking at the dendrogram, this corresponds to `k=4`.
 
-```{r hclust-fig4, echo=TRUE, fig.cap="Figure 4: Dunn index continued"}
+```{r hclust-fig4, echo=TRUE, fig.cap="Scatter plot of Dunn index versus the number of clusters for the methylation data.", fig.alt="A scatter plot of the Dunn index versus the number of clusters for the methylation data. The points appear randomly scattered around the plot area between Dunn indices of 0.77 to 0.85, apart from for 4 clusters where the Dunn index reaches just over 0.88."}
 plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
 grid()
 ```
@@ -685,7 +687,7 @@ clustering results, due to its high sensitivity to noise in the dataset.
 An alternative is to use silhouette scores (see the k-means clustering episode).
 
 As we said before (see previous episode), clustering is a non-trivial task.
-It is important to think about the nature of your data and your expactations
+It is important to think about the nature of your data and your expectations
 rather than blindly using a some algorithm for clustering or cluster validation.
 
 # Further reading 

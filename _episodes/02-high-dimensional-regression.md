@@ -131,36 +131,6 @@ knitr::kable(head(colData(methylation)), row.names = FALSE)
 
 
 
-~~~
-Warning in as.data.frame.integer(col, optional = optional): Direct call of
-'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
-'as.data.frame()' instead
-Warning in as.data.frame.integer(col, optional = optional): Direct call of
-'as.data.frame.integer()' is deprecated.  Use 'as.data.frame.vector()' or
-'as.data.frame()' instead
-~~~
-{: .warning}
-
-
-
-~~~
-Warning in as.data.frame.numeric(col, optional = optional): Direct call of
-'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
-'as.data.frame()' instead
-Warning in as.data.frame.numeric(col, optional = optional): Direct call of
-'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
-'as.data.frame()' instead
-Warning in as.data.frame.numeric(col, optional = optional): Direct call of
-'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
-'as.data.frame()' instead
-Warning in as.data.frame.numeric(col, optional = optional): Direct call of
-'as.data.frame.numeric()' is deprecated.  Use 'as.data.frame.vector()' or
-'as.data.frame()' instead
-~~~
-{: .warning}
-
-
-
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
 |:-----------|:-----------|------:|:---|---:|---------:|--------:|--------:|:----------|:--------------|:--------------|:------|:------|------------:|
 |A07         |PCA0612     |     94|M   |  39|  88.45051|   1.8542| 25.72688|Overweight |Mixed          |Hispanic       |No     |R01C01 | 201868500150|

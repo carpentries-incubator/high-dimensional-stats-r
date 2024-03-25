@@ -787,7 +787,7 @@ represents.
 > > 
 > > 
 > > ~~~
-> > Error: <text>:3:5: syntax error
+> > Error: <text>:3:5: unexpected symbol
 > > 2: #We can check the scree plot to see that many principal components explain a very small amount of
 > > 3: the total
 > >        ^
