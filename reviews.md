@@ -117,7 +117,7 @@ The instructors liked teaching the course and found it fun to teach. Comments la
 
 &#x2611; The lesson has been developed using The Carpentries template. As such, a number of requirements are fulfilled:
 
-- Alt text and captions complete for Episodes 1, 2, 5 in line with [The Carpentries guide](https://carpentries.org/blog/2022/11/accathon/).
+- Alt text and captions complete in line with [The Carpentries guide](https://carpentries.org/blog/2022/11/accathon/).
 - Conforms to the [The Carpentries Code of Conduct](https://docs.carpentries.org/topic_folders/policies/code-of-conduct.html).
 - Testing that the lesson is appropriate for the target audience identified, is accurate, descriptive and easy to understand and is structured to manage cognitive load. 
 - Does not use dismissive language.
@@ -138,7 +138,6 @@ lesson before that point.
 &#x2612; The points still to be addressed are:
 
 - Conversion to The Carpentries Workbench
-- Alt text for Episode 3 and Challenge figures in Episode 4, 6 and 7 required.
 - The lesson does not make use of superfluous data sets: ensuring that later uses of microarray and scrnaseq data is justified (as opposed to prostate/methylation).
 - The example data sets are described.
 - All key terms are contained in the internal lesson glossary.
