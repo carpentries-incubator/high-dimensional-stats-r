@@ -73,15 +73,15 @@ Gene expression measurements for over 9000 genes in over 3000 mouse cortex and h
 - colData(data): individual cell-level information
   - tissue: tissue type
   - group #: group number
-  - total mRNA mol:
-  - well:
-  - sex: sex
-  - age: age 
-  - diameter:
+  - total mRNA mol: total number of observed mRNA molecules corresponding to this cell's unique barcode identifier
+    - well: the well that this cell's cDNA was stored in during processing
+  - sex: sex of the donor animal
+  - age: age of the donor animal 
+  - diameter: estimated cell diameter
   - cell_id: cell identifier 
-  - level1class:
-  - level2class:
-  - sizeFactor:   
+  - level1class: a cluster label identified using a mix of computational techniques and manual annotation
+  - level2class: a cluster label identified using a mix of computational techniques and manual annotation
+  - sizeFactor:   estimate size factor calculated for scaling normalisation using (e.g., **`scran`**).
 
 
 {% include links.md %}
