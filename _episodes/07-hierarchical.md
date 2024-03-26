@@ -38,18 +38,20 @@ math: yes
 
 When analysing high-dimensional data in the life sciences, it is often useful
 to identify groups of similar data points to understand more about the relationships
-within the dataset. In *hierarchical clustering* an algorithm groups similar
+within the dataset. General clustering algorithms group similar
 data points (or observations) into groups (or clusters). This results in a set
 of clusters, where each cluster is distinct, and the data points within each
 cluster have similar characteristics. The clustering algorithm works by iteratively
 grouping data points so that different clusters may exist at different stages
 of the algorithm's progression.
 
-Unlike K-means clustering, *hierarchical clustering* does not require the
+Here, we describe *hierarchical clustering*. Unlike K-means clustering, 
+hierarchical clustering does not require the
 number of clusters $k$ to be specified by the user before the analysis is carried
-out. Hierarchical clustering also provides an attractive *dendrogram*, a
-tree-like diagram showing the degree of similarity between clusters. 
+out. 
 
+Hierarchical clustering also provides an attractive *dendrogram*, a
+tree-like diagram showing the degree of similarity between clusters. 
 The dendrogram is a key feature of hierarchical clustering. This tree-shaped graph allows
 the similarity between data points in a dataset to be visualised and the
 arrangement of clusters produced by the analysis to be illustrated. Dendrograms are created
@@ -81,20 +83,20 @@ To start with, we measure distance
 of the dendrogram, each observation is considered to be in its own individual
 cluster. We start the clustering procedure by fusing the two observations that
 are most similar according to a distance matrix. Next, the next-most similar observations are fused
-so that the total number of clusters is *number of observations* - 2 (see
+so that the total number of clusters is *number of observations* minus 2 (see
 panel below). Groups of observations may then be merged into a larger cluster
 (see next panel below, green box). This process continues until all the observations are included
 in a single cluster.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/hierarchical_clustering_1.png" alt="Figure 1a: Example data showing two clusters of observation pairs" width="500px" />
-<p class="caption">Figure 1a: Example data showing two clusters of observation pairs</p>
+<img src="../fig/hierarchical_clustering_1.png" alt="Scatter plot of observations x2 versus x1. Two clusters of pairs of observations are shown by blue and red boxes, each grouping two observations that are close in their x and y distance." width="500px" />
+<p class="caption">Example data showing two clusters of observation pairs.</p>
 </div>
 
 
 <div class="figure" style="text-align: center">
-<img src="../fig/hierarchical_clustering_2.png" alt="Figure 1b: Example data showing fusing of one observation into larger cluster" width="500px" />
-<p class="caption">Figure 1b: Example data showing fusing of one observation into larger cluster</p>
+<img src="../fig/hierarchical_clustering_2.png" alt="Scatter plot of observations x2 versus x1. Three boxes are shown this time. Blue and red boxes contain two observations each. The two boxes contain points that are relatively far apart. A third green box is shown encompassing the blue box and an additional data point." width="500px" />
+<p class="caption">Example data showing fusing of one observation into larger cluster.</p>
 </div>
 
 # A motivating example
@@ -122,9 +124,16 @@ appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-noclust-1.png" alt="plot of chunk heatmap-noclust" width="432" />
-<p class="caption">plot of chunk heatmap-noclust</p>
+<img src="../fig/rmd-09-heatmap-noclust-1.png" alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. There are many vertical blue and red stripes." width="432" />
+<p class="caption">Heatmap of methylation data.</p>
 </div>
+
+Looking at a heatmap of these data, we may spot some patterns -- looking at the
+vertical stripes, many columns
+appear to have a similar methylation levels across all rows. However, they are
+all quite jumbled at the moment, so it's hard to tell how many line up exactly.
+In addition, it is challenging to tell how many groups containing similar methylation 
+levels we may have or what the similarities and differences are between groups.
 
 We can order these data to make the patterns more clear using hierarchical
 clustering. To do this, we can change the arguments we pass to 
@@ -146,8 +155,8 @@ Heatmap(methyl_mat,
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-clust-1.png" alt="plot of chunk heatmap-clust" width="432" />
-<p class="caption">plot of chunk heatmap-clust</p>
+<img src="../fig/rmd-09-heatmap-clust-1.png" alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis, clustered by methylation sites and individuals. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot." width="432" />
+<p class="caption">Heatmap of methylation data clustered by methylation sites and individuals.</p>
 </div>
 
 We can see that clustering the features (CpG sites) results in an overall
@@ -160,12 +169,15 @@ cause of this is -- it could be a batch effect, or a known grouping (e.g., old
 vs young samples). However, clustering like this can be a useful part of
 exploratory analysis of data to build hypotheses.
 
+# Hierarchical clustering 
+
 Now, let's cover the inner workings of hierarchical clustering in more detail.
-There are two things to consider before carrying out clustering:
+Hierarchical clustering is a type of clustering that also allows us to estimate the number
+of clusters. There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
 
-# Creating the distance matrix
+# Defining the dissimilarity between observations: creating the distance matrix
 Agglomerative hierarchical clustering is performed in two steps: calculating
 the distance matrix (containing distances between pairs of observations) and
 iteratively grouping observations into clusters using this matrix.
@@ -188,7 +200,7 @@ clustering can have a big effect on the resulting tree. The decision of which
 distance matrix to use before carrying out hierarchical clustering depends on the
 type of data and question to be addressed. 
 
-# Linkage methods
+# Defining the dissimilarity between clusters: Linkage methods
 
 The second step in performing hierarchical clustering after defining the
 distance matrix (or another function defining similarity between data points)
@@ -210,24 +222,21 @@ method used.
 
 Complete linkage (the default in `hclust()`) works by computing all pairwise
 dissimilarities between data points in different clusters. For each pair of two clusters,
-it sets their dissimilarity ($d$) to the maximum dissimilarity value observed
+it sets their dissimilarity to the maximum dissimilarity value observed
 between any of these clusters' constituent points. The two clusters
-with smallest value of $d$ are then fused.
+with smallest dissimilarity value are then fused.
 
 # Computing a dendrogram
 
-Dendograms are useful tools to visualise the grouping of points and clusters into bigger clusters.
+Dendograms are useful tools that plot the grouping of points and clusters into bigger clusters.
 We can create and plot dendrograms in R using `hclust()` which takes
-a distance matrix as input and creates the associated tree using hierarchical
+a distance matrix as input and creates a tree using hierarchical
 clustering. Here we create some example data to carry out hierarchical
 clustering. 
 
 Let's generate 20 data points in 2D space. Each
-point belongs to one of three classes. Suppose we did not know which class
-data points belonged to and we want to identify these via cluster analysis.
-Hierarchical clustering carried out on the data can be used to produce a
-dendrogram showing how the data is partitioned into clusters. But how do we
-interpret this dendrogram? Let's explore this using our example data.
+point is generated to belong to one of three classes/groups. Suppose we did not know which class
+data points belonged to and we want to identify these via cluster analysis. Let's first generate and plot our data:
 
 
 
@@ -251,8 +260,8 @@ text(
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plotexample-1.png" alt="plot of chunk plotexample" width="432" />
-<p class="caption">plot of chunk plotexample</p>
+<img src="../fig/rmd-09-plotexample-1.png" alt="A scatter plot of randomly-generated data x2 versus x1. The points appear fairly randomly scattered, arguably centered towards the bottom of the plot." width="432" />
+<p class="caption">Scatter plot of randomly-generated data x2 versus x1.</p>
 </div>
 
 ~~~
@@ -260,6 +269,9 @@ text(
 dist_m <- dist(example_data, method = "euclidean")
 ~~~
 {: .language-r}
+
+Hierarchical clustering carried out on the data can be used to produce a
+dendrogram showing how the data is partitioned into clusters. But how do we interpret this dendrogram? Let's explore this using our example data in a Challenge.
 
 > ## Challenge 1
 >
@@ -278,15 +290,17 @@ dist_m <- dist(example_data, method = "euclidean")
 > > {: .language-r}
 > > 
 > > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-09-plotclustex-1.png" alt="plot of chunk plotclustex" width="432" />
-> > <p class="caption">plot of chunk plotclustex</p>
+> > <img src="../fig/rmd-09-plotclustex-1.png" alt=" " width="432" />
+> > <p class="caption"> </p>
 > > </div>
 > {: .solution}
 {: .challenge}
 
-This dendrogram shows similarities/differences in distances between data points.
-Each leaf of the dendrogram represents one of the 20 data points. These leaves
-fuse into branches as the height increases. Observations that are similar fuse into
+A dendrogram, such as the one generated in Challenge 1,
+shows similarities/differences in distances between data points.
+Each vertical line at the bottom of the dendogram ('leaf') represents 
+one of the 20 data points. These leaves
+fuse into fewer vertical lines ('branches') as the height increases. Observations that are similar fuse into
 the same branches. The height at which any two
 data points fuse indicates how different these two points are. Points that fuse
 at the top of the tree are very different from each other compared with two
@@ -294,18 +308,68 @@ points that fuse at the bottom of the tree, which are quite similar. You can
 see this by comparing the position of similar/dissimilar points according to
 the scatterplot with their position on the tree.
 
-# Identifying clusters based on the dendrogram 
+# Identifying the number of clusters
 
-To do this, we can make a horizontal cut through the dendrogram at a user-defined height. 
-The sets of observations beneath this cut can be thought of as distinct clusters. For
-example, a cut at height 10 produces two downstream clusters while a cut at
-height 4 produces six downstream clusters.
+To identify the number of clusters, we can make a horizontal cut through the dendrogram at a user-defined height. 
+The sets of observations beneath this cut can be thought of as distinct clusters. Equivalently,
+we can count the vertical lines we encounter crossing the horizontal cut. For
+example, a cut at height 10 produces 2 downstream clusters for the dendogram in Challenge 1,
+while a cut at height 4 produces 6 downstream clusters.
 
-We can cut the dendrogram to determine number of clusters at different heights
+# Dendogram visualisation
+
+We can first visualise cluster membership by highlight branches in dendograms. 
+In this example, we calculate a distance matrix between
+samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
+
+
+~~~
+## create a distance matrix using euclidean distance
+distmat <- dist(methyl_mat)
+## hierarchical clustering using complete method
+clust <- hclust(distmat)
+## plot resulting dendrogram
+plot(clust)
+
+## draw border around three clusters
+rect.hclust(clust, k = 3, border = 2:6) #border argument specifies the colours
+## draw border around two clusters
+rect.hclust(clust, k = 2, border = 2:6)
+~~~
+{: .language-r}
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-plot-clust-method-1.png" alt="A dendogram for the methyl_mat data with boxes overlaid on clusters. There are 5 boxes in total, each indicating separate clusters." width="432" />
+<p class="caption">Dendogram with boxes around clusters.</p>
+</div>
+We can also colour clusters downstream of a specified cut using `color_branches()`
+from the **`dendextend`** package.
+
+
+~~~
+## cut tree at height = 4
+cut <- cutree(clust, h = 50)
+
+library("dendextend")
+avg_dend_obj <- as.dendrogram(clust)      
+## colour branches of dendrogram depending on clusters
+plot(color_branches(avg_dend_obj, h = 50))
+~~~
+{: .language-r}
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-09-plot-coloured-branches-1.png" alt="A dendogram with the different clusters in 4 different colours." width="432" />
+<p class="caption">Dendogram with coloured branches delineating different clusters.</p>
+</div>
+
+## Numerical visualisation
+
+In addition to visualising clusters directly on the dendogram, we can cut
+the dendrogram to determine number of clusters at different heights
 using `cutree()`. This function cuts a dendrogram into several
 groups (or clusters) where the number of desired groups is controlled by the
 user, by defining either `k` (number of groups) or `h` (height at which tree is
-cut).
+cut). The function outputs the cluster labels of each data point in order.
 
 
 ~~~
@@ -318,7 +382,26 @@ cutree(clust, k = 3)
 
 
 ~~~
- [1] 1 1 1 2 1 1 1 1 1 2 2 1 1 3 1 1 2 2 1 2
+201868500150_R01C01 201868500150_R03C01 201868500150_R05C01 201868500150_R07C01 
+                  1                   2                   1                   3 
+201868500150_R08C01 201868590193_R02C01 201868590193_R03C01 201868590193_R06C01 
+                  2                   2                   2                   3 
+201868590206_R02C01 201868590206_R04C01 201868590206_R05C01 201868590206_R06C01 
+                  1                   2                   2                   1 
+201868590206_R08C01 201868590243_R03C01 201868590243_R04C01 201868590243_R06C01 
+                  2                   2                   1                   2 
+201868590243_R07C01 201868590243_R08C01 201868590267_R06C01 201868590267_R07C01 
+                  1                   1                   2                   1 
+201868590267_R08C01 201869680009_R06C01 201869680009_R07C01 201869680009_R08C01 
+                  2                   3                   1                   2 
+201869680030_R01C01 201869680030_R02C01 201869680030_R06C01 201870610056_R02C01 
+                  2                   3                   2                   1 
+201870610056_R04C01 201870610056_R07C01 201870610056_R08C01 201870610111_R01C01 
+                  3                   2                   1                   2 
+201870610111_R02C01 201870610111_R04C01 201870610111_R05C01 201870610111_R06C01 
+                  3                   2                   1                   2 
+201870610111_R07C01 
+                  2 
 ~~~
 {: .output}
 
@@ -334,7 +417,26 @@ cutree(clust, h = 10)
 
 
 ~~~
- [1] 1 1 1 2 1 1 1 1 1 2 2 1 1 3 1 1 2 2 1 2
+201868500150_R01C01 201868500150_R03C01 201868500150_R05C01 201868500150_R07C01 
+                  1                   2                   3                   4 
+201868500150_R08C01 201868590193_R02C01 201868590193_R03C01 201868590193_R06C01 
+                  5                   6                   7                   8 
+201868590206_R02C01 201868590206_R04C01 201868590206_R05C01 201868590206_R06C01 
+                  9                  10                  11                  12 
+201868590206_R08C01 201868590243_R03C01 201868590243_R04C01 201868590243_R06C01 
+                 13                  14                  15                  16 
+201868590243_R07C01 201868590243_R08C01 201868590267_R06C01 201868590267_R07C01 
+                 17                  18                  19                  20 
+201868590267_R08C01 201869680009_R06C01 201869680009_R07C01 201869680009_R08C01 
+                 21                  22                  23                  24 
+201869680030_R01C01 201869680030_R02C01 201869680030_R06C01 201870610056_R02C01 
+                 25                  26                  27                  28 
+201870610056_R04C01 201870610056_R07C01 201870610056_R08C01 201870610111_R01C01 
+                 29                  30                  31                  32 
+201870610111_R02C01 201870610111_R04C01 201870610111_R05C01 201870610111_R06C01 
+                 33                  34                  35                  36 
+201870610111_R07C01 
+                 37 
 ~~~
 {: .output}
 
@@ -349,6 +451,22 @@ four_cut <- cutree(clust, h = 4)
 ## using the mutate and count functions
 library(dplyr)
 example_cl <- mutate(example_data, cluster = four_cut)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in `mutate()`:
+ℹ In argument: `cluster = four_cut`.
+Caused by error:
+! `cluster` must be size 20 or 1, not 37.
+~~~
+{: .error}
+
+
+
+~~~
 count(example_cl, cluster)
 ~~~
 {: .language-r}
@@ -356,31 +474,25 @@ count(example_cl, cluster)
 
 
 ~~~
-  cluster n
-1       1 2
-2       2 4
-3       3 1
-4       4 3
-5       5 4
-6       6 2
-7       7 3
-8       8 1
+Error in eval(expr, envir, enclos): object 'example_cl' not found
 ~~~
-{: .output}
+{: .error}
 
 
 
 ~~~
 #plot cluster each point belongs to on original scatterplot
 library(ggplot2)
-ggplot(example_cl, aes(x = x2, y = x1, color = factor(cluster))) + geom_point()
+ggplot(example_cl, aes(x = x1, y = x2, color = factor(cluster))) + geom_point()
 ~~~
 {: .language-r}
 
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-cutree-1.png" alt="plot of chunk cutree" width="432" />
-<p class="caption">plot of chunk cutree</p>
-</div>
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'example_cl' not found
+~~~
+{: .error}
 
 Note that this cut produces 8 clusters (two before the cut and another six
 downstream of the cut).
@@ -413,7 +525,26 @@ downstream of the cut).
 > > 
 > > 
 > > ~~~
-> >  [1] 1 2 2 3 4 5 2 5 1 6 6 2 5 7 4 4 6 6 5 6
+> > 201868500150_R01C01 201868500150_R03C01 201868500150_R05C01 201868500150_R07C01 
+> >                   1                   2                   3                   4 
+> > 201868500150_R08C01 201868590193_R02C01 201868590193_R03C01 201868590193_R06C01 
+> >                   5                   6                   7                   8 
+> > 201868590206_R02C01 201868590206_R04C01 201868590206_R05C01 201868590206_R06C01 
+> >                   9                  10                  11                  12 
+> > 201868590206_R08C01 201868590243_R03C01 201868590243_R04C01 201868590243_R06C01 
+> >                  13                  14                  15                  16 
+> > 201868590243_R07C01 201868590243_R08C01 201868590267_R06C01 201868590267_R07C01 
+> >                  17                  18                  19                  20 
+> > 201868590267_R08C01 201869680009_R06C01 201869680009_R07C01 201869680009_R08C01 
+> >                  21                  22                  23                  24 
+> > 201869680030_R01C01 201869680030_R02C01 201869680030_R06C01 201870610056_R02C01 
+> >                  25                  26                  27                  28 
+> > 201870610056_R04C01 201870610056_R07C01 201870610056_R08C01 201870610111_R01C01 
+> >                  29                  30                  31                  32 
+> > 201870610111_R02C01 201870610111_R04C01 201870610111_R05C01 201870610111_R06C01 
+> >                  33                  34                  35                  36 
+> > 201870610111_R07C01 
+> >                  37 
 > > ~~~
 > > {: .output}
 > > 
@@ -427,7 +558,26 @@ downstream of the cut).
 > > 
 > > 
 > > ~~~
-> >  [1] 1 2 2 3 4 5 2 5 1 6 6 2 5 7 4 4 6 6 5 6
+> > 201868500150_R01C01 201868500150_R03C01 201868500150_R05C01 201868500150_R07C01 
+> >                   1                   2                   1                   3 
+> > 201868500150_R08C01 201868590193_R02C01 201868590193_R03C01 201868590193_R06C01 
+> >                   2                   2                   4                   3 
+> > 201868590206_R02C01 201868590206_R04C01 201868590206_R05C01 201868590206_R06C01 
+> >                   1                   4                   4                   5 
+> > 201868590206_R08C01 201868590243_R03C01 201868590243_R04C01 201868590243_R06C01 
+> >                   4                   4                   6                   7 
+> > 201868590243_R07C01 201868590243_R08C01 201868590267_R06C01 201868590267_R07C01 
+> >                   1                   5                   4                   5 
+> > 201868590267_R08C01 201869680009_R06C01 201869680009_R07C01 201869680009_R08C01 
+> >                   4                   3                   5                   7 
+> > 201869680030_R01C01 201869680030_R02C01 201869680030_R06C01 201870610056_R02C01 
+> >                   4                   3                   4                   1 
+> > 201870610056_R04C01 201870610056_R07C01 201870610056_R08C01 201870610111_R01C01 
+> >                   3                   2                   5                   2 
+> > 201870610111_R02C01 201870610111_R04C01 201870610111_R05C01 201870610111_R06C01 
+> >                   3                   4                   1                   4 
+> > 201870610111_R07C01 
+> >                   2 
 > > ~~~
 > > {: .output}
 > > 
@@ -438,6 +588,22 @@ downstream of the cut).
 > > 
 > > library(dplyr)
 > > example_cl <- mutate(example_data, cluster = five_cut)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in `mutate()`:
+> > ℹ In argument: `cluster = five_cut`.
+> > Caused by error:
+> > ! `cluster` must be size 20 or 1, not 37.
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > count(example_cl, cluster)
 > > ~~~
 > > {: .language-r}
@@ -445,16 +611,9 @@ downstream of the cut).
 > > 
 > > 
 > > ~~~
-> >   cluster n
-> > 1       1 2
-> > 2       2 4
-> > 3       3 1
-> > 4       4 3
-> > 5       5 4
-> > 6       6 5
-> > 7       7 1
+> > Error in eval(expr, envir, enclos): object 'example_cl' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > > 
 > > 
 > > 
@@ -464,10 +623,12 @@ downstream of the cut).
 > > ~~~
 > > {: .language-r}
 > > 
-> > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-09-h-k-ex-plot-2.png" alt="plot of chunk h-k-ex-plot" width="432" />
-> > <p class="caption">plot of chunk h-k-ex-plot</p>
-> > </div>
+> > 
+> > 
+> > ~~~
+> > Error in eval(expr, envir, enclos): object 'example_cl' not found
+> > ~~~
+> > {: .error}
 > > 
 > > Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a
 > > horizontal line on the dendrogram at `h = 5` to help identify
@@ -475,54 +636,11 @@ downstream of the cut).
 > {: .solution}
 {: .challenge}
 
-# Highlighting dendrogram branches
-
-In addition to visualising cluster identity in scatter plots, it is also possible to
-highlight branches in dentrograms. In this example, we calculate a distance matrix between
-samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
-
-
-~~~
-## create a distance matrix using euclidean method
-distmat <- dist(methyl_mat)
-## hierarchical clustering using complete method
-clust <- hclust(distmat)
-## plot resulting dendrogram
-plot(clust)
-
-## draw border around three clusters
-rect.hclust(clust, k = 3, border = 2:6)
-## draw border around two clusters
-rect.hclust(clust, k = 2, border = 2:6)
-~~~
-{: .language-r}
-
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plot-clust-method-1.png" alt="plot of chunk plot-clust-method" width="432" />
-<p class="caption">plot of chunk plot-clust-method</p>
-</div>
-We can also colour clusters downstream of a specified cut using `color_branches()`
-from the **`dendextend`** package.
-
-
-~~~
-## cut tree at height = 4
-cut <- cutree(clust, h = 50)
-
-library("dendextend")
-avg_dend_obj <- as.dendrogram(clust)      
-## colour branches of dendrogram depending on clusters
-plot(color_branches(avg_dend_obj, h = 50))
-~~~
-{: .language-r}
-
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plot-coloured-branches-1.png" alt="plot of chunk plot-coloured-branches" width="432" />
-<p class="caption">plot of chunk plot-coloured-branches</p>
-</div>
 
 # The effect of different linkage methods
+
 Now let us look into changing the default behaviour of `hclust()`. Imagine we have two crescent-shaped point clouds as shown below.
+
 
 ~~~
 # These two functions are to help us make crescents. Don't worry it you do not understand all this code.
@@ -547,8 +665,8 @@ plot(cres)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-crescents-1.png" alt="plot of chunk crescents" width="432" />
-<p class="caption">plot of chunk crescents</p>
+<img src="../fig/rmd-09-crescents-1.png" alt="A scatter plot of data simulated to form two crescent shapes. The crescents are horizontally orientated with a a rough line of vertical symmetry." width="432" />
+<p class="caption">Scatter plot of data simulated according to two crescent-shaped point clouds.</p>
 </div>
 We might expect that the crescents are resolved into separate clusters. But if we
 run hierarchical clustering with the default arguments, we get this:
@@ -561,8 +679,8 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-cresClustDefault-1.png" alt="plot of chunk cresClustDefault" width="432" />
-<p class="caption">plot of chunk cresClustDefault</p>
+<img src="../fig/rmd-09-cresClustDefault-1.png" alt="A scatter plot of the crescent-shaped simulated data calculated using Euclidean distance. The points are coloured in black or red according to their membership to 2 clusters. The points in the tails of each crescent have inherited the colour of the opposite crescent." width="432" />
+<p class="caption">Scatter plot of crescent-shaped simulated data, coloured according to clusters calculated using Euclidean distance.</p>
 </div>
 
 
@@ -678,7 +796,7 @@ other crescent and so it splits both crescents.
 
 So far, we've been using Euclidean distance to define the dissimilarity
 or distance between observations. However, this isn't always the best
-metric for how dissimilar different observations are. Let's make an
+metric for how dissimilar the observations are. Let's make an
 example to demonstrate. Here, we're creating two samples each with
 ten observations of random noise:
 
@@ -727,7 +845,7 @@ Feature 6  0.5696061 -0.43742787 5.569606
 {: .output}
 
 If we plot a heatmap of this, we can see that `sample_a` and `sample_b` are
-grouped together because they have a small distance to each other, despite
+grouped together because they have a small distance from each other, despite
 being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
@@ -739,8 +857,8 @@ Heatmap(as.matrix(cor_example))
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-cor-example-1.png" alt="plot of chunk heatmap-cor-example" width="432" />
-<p class="caption">plot of chunk heatmap-cor-example</p>
+<img src="../fig/rmd-09-heatmap-cor-example-1.png" alt="Heatmap of simulated data: feature versus sample. The grid cells of the heatmap are coloured from red (high) to blue (low) according to value of the simulated data." width="432" />
+<p class="caption">Heatmap of simulated data.</p>
 </div>
 
 We can see that more clearly if we do a line plot:
@@ -752,7 +870,9 @@ We can see that more clearly if we do a line plot:
 plot(
   1:nrow(cor_example),
   rep(range(cor_example), 5),
-  type = "n"
+  type = "n", 
+  xlab = "Feature number",
+  ylab = "Value"
 )
 ## draw a red line for sample_a
 lines(cor_example$sample_a, col = "firebrick")
@@ -764,8 +884,8 @@ lines(cor_example$sample_c, col = "forestgreen")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-lineplot-cor-example-1.png" alt="plot of chunk lineplot-cor-example" width="432" />
-<p class="caption">plot of chunk lineplot-cor-example</p>
+<img src="../fig/rmd-09-lineplot-cor-example-1.png" alt="A line plot of simulated value versus observation number, coloured by sample. Samples a and b are concentrated at the bottom of the plot, while sample c is concentrated at the top of the plot. Samples a and c have exactly the same vertical pattern." width="432" />
+<p class="caption">Line plot of simulated value versus observation number, coloured by sample.</p>
 </div>
 
 We can see that `sample_a` and `sample_c` have exactly the same pattern across
@@ -782,8 +902,8 @@ plot(clust_dist)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-clust-euc-cor-example-1.png" alt="plot of chunk clust-euc-cor-example" width="432" />
-<p class="caption">plot of chunk clust-euc-cor-example</p>
+<img src="../fig/rmd-09-clust-euc-cor-example-1.png" alt="A dendogram of the example simulated data clustered according to Euclidean distance. The dendogram shows that sample c definitively forms its own cluster for any cut height and samples a and b merge into a cluster at a height of around 6." width="432" />
+<p class="caption">Dendogram of the example simulated data clustered according to Euclidean distance.</p>
 </div>
 
 In some cases, we might want to ensure that samples that have similar patterns,
@@ -805,8 +925,8 @@ plot(clust_cor)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-clust-cor-cor-example-1.png" alt="plot of chunk clust-cor-cor-example" width="432" />
-<p class="caption">plot of chunk clust-cor-cor-example</p>
+<img src="../fig/rmd-09-clust-cor-cor-example-1.png" alt="A dendogram of the example simulated data clustered according to correlation. The dendogram shows that sample b definitively forms its own cluster and samples a and c form definitively form their own cluster for any cut height." width="432" />
+<p class="caption">Dendogram of the example simulated data clustered according to correlation.</p>
 </div>
 
 Now, `sample_a` and `sample_c` that have identical patterns across the features
@@ -814,7 +934,7 @@ are grouped together, while `sample_b` is seen as distant because it has a
 different pattern, even though its values are closer to `sample_a`.
 Using your own distance function is often useful, especially if you have missing
 or unusual data. It's often possible to use correlation and other custom
-distance functions to functions that perform hierarchical clustering, such as
+dissimilarity measures in functions that perform hierarchical clustering, such as
 `pheatmap()` and `stats::heatmap()`:
 
 
@@ -825,8 +945,8 @@ pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-cor-cor-example-1.png" alt="plot of chunk heatmap-cor-cor-example" width="432" />
-<p class="caption">plot of chunk heatmap-cor-cor-example</p>
+<img src="../fig/rmd-09-heatmap-cor-cor-example-1.png" alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot." width="432" />
+<p class="caption">Heatmaps of features versus samples clustered in the samples according to correlation.</p>
 </div>
 
 ~~~
@@ -839,8 +959,8 @@ heatmap(
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-heatmap-cor-cor-example-2.png" alt="plot of chunk heatmap-cor-cor-example" width="432" />
-<p class="caption">plot of chunk heatmap-cor-cor-example</p>
+<img src="../fig/rmd-09-heatmap-cor-cor-example-2.png" alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot." width="432" />
+<p class="caption">Heatmaps of features versus samples clustered in the samples according to correlation.</p>
 </div>
 
 
@@ -883,8 +1003,8 @@ plot(clust)
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-plot-clust-dunn-1.png" alt="plot of chunk plot-clust-dunn" width="432" />
-<p class="caption">plot of chunk plot-clust-dunn</p>
+<img src="../fig/rmd-09-plot-clust-dunn-1.png" alt="A dendogram for clustering of methylation data. Identical to that in the section Highlighting dendrogram branches, without the colour overlay to show clusters." width="432" />
+<p class="caption">Dendogram for clustering of methylation data.</p>
 </div>
 
 ~~~
@@ -1067,8 +1187,8 @@ grid()
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-hclust-fig3-1.png" alt="Figure 3: Dunn index" width="432" />
-<p class="caption">Figure 3: Dunn index</p>
+<img src="../fig/rmd-09-hclust-fig3-1.png" alt="Scatter plot of Dunn index versus cut height for methylation data. The Dunn index is high (around 1.6) for height values up to 20. The Dunn index drops around height 20 and the points fluctuate around 0.8 and 1 as height increases." width="432" />
+<p class="caption">Dunn index versus cut height for methylation data.</p>
 </div>
 You can see that at low values of `h`, the Dunn index can be high. But this
 is not very useful - cutting the given tree at a low `h` value like 15 leads to allmost all observations
@@ -1083,8 +1203,8 @@ grid()
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-09-hclust-fig4-1.png" alt="Figure 4: Dunn index continued" width="432" />
-<p class="caption">Figure 4: Dunn index continued</p>
+<img src="../fig/rmd-09-hclust-fig4-1.png" alt="A scatter plot of the Dunn index versus the number of clusters for the methylation data. The points appear randomly scattered around the plot area between Dunn indices of 0.77 to 0.85, apart from for 4 clusters where the Dunn index reaches just over 0.88." width="432" />
+<p class="caption">Scatter plot of Dunn index versus the number of clusters for the methylation data.</p>
 </div>
 For the given range of `k` values explored, we obtain the highest Dunn index with `k=4`.
 This is in agreement with the previous plot.
@@ -1094,7 +1214,7 @@ clustering results, due to its high sensitivity to noise in the dataset.
 An alternative is to use silhouette scores (see the k-means clustering episode).
 
 As we said before (see previous episode), clustering is a non-trivial task.
-It is important to think about the nature of your data and your expactations
+It is important to think about the nature of your data and your expectations
 rather than blindly using a some algorithm for clustering or cluster validation.
 
 # Further reading 

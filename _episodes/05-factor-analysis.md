@@ -428,7 +428,7 @@ text(
 > > biologically, as we would expect prostate enlargement to be associated
 > > with greater weight. The groupings of lcavol, lcp, and lpsa also make
 > > sense biologically, as larger cancer volume may be expected to be
-> > associated with greater cancer spead and therefore higher PSA in the blood.
+> > associated with greater cancer spread and therefore higher PSA in the blood.
 > {: .solution}
 {: .challenge}
 
