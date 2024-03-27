@@ -303,8 +303,8 @@ This package provides several functions that are useful for exploring data via P
 producing useful figures and analysis tools. The package is made for the somewhat unusual
 Bioconductor style of data tables (observations in columns, features in rows). When
 using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
-You can use the help files in PCAtools to find out about the `pca()`
-function (type `help("pca")` or `?pca` in R). Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
+You can use the help files in the package documentation to find out about the `pca()`
+function (type `help("pca")` or `?pca` in R). Although we focus on PCA implementation using this package, there are several other
 options for performing PCA, including a base R function, `prcomp()`. Equivalent functions and 
 output labels for the common implementations are summarised below.
 
