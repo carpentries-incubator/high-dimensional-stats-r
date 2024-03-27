@@ -107,11 +107,7 @@ Many of the comments related to timings (allowing more time) and clarifying word
 
 The instructors liked teaching the course and found it fun to teach. Comments largely related to timing adjustments, explaining packages, adjusting the way the factor analysis episode is presented and some structural changes to the first three episodes.
 
-&#x2612; Changes in response to this feedback are ongoing and documented in the issue. The points that remain to be addressed are:
-
- - The factor analysis episode could be combined into another episode (potentially doesn't need to be its own episode) since the course is pitched at biologists. This could be combined into the PCA episode in a callout.
-- In episode 2, the DNA methylation data discussion could be moved to episode 1, the broom package is possibly unnecessary and we could just use summary(), the advanced content to compute the t-statistics by hand would probably be better off in a sidebar.
-- In episode 3, the Introduction and coefficient estimates section could be moved to episode 2, the coefficient estimates section should probably go before discussion of singularities, more explanation of the heat map in the cross-validation section required to clarify what it shows.
+&#x2612; Changes in response to this feedback are documented in the issue.
 
 ## Carpentries-specific 
 
