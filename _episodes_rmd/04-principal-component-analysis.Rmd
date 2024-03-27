@@ -370,7 +370,6 @@ We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8, 
           drawCumulativeSumLine = FALSE, drawCumulativeSumPoints = FALSE) +
     geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
-#add line to scree plot to visualise the elbow
 ```
 
 The scree plot shows that the first principal component explains most of the
