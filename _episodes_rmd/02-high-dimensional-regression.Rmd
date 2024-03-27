@@ -366,58 +366,7 @@ library("broom")
 tidy(lm_age_methyl1)
 ```
 
-The standard errors (`std.error`) represent the statistical uncertainty in our
-regression coefficient estimates (often referred to as *effect size*). The test 
-statistics and p-values represent measures of how (un)likely it would be to observe 
-results like this under the "null hypothesis".
 
-> ## Challenge 2
->
-> In the model we fitted, the estimate for the intercept is 0.902 and its associated 
-> p-value is 0.0129. What does this mean?
->
-> > ## Solution
-> >
-> > The first coefficient in a linear model like this is the intercept, which measures 
-> > the mean of the outcome (in this case, the methylation value for the first CpG)
-> > when age is zero. In this case, the intercept estimate is 0.902. However, this is 
-> > not a particularly noteworthy finding as we do not have any observations with age
-> > zero (nor even any with age \< 20!).  
-> >
-> > The reported p-value is associated to the following null hypothesis:
-> > the intercept ($\beta_0$ above) is equal to zero. Using the usual
-> > significance threshold of 0.05, we reject the null hypothesis as
-> > the p-value is smaller than 0.05. However, it is not really interesting
-> > if this intercept is zero or not, since we probably do not care what the
-> > methylation level is when age is zero. In fact, this question does not
-> > even make much sense! In this example, we are more interested
-> > in the regression coefficient associated to age, as that can tell us 
-> > whether there is a linear relationship between age and methylation for the CpG. 
-> >
-> {: .solution}
-{: .challenge}
-
-# Fitting a lot of linear models
-
-In the linear model above, we are generally interested in the second regression
-coefficient (often referred to as *slope*) which measures the linear relationship
-between age and methylation levels. For the first CpG, here is its estimate:
-
-```{r tidyfit2}
-coef_age_methyl1 <- tidy(lm_age_methyl1)[2, ]
-coef_age_methyl1
-```
-
-In this case, the p-value is equal to 0.381 and therefore we cannot reject the null
-hypothesis: there is no statistical evidence to suggest that the regression 
-coefficient associated to age is not equal to zero. 
-
-Now, we could do this for every feature (CpG) in the dataset and rank the
-results based on their test statistic or associated p-value. However, fitting
-models in this way to `r nrow(methylation)` features is not very computationally 
-efficient, and it would also be laborious to do programmatically. There are ways 
-to get around this, but first let us talk about what exactly we are doing when 
-we look at significance tests in this context.
 
 
 ```{r rbindfits, echo=FALSE}
@@ -445,11 +394,11 @@ coef_df$feature <- rownames(methyl_mat)
 # )
 ```
 
-# How does hypothesis testing for a linear model work?
-
-In order to decide whether a result would be unlikely under the null
-hypothesis, we must calculate a test statistic. For coefficient $k$ in a
-linear model (in our case, it would be the slope), the test statistic is
+The standard errors (`std.error`) represent the statistical uncertainty in our
+regression coefficient estimates (often referred to as *effect size*). The test 
+statistics and p-values (`statistic` and `p.value`) represent measures of how (un)likely it would be to observe 
+results like this under the "null hypothesis". For coefficient $k$ in a
+linear model (in our case, it would be the slope), the test statistic calculated in `statistic` above is
 a t-statistic given by:
 
 $$
@@ -461,19 +410,16 @@ effect size estimate. Knowing what distribution these t-statistics
 follow under the null hypothesis allows us to determine how unlikely it
 would be for us to observe what we have under those circumstances, if we
 repeated the experiment and analysis over and over again. To
-demonstrate, we can compute the t-statistics "by hand" (advanced content).
-
-```{r simfit}
-table_age_methyl1 <- tidy(lm_age_methyl1)
-```
-
-We can see that the t-statistic is just the ratio between the coefficient estimate
-and the standard error:
+demonstrate how the t-statistics are calculated, we can compute them "by hand":
 
 ```{r simtval}
+table_age_methyl1 <- tidy(lm_age_methyl1)
 tvals <- table_age_methyl1$estimate / table_age_methyl1$std.error
 all.equal(tvals, table_age_methyl1$statistic)
 ```
+
+We can see that the t-statistic is just the ratio between the coefficient estimate
+and the standard error.
 
 Calculating the p-values is a bit more tricky. Specifically, it is the
 proportion of the distribution of the test statistic under the null
@@ -556,10 +502,57 @@ small uncertainty may lead to a small p-value.
 > ```
 {: .callout}
 
+> ## Challenge 2
+>
+> In the model we fitted, the estimate for the intercept is 0.902 and its associated 
+> p-value is 0.0129. What does this mean?
+>
+> > ## Solution
+> >
+> > The first coefficient in a linear model like this is the intercept, which measures 
+> > the mean of the outcome (in this case, the methylation value for the first CpG)
+> > when age is zero. In this case, the intercept estimate is 0.902. However, this is 
+> > not a particularly noteworthy finding as we do not have any observations with age
+> > zero (nor even any with age \< 20!).  
+> >
+> > The reported p-value is associated to the following null hypothesis:
+> > the intercept ($\beta_0$ above) is equal to zero. Using the usual
+> > significance threshold of 0.05, we reject the null hypothesis as
+> > the p-value is smaller than 0.05. However, it is not really interesting
+> > if this intercept is zero or not, since we probably do not care what the
+> > methylation level is when age is zero. In fact, this question does not
+> > even make much sense! In this example, we are more interested
+> > in the regression coefficient associated to age, as that can tell us 
+> > whether there is a linear relationship between age and methylation for the CpG. 
+> >
+> {: .solution}
+{: .challenge}
+
+# Fitting a lot of linear models
+
+In the linear model above, we are generally interested in the second regression
+coefficient (often referred to as *slope*) which measures the linear relationship
+between age and methylation levels. For the first CpG, here is its estimate:
+
+```{r tidyfit2}
+coef_age_methyl1 <- tidy(lm_age_methyl1)[2, ]
+coef_age_methyl1
+```
+
+In this case, the p-value is equal to 0.381 and therefore we cannot reject the null
+hypothesis: there is no statistical evidence to suggest that the regression 
+coefficient associated to age is not equal to zero. 
+
+Now, we could do this for every feature (CpG) in the dataset and rank the
+results based on their test statistic or associated p-value. However, fitting
+models in this way to `r nrow(methylation)` features is not very computationally 
+efficient, and it would also be laborious to do programmatically. There are ways 
+to get around this, but first let us talk about what exactly we are doing when 
+we look at significance tests in this context.
+
 # Sharing information across outcome variables
 
-Now that we understand how hypothesis tests work in the 
-linear model framework, we are going to introduce an idea that allows us to
+Wwe are going to introduce an idea that allows us to
 take advantage of the fact that we carry out many tests at once on
 structured data. We can leverage this fact to *share information*
 between model parameters. The insight that we use to perform
