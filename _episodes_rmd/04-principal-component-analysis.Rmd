@@ -495,8 +495,6 @@ Disadvantages:
 # Using PCA to analyse gene expression data 
 
 
-##  A gene expression dataset of cancer patients
-
 The dataset we will be analysing in this lesson includes two subsets of data: 
 * a matrix of gene expression data showing microarray results for different
   probes used to examine gene expression profiles in 91 different breast
