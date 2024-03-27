@@ -698,7 +698,7 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > > ## Solution
 > > 
 > > ```{r biplot-ex}
-> > biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
+> > PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 > > ```
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
