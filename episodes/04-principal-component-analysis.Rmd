@@ -657,7 +657,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 > > #Add line to scree plot to visualise the elbow
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
 > > drawCumulativeSumPoints = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
-> > as.numeric(pc$variance))) 
+> > as.numeric(pc$variance))) +  ylim(0, pc$variance[1]*1.1)
 > > ``` 
 > > 
 > > The first principal component explains around 33% of the 
