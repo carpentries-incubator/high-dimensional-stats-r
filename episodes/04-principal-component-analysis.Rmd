@@ -186,7 +186,9 @@ knitr::include_graphics("../fig/pendulum.gif")
 > of the variables in the dataset. That is, the first principal
 > component values or _scores_, $Z_1$, are a linear combination 
 > of variables in the dataset, $X_1...X_p$, given by
+>
 > $$ Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p, $$
+> 
 > where $a_{11}...a_{p1}$ represent principal component _loadings_. 
 {: .callout} 
 
