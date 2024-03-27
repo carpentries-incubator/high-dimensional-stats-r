@@ -204,7 +204,7 @@ correlation between the level of prostate specific antigen and a number of
 clinical measures in 97 men who were about to receive a radical prostatectomy.
 The data have 97 rows and 9 columns.
 
-Columns include:
+The variables in the dataset (columns) are:
 - `lcavol` (log-transformed cancer volume),
 - `lweight` (log-transformed prostate weight),
 - `lbph` (log-transformed amount of benign prostate enlargement),
