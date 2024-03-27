@@ -103,9 +103,8 @@ resulting principal component could also be used as an effect in further analysi
 PCA transforms a dataset of continuous variables into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
 in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed into principal components, we can extract a subset of the principal components in order of the variance they explain (starting with the first principal component that by definition explains the most variability, and then the second), giving new variables that explain a lot of the variability in the original dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset.
 
-To see what these new principal components may look like, 
-Figure 1 shows biodiversity index versus percentage area left
-fallow for 50 farms in southern England. Principal components are a collection of new, artificial data points, one for each individual observation called _scores_. 
+To see what these new principal components may look like, the figure below shows the log-transformed prostate specific antigen (`lpsa`) versus cancer 
+volume (`lcavol`) data from the `prostate` data set introduced in Episode 1. Principal components are a collection of new, artificial data points, one for each individual observation called _scores_. 
 The red line on the plot represents the line passing through the scores (points) of the first principal component for each observation.
 The angle that the first principal component line passes through the data points at is set to the direction with the highest 
 variability. The plotted first principal components can therefore be thought of reflecting the 
@@ -114,9 +113,58 @@ in the data and is represented by the line perpendicular to the first (the green
 capturing the overall effect in the data that has the second-highest variability.
 
 
-```{r fig1, echo=FALSE, fig.cap="Scatter plots of the farm data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the farm data. The left figure displays a scatter plot of biodiversity versus percentage area fallow. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
-# ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
-knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
+```{r pros-pcs, echo=FALSE, fig.show="hold", out.width="50%", warning = FALSE, fig.cap="Scatter plots of the prostate data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the prostate data. The left figure displays a scatter plot of the log prostate specific antigen versus the log cancer volume. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
+
+library(ggplot2)
+library(PCAtools)
+prostate <- readRDS(here("data/prostate.rds"))
+
+# pca, set 2 variables so directions look orthogonal
+pros_only2 <- prostate[, c("lcavol", "lpsa")]
+pros_only2t <- data.frame(t(pros_only2))   
+colnames(pros_only2t)<-seq(1:dim(pros_only2t)[2]) 
+pca.pros_only2 <- pca(pros_only2t, center = TRUE, scale=TRUE)
+pca_proj1<-pca.pros_only2$loadings[,1]
+pca_proj2<-pca.pros_only2$loadings[,2]
+
+# unscale projection directions for plotting 
+prosonly2.scaled <-scale(pros_only2)
+r=seq(min(prosonly2.scaled[,1]), max(prosonly2.scaled[,1]), length.out=1000) 
+pc1_proj=pca_proj1[2]/pca_proj1[1]*r 
+pc2_proj=pca_proj2[2]/pca_proj2[1]*r 
+r=r*sd(pros_only2[,1]) + mean(pros_only2[,1])
+pc1_proj=pc1_proj*sd(pros_only2[,2]) + mean(pros_only2[,2])
+pc2_proj=pc2_proj*sd(pros_only2[,2]) + mean(pros_only2[,2])
+projdf<-data.frame(r, pc1_proj, pc2_proj)
+
+# unscale pcs 
+pc1unscaled=pca.pros_only2$rotated[,1]*sd(pros_only2[,1]) + mean(pros_only2[,1])
+pc2unscaled= pca.pros_only2$rotated[,2]*sd(pros_only2[,2]) + mean(pros_only2[,2])
+pcdf<-data.frame(PC1=pc1unscaled, PC2=pc2unscaled, PCline1=rep(mean(pc1unscaled), length(pc1unscaled)), 
+            PCline2=rep(mean(pc2unscaled), length(pc2unscaled)))
+
+# first plot
+ggplot(pros_only2, aes(x=lcavol, y=lpsa)) + geom_point(size=2) + 
+  geom_line(data=projdf, aes(x=r, y=pc1_proj), linewidth=1, colour="red")+
+  geom_line(data=projdf[295:750,], aes(x=r, y=pc2_proj), linewidth=1, colour="dark green")+
+  xlim(-2.1, 4.5) + ylim(-0.9, 6.1) + xlab("Log-transformed cancer volume") +
+  ylab("Log-transformed prostate specific antigen") + 
+  theme(axis.text=element_text(size=20), axis.title=element_text(size=20)) 
+
+# second plot
+ggplot(pcdf, aes(x=PC1, y=PC2)) + geom_point(size=2) +
+  geom_line(aes(x=PC1, y=PCline2), data=pcdf, size=1, colour="red") +
+  geom_line(aes(x=PCline1, y=PC2), data=pcdf, size=1, colour="dark green") +
+  xlim(-2.1, 4.5) + ylim(-0.9, 6.1) + xlab("First principal component") +
+  ylab("Second principal component") + 
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20))
+
+
+unloadNamespace("PCAtools") #to make sure that this doesn't cause dependencies for the displayed code in the rest of the episode
+unloadNamespace("cowplot")
+unloadNamespace("ggrepel")
+unloadNamespace("ggplot2")
+rm(prostate)
 ```
 
 The animation below illustrates how principal components are calculated from
@@ -148,10 +196,10 @@ the principal component scores. In this episode, we will see how to perform PCA 
 
 # How do we perform a PCA?
 
-To illustrate how to perform PCA initially, we start with a low-dimensional dataset. The `prostate` dataset represents data from 97
-men who have prostate cancer. The data come from a study which examined the
+To illustrate how to perform PCA initially, we revisit the low-dimensional `prostate` dataset. 
+The data come from a study which examined the
 correlation between the level of prostate specific antigen and a number of
-clinical measures in men who were about to receive a radical prostatectomy.
+clinical measures in 97 men who were about to receive a radical prostatectomy.
 The data have 97 rows and 9 columns.
 
 Columns include:
