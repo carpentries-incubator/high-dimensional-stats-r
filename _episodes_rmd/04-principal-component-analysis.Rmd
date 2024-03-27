@@ -332,9 +332,9 @@ pros2t <- data.frame(t(pros2))  #create transposed data frame
 colnames(pros2t)<-seq(1:dim(pros2t)[2]) #rename columns for use within PCAtools
 pmetadata= data.frame("M"=rep(1, dim(pros2t)[2]), row.names = colnames(pros2t)) #create fake metadata for use with PCA tools
 
-##implement PCA
+## implement PCA
 pca.pros <- pca(pros2t, scale = TRUE, center = TRUE,metadata = pmetadata)
-pca.pros$loadings #return pca loadings 
+summary(pca.pros)
 ```
 
 # How many principal components do we need?
