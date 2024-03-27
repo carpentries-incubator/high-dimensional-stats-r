@@ -224,6 +224,7 @@ First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
 
 ```{r prostate-load}
+library(here)
 prostate <- readRDS(here("data/prostate.rds"))
 ```
 
