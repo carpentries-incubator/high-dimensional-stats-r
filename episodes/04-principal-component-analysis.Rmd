@@ -309,7 +309,7 @@ function (type `help("pca")` or `?pca` in R). Although we focus on PCA implement
 options for performing PCA, including a base R function, `prcomp()`. Equivalent functions and 
 output labels for the common implementations are summarised below.
 
-| library::command()| PC scores | Loadings |
+| library::command()| Principal component scores | Loadings |
 |-------------------|-----------|----------|
 | stats::prcomp()   | $x         | $rotation |
 | stats::princomp() | $scores    | $loadings | 
@@ -357,7 +357,7 @@ principal components. In this example, the first principal component, PC1, expla
 PC3 a further `r round(prop.var[[3]])`%, PC4 approximately `r round(prop.var[[4]])`% and PC5
 around `r round(prop.var[[5]])`%.
 
-Let's visualise this. A plot of the amount of variance accounted for by each PC
+Let's visualise this. A plot of the amount of variance accounted for by each principal component
 is also called a scree plot. Often, scree plots show a characteristic pattern 
 where initially, the variance drops rapidly with each additional principal component. But then there is an “elbow” after which the
 variance decreases more slowly. The total variance explained up to the elbow point is sometimes
