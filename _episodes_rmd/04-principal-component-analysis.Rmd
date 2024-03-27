@@ -113,10 +113,11 @@ in the data and is represented by the line perpendicular to the first (the green
 capturing the overall effect in the data that has the second-highest variability.
 
 
-```{r pros-pcs, echo=FALSE, fig.show="hold", out.width="50%", warning = FALSE, fig.cap="Scatter plots of the prostate data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the prostate data. The left figure displays a scatter plot of the log prostate specific antigen versus the log cancer volume. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
+```{r pros-pcs, echo=FALSE, fig.width = 12, warning = FALSE, fig.cap="Scatter plots of the prostate data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the prostate data. The left figure displays a scatter plot of the log prostate specific antigen versus the log cancer volume. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
 
 library(ggplot2)
 library(PCAtools)
+library(cowplot)
 prostate <- readRDS(here("data/prostate.rds"))
 
 # pca, set 2 variables so directions look orthogonal
@@ -144,7 +145,7 @@ pcdf<-data.frame(PC1=pc1unscaled, PC2=pc2unscaled, PCline1=rep(mean(pc1unscaled)
             PCline2=rep(mean(pc2unscaled), length(pc2unscaled)))
 
 # first plot
-ggplot(pros_only2, aes(x=lcavol, y=lpsa)) + geom_point(size=2) + 
+g1 <- ggplot(pros_only2, aes(x=lcavol, y=lpsa)) + geom_point(size=2) + 
   geom_line(data=projdf, aes(x=r, y=pc1_proj), linewidth=1, colour="red")+
   geom_line(data=projdf[295:750,], aes(x=r, y=pc2_proj), linewidth=1, colour="dark green")+
   xlim(-2.1, 4.5) + ylim(-0.9, 6.1) + xlab("Log-transformed cancer volume") +
@@ -152,13 +153,13 @@ ggplot(pros_only2, aes(x=lcavol, y=lpsa)) + geom_point(size=2) +
   theme(axis.text=element_text(size=20), axis.title=element_text(size=20)) 
 
 # second plot
-ggplot(pcdf, aes(x=PC1, y=PC2)) + geom_point(size=2) +
+g2 <- ggplot(pcdf, aes(x=PC1, y=PC2)) + geom_point(size=2) +
   geom_line(aes(x=PC1, y=PCline2), data=pcdf, size=1, colour="red") +
   geom_line(aes(x=PCline1, y=PC2), data=pcdf, size=1, colour="dark green") +
   xlim(-2.1, 4.5) + ylim(-0.9, 6.1) + xlab("First principal component") +
   ylab("Second principal component") + 
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20))
-
+cowplot::plot_grid(g1, g2, nrow = 1)
 
 unloadNamespace("PCAtools") #to make sure that this doesn't cause dependencies for the displayed code in the rest of the episode
 unloadNamespace("cowplot")
