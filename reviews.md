@@ -16,11 +16,7 @@ The reviewer liked this episode as an introduction to the course, particularly t
 
 The reviewer particularly liked that this episode demonstrates why we need alternative approaches to regression for high-dimensional data and the multiple testing section. Although many comments were given, the reviewer highlighted that the episode was long, that new concepts should be removed from Challenge 1 and that the smoking model figure should be corrected. The review also highlighted issues with the remote theme.
 
-&#x2611; Changes were made in line with the suggestions exactly, including reducing the length of the lesson. The changes are itemised in the issue and the associated points in [#64](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/64). 
-
-&#x2612; The only point that remains to be addressed:
-
-- The first challenge makes good points but introduces new concepts rather than tests presented content.
+&#x2611; Changes were made in line with the suggestions exactly, including reducing the length of the lesson. The changes are itemised in the issue, the associated points in [#64](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/64) and the current version of the lesson.
 
 **Review by Emma Rand on Episode 3: Regularised regression ([#49](https://github.com/carpentries-incubator/high-dimensional-stats-r/issues/49))**
 
