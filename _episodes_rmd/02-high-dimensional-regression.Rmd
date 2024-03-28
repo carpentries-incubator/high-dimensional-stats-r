@@ -68,13 +68,13 @@ Here, we show how to extract the information for analysis.
 
 We can extract
 
-- the dimensions of the dataset using `dim`. Importantly, in these objects and
+- the dimensions of the dataset using `dim()`. Importantly, in these objects and
 data structures for computational biology in R generally, observations are stored as
 columns and features (in this case, sites in the genome) are stored as rows. 
 This is in contrast to usual tabular data, where features or variables
 are stored as columns and observations are stored as rows;
-- assays, (normalised methylation levels here), using `assay`;
-- sample-level information using `colData`.
+- assays, (normalised methylation levels here), using `assay()`;
+- sample-level information using `colData()`.
 
 ```{r showmethy}
 dim(methylation)
