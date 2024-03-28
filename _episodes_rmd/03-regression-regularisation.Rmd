@@ -50,7 +50,7 @@ regularisation. Compared to many other methods, regularisation is also often ver
 and can therefore be extremely useful in practice. 
 
 First, let us check out what happens if we try to fit a linear model to high-dimensional
-data! We start by reading in the data from the last lesson:
+data! We start by reading in the `methylation` data from the last lesson:
 
 
 ```{r loadmethy}
@@ -117,7 +117,7 @@ when we have more features than observations.
 > In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
 > If we visualise the level of 
-> correlation between sites in the methylation dataset, we can see that many 
+> correlation between sites in the `methylation` dataset, we can see that many 
 > of the features represent the same information - there are many 
 > off-diagonal cells, which are deep red or blue. For example, the following
 > heatmap visualises the correlations for the first 500 features in the 
