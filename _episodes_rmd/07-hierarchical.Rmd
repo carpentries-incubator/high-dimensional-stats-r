@@ -224,7 +224,7 @@ with smallest dissimilarity value are then fused.
 
 # Computing a dendrogram
 
-Dendograms are useful tools that plot the grouping of points and clusters into bigger clusters.
+Denrdograms are useful tools that plot the grouping of points and clusters into bigger clusters.
 We can create and plot dendrograms in R using `hclust()` which takes
 a distance matrix as input and creates a tree using hierarchical
 clustering. Here we create some example data to carry out hierarchical
@@ -277,7 +277,7 @@ dendrogram showing how the data is partitioned into clusters. But how do we inte
 
 A dendrogram, such as the one generated in Challenge 1,
 shows similarities/differences in distances between data points.
-Each vertical line at the bottom of the dendogram ('leaf') represents 
+Each vertical line at the bottom of the dendrogram ('leaf') represents 
 one of the 20 data points. These leaves
 fuse into fewer vertical lines ('branches') as the height increases. Observations that are similar fuse into
 the same branches. The height at which any two
@@ -292,16 +292,16 @@ the scatterplot with their position on the tree.
 To identify the number of clusters, we can make a horizontal cut through the dendrogram at a user-defined height. 
 The sets of observations beneath this cut and single points representing clusters above can be thought of as distinct clusters. Equivalently,
 we can count the vertical lines we encounter crossing the horizontal cut and the number of single points above the cut. For
-example, a cut at height 10 produces `r length(unique(cutree(clust, h=10)))` clusters for the dendogram in Challenge 1,
+example, a cut at height 10 produces `r length(unique(cutree(clust, h=10)))` clusters for the dendrogram in Challenge 1,
 while a cut at height 4 produces `r length(unique(cutree(clust, h=4)))` clusters.
 
-# Dendogram visualisation
+# Dendrogram visualisation
 
-We can first visualise cluster membership by highlight branches in dendograms. 
+We can first visualise cluster membership by highlight branches in dendrograms. 
 In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
 
-```{r plot-clust-method, fig.cap="Dendogram with boxes around clusters.", fig.alt="A dendogram for the methyl_mat data with boxes overlaid on clusters. There are 5 boxes in total, each indicating separate clusters."}
+```{r plot-clust-method, fig.cap="Dendrogram with boxes around clusters.", fig.alt="A dendrogram for the methyl_mat data with boxes overlaid on clusters. There are 5 boxes in total, each indicating separate clusters."}
 ## create a distance matrix using euclidean distance
 distmat <- dist(methyl_mat)
 ## hierarchical clustering using complete method
@@ -317,7 +317,7 @@ rect.hclust(clust, k = 2, border = 2:6)
 We can also colour clusters downstream of a specified cut using `color_branches()`
 from the **`dendextend`** package.
 
-```{r plot-coloured-branches, fig.cap="Dendogram with coloured branches delineating different clusters.", fig.alt="A dendogram with the different clusters in 4 different colours."}
+```{r plot-coloured-branches, fig.cap="Dendrogram with coloured branches delineating different clusters.", fig.alt="A dendrogram with the different clusters in 4 different colours."}
 ## cut tree at height = 4
 cut <- cutree(clust, h = 50)
 
@@ -329,7 +329,7 @@ plot(color_branches(avg_dend_obj, h = 50))
 
 ## Numerical visualisation
 
-In addition to visualising clusters directly on the dendogram, we can cut
+In addition to visualising clusters directly on the dendrogram, we can cut
 the dendrogram to determine number of clusters at different heights
 using `cutree()`. This function cuts a dendrogram into several
 groups (or clusters) where the number of desired groups is controlled by the
@@ -554,7 +554,7 @@ the values, they have a high distance to each other.
 We can see that if we cluster and plot the data ourselves using Euclidean
 distance:
 
-```{r clust-euc-cor-example, fig.cap="Dendogram of the example simulated data clustered according to Euclidean distance.", fig.alt="A dendogram of the example simulated data clustered according to Euclidean distance. The dendogram shows that sample c definitively forms its own cluster for any cut height and samples a and b merge into a cluster at a height of around 6."}
+```{r clust-euc-cor-example, fig.cap="Dendrogram of the example simulated data clustered according to Euclidean distance.", fig.alt="A dendrogram of the example simulated data clustered according to Euclidean distance. The dendrogram shows that sample c definitively forms its own cluster for any cut height and samples a and b merge into a cluster at a height of around 6."}
 clust_dist <- hclust(dist(t(cor_example)))
 plot(clust_dist)
 ```
@@ -569,7 +569,7 @@ we can use `1 - cor(x)` as the distance metric.
 The input to `hclust()` must be a `dist` object, so we also need to call
 `as.dist()` on it before passing it in.
 
-```{r clust-cor-cor-example, fig.cap="Dendogram of the example simulated data clustered according to correlation.", fig.alt="A dendogram of the example simulated data clustered according to correlation. The dendogram shows that sample b definitively forms its own cluster and samples a and c form definitively form their own cluster for any cut height."}
+```{r clust-cor-cor-example, fig.cap="Dendrogram of the example simulated data clustered according to correlation.", fig.alt="A dendrogram of the example simulated data clustered according to correlation. The dendrogram shows that sample b definitively forms its own cluster and samples a and c form definitively form their own cluster for any cut height."}
 cor_as_dist <- as.dist(1 - cor(cor_example))
 clust_cor <- hclust(cor_as_dist)
 plot(clust_cor)
@@ -619,7 +619,7 @@ Dunn index, the better defined the clusters.
 Let's calculate the Dunn index for clustering carried out on the
 `methyl_mat` dataset using the **`clValid`** package.
 
-```{r plot-clust-dunn, fig.cap="Dendogram for clustering of methylation data.", fig.alt="A dendogram for clustering of methylation data. Identical to that in the section Highlighting dendrogram branches, without the colour overlay to show clusters."}
+```{r plot-clust-dunn, fig.cap="Dendrogram for clustering of methylation data.", fig.alt="A dendrogram for clustering of methylation data. Identical to that in the section Highlighting dendrogram branches, without the colour overlay to show clusters."}
 ## calculate dunn index
 ## (ratio of the smallest distance between obs not in the same cluster
 ## to the largest intra-cluster distance)
