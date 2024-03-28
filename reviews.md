@@ -103,7 +103,7 @@ Many of the comments related to timings (allowing more time) and clarifying word
 
 The instructors liked teaching the course and found it fun to teach. Comments largely related to timing adjustments, explaining packages, adjusting the way the factor analysis episode is presented and some structural changes to the first three episodes.
 
-&#x2612; Changes in response to this feedback are documented in the issue.
+&#x2611; Changes in response to this feedback are documented in the issue.
 
 ## Carpentries-specific 
 
