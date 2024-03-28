@@ -114,20 +114,23 @@ methylation. The following heatmap summarises age and methylation levels
 available in the methylation dataset:
 
 ```{r heatmap, fig.cap="Heatmap of methylation values across all features.", fig.alt="Heatmap of methylation values across all features showing that there are many features. Samples are ordered according to age."}
+library("ComplexHeatmap")
+
 age <- methylation$Age
 
-library("ComplexHeatmap")
+# sort methylation values by age 
 order <- order(age)
 age_ord <- age[order]
 methyl_mat_ord <- methyl_mat[, order]
 
+# plot heatmap
 Heatmap(methyl_mat_ord,
-        name = "M-value",
         cluster_columns = FALSE,
         show_row_names = FALSE,
         show_column_names = FALSE,
-        row_title = "Feature",
-        column_title =  "Sample",
+        name = "M-value",
+        row_title = "Feature", 
+        column_title =  "Sample", 
         top_annotation = columnAnnotation(age = age_ord))
 ```
 
