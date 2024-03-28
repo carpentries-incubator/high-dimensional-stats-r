@@ -337,6 +337,8 @@ user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut). The function outputs the cluster labels of each data point in order.
 
 ```{r cutree, fig.cap="Scatter plot of data x2 versus x1, coloured by cluster.", fig.alt="A scatter plot of the example data x2 versus x1, coloured by 8 different clusters. There are two clusters in the bottom right of the plot, 4 clusters in the top left of the plot, and a final cluster consisting of one point in the top right of the plot."}
+dist_m <- dist(example_data, method = "euclidean")
+clust <- hclust(dist_m, method = "complete")
 ## k is a user defined parameter determining
 ## the desired number of clusters at which to cut the treee
 cutree(clust, k = 3)
