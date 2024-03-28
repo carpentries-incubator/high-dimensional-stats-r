@@ -86,7 +86,7 @@ when we have more features than observations.
 
 > ## Singularities
 > 
-> The message that `lm` produced is not necessarily the most intuitive. What
+> The message that `lm()` produced is not necessarily the most intuitive. What
 > are "singularities" and why are they an issue? A singular matrix 
 > is one that cannot be
 > [inverted](https://en.wikipedia.org/wiki/Invertible_matrix). R uses 
@@ -716,7 +716,7 @@ drawplot()
 
 > ## Challenge 5
 > 
-> 1. Use `glmnet` to fit a LASSO model (hint: set `alpha = 1`).
+> 1. Use `glmnet()` to fit a LASSO model (hint: set `alpha = 1`).
 > 2. Plot the model object. Remember that for ridge regression,
 >    we set `xvar = "lambda"`. What if you don't set this? What's the
 >    relationship between the two plots?
