@@ -12,7 +12,7 @@ objectives:
 - Understand when to use hierarchical clustering on high-dimensional data.
 - Perform hierarchical clustering on high-dimensional data and evaluate
   dendrograms.
-- Explore different distance matrix and linkage methods.
+- Understand and explore different distance matrix and linkage methods.
 - Use the Dunn index to validate clustering methods.
 keypoints:
 - Hierarchical clustering uses an algorithm to group similar data points into
