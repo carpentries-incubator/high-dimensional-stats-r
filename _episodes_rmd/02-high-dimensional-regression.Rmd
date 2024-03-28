@@ -605,13 +605,6 @@ may have seen when running linear models. Here, we define a *model matrix* or
 coefficients that should be fit in each linear model. These are used in
 similar ways in many different modelling libraries.
 
-```{r design-age}
-library("limma")
-design_age <- model.matrix(~age)
-dim(design_age)
-head(design_age)
-```
-
 > ## What is a model matrix?
 > When R fits a regression model, it chooses a vector of regression coefficients 
 > that minimises the differences between outcome values and those values 
@@ -625,13 +618,19 @@ head(design_age)
 > model matrix behind the scenes. Usually, it can be extracted from a model fit 
 > using the function `model.matrix()`. Here is an example:
 > 
-> ```{r}
-> data(cars)
-> head(cars)
-> mod1 <- lm(dist ~ speed, data=cars) # fit regression model using speed as a predictor
-> head(model.matrix(mod1)) # the model matrix contains two columns: intercept and speed
-> ```
+> prostate <- readRDS(here("data/prostate.rds"))
+> prostate2 <- (prostate[, c("lcavol", "lpsa")])  #select two variables for illustration
+> head(prostate2)
+> mod1 <- lm(lcavol ~ lpsa, data=prostate2) # fit regression model using lpsa as a predictor
+> head(model.matrix(mod1)) # the model matrix contains two columns: intercept and lpsa
 {: .callout}
+
+```{r design-age}
+library("limma")
+design_age <- model.matrix(~age)
+dim(design_age)
+head(design_age)
+```
 
 As you can see, the design matrix has the same number of rows as our
 methylation data has samples. It also has two columns - one for the
