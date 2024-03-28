@@ -337,59 +337,57 @@ user, by defining either `k` (number of groups) or `h` (height at which tree is
 cut). The function outputs the cluster labels of each data point in order.
 
 ```{r cutree, fig.cap="Scatter plot of data x2 versus x1, coloured by cluster.", fig.alt="A scatter plot of the example data x2 versus x1, coloured by 8 different clusters. There are two clusters in the bottom right of the plot, 4 clusters in the top left of the plot, and a final cluster consisting of one point in the top right of the plot."}
-dist_m <- dist(example_data, method = "euclidean")
-clust <- hclust(dist_m, method = "complete")
 ## k is a user defined parameter determining
 ## the desired number of clusters at which to cut the treee
-cutree(clust, k = 3)
+as.numeric(cutree(clust, k = 6))
 ## h is a user defined parameter determining
 ## the numeric height at which to cut the tree
-cutree(clust, h = 10)
+as.numeric(cutree(clust, h = 42))
 ## both give same results 
 
-four_cut <- cutree(clust, h = 4)
+four_cut <- cutree(clust, h = 50)
 
 ## we can produce the cluster each observation belongs to
 ## using the mutate and count functions
 library(dplyr)
-example_cl <- mutate(example_data, cluster = four_cut)
+example_cl <- mutate(data.frame(methyl_mat), cluster = four_cut)
 count(example_cl, cluster)
 
 #plot cluster each point belongs to on original scatterplot
 library(ggplot2)
-ggplot(example_cl, aes(x = x1, y = x2, color = factor(cluster))) + geom_point()
+ggplot(example_cl, aes(x = cg01644850, y = cg01656216, color = factor(cluster))) + geom_point()
 ```
 
-Note that this cut produces 8 clusters (two before the cut and another six
+Note that this cut produces `r length(unique(four_cut))` clusters (zero before the cut and another four
 downstream of the cut).
 
 > ## Challenge 2:
 >
 > Identify the value of `k` in `cutree()` that gives the same
-> output as `h = 5`
+> output as `h = 36`
 >
 > > ## Solution:
 > >
 > > ```{r h-k-ex-plot}
 > > plot(clust)
-> > ## create horizontal line at height = 5
-> > abline(h = 5, lty = 2)
+> > ## create horizontal line at height = 36
+> > abline(h = 36, lty = 2)
 > >
-> > cutree(clust, h = 5)
-> > cutree(clust, k = 7)
+> > cutree(clust, h = 36)
+> > cutree(clust, k = 9)
 > >
-> > five_cut <- cutree(clust, h = 5)
+> > nine_cut <- cutree(clust, h = 36)
 > >
 > > library(dplyr)
-> > example_cl <- mutate(example_data, cluster = five_cut)
+> > example_cl <- mutate(data.frame(methyl_mat), cluster = nine_cut)
 > > count(example_cl, cluster)
 > >
 > > library(ggplot2)
-> > ggplot(example_cl, aes(x=x2, y = x1, color = factor(cluster))) + geom_point()
+> > ggplot(example_cl, aes(x=cg01644850, y = cg01656216, color = factor(cluster))) + geom_point()
 > > ```
 > > 
-> > Seven clusters (`k = 7`) gives similar results to `h = 5`. You can plot a
-> > horizontal line on the dendrogram at `h = 5` to help identify
+> > Nine clusters (`k = 9`) gives similar results to `h = 36`. You can plot a
+> > horizontal line on the dendrogram at `h = 36` to help identify
 > > corresponding value of `k`.
 > {: .solution}
 {: .challenge}
