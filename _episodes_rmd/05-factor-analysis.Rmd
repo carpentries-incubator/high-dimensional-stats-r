@@ -80,7 +80,7 @@ components are ordered by the amount of variance they account for.
 
 # Prostate cancer patient data
 
-The prostate dataset represents data from 97 men who have prostate cancer.
+The `prostate` dataset represents data from 97 men who have prostate cancer.
 The data come from a study which examined the correlation between the level
 of prostate specific antigen and a number of clinical measures in men who were
 about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
@@ -255,7 +255,7 @@ text(
 > 
 > > ## Solution
 > > 
-> > This plot suggests that the variables lweight and lbph are associated with
+> > This plot suggests that the variables `lweight` and `lbph` are associated with
 > > high values on factor 2 (but lower values on factor 1) and the variables
 > > lcavol, lcp and lpsa are associated with high values on factor 1
 > > (but lower values on factor 2). There appear to be two 'clusters' of
