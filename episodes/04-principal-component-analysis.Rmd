@@ -282,7 +282,7 @@ colnames(pros2t)<-seq(1:dim(pros2t)[2]) #rename columns for use within PCAtools
 pmetadata= data.frame("M"=rep(1, dim(pros2t)[2]), row.names = colnames(pros2t)) #create fake metadata for use with PCA tools
 
 ##implement PCA
-pca.pros <- pca(pros2t, scale = TRUE, center = TRUE,metadata = pmetadata)
+pca.pros <- pca(pros2t, scale = TRUE, center = TRUE, metadata = pmetadata)
 pca.pros$loadings #return pca loadings 
 ```
 
@@ -529,7 +529,7 @@ represents.
 > 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
 > the principal components accounting for the bottom 20%.
 > 
-> As in the example using prostate data above, examine the first 5 rows and
+> As in the example using `prostate` data above, examine the first 5 rows and
 > columns of rotated data and loadings from your PCA.
 > 
 > > ## Solution
