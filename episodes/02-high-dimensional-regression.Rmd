@@ -539,7 +539,7 @@ small uncertainty may lead to a small p-value.
 > $`r ncol(methylation)` - `r length(coef(lm_age_methyl1))` = `r lm_age_methyl1$df`$.
 > We want to know what portion of the distribution function of the test
 > statistic is as extreme as, or more  extreme than, the value we observed.
-> The function`pt()`(similar to`pnorm()`, etc) can give us this information.
+> The function `pt()`(similar to`pnorm()`, etc) can give us this information.
 >
 > Since we're not sure if the coefficient will be larger or smaller than
 > zero, we want to do a 2-tailed test. Therefore we take the absolute
