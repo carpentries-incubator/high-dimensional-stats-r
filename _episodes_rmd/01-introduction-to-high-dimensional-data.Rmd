@@ -168,7 +168,7 @@ of the challenges we are facing when working with high-dimensional data.
 
 Note that function documentation and information on function arguments will be useful throughout
 this lesson. We can access these easily in R by running `?` followed by the package name.
-For example, the documentation for the `dim` package can be accessed by running `?dim`.
+For example, the documentation for the `dim` function can be accessed by running `?dim`.
 
 > ## Locating data with R - the **`here`** package
 > 
