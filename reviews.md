@@ -129,8 +129,9 @@ lesson before that point.
 - The example data sets are described.
 - Key terms are contained in the internal glossary in the form of key points.
 - All lesson and episode objectives are assessed by exercises or another opportunity for formative assessment.
+- The lesson does not make use of superfluous data sets.
+
 
 &#x2612; The points still to be addressed are:
 
 - Conversion to The Carpentries Workbench
-- The lesson does not make use of superfluous data sets: ensuring that later uses of microarray and scrnaseq data is justified (as opposed to prostate/methylation).
