@@ -486,9 +486,9 @@ all(colnames(mat) == rownames(metadata))
 ```
 
 
-The 'mat' variable contains a matrix of gene expression profiles for each sample.
+The `mat` variable contains a matrix of gene expression profiles for each sample.
 Rows represent gene expression measurements and columns represent samples. The
-'metadata' variable contains the metadata associated with the gene expression
+`metadata` variable contains the metadata associated with the gene expression
 data including the name of the study from which data originate, the age of the
 patient from which the sample was taken, whether or not an oestrogen receptor
 was involved in their cancer and the grade and size of the cancer for each
