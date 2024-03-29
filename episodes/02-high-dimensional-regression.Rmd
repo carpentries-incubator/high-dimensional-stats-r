@@ -616,14 +616,15 @@ similar ways in many different modelling libraries.
 > one column for each predictor plus (by default) one aditional column of ones 
 > (the intercept column). Many R libraries (but not **`limma`** ) contruct the 
 > model matrix behind the scenes. Usually, it can be extracted from a model fit 
-> using the function `model.matrix()`. Here is an example of a model matrix :
+> using the function `model.matrix()`. Here is an example of a model matrix 
+> for the methylation model:
 > 
 > ```{r design-age} 
-> library("limma")
-> design_age <- model.matrix(~age) # model matrix
-> dim(design_age)
+> design_age <- model.matrix(lm_age_methyl1) # model matrix
 > head(design_age)
+> dim(design_age)
 > ``` 
+> 
 > As you can see, the model matrix has the same number of rows as our
 > methylation data has samples. It also has two columns - one for the
 > intercept (similar to the linear model we fit above) and one for age.
@@ -642,6 +643,7 @@ output of `lmFit()`, performs the pooled estimation of standard errors
 that results in the moderated t-statistics and resulting p-values.
 
 ```{r lmfit-age}
+library("limma")
 fit_age <- lmFit(methyl_mat, design = design_age)
 fit_age <- eBayes(fit_age)
 ```
