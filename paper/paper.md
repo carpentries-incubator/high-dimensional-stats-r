@@ -46,48 +46,65 @@ variables. However, practical resources explaining the core techniques for deali
 are often not accessible to biological sciences researchers. This learning module (_lesson_; [@HD_stats_repo:2024])
 has been developed as part of the Ed-DaSH training programme within The Carpentries Incubator to provide practical
 training on high-dimensional techniques specifically for researchers in the biological sciences.
- 
 
 
-\section*{Content, learning objectives and design principles}
-%learning objectives, content, design
-The lesson is targeted at biological sciences researchers at [any particular level?] with  assumed pre-requisite knowledge of [?]-level biological sciences concepts and []-level knowledge of R programming and statistics. The lesson is comprised of $7$ episodes, each focusing on a core concept in high-dimensional data analysis: 
+# Content, learning objectives and design principles
+The lesson is targeted at biological sciences researchers at [any particular level?] with  assumed pre-requisite 
+knowledge of [?]-level biological sciences concepts and []-level knowledge of R programming and statistics. 
+The lesson contains 7 episodes, each focusing on a core concept in high-dimensional data analysis: 
+
+1. Introduction to high-dimensional data
+2. Regression with many outcomes
+3. Regularised regression
+4. Principal component analysis
+5. Factor analysis
+6. K-means clustering
+7. Hierarchical clustering
+
+In keeping with the target learners for these lessons, each episode is principally designed around practical 
+biological sciences value: each episode focuses on 1) understanding core conceptual information to the extent 
+that it is useful in understanding the method, 2) when and how each method can be applied 3) robust 
+implementation and evaluation of each method, and 4) practical examples in R using real biological sciences 
+data sets. 
+
+As well as being designed under the principle of practical utility, each episode was designed following The
+Carpentries framework. This includes descriptive and easy to understand instructional text with appropriately
+re-used data examples to minimise cognitive load, and testing that learners have understood the lesson in line
+with the lesson objectives (defined clearly at the start of each episode) using mixed format exercises. 
 
 
-\begin{itemize}
-    \item[1.] Introduction to high-dimensional data
-    \item[2.] Regression with many outcomes
-    \item[3.] Regularised regression
-    \item[4.] Principal component analysis
-    \item[5.] Factor analysis 
-    \item[6.] K-means clustering
-    \item[7.] Hierarchical clustering
-\end{itemize}
+# Instructional design
+The lesson is designed to be delivered in four 3.5 hour sessions over four days, including breaks and additional
+question time of around 40 minutes per session. Most sessions cover two episodes, with an entire session for 
+episode 3. Each episode is comprised of 60-75% instruction and live coding, and the remainder of the time is
+allocated to exercises to emphasise practical application. 
+
+The course web page is comprehensive, including setup instructions, license information, instructor information 
+on the session splits and optional lecture slides for instructors to use to supplement the material in each 
+episode. Each episode is self-contained to allow for individual learners and learners taking the course can use
+the episodes for review or practice outside of the sessions.
+
+# Teaching experience
+The lesson has been taught [four?] times by [?PhD students, postdocs, lecturers and professors] to [who?]. 
+The lesson has been taught by the core team that created the lesson [X?] times and instructors independent of the
+lesson development [X] times. We are pleased that the lesson has received very positive feedback from learners on
+its practical utility. To improve the lesson, we constantly adapt the materials following instructor insights after
+each round of teaching. We also gather feedback from learners to improve the lesson based on learning experience. 
+Full information on the changes made following feedback from round of teaching can be found in [cite reviews once live]. 
 
 
-\noindent In keeping with the target learners for these lessons, each episode is principally designed around practical biological sciences value: each episode focuses on 1) understanding core conceptual information to the extent that it is useful in understanding the method, 2) when and how each method can be applied 3) robust implementation and evaluation of each method, and 4) practical examples in R using real biological sciences data sets. 
+# Development
+Story of how the project came to be: How did the initial idea come about? Was it inspired by anything in particular?
+How was the course initially designed/what was discussed at the curriculum advisory committee?
+What gap in students' knowledge did you identify and how, and how did you approach filling it?
 
-As well as being designed under the principle of practical utility, each episode was designed following The Carpentries framework. This includes descriptive and easy to understand instructional text with appropriately re-used data examples to minimise cognitive load, and testing that learners have understood the lesson in line with the lesson objectives (defined clearly at the start of each episode) using mixed format exercises. 
-
-
-\section*{Instructional design}
-% instructional design, and experience of use in teaching and learning situations
-The lesson is designed to be delivered in four $3.5$ hour sessions over four days, including breaks and additional question time of around $40$ minutes per session. Most sessions cover two episodes, with an entire session for episode 3. Each episode is comprised of $60-75\%$ instruction and live coding, and the remainder of the time is allocated to exercises to emphasise practical application. 
-
-The course web page is comprehensive, including setup instructions, license information, instructor information on the session splits and optional lecture slides for instructors to use to supplement the material in each episode. Each episode is self-contained to allow for individual learners and learners taking the course can use the episodes for review or practice outside of the sessions.
-
-\section*{Teaching experience}
-The lesson has been taught [four?] times by [?PhD students, postdocs, lecturers and professors] to [who?]. The lesson has been taught by the core team that created the lesson [X?] times and instructors independent of the lesson development [X] times. We are pleased that the lesson has received very positive feedback from learners on its practical utility. To improve the lesson, we constantly adapt the materials following instructor insights after each round of teaching. We also gather feedback from learners to improve the lesson based on learning experience. Full information on the changes made following feedback from round of teaching can be found in [cite reviews once live]. 
+With UKRI funding for the wider Ed-DaSH project, the material was developed within the Carpentries framework, 
+[what changed]. Over the past three years, the lesson has been further developed and improved, with X rounds of 
+internal, instructor and peer review ([cite reviews once live]), culminating in an informative key set of learning
+materials for researchers in the biological sciences that has been taught [four?] times.
 
 
-\section*{Development}
-Story of how the project came to be: How did the initial idea come about? Was it inspired by anything in particular? How was the course initially designed/what was discussed at the curriculum advisory committee? What gap in students' knowledge did you identify and how, and how did you approach filling it?
-
-With UKRI funding for the wider Ed-DaSH project, the material was developed within the Carpentries framework, [what changed]. Over the past three years, the lesson has been further developed and improved, with X rounds of internal, instructor and peer review ([cite reviews once live]), culminating in an informative key set of learning materials for researchers in the biological sciences that has been taught [four?] times.
-
-
-
-\section*{Acknowledgements}
+# Acknowledgements
 [From website but check below]
 
 We thank the instructors [list everyone?] for their time and insight in teaching and reviewing the course, [specific people not intended to be cited I think] for..., Emma Rand and Christie Barron for reviewing the lesson and providing fresh and incredibly valuable perspectives, the wider Ed-DaSH team and The Carpentries community, [?Toby Hodges].
