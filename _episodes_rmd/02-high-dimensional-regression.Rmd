@@ -555,7 +555,7 @@ we look at significance tests in this context.
 
 # Sharing information across outcome variables
 
-Wwe are going to introduce an idea that allows us to
+We are going to introduce an idea that allows us to
 take advantage of the fact that we carry out many tests at once on
 structured data. We can leverage this fact to *share information*
 between model parameters. The insight that we use to perform
