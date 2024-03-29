@@ -606,16 +606,16 @@ coefficients that should be fit in each linear model. These are used in
 similar ways in many different modelling libraries.
 
 > ## What is a model matrix?
-> When R fits a regression model, it chooses a vector of regression coefficients 
-> that minimises the differences between outcome values and those values 
-> predicted by using the covariates (or predictor variables). But how do we get 
-> from a set of predictors and regression coefficients to predicted values? This 
-> is done via matrix multiplication. The matrix of predictors is (matrix) 
-> multiplied by the vector of coefficients. That matrix is called the 
+> R fits a regression model by choosing the vector of regression coefficients 
+> that minimises the differences between outcome values and predicted values 
+> using the covariates (or predictor variables). To get predicted values,
+> we multiply the matrix of predictors by the coefficients. The latter 
+> matrix is called the 
 > **model matrix** (or design matrix). It has one row for each observation and 
-> one column for each predictor plus (by default) one aditional column of ones 
-> (the intercept column). Many R libraries (but not **`limma`** ) contruct the 
-> model matrix behind the scenes. Usually, it can be extracted from a model fit 
+> one column for each predictor, plus one additional column of ones 
+> (the intercept column). Many R libraries contruct the 
+> model matrix behind the scenes, but **`limma`** does not. Usually, the model 
+> matrix can be extracted from a model fit 
 > using the function `model.matrix()`. Here is an example of a model matrix 
 > for the methylation model:
 > 
