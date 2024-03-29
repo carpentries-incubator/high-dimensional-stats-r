@@ -616,33 +616,27 @@ similar ways in many different modelling libraries.
 > one column for each predictor plus (by default) one aditional column of ones 
 > (the intercept column). Many R libraries (but not **`limma`** ) contruct the 
 > model matrix behind the scenes. Usually, it can be extracted from a model fit 
-> using the function `model.matrix()`. Here is an example:
+> using the function `model.matrix()`. Here is an example of a model matrix :
 > 
-> prostate <- readRDS(here("data/prostate.rds"))
-> prostate2 <- (prostate[, c("lcavol", "lpsa")])  #select two variables for illustration
-> head(prostate2)
-> mod1 <- lm(lcavol ~ lpsa, data=prostate2) # fit regression model using lpsa as a predictor
-> head(model.matrix(mod1)) # the model matrix contains two columns: intercept and lpsa
+> ```{r design-age} 
+> library("limma")
+> design_age <- model.matrix(~age) # model matrix
+> dim(design_age)
+> head(design_age)
+> ``` 
+> As you can see, the model matrix has the same number of rows as our
+> methylation data has samples. It also has two columns - one for the
+> intercept (similar to the linear model we fit above) and one for age.
+> This happens "under the hood" when fitting a linear model with `lm()`, but
+> here we have to specify it directly. The [limma user
+> manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
+> has more detail on how to make model matrices for different types of
+> experimental design, but here we are going to stick with this simple two-variable case.
+> 
 {: .callout}
 
-```{r design-age}
-library("limma")
-design_age <- model.matrix(~age)
-dim(design_age)
-head(design_age)
-```
-
-As you can see, the design matrix has the same number of rows as our
-methylation data has samples. It also has two columns - one for the
-intercept (similar to the linear model we fit above) and one for age.
-This happens "under the hood" when fitting a linear model with `lm()`, but
-here we have to specify it directly. The [limma user
-manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
-has more detail on how to make design matrices for different types of
-experimental design, but here we are going to stick with this simple two-variable case.
-
-We then pass our matrix of methylation values into `lmFit()`, specifying
-the design matrix. Internally, this function runs `lm()` on each row of
+We pass our methylation data to `lmFit()`, specifying
+the model matrix. Internally, this function runs `lm()` on each row of
 the data in an efficient way. The function `eBayes()`, when applied to the
 output of `lmFit()`, performs the pooled estimation of standard errors
 that results in the moderated t-statistics and resulting p-values.
