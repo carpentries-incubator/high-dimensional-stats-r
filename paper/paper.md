@@ -23,29 +23,29 @@ date: 15 March 2024
 bibliography: paper.bib
 ---
 
-\begin{document}
-
-\maketitle
-
-%The goal is that someone reading the JOSE paper has enough information to decide if they’d be interested in adoping the learning module or software. Readers will want to know how the content/software has been used, and how they would adopt it. They may also want to be persuaded that the authors have put careful work on creating the material, and have experience teaching with it
-
-%1000 words max 
-
-%example paper/template: https://openjournals.readthedocs.io/en/jose/submitting.html
-%edward wallace's paper: https://github.com/carpentries-lab/good-enough-practices/blob/main/paper.md
-%Another nice paper: https://jose.theoj.org/papers/10.21105/jose.00209
-
-
-\section*{Summary}
+# Summary
 %summarising all of the below
-High-dimensional data have become more prevalent in the biological sciences, and with that an increased need for resources on specialised analytical techniques that are accessible to biological sciences researchers. We present a learning module, \textit{High dimensional statistics with R} \citep{HD_stats_repo_2024}, covering core and practically valuable concepts for high-dimensional data analysis in the biological sciences over four $3.5$ hour sessions. The lesson has been developed in \href{https://carpentries-incubator.org/}{The Carpentries Incubator} as part of the \href{https://edcarp.github.io/Ed-DaSH/index.html}{Ed-DaSH training programme}, teaching robust understanding, implementation and evaluation of high-dimensional regression, principal component and factor analysis and clustering when applied to high-dimensional biological sciences data sets. The lesson has been through multiple rounds of internal, external and instructional review and we hope to continue developing the lesson in collaboration with the high-dimensional statistics and biological sciences communities.
+High-dimensional data have become more prevalent in the biological sciences, and with that an increased
+need for resources on specialised analytical techniques that are accessible to biological sciences researchers. 
+We present a learning module, _High dimensional statistics with R_ [@HD_stats_repo:2024], covering core and 
+practically valuable concepts for high-dimensional data analysis in the biological sciences over four 3.5 hour 
+sessions. The lesson has been developed in [The Carpentries Incubator](https://carpentries-incubator.org/) as 
+part of the [Ed-DaSH training programme](https://edcarp.github.io/Ed-DaSH/index.html), teaching robust 
+understanding, implementation and evaluation of high-dimensional regression, principal component and factor 
+analysis and clustering when applied to high-dimensional biological sciences data sets. The lesson has been 
+through multiple rounds of internal, external and instructional review and we hope to continue developing 
+the lesson in collaboration with the high-dimensional statistics and biological sciences communities.
 
 
-
-\section*{Statement of need}
-%explain how the submitted artifacts contribute to computationally enabled teaching and learning, and describing how they might be adopted by others.
-%Authors make the case for their submission’s contribution in the paper, under the heading “Statement of Need.” The criterion is less one of novelty, than need: submissions targeting subjects or applications already addressed by other resources are eligible, if the authors make a case for why they might be adopted by learners or other instructors. For example, authors could say that they approach a topic differently, that they update material to modern contexts, that the need is born of a new educational program, or a conference tutorial or other informal-learning scenario.
-With advances in computing facilities, high-dimensional data are becoming increasingly common in the biological sciences. Research studies now commonly use, for example, large amounts of DNA methylation data to analyse gene expression or large amounts of medical data to analyse patient outcomes. Using high-dimensional data requires a number of specialised techniques since identifying and differentiating between effects is challenging when there are many variables. However, practical resources explaining the core techniques for dealing with high-dimensional data are often not accessible to biological sciences researchers. This learning module (\textit{lesson}; \citealp{HD_stats_repo_2024}) has been developed as part of the Ed-DaSH training programme within The Carpentries Incubator to provide practical training on high-dimensional techniques specifically for researchers in the biological sciences.
+# Statement of need 
+With advances in computing facilities, high-dimensional data are becoming increasingly common in the biological
+sciences. Research studies now commonly use, for example, large amounts of DNA methylation data to analyse gene
+expression or large amounts of medical data to analyse patient outcomes. Using high-dimensional data requires
+specialised techniques since identifying and differentiating between effects is challenging when there are many 
+variables. However, practical resources explaining the core techniques for dealing with high-dimensional data 
+are often not accessible to biological sciences researchers. This learning module (_lesson_; [@HD_stats_repo:2024])
+has been developed as part of the Ed-DaSH training programme within The Carpentries Incubator to provide practical
+training on high-dimensional techniques specifically for researchers in the biological sciences.
  
 
 
