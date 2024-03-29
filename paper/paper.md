@@ -24,7 +24,6 @@ bibliography: paper.bib
 ---
 
 # Summary
-%summarising all of the below
 High-dimensional data have become more prevalent in the biological sciences, and with that an increased
 need for resources on specialised analytical techniques that are accessible to biological sciences researchers. 
 We present a learning module, _High dimensional statistics with R_ [@HD_stats_repo:2024], covering core and 
@@ -97,6 +96,7 @@ Full information on the changes made following feedback from round of teaching c
 Story of how the project came to be: How did the initial idea come about? Was it inspired by anything in particular?
 How was the course initially designed/what was discussed at the curriculum advisory committee?
 What gap in students' knowledge did you identify and how, and how did you approach filling it?
+Any other references to help clarify the story?
 
 With UKRI funding for the wider Ed-DaSH project, the material was developed within the Carpentries framework, 
 [what changed]. Over the past three years, the lesson has been further developed and improved, with X rounds of 
@@ -112,7 +112,3 @@ We thank the instructors [list everyone?] for their time and insight in teaching
 This work was supported by UK Research and Innovation [grant number MR/V039075/1].
 Any other funding?
 
-\bibliography{paper}
-%any further references, perhaps related to the story?
-
-\end{document}
