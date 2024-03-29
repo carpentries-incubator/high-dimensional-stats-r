@@ -644,6 +644,7 @@ that results in the moderated t-statistics and resulting p-values.
 
 ```{r lmfit-age}
 library("limma")
+design_age <- model.matrix(lm_age_methyl1) # model matrix
 fit_age <- lmFit(methyl_mat, design = design_age)
 fit_age <- eBayes(fit_age)
 ```
