@@ -50,7 +50,7 @@ regularisation. Compared to many other methods, regularisation is also often ver
 and can therefore be extremely useful in practice. 
 
 First, let us check out what happens if we try to fit a linear model to high-dimensional
-data! We start by reading in the data from the last lesson:
+data! We start by reading in the `methylation` data from the last lesson:
 
 
 ```{r loadmethy}
@@ -86,7 +86,7 @@ when we have more features than observations.
 
 > ## Singularities
 > 
-> The message that `lm` produced is not necessarily the most intuitive. What
+> The message that `lm()` produced is not necessarily the most intuitive. What
 > are "singularities" and why are they an issue? A singular matrix 
 > is one that cannot be
 > [inverted](https://en.wikipedia.org/wiki/Invertible_matrix). R uses 
@@ -117,15 +117,15 @@ when we have more features than observations.
 > In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
 > If we visualise the level of 
-> correlation between sites in the methylation dataset, we can see that many 
+> correlation between sites in the `methylation` dataset, we can see that many 
 > of the features represent the same information - there are many 
 > off-diagonal cells, which are deep red or blue. For example, the following
 > heatmap visualises the correlations for the first 500 features in the 
 > `methylation` dataset (we selected 500 features only as it can be hard to
 > visualise patterns when there are too many features!). 
 > 
-> ```{r corr-mat-meth, fig.cap="Cap", fig.alt="Alt"}
-library("ComplexHeatmap")
+> ```{r corr-mat-meth, fig.cap="Heatmap of pairwise feature-feature correlations between CpG sites in DNA methylation data", fig.alt="A symmetrical heatmap where rows and columns are features in a DNA methylation dataset. Colour corresponds to correlation, with red being large positive correlations and blue being large negative correlations. There are large blocks of deep red and blue throughout the plot."}
+> library("ComplexHeatmap")
 > small <- methyl_mat[, 1:500]
 > cor_mat <- cor(small)
 > Heatmap(cor_mat,
@@ -188,9 +188,9 @@ different combinations of slope and intercept accomplish this objective.
 library("viridis")
 set.seed(42)
 noise_sd <- 1
-nobs <- 50
-slope <- 2
-intercept <- 2
+nobs <- 200
+slope <- 1
+intercept <- 3
 
 maxlim <- max(abs(slope), abs(intercept)) * 2
 maxlim <- max(maxlim, 5)
@@ -295,7 +295,11 @@ avoid estimating very large effect sizes.
 > >    "ordinary least squares". The "ordinary" really means "original" here,
 > >    to distinguish between this method, which dates back to ~1800, and some
 > >    more "recent" (think 1940s...) methods.
-> > 2. Least squares assumes that, when we account for the change in the mean of
+> > 2. Squared error is useful because it ignores the *sign* of the residuals
+> >    (whether they are positive or negative).
+> >    It also penalises large errors much more than small errors.
+> >    On top of all this, it also makes the solution very easy to compute mathematically.
+> >    Least squares assumes that, when we account for the change in the mean of
 > >    the outcome based on changes in the income, the data are normally
 > >    distributed. That is, the *residuals* of the model, or the error 
 > >    left over after we account for any linear relationships in the data,
@@ -331,29 +335,36 @@ coefficient values minimise the training error, but they don't minimise the
 test error on unseen data. First, we'll go through an example of what exactly 
 this means.
 
-For the next few challenges, we'll work with a set of features
-known to be associated with age from a paper by Horvath et al.[^2]. Horvath et al
-use methylation markers alone to predict the biological age of an individual.
-This is useful in studying age-related disease amongst many other things.
-
-
-To compare the training and test errors for a model for age using the Hovarth data, we'll split the
+To compare the training and test errors for a model of methylation features and age, we'll split the
 data into training and test sets, fit a linear model and calculate the errors. First, let's
 calculate the training error. Let's start by splitting the data into training and test sets: 
 
 
 
-```{r coefhorvath}
-coef_horvath <- readRDS(here::here("data/coefHorvath.rds"))
+```{r data}
 methylation <- readRDS(here::here("data/methylation.rds"))
 
 library("SummarizedExperiment")
 age <- methylation$Age
 methyl_mat <- t(assay(methylation))
+```
 
-coef_horvath <- coef_horvath[1:20, ]
-features <- coef_horvath$CpGmarker
-horvath_mat <- methyl_mat[, features]
+We will then subset the data to a set of CpG markers that are known to be associated with
+age from a previous study by Horvath et al.[^2].
+
+```{r echo=FALSE, eval=FALSE}
+# these CpGs were obtained using:
+dput(coef_horvath$CpGmarker[1:20])
+```
+
+```{r coefhorvath}
+cpg_markers <- c("cg16241714", "cg14424579", "cg22736354", "cg02479575", "cg00864867", 
+    "cg25505610", "cg06493994", "cg04528819", "cg26297688", "cg20692569", 
+    "cg04084157", "cg22920873", "cg10281002", "cg21378206", "cg26005082", 
+    "cg12946225", "cg25771195", "cg26845300", "cg06144905", "cg27377450"
+)
+
+horvath_mat <- methyl_mat[, cpg_markers]
 
 ## Generate an index to split the data
 set.seed(42)
@@ -364,7 +375,6 @@ train_mat <- horvath_mat[train_ind, ]
 train_age <- age[train_ind]
 test_mat <- horvath_mat[-train_ind, ]
 test_age <- age[-train_ind]
-
 ```
 
 Now let's fit a linear model to our training data and calculate the training error. Here we use the mean of the squared difference between our predictions and the observed data, or "mean squared error" (MSE).
@@ -381,9 +391,9 @@ Now let's fit a linear model to our training data and calculate the training err
 fit_horvath <- lm(train_age ~ ., data = as.data.frame(train_mat))
 
 ## Function to calculate the (mean squared) error
- mse <- function(true, prediction) { 
-     mean((true - prediction)^2) 
- } 
+mse <- function(true, prediction) { 
+    mean((true - prediction)^2) 
+} 
 
 ## Calculate the training error 
 err_lm_train <- mse(train_age, fitted(fit_horvath)) 
@@ -519,9 +529,9 @@ just using ordinary least squares. We see how a penalty term, $\lambda$, might b
 For now, to see how regularisation might improve a model, let's fit a model using the same set
 of 20 features (stored as `features`) selected earlier in this episode (these
 are a subset of the features identified by Horvarth et al), using both 
-regularised and ordinary least squares.
+regularised and ordinary least squares. To fit regularised regression models, we will use the **`glmnet`** package.
 
-```{r plot-ridge, fig.cap="Cap", fig.alt="Alt"}
+```{r plot-ridge, fig.cap="A line plot of coefficient estimates against log lambda for a ridge regression model.", fig.alt="A line plot of coefficient estimates against log lambda for a ridge regression model. Lines are depicted in different colours, with coefficients generally having large values on the left of the plot (small log lambda) and moving smoothly and gradually towards zero to the right of the plot (large log lambda). Some coefficients appear to increase and then decrease in magnitude as lambda increases, or switch signs."}
 library("glmnet")
 
 ## glmnet() performs scaling by default, supply un-scaled data:
@@ -553,7 +563,7 @@ regression predicts the test data better than the model with no regularisation.
 Let's generate our predictions under the ridge regression model and calculate
 the mean squared error in the test set:
 
-```{r pred-ridge-lm, fig.width = 10, fig.cap="Cap", fig.alt="Alt"}
+```{r pred-ridge-lm}
 # Obtain a matrix of predictions from the ridge model,
 # where each column corresponds to a different lambda value
 pred_ridge <- predict(ridge_fit, newx = test_mat)
@@ -581,7 +591,7 @@ We can see where on the continuum of lambdas we've picked a model by plotting
 the coefficient paths again. In this case, we've picked a model with fairly
 modest coefficient shrinking.
 
-```{r chooselambda, fig.cap="Cap", fig.alt="Alt"}
+```{r chooselambda, fig.cap="A line plot of coefficient estimates against log lambda for a ridge regression model, showing the optimal value based on the minimal test error.", fig.alt="A line plot of coefficient estimates against log lambda for a ridge regression model. A dashed vertical line depicts the optimal lambda value towards the left of the plot. Lines are depicted in different colours, with coefficients generally having large values on the left of the plot (small log lambda) and moving smoothly and gradually towards zero to the right of the plot (large log lambda). Some coefficients appear to increase and then decrease in magnitude as lambda increases, or switch signs."}
 chosen_lambda <- ridge_fit$lambda[which.min(err_ridge)]
 plot(ridge_fit, xvar = "lambda")
 abline(v = log(chosen_lambda), lty = "dashed")
@@ -605,7 +615,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 > >    err_lm
 > >    ```
 > > 2. The ridge ones are much less spread out with far fewer extreme predictions.
-> >    ```{r plot-ridge-prediction, fig.width = 10, fig.cap="Cap", fig.alt="Alt"}
+> >    ```{r plot-ridge-prediction, fig.width = 10, fig.cap="Two plots showing OLS predictions (left) and ridge regression predictions (right) of age (y) against true age (x).", fig.alt="Two plots showing OLS predictions and ridge regression predictions of age (y) against true age (x). A dashed line shows the line y=x. In the OLS plot, predictions are quite extreme, while in the ridge regression plot, they are generally more conservative."}
 > >    all <- c(pred_lm, test_age, pred_min_ridge)
 > >    lims <- range(all)
 > >    par(mfrow = 1:2)
@@ -648,8 +658,8 @@ drawplot <- function() {
     set.seed(42)
     noise_sd <- 1
     nobs <- 200
-    slope <- 2
-    intercept <- 2
+    slope <- 1
+    intercept <- 3
     maxlim <- max(abs(slope), abs(intercept)) * 2
     maxlim <- max(maxlim, 5)
     lims <- c(-maxlim, maxlim)
@@ -716,7 +726,7 @@ drawplot()
 
 > ## Challenge 5
 > 
-> 1. Use `glmnet` to fit a LASSO model (hint: set `alpha = 1`).
+> 1. Use `glmnet()` to fit a LASSO model (hint: set `alpha = 1`).
 > 2. Plot the model object. Remember that for ridge regression,
 >    we set `xvar = "lambda"`. What if you don't set this? What's the
 >    relationship between the two plots?
@@ -734,8 +744,9 @@ drawplot()
 > >    to the coefficients. When we instead plot the L1 norm on the x-axis,
 > >    increasing L1 norm means that we are allowing our
 > >    coefficients to take on increasingly large values.
-> >    ```{r plotlas, fig.width = 10, fig.height = 20, echo=FALSE}
-> >    par(mfrow = c(2, 1))
+> > 
+> >    ```{r plotlas, fig.width = 10, fig.cap="Line plots showing coefficient values from a LASSO model against log lambda (left) and L1 norm (right).", fig.alt="Two line plots side-by-side, showing coefficient values from a LASSO model against log lambda (left) and L1 norm (right). The coefficients, generally, suddenly become zero as log lambda increases or, equivalently, L1 norm decreases. However, some coefficients increase in size before decreasing as log lamdba increases."}
+> >    par(mfrow = c(1, 2))
 > >    plot(fit_lasso, xvar = "lambda")
 > >    plot(fit_lasso)
 > >    ```
@@ -771,7 +782,7 @@ that minimises the error across each of the test and training splits. In R:
 
 ```{r lasso-cv, fig.cap="Cross-validated mean squared error for different values of lambda under a LASSO penalty.", fig.alt="Alt"}
 # fit lasso model with cross-validation across a range of lambda values
-lasso <- cv.glmnet(methyl_mat[, -1], age, alpha = 1)
+lasso <- cv.glmnet(methyl_mat, age, alpha = 1)
 plot(lasso)
 
 # Extract the coefficients from the model with the lowest mean squared error from cross-validation
@@ -822,7 +833,7 @@ plot_elastic <- function(alpha) {
     noise_sd <- 1
     nobs <- 100
     slope <- 1
-    intercept <- 1
+    intercept <- 3
     norm <- 1
 
     maxlim <- max(abs(slope), abs(intercept)) * 2
@@ -900,20 +911,20 @@ plot_elastic(0.75)
 > >    You can see that coefficients tend to go exactly to zero,
 > >    but the paths are a bit less
 > >    extreme than with pure LASSO; similar to ridge.
-> >    ```{r elastic}
+> >    ```{r elastic, fig.cap="Line plot showing coefficient values from an elastic net model against L1 norm.", fig.alt="A line plot showing coefficient values from an elastic net model against L1 norm. The coefficients, generally, suddenly become zero as L1 norm decreases. However, some coefficients increase in size before decreasing as L1 norm decreases."}
 > >    elastic <- glmnet(methyl_mat[, -1], age, alpha = 0.5)
 > >    plot(elastic)
 > >    ```
 > > 2. The process of model selection is similar for elastic net models as for
 > >    LASSO models.
-> >    ```{r elastic-cv, fig.cap="Elastic", fig.alt="Alt"}
+> >    ```{r elastic-cv, fig.cap="A plot of the cross-validation mean squared error of an elastic net model against log lambda.", fig.cap="A plot depicting mean squared error (MSE) against discrete values of lambda, with red points showing the average mean squared error and grey error bars showing the 1 standard error interval around them. The MSE rises as log lambda increases, indicating a larger prediction error. Two dashed lines indicate the lambda value corresponding to the lowest overall MSE value and the lambda value corresponding to the lambda value with MSE with one standard error of the minimum."}
 > >    elastic_cv <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
 > >    plot(elastic_cv)
 > >    ```
 > > 3. You can see that the coefficients from these two methods are broadly
 > >    similar, but the elastic net coefficients are a bit more conservative.
 > >    Further, more coefficients are exactly zero in the LASSO model.
-> >    ```{r elastic-plot, fig.cap="LASSO-Elastic", fig.alt="Alt"}
+> >    ```{r elastic-plot, fig.cap="Scatter plot of coefficient estimates from an elastic net model (y) against coefficient estimates from a LASSO model (x).", fig.alt="A scatter plot depicting coefficient estimates from elastic net and LASSO models. Generally, the elastic net model coefficients are more conservative, with one notable outlier, whereas the LASSO model coefficients are more frequently exactly equal to zero."}
 > >    coefe <- coef(elastic_cv, elastic_cv$lambda.1se)
 > >    sum(coefe[, 1] == 0)
 > >    sum(coefl[, 1] == 0)
@@ -999,7 +1010,7 @@ plot_elastic(0.75)
 > The [package documentation](https://glmnet.stanford.edu/articles/glmnet.html)
 > explains this in more detail.
 > 
-> ```{r binomial, fig.cap = "Title", fig.alt = "Alt"}
+> ```{r binomial, fig.cap="A plot of the cross-validation binomial deviance of a logistic regression elastic net model against log lambda.", fig.cap="A plot depicting binomial deviance against discrete values of lambda, with red points showing the average mean squared error and grey error bars showing the 1 standard error interval around them. The MSE decreases as log lambda increases, indicating a smaller prediction error. Two dashed lines indicate the lambda value corresponding to the lowest overall MSE value and the lambda value corresponding to the lambda value with MSE with one standard error of the minimum, with both being exactly on the right side of the plot, indicating an intercept-only model."}
 > smoking <- as.numeric(factor(methylation$smoker)) - 1
 > # binary outcome
 > table(smoking)
