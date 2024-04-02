@@ -1,7 +1,6 @@
 rmarkdown
 here
 knitr
-minfi
 circlize
 ComplexHeatmap
 RColorBrewer
@@ -22,7 +21,6 @@ dplyr
 dendextend
 clValid
 BiocManager
-methylclock
 remotes
 stringr
 desc
@@ -30,3 +28,5 @@ renv
 rprojroot
 utils
 glue
+methylclock
+minfi
