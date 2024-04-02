@@ -529,7 +529,7 @@ head(metadata)
 ```
 
 ```{r colnames}
-#Check that column names and row names match, if they do should return TRUE
+# Check that column names and row names match, if they do should return TRUE
 all(colnames(mat) == rownames(metadata))
 ```
 
