@@ -233,7 +233,7 @@ here?
 > 
 > > ## Solution
 > > 
-> > ```{r kmeans-ex}
+> > ```{r kmeans-ex, fig.cap="Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.", fig.alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data."}
 > > set.seed(42)
 > > cluster5 <- kmeans(pcs, centers = 5)
 > > scrnaseq$kmeans5 <- as.character(cluster5$cluster)
@@ -345,7 +345,7 @@ belong to.
 > 
 > > ## Solution
 > > 
-> > ```{r silhouette-ex}
+> > ```{r silhouette-ex, fig.cap="Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.", fig.alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data."}
 > > sil5 <- silhouette(cluster5$cluster, dist = dist_mat)
 > > scrnaseq$kmeans5 <- as.character(cluster5$cluster)
 > > plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans5")
@@ -353,17 +353,8 @@ belong to.
 > > ```
 > > The average silhouette width is lower when k=5.
 > > 
-> > ```{r, eval=FALSE}
+> > ```{r,  fig.cap="Silhouette plot for each point according to cluster.", fig.alt="Plot with horizontal axis silhoutte width. The plot shows the silhouette width for each point in the data set according to cluster. Cluster 4 contains almost half of the points in the data set and largely consists of points with a large silhouette list, leading to a bar that extends to the right side of the graph. The other clusters contain many fewer points and have similar silhouette widths. The bars for cluster 5 are much smaller, with a small number extending to the left of the origin, indicating negative silhouette widths."}
 > > plot(sil5, border = NA)
-> > ```
-> > ```{r, eval=FALSE, echo=FALSE}
-> > ## this needs to be plotted manually or it gets an unmapped memory crash
-> > Cairo::Cairo("fig/silhouette5.png")
-> > plot(sil5, border = NA)
-> > dev.off()
-> > ```
-> > ```{r, echo=FALSE}
-> > knitr::include_graphics("../fig/silhouette5.png")
 > > ```
 > > This seems to be because some observations in clusters 3 and 5 seem to be
 > > more similar to other clusters than the one they have been assigned to.
@@ -500,7 +491,7 @@ These are “good” (despite missing in the colour bar).
 > 
 > > ## Solution
 > > 
-> > ```{r bs-ex}
+> > ```{r bs-ex, fig.cap="Grid of empirical cluster swapping behaviour estimated by the bootstrap samples.", fig.alt="Grid of 25 squares labelled 1-5 on each of the x and y axes. The diagonal and off-diagonal squares of the grid are coloured in green, indicating the highest scoring value of 1 according to the legend, with the exception of the square corresponding to (4, 5), which is slightly darker green indicating a lower value. The lower triangular squares are coloured in grey, indicating NA values since these would be the same as the upper triangular squares."}
 > > km_fun5 <- function(x) {
 > >     kmeans(x, centers = 5)$cluster
 > > }
