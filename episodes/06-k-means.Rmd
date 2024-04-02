@@ -9,7 +9,7 @@ questions:
   - How can we perform K-means in `R`?
   - How can we appraise a clustering and test cluster robustness?
 objectives:
-  - Understand the importance of clustering in high-dimensional data
+  - Understand what clusters look like in in high-dimensional data.
   - Understand and perform K-means clustering in `R`.
   - Assess clustering performance using silhouette scores.
   - Assess cluster robustness using bootstrapping.

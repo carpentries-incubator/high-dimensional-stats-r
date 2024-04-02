@@ -12,7 +12,7 @@ objectives:
 - Understand when to use hierarchical clustering on high-dimensional data.
 - Perform hierarchical clustering on high-dimensional data and evaluate
   dendrograms.
-- Explore different distance matrix and linkage methods.
+- Understand and explore different distance matrix and linkage methods.
 - Use the Dunn index to validate clustering methods.
 keypoints:
 - Hierarchical clustering uses an algorithm to group similar data points into
@@ -263,7 +263,7 @@ dendrogram showing how the data is partitioned into clusters. But how do we inte
 > Use `hclust()` to implement hierarchical clustering using the
 > distance matrix `dist_m` and 
 > the `complete` linkage method and plot the results as a dendrogram using
-> `plot()`.
+> `plot()`. Why is hierarchical clustering and the resulting dendrogram useful for performing clustering this case?
 >
 > > ## Solution:
 > >
@@ -271,6 +271,9 @@ dendrogram showing how the data is partitioned into clusters. But how do we inte
 > > clust <- hclust(dist_m, method = "complete")
 > > plot(clust)
 > > ```
+> > Hierarchical clustering is particularly useful (compared to K-means) when we do not know the number of clusters 
+> > before we perform clustering. It is useful in this case since we have assumed we do not already know what a suitable 
+> > number of clusters may be.
 > {: .solution}
 {: .challenge}
 
