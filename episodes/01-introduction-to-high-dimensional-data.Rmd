@@ -142,18 +142,18 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ```{r dim-prostate, eval = FALSE}
-> > dim(prostate)   #print the number of rows and columns
+> > dim(prostate)    # print the number of rows and columns
 > > ```
 > >
 > > ```{r head-prostate, eval = FALSE}
-> > names(prostate) # examine the variable names
-> > head(prostate)   #print the first 6 rows
+> > names(prostate)  # examine the variable names
+> > head(prostate)   # print the first 6 rows
 > > ```
 > > 
-> > ```{r pairs-prostate}
-> > names(prostate)  #examine column names
+> > ```{r pairs-prostate, fig.cap="Pairwise plots of the 'prostate' dataset.", fig.alt="A set of pairwise scatterplots of variables in the 'prostate' dataset, namely lcavol, lweight, age, lbph, svi, lcp, gleason, pgg45, lpsa. The plots are shown in a grid."}
+> > names(prostate)  # examine column names
 > >
-> > pairs(prostate)  #plot each pair of variables against each other
+> > pairs(prostate)  # plot each pair of variables against each other
 > > ```
 > > The `pairs()` function plots relationships between each of the variables in
 > > the `prostate` dataset. This is possible for datasets with smaller numbers
@@ -168,7 +168,7 @@ of the challenges we are facing when working with high-dimensional data.
 
 Note that function documentation and information on function arguments will be useful throughout
 this lesson. We can access these easily in R by running `?` followed by the package name.
-For example, the documentation for the `dim` package can be accessed by running `?dim`.
+For example, the documentation for the `dim` function can be accessed by running `?dim`.
 
 > ## Locating data with R - the **`here`** package
 > 
