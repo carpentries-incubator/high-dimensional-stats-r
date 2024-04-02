@@ -103,8 +103,8 @@ knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 
 To motivate this lesson, let's first look at an example where hierarchical
 clustering is really useful, and then we can understand how to apply it in more
-detail. To do this, we'll return to the large `methylation` dataset we worked
-with in the regression lessons. Let's load the data and look at it.
+detail. To do this, we'll return to the large [`methylation`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) dataset we worked
+with in the regression lessons. Let's load and visually inspect the data:
 
 ```{r}
 library("minfi")

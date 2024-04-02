@@ -114,7 +114,8 @@ high-dimensional datasets it can also be difficult to identify a single response
 variable, making standard data exploration and analysis techniques less useful.
 
 Let's have a look at a simple dataset with lots of features to understand some
-of the challenges we are facing when working with high-dimensional data. 
+of the challenges we are facing when working with high-dimensional data. For reference, all data used throughout 
+the lesson are described in the [data page](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html).
 
 
 > ## Challenge 2 
@@ -124,7 +125,7 @@ of the challenges we are facing when working with high-dimensional data.
 > encountered when working with many features in a high-dimensional data set.
 >
 > First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
-> Next, let's Load the `prostate` dataset as follows:
+> Next, let's load the [`prostate`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) dataset as follows:
 >
 > ```{r prostate}
 > library("here")
@@ -360,9 +361,11 @@ episode will explore a specific method to perform clustering analysis.
 > examine datasets in `R` that have been made available in Bioconductor, usually
 > along with an associated paper or package.
 > 
-> Next, we load the `methylation` dataset which represents data collected using
+> Next, we load the [`methylation`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html)
+> dataset which represents data collected using
 > Illumina Infinium methylation arrays which are used to examine methylation
-> across the human genome. These data include information collected from the
+> across the human genome.
+> These data include information collected from the
 > assay as well as associated metadata from individuals from whom samples were
 > taken.
 > 

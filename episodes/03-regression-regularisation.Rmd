@@ -50,7 +50,8 @@ regularisation. Compared to many other methods, regularisation is also often ver
 and can therefore be extremely useful in practice. 
 
 First, let us check out what happens if we try to fit a linear model to high-dimensional
-data! We start by reading in the `methylation` data from the last lesson:
+data! We start by reading in the [`methylation`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) 
+data from the last lesson:
 
 
 ```{r loadmethy}
@@ -350,7 +351,7 @@ methyl_mat <- t(assay(methylation))
 ```
 
 We will then subset the data to a set of CpG markers that are known to be associated with
-age from a previous study by Horvath et al.[^2].
+age from a previous study by Horvath et al.[^2], described in [data](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html).
 
 ```{r echo=FALSE, eval=FALSE}
 # these CpGs were obtained using:
