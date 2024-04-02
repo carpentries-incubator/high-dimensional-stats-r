@@ -103,9 +103,8 @@ resulting principal component could also be used as an effect in further analysi
 PCA transforms a dataset of continuous variables into a new set of uncorrelated variables called "principal components". The first principal component derived explains the largest amount of the variability
 in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed into principal components, we can extract a subset of the principal components in order of the variance they explain (starting with the first principal component that by definition explains the most variability, and then the second), giving new variables that explain a lot of the variability in the original dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset.
 
-To see what these new principal components may look like, 
-Figure 1 shows biodiversity index versus percentage area left
-fallow for 50 farms in southern England. Principal components are a collection of new, artificial data points, one for each individual observation called _scores_. 
+To see what these new principal components may look like, the figure below shows the log-transformed prostate specific antigen (`lpsa`) versus cancer 
+volume (`lcavol`) data from the `prostate` data set introduced in Episode 1. Principal components are a collection of new, artificial data points, one for each individual observation called _scores_. 
 The red line on the plot represents the line passing through the scores (points) of the first principal component for each observation.
 The angle that the first principal component line passes through the data points at is set to the direction with the highest 
 variability. The plotted first principal components can therefore be thought of reflecting the 
@@ -114,9 +113,59 @@ in the data and is represented by the line perpendicular to the first (the green
 capturing the overall effect in the data that has the second-highest variability.
 
 
-```{r fig1, echo=FALSE, fig.cap="Scatter plots of the farm data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the farm data. The left figure displays a scatter plot of biodiversity versus percentage area fallow. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
-# ![Figure 1: Biodiversity index and percentage area fallow PCA](D:/Statistical consultancy/Consultancy/Grant applications/UKRI teaching grant 2021/Working materials/Bio index vs percentage fallow.png)
-knitr::include_graphics("../fig/bio_index_vs_percentage_fallow.png")
+```{r pros-pcs, echo=FALSE, fig.width = 12, warning = FALSE, fig.cap="Scatter plots of the prostate data with the first principal component in red and second principal component in green.", fig.alt="Side-by-side scatter plots of the prostate data. The left figure displays a scatter plot of the log prostate specific antigen versus the log cancer volume. The first principal component is shown by a red line and the second principal component is shown by a green line. The right figure displays the same scatter plot rotated so that the first principal component is horizontal and the second principal component is shown perpendicular to this."}
+
+library(ggplot2)
+library(PCAtools)
+library(cowplot)
+prostate <- readRDS(here("data/prostate.rds"))
+
+# pca, set 2 variables so directions look orthogonal
+pros_only2 <- prostate[, c("lcavol", "lpsa")]
+pros_only2t <- data.frame(t(pros_only2))   
+colnames(pros_only2t)<-seq(1:dim(pros_only2t)[2]) 
+pca.pros_only2 <- pca(pros_only2t, center = TRUE, scale=TRUE)
+pca_proj1<-pca.pros_only2$loadings[,1]
+pca_proj2<-pca.pros_only2$loadings[,2]
+
+# unscale projection directions for plotting 
+prosonly2.scaled <-scale(pros_only2)
+r=seq(min(prosonly2.scaled[,1]), max(prosonly2.scaled[,1]), length.out=1000) 
+pc1_proj=pca_proj1[2]/pca_proj1[1]*r 
+pc2_proj=pca_proj2[2]/pca_proj2[1]*r 
+r=r*sd(pros_only2[,1]) + mean(pros_only2[,1])
+pc1_proj=pc1_proj*sd(pros_only2[,2]) + mean(pros_only2[,2])
+pc2_proj=pc2_proj*sd(pros_only2[,2]) + mean(pros_only2[,2])
+projdf<-data.frame(r, pc1_proj, pc2_proj)
+
+# unscale pcs 
+pc1unscaled=pca.pros_only2$rotated[,1]*sd(pros_only2[,1]) + mean(pros_only2[,1])
+pc2unscaled= pca.pros_only2$rotated[,2]*sd(pros_only2[,2]) + mean(pros_only2[,2])
+pcdf<-data.frame(PC1=pc1unscaled, PC2=pc2unscaled, PCline1=rep(mean(pc1unscaled), length(pc1unscaled)), 
+            PCline2=rep(mean(pc2unscaled), length(pc2unscaled)))
+
+# first plot
+g1 <- ggplot(pros_only2, aes(x=lcavol, y=lpsa)) + geom_point(size=2) + 
+  geom_line(data=projdf, aes(x=r, y=pc1_proj), linewidth=1, colour="red")+
+  geom_line(data=projdf[295:750,], aes(x=r, y=pc2_proj), linewidth=1, colour="dark green")+
+  xlim(-2.1, 4.5) + ylim(-0.9, 6.1) + xlab("Log-transformed cancer volume") +
+  ylab("Log-transformed prostate specific antigen") + 
+  theme(axis.text=element_text(size=20), axis.title=element_text(size=20)) 
+
+# second plot
+g2 <- ggplot(pcdf, aes(x=PC1, y=PC2)) + geom_point(size=2) +
+  geom_line(aes(x=PC1, y=PCline2), data=pcdf, size=1, colour="red") +
+  geom_line(aes(x=PCline1, y=PC2), data=pcdf, size=1, colour="dark green") +
+  xlim(-2.1, 4.5) + ylim(-0.9, 6.1) + xlab("First principal component") +
+  ylab("Second principal component") + 
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20))
+cowplot::plot_grid(g1, g2, nrow = 1)
+
+unloadNamespace("PCAtools") #to make sure that this doesn't cause dependencies for the displayed code in the rest of the episode
+unloadNamespace("cowplot")
+unloadNamespace("ggrepel")
+unloadNamespace("ggplot2")
+rm(prostate)
 ```
 
 The animation below illustrates how principal components are calculated from
@@ -138,7 +187,9 @@ knitr::include_graphics("../fig/pendulum.gif")
 > of the variables in the dataset. That is, the first principal
 > component values or _scores_, $Z_1$, are a linear combination 
 > of variables in the dataset, $X_1...X_p$, given by
+>
 > $$ Z_1 = a_{11}X_1 + a_{21}X_2 +....+a_{p1}X_p, $$
+> 
 > where $a_{11}...a_{p1}$ represent principal component _loadings_. 
 {: .callout} 
 
@@ -148,13 +199,13 @@ the principal component scores. In this episode, we will see how to perform PCA 
 
 # How do we perform a PCA?
 
-To illustrate how to perform PCA initially, we start with a low-dimensional dataset. The `prostate` dataset represents data from 97
-men who have prostate cancer. The data come from a study which examined the
+To illustrate how to perform PCA initially, we revisit the low-dimensional `prostate` dataset. 
+The data come from a study which examined the
 correlation between the level of prostate specific antigen and a number of
-clinical measures in men who were about to receive a radical prostatectomy.
+clinical measures in 97 men who were about to receive a radical prostatectomy.
 The data have 97 rows and 9 columns.
 
-Columns include:
+The variables in the dataset (columns) are:
 - `lcavol` (log-transformed cancer volume),
 - `lweight` (log-transformed prostate weight),
 - `lbph` (log-transformed amount of benign prostate enlargement),
@@ -173,6 +224,7 @@ First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
 
 ```{r prostate-load}
+library("here")
 prostate <- readRDS(here("data/prostate.rds"))
 ```
 
@@ -233,8 +285,8 @@ deviation of 1.
 > >    It also won't affect how quickly the output will be calculated, whether
 > >    continuous and categorical variables are present or not.
 > > 
-> >    It is done to ensure that features with different ranges of values
-> >    have equal weighting in the resulting PCs (point 2).
+> >    We use scaling to ensure that features with different ranges of values
+> >    have equal weighting in the resulting principal components (point 2).
 > > 
 > >  2. You may not want to standardise datasets which contain continuous variables
 > >    all measured on the same scale (e.g. gene expression data or RNA sequencing
@@ -252,12 +304,12 @@ This package provides several functions that are useful for exploring data via P
 producing useful figures and analysis tools. The package is made for the somewhat unusual
 Bioconductor style of data tables (observations in columns, features in rows). When
 using Bioconductor data sets and **`PCAtools`**, it is thus not necessary to transpose the data.
-You can use the help files in PCAtools to find out about the `pca()`
-function (type `help("pca")` or `?pca` in R). Note that, although we focus on PCA implementation using **`PCAtools`**, there are several other
+You can use the help files in the package documentation to find out about the `pca()`
+function (type `help("pca")` or `?pca` in R). Although we focus on PCA implementation using this package, there are several other
 options for performing PCA, including a base R function, `prcomp()`. Equivalent functions and 
 output labels for the common implementations are summarised below.
 
-| library::command()| PC scores | Loadings |
+| library::command()| Principal component scores | Loadings |
 |-------------------|-----------|----------|
 | stats::prcomp()   | $x         | $rotation |
 | stats::princomp() | $scores    | $loadings | 
@@ -276,19 +328,13 @@ matrix and convert it to a data frame for use within the **`PCAtools`** package.
 
 
 ```{r prcomp}
-# create transposed data frame
-pros2t <- data.frame(t(pros2))
-# rename columns for use within PCAtools
-colnames(pros2t) <- seq_len(ncol(pros2t))
-# create fake metadata for use with PCA tools
-pmetadata <- data.frame(
-  "M" = rep(1, dim(pros2t)[2]),
-  row.names = colnames(pros2t)
-)
+pros2t <- data.frame(t(pros2))  # create transposed data frame
+colnames(pros2t)<-seq(1:dim(pros2t)[2]) # rename columns for use within PCAtools
+pmetadata= data.frame("M" = rep(1, dim(pros2t)[2]), row.names = colnames(pros2t)) # create fake metadata for use with PCA tools
 
-## run PCA
-pca.pros <- pca(pros2t, scale = TRUE, center = TRUE,metadata = pmetadata)
-pca.pros$loadings # return pca loadings 
+## implement PCA
+pca.pros <- pca(pros2t, scale = TRUE, center = TRUE, metadata = pmetadata)
+summary(pca.pros)
 ```
 
 # How many principal components do we need?
@@ -311,7 +357,7 @@ principal components. In this example, the first principal component, PC1, expla
 PC3 a further `r round(prop.var[[3]])`%, PC4 approximately `r round(prop.var[[4]])`% and PC5
 around `r round(prop.var[[5]])`%.
 
-Let's visualise this. A plot of the amount of variance accounted for by each PC
+Let's visualise this. A plot of the amount of variance accounted for by each principal component
 is also called a scree plot. Often, scree plots show a characteristic pattern 
 where initially, the variance drops rapidly with each additional principal component. But then there is an “elbow” after which the
 variance decreases more slowly. The total variance explained up to the elbow point is sometimes
@@ -324,7 +370,6 @@ We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8, 
           drawCumulativeSumLine = FALSE, drawCumulativeSumPoints = FALSE) +
     geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
-# add line to scree plot to visualise the elbow
 ```
 
 The scree plot shows that the first principal component explains most of the
@@ -450,8 +495,6 @@ Disadvantages:
 # Using PCA to analyse gene expression data 
 
 
-##  A gene expression dataset of cancer patients
-
 The dataset we will be analysing in this lesson includes two subsets of data: 
 * a matrix of gene expression data showing microarray results for different
   probes used to examine gene expression profiles in 91 different breast
@@ -481,8 +524,7 @@ head(metadata)
 ```
 
 ```{r colnames}
-# Check that column names and row names match
-# If they do should return TRUE
+# Check that column names and row names match, if they do should return TRUE
 all(colnames(mat) == rownames(metadata))
 ```
 
@@ -599,9 +641,9 @@ amount of the variation. The proportion of variance explained should sum to one.
 
 > ## Challenge 4
 > 
-> Using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
+> This time using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
 > proportion of variance explained by each principal component. Explain the
-> output of the screeplot in terms of proportion of the variance in the data explained
+> output of the scree plot in terms of proportion of the variance in the data explained
 > by each principal component.
 > 
 > > ## Solution
@@ -611,7 +653,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 > > # Add line to scree plot to visualise the elbow
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
 > > drawCumulativeSumPoints = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
-> > as.numeric(pc$variance))) 
+> > as.numeric(pc$variance))) +  ylim(0, pc$variance[1]*1.1)
 > > ``` 
 > > 
 > > The first principal component explains around 33% of the 
@@ -665,8 +707,9 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > > ## Solution
 > > 
 > > ```{r biplot-ex, fig.cap="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade.", fig.alt="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on Grade across these two groups."}
-> > biplot(pc, lab = NULL, colby = 'Grade')
+> > PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 > > ```
+> > 
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
 > > axis according to expressions of different genes while no separation can be
