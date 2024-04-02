@@ -236,7 +236,7 @@ text(
 > 
 > > ## Solution
 > > 
-> > This plot suggests that the variables lweight and lbph are associated with
+> > This plot suggests that the variables `lweight` and `lbph` are associated with
 > > high values on factor 2 (but lower values on factor 1) and the variables
 > > lcavol, lcp and lpsa are associated with high values on factor 1
 > > (but lower values on factor 2). There appear to be two 'clusters' of

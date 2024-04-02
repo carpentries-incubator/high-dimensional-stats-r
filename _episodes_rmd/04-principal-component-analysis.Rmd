@@ -529,9 +529,9 @@ all(colnames(mat) == rownames(metadata))
 ```
 
 
-The 'mat' variable contains a matrix of gene expression profiles for each sample.
+The `mat` variable contains a matrix of gene expression profiles for each sample.
 Rows represent gene expression measurements and columns represent samples. The
-'metadata' variable contains the metadata associated with the gene expression
+`metadata` variable contains the metadata associated with the gene expression
 data including the name of the study from which data originate, the age of the
 patient from which the sample was taken, whether or not an oestrogen receptor
 was involved in their cancer and the grade and size of the cancer for each
@@ -572,7 +572,7 @@ represents.
 > 80% of the variance in the dataset. Use the `removeVar` argument in `pca()` to remove
 > the principal components accounting for the bottom 20%.
 > 
-> As in the example using prostate data above, examine the first 5 rows and
+> As in the example using `prostate` data above, examine the first 5 rows and
 > columns of rotated data and loadings from your PCA.
 > 
 > > ## Solution
@@ -716,7 +716,7 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > > seem along the PC2 axis. Labels of patient samples are automatically added
 > > in the biplot. Labels for each sample are added by default, but can be
 > > removed if there is too much overlap in names. Note that **`PCAtools`** does
-> > not scale biplot in the same way as biplot using the stats package.
+> > not scale biplot in the same way as biplot using the **`stats`** package.
 > {: .solution}
 {: .challenge}
 
@@ -729,7 +729,7 @@ Let's consider this biplot in more detail, and also display the loadings:
 > groups may cluster by patient age or by whether or not the sample expresses
 > the oestrogen receptor gene (ER+ or ER-).
 > 
-> Note: You may see a warning about `ggrepel`. This happens when there are many
+> Note: You may see a warning about **`ggrepel`**. This happens when there are many
 > labels but little space for plotting. This is not usually a serious problem - 
 > not all labels will be shown.
 > 
