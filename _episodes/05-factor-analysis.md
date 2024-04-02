@@ -78,28 +78,9 @@ components are ordered by the amount of variance they account for.
 
 # Prostate cancer patient data
 
-The prostate dataset represents data from 97 men who have prostate cancer.
-The data come from a study which examined the correlation between the level
-of prostate specific antigen and a number of clinical measures in men who were
-about to receive a radical prostatectomy. The data have 97 rows and 9 columns.
+We revisit the prostate dataset of 97 men who have prostate cancer.
 Although not strictly a high-dimensional dataset, as with other episodes,
 we use this dataset to explore the method.
-
-
-Columns are:
-
-
-- `lcavol`: log (cancer volume)
-- `lweight`: log (prostate weight)
-- `age`: age (years)
-- `lbph`: log (benign prostatic hyperplasia amount)
-- `svi`: seminal vesicle invasion
-- `lcp`: log (capsular penetration); amount of spread of cancer in outer walls
-  of prostate
-- `gleason`: [Gleason score](https://en.wikipedia.org/wiki/Gleason_grading_system)
-- `pgg45`: percentage Gleason scores 4 or 5
-- `lpsa`: log (prostate specific antigen)
-
 
 In this example, we use the clinical variables to identify factors representing
 various clinical variables from prostate cancer patients. Two principal
