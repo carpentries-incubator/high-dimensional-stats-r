@@ -169,7 +169,6 @@ Columns include:
 We will perform PCA on the five continuous clinical variables in our dataset
 so that we can create fewer variables representing clinical markers of cancer progression.
 
-
 First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
 
@@ -200,8 +199,8 @@ In this example, we want each variable to be treated equally by the PCA since va
 ```{r var-hist, fig.cap="Histograms of two variables from the prostate data set.", fig.alt="Side-by-side histograms of two variables from the dataset, lweight on the left and lbph on the right. The histogram for the lweight data ranges from around 2 to 6 on the x axis, while the histogram for the lbph ranges from around -2 to 3 on the x axis."}
 apply(pros2, 2, var)
 par(mfrow = c(1, 2))
-hist(pros2$lweight, breaks = "FD")
-hist(pros2$lbph, breaks = "FD")
+hist(pros2$lweight)
+hist(pros2$lbph)
 ```
 
 Note that variance is greatest for `lbph` and lowest for `lweight`. Since we 
@@ -277,13 +276,19 @@ matrix and convert it to a data frame for use within the **`PCAtools`** package.
 
 
 ```{r prcomp}
-pros2t <- data.frame(t(pros2))  #create transposed data frame
-colnames(pros2t)<-seq(1:dim(pros2t)[2]) #rename columns for use within PCAtools
-pmetadata= data.frame("M"=rep(1, dim(pros2t)[2]), row.names = colnames(pros2t)) #create fake metadata for use with PCA tools
+# create transposed data frame
+pros2t <- data.frame(t(pros2))
+# rename columns for use within PCAtools
+colnames(pros2t) <- seq_len(ncol(pros2t))
+# create fake metadata for use with PCA tools
+pmetadata <- data.frame(
+  "M" = rep(1, dim(pros2t)[2]),
+  row.names = colnames(pros2t)
+)
 
-##implement PCA
+## run PCA
 pca.pros <- pca(pros2t, scale = TRUE, center = TRUE,metadata = pmetadata)
-pca.pros$loadings #return pca loadings 
+pca.pros$loadings # return pca loadings 
 ```
 
 # How many principal components do we need?
@@ -296,7 +301,7 @@ Let's look at the relative importance of (percentage of the variance explained b
 
 
 ```{r summ}
-prop.var <- round(pca.pros$variance, 4) #round to 4 decimal places
+prop.var <- round(pca.pros$variance, digits = 4)
 prop.var
 ```
 
@@ -319,7 +324,7 @@ We can create a scree plot using the **`PCAtools`** function `screeplot()`:
 screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8, 
           drawCumulativeSumLine = FALSE, drawCumulativeSumPoints = FALSE) +
     geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
-#add line to scree plot to visualise the elbow
+# add line to scree plot to visualise the elbow
 ```
 
 The scree plot shows that the first principal component explains most of the
@@ -469,20 +474,16 @@ metadata <- colData(cancer)
 
 ```{r mat, eval=FALSE}
 head(mat)
-#nrow=22215 probes
-#ncol=91 samples
 ```
 
 ```{r meta, eval=FALSE}
 head(metadata)
-#nrow=91
-#ncol=8
 ```
 
 ```{r colnames}
+# Check that column names and row names match
+# If they do should return TRUE
 all(colnames(mat) == rownames(metadata))
-#Check that column names and row names match
-#If they do should return TRUE
 ```
 
 
@@ -536,23 +537,23 @@ represents.
 > > 
 > > ```{r pca-ex}
 > > pc <- pca(mat, metadata = metadata) # implement a PCA
-> > #We can check the scree plot to see that many principal components explain a very small amount of
-> > #the total variance in the data
+> > # We can check the scree plot to see that many principal components explain a very small amount of
+> > # the total variance in the data
 > > 
-> > #Let's remove the principal components with lowest 20% of the variance
+> > # Let's remove the principal components with lowest 20% of the variance
 > > pc <- pca(mat, metadata = metadata, removeVar = 0.2)
-> > #Explore other arguments provided in pca
+> > # Explore other arguments provided in pca
 > > pc$rotated[1:5, 1:5] # obtain the first 5 principal component scores for the first 5 observations
-> > pc$loadings[1:5, 1:5] #obtain the first 5 principal component loadings for the first 5 features
+> > pc$loadings[1:5, 1:5] # obtain the first 5 principal component loadings for the first 5 features
 > > 
 > > which.max(pc$loadings[, 1]) # index of the maximal loading for the first principal component
 > > # principal component loadings for the feature
-> > #with the maximal loading on the first principal component:
+> > # with the maximal loading on the first principal component:
 > > pc$loadings[which.max(pc$loadings[, 1]), ] 
 > > 
 > > which.max(pc$loadings[, 2]) # index of the maximal loading for the second principal component
 > > # principal component loadings for the feature
-> > #with the maximal loading on the second principal component:
+> > # with the maximal loading on the second principal component:
 > > pc$loadings[which.max(pc$loadings[, 2]), ] 
 > > ```
 > > The function `pca()` is used to perform PCA, and uses as input a matrix
@@ -605,9 +606,9 @@ amount of the variation. The proportion of variance explained should sum to one.
 > 
 > > ## Solution
 > > 
-> > ```{r scree-ex, fig.cap="Caption", fig.cap="Alt"}
+> > ```{r scree-ex, fig.cap="A scree plot of the gene expression data.", fig.alt="A bar and line plot showing the variance explained by principal components (PCs) of gene expression data. Blue bars depict the variance explained by each PC, while a red line depicts the cumulative variance explained by these PCs. The first principal component explains roughly 30\% of the variance, while succeeding PCs explain less than 10%."}
 > > pc <- pca(mat, metadata = metadata)
-> > #Add line to scree plot to visualise the elbow
+> > # Add line to scree plot to visualise the elbow
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
 > > drawCumulativeSumPoints = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
 > > as.numeric(pc$variance))) 
@@ -623,7 +624,20 @@ amount of the variation. The proportion of variance explained should sum to one.
 > > are able to summarise most of the information in the complex dataset in 4-5 principal components
 > > may be a useful result, we may opt to retain more principal 
 > > components (for example, 20) to capture more of the variability 
-> > in the dataset depending on research question.
+> > in the dataset depending on research question.> > ```
+> > Note that first principal component (PC1) explains more variation than
+> > other principal components (which is always the case in PCA). The scree plot
+> > shows that the first principal component only explains ~33% of the total
+> > variation in the microarray data and many principal components explain very 
+> > little variation. The red line shows the cumulative percentage of explained
+> > variation with increasing principal components. Note that in this case 18
+> > principal components are needed to explain over 75% of variation in the
+> > data. This is not an unusual result for complex biological datasets
+> > including genetic information as clear relationships between groups are
+> > sometimes difficult to observe in the data. The scree plot shows that using
+> > a PCA we have reduced 91 predictors to 18 in order to explain a significant
+> > amount of variation in the data. See additional arguments in scree plot
+> > function for improving the appearance of the plot.
 > {: .solution}
 {: .challenge}
 
@@ -650,8 +664,8 @@ are two functions called `biplot()`, one in the package **`PCAtools`** and one i
 > 
 > > ## Solution
 > > 
-> > ```{r biplot-ex}
-> > biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
+> > ```{r biplot-ex, fig.cap="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade.", fig.alt="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on Grade across these two groups."}
+> > biplot(pc, lab = NULL, colby = 'Grade')
 > > ```
 > > The biplot shows the position of patient samples relative to PC1 and PC2
 > > in a 2-dimensional plot. Note that two groups are apparent along the PC1
@@ -678,11 +692,10 @@ Let's consider this biplot in more detail, and also display the loadings:
 > 
 > > ## Solution
 > > 
-> > ```{r pca-biplot-ex2}
+> > ```{r pca-biplot-ex2, fig.cap="A biplot of PC2 against PC1 in the gene expression data, coloured by ER status with patient ages overlaid.", fig.alt="A biplot of PC2 against PC1 in the gene expression data, coloured by ER status. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on ER across these two groups, although there are more ER- samples in the rightmost cluster. Patient ages are overlaid as text near the points, but there is again no clear pattern."}
 > >   PCAtools::biplot(pc,
 > >     lab = paste0(pc$metadata$Age,'years'),
 > >     colby = 'ER',
-> >     hline = 0, vline = 0,
 > >     legendPosition = 'right')
 > > ```
 > > It appears that one cluster has more ER+ samples than the other group.
