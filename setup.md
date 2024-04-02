@@ -9,8 +9,10 @@ to set up for the lessons. This should take about an hour to run, depending on
 the speed of your computer, your internet connection, and any packages you have
 installed already. You'll need to install R 4.0 or later.
 
-The following code will download the data and install the libraries
-used in the current version of this lesson:
+On Linux and Mac systems, R package installation often requires additional system dependencies. To ensure that you can download packages using the code below, first run the terminal commands for your Linux distribution [here](https://docs.posit.co/connect/admin/r/dependencies/). For Mac systems, you can use the Ubuntu code. Note that you will need to use root access (sudo) to install the system dependencies. Windows users can skip this step.
+
+All learners should then run the following code to download the data and install the libraries
+used in this lesson:
 
 ```r
 install.packages("BiocManager")
@@ -39,18 +41,5 @@ for (file in data_files) {
     )
 }
 ```
-
-On Linux systems, part of the above may fail due to the **`bluster`** package and you may receive error messages after running `BiocManager::install(table[[1]])`, indicating that the package `igraph` was not installed successfully. 
-
-Detailed installation instructions for `igraph` can be found at [https://r.igraph.org/](https://r.igraph.org/), but the following workaround code may resolve the issue:
-
-```r
-install.packages('igraph', repos=c(igraph = 'https://igraph.r-universe.dev', 
-                                   CRAN = 'https://cloud.r-project.org'))
-                                   
-BiocManager::install('bluster')
-```
-
-Note especially the C libraries that are mentioned on the `igraph` help page for compiling from source --- these are usually available via a package manager (homebrew, apt, pacman, etc), and are required if your R installation is unable to use pre-compiled binaries from CRAN.
 
 {% include links.md %}
