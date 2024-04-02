@@ -180,7 +180,8 @@ visually are 'real'?
 # K-means clustering applied to the single-cell RNA sequencing data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
-We're going to work with single-cell RNA sequencing data, _scRNAseq_, in these clustering challenges,
+We're going to work with single-cell RNA sequencing data, 
+[_scRNAseq_](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html), in these clustering challenges,
 which is often *very* high-dimensional. Commonly, experiments profile the
 expression level of 10,000+ genes in thousands of cells. Even after filtering
 the data to remove low quality observations, the dataset we're using in this

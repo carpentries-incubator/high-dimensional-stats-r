@@ -104,7 +104,7 @@ PCA transforms a dataset of continuous variables into a new set of uncorrelated 
 in the underlying dataset. The second principal component derived explains the second largest amount of variability in the dataset and so on. Once the dataset has been transformed into principal components, we can extract a subset of the principal components in order of the variance they explain (starting with the first principal component that by definition explains the most variability, and then the second), giving new variables that explain a lot of the variability in the original dataset. Thus, PCA helps us to produce a lower dimensional dataset while keeping most of the information in the original dataset.
 
 To see what these new principal components may look like, the figure below shows the log-transformed prostate specific antigen (`lpsa`) versus cancer 
-volume (`lcavol`) data from the `prostate` data set introduced in Episode 1. Principal components are a collection of new, artificial data points, one for each individual observation called _scores_. 
+volume (`lcavol`) data from the [`prostate`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) data set introduced in Episode 1. Principal components are a collection of new, artificial data points, one for each individual observation called _scores_. 
 The red line on the plot represents the line passing through the scores (points) of the first principal component for each observation.
 The angle that the first principal component line passes through the data points at is set to the direction with the highest 
 variability. The plotted first principal components can therefore be thought of reflecting the 
@@ -495,7 +495,8 @@ Disadvantages:
 # Using PCA to analyse gene expression data 
 
 
-The dataset we will be analysing in this lesson includes two subsets of data: 
+The [dataset](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) 
+we will be analysing in this lesson includes two subsets of data: 
 * a matrix of gene expression data showing microarray results for different
   probes used to examine gene expression profiles in 91 different breast
   cancer patient samples.

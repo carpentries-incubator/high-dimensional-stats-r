@@ -38,7 +38,7 @@ knitr_fig_path("02-")
 # DNA methylation data
 
 For the following few episodes, we will be working with human DNA
-methylation data from flow-sorted blood samples. DNA methylation assays
+methylation data from flow-sorted blood samples, described in [data](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html). DNA methylation assays
 measure, for each of many sites in the genome, the proportion of DNA
 that carries a methyl mark (a chemical modification that does not alter the 
 DNA sequence). In this case, the methylation data come in
