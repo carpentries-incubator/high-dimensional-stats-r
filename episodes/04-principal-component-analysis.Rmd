@@ -649,7 +649,7 @@ amount of the variation. The proportion of variance explained should sum to one.
 > 
 > > ## Solution
 > > 
-> > ```{r scree-ex, fig.cap="A scree plot of the gene expression data.", fig.alt="A bar and line plot showing the variance explained by principal components (PCs) of gene expression data. Blue bars depict the variance explained by each PC, while a red line depicts the cumulative variance explained by these PCs. The first principal component explains roughly 30\% of the variance, while succeeding PCs explain less than 10%."}
+> > ```{r scree-ex, fig.cap="A scree plot of the gene expression data.", fig.alt="A bar and line plot showing the variance explained by principal components (PCs) of gene expression data. Blue bars depict the variance explained by each PC, while a red line depicts the cumulative variance explained by these PCs. The first principal component explains roughly 30\% of the variance, while succeeding PCs explain less than 10\\%."}
 > > pc <- pca(mat, metadata = metadata)
 > > # Add line to scree plot to visualise the elbow
 > > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
