@@ -68,13 +68,13 @@ Here, we show how to extract the information for analysis.
 
 We can extract
 
-- the dimensions of the dataset using `dim`. Importantly, in these objects and
+- the dimensions of the dataset using `dim()`. Importantly, in these objects and
 data structures for computational biology in R generally, observations are stored as
 columns and features (in this case, sites in the genome) are stored as rows. 
 This is in contrast to usual tabular data, where features or variables
 are stored as columns and observations are stored as rows;
-- assays, (normalised methylation levels here), using `assay`;
-- sample-level information using `colData`.
+- assays, (normalised methylation levels here), using `assay()`;
+- sample-level information using `colData()`.
 
 ```{r showmethy}
 dim(methylation)
@@ -237,7 +237,7 @@ these. However, high-dimensional data like the ones we're working with
 require some special considerations. A first consideration, as we saw
 above, is that there are far too many features to fit each one-by-one as
 we might do when analysing low-dimensional datasets (for example using
-`lm` on each feature and checking the linear model assumptions). A
+`lm()` on each feature and checking the linear model assumptions). A
 second consideration is that statistical approaches may behave
 slightly differently when applied to very high-dimensional data, compared to
 low-dimensional data. A third consideration is the speed at which we can
@@ -492,7 +492,7 @@ small uncertainty may lead to a small p-value.
 > $`r ncol(methylation)` - `r length(coef(lm_age_methyl1))` = `r lm_age_methyl1$df`$.
 > We want to know what portion of the distribution function of the test
 > statistic is as extreme as, or more  extreme than, the value we observed.
-> The function`pt()`(similar to`pnorm()`, etc) can give us this information.
+> The function `pt()`(similar to`pnorm()`, etc) can give us this information.
 >
 > Since we're not sure if the coefficient will be larger or smaller than
 > zero, we want to do a 2-tailed test. Therefore we take the absolute

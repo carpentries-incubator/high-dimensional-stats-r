@@ -128,8 +128,8 @@ yourself to read too much into faint signals.
 Let's explore this further using an example. We create two columns of data
 ('x' and 'y') and partition these data into three groups ('a', 'b', 'c')
 according to data values. We then plot these data and their allocated clusters
-and put ellipses around the clusters using the `stat_ellipse` function
-in `ggplot`.
+and put ellipses around the clusters using the `stat_ellipse()` function
+in **`ggplot`**.
 
 ```{r fake-cluster, echo = FALSE, fig.cap = "Example of artificial clusters fitted to data points.", fig.alt="A scatter plot of random data y versus x. The points are horizontally partitioned at 2 random groups, forming three colour coded clusters. Circles are drawn around each cluster. The data shown appears to have no clusters but the colours and circles give the appearance of clusters artificially."}
 set.seed(11)
@@ -180,7 +180,7 @@ visually are 'real'?
 # K-means clustering applied to the single-cell RNA sequencing data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
-We're going to work with single-cell RNA sequencing data, "scRNAseq", in these clustering challenges,
+We're going to work with single-cell RNA sequencing data, _scRNAseq_, in these clustering challenges,
 which is often *very* high-dimensional. Commonly, experiments profile the
 expression level of 10,000+ genes in thousands of cells. Even after filtering
 the data to remove low quality observations, the dataset we're using in this
@@ -194,9 +194,9 @@ compress the data by identifying the major axes of variation in the data,
 before running our clustering algorithms on this lower-dimensional data to explore
 the similarity of features.
 
-The `scater` package has some easy-to-use tools to calculate a PCA for
+The **`scater`** package has some easy-to-use tools to calculate a PCA for
 `SummarizedExperiment` objects.
-Let's load the scRNAseq data and calculate some principal components.
+Let's load the _scRNAseq_ data and calculate some principal components.
 
 ```{r data}
 library("SingleCellExperiment")
@@ -212,9 +212,9 @@ we can visualise those easily, and they're a quantitative representation of
 the underlying data, representing the two largest axes of variation. 
 
 We can now run K-means clustering on the first and second principal components
-of the scRNAseq data using the `kmeans` function.
+of the _scRNAseq_ data using the `kmeans()` function.
 
-```{r kmeans, fig.cap = "Scatter plot of principal component 2 versus principal component 1 with points colour coded according to the cluster to which they belong.", fig.alt = "A scatter plot of principal component 2 versus principal component 1 of the scrnaseq data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data."}
+```{r kmeans, fig.cap = "Scatter plot of principal component 2 versus principal component 1 with points colour coded according to the cluster to which they belong.", fig.alt = "A scatter plot of principal component 2 versus principal component 1 of the `scrnaseq` data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data."}
 set.seed(42)
 cluster <- kmeans(pcs, centers = 4)
 scrnaseq$kmeans <- as.character(cluster$cluster)
@@ -227,7 +227,7 @@ here?
 
 > ## Challenge 1
 > 
-> Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim`.
+> Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim()`.
 > Save this with a variable name that's different to what we just used,
 > because we'll use this again later.
 > 
@@ -264,7 +264,7 @@ here?
 > points(mean(x), mean(y), pch = 16, col = "firebrick")
 > points(median(x), median(y), pch = 16, col = "dodgerblue")
 > ```
-> PAM can be carried out using `pam()` form the **`cluster`** package.
+> PAM can be carried out using `pam()` from the **`cluster`** package.
 > 
 {: .callout}
 
@@ -296,7 +296,7 @@ clusters are very fuzzy, and even if we are relatively sure about the existence
 of discrete groupings in the data, observations on the boundaries can be difficult
 to confidently place in either cluster.
 
-Here we use the `silhouette` function from the `cluster` package to calculate the
+Here we use the `silhouette()` function from the **`cluster`** package to calculate the
 silhouette width of our K-means clustering using a distance matrix of distances
 between points in the clusters.
 
@@ -487,7 +487,7 @@ These are “good” (despite missing in the colour bar).
 > ## Challenge 3
 >
 > Repeat the bootstrapping process with k=5. Do the results appear better or worse?
-> Can you identify where the differences occur on the `plotReducedDim`?
+> Can you identify where the differences occur on the `plotReducedDim()`?
 > 
 > > ## Solution
 > > 

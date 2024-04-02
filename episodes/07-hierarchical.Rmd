@@ -103,7 +103,7 @@ knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 
 To motivate this lesson, let's first look at an example where hierarchical
 clustering is really useful, and then we can understand how to apply it in more
-detail. To do this, we'll return to the large methylation dataset we worked
+detail. To do this, we'll return to the large `methylation` dataset we worked
 with in the regression lessons. Let's load the data and look at it.
 
 ```{r}
@@ -301,7 +301,7 @@ while a cut at height 4 produces 6 downstream clusters.
 
 We can first visualise cluster membership by highlight branches in dendograms. 
 In this example, we calculate a distance matrix between
-samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree`.
+samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree()`.
 
 ```{r plot-clust-method, fig.cap="Dendogram with boxes around clusters.", fig.alt="A dendogram for the methyl_mat data with boxes overlaid on clusters. There are 5 boxes in total, each indicating separate clusters."}
 ## create a distance matrix using euclidean distance

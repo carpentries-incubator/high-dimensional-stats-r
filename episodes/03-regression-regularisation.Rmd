@@ -50,7 +50,7 @@ regularisation. Compared to many other methods, regularisation is also often ver
 and can therefore be extremely useful in practice. 
 
 First, let us check out what happens if we try to fit a linear model to high-dimensional
-data! We start by reading in the data from the last lesson:
+data! We start by reading in the `methylation` data from the last lesson:
 
 
 ```{r loadmethy}
@@ -86,7 +86,7 @@ when we have more features than observations.
 
 > ## Singularities
 > 
-> The message that `lm` produced is not necessarily the most intuitive. What
+> The message that `lm()` produced is not necessarily the most intuitive. What
 > are "singularities" and why are they an issue? A singular matrix 
 > is one that cannot be
 > [inverted](https://en.wikipedia.org/wiki/Invertible_matrix). R uses 
@@ -117,7 +117,7 @@ when we have more features than observations.
 > In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
 > If we visualise the level of 
-> correlation between sites in the methylation dataset, we can see that many 
+> correlation between sites in the `methylation` dataset, we can see that many 
 > of the features represent the same information - there are many 
 > off-diagonal cells, which are deep red or blue. For example, the following
 > heatmap visualises the correlations for the first 500 features in the 
@@ -529,7 +529,7 @@ just using ordinary least squares. We see how a penalty term, $\lambda$, might b
 For now, to see how regularisation might improve a model, let's fit a model using the same set
 of 20 features (stored as `features`) selected earlier in this episode (these
 are a subset of the features identified by Horvarth et al), using both 
-regularised and ordinary least squares.
+regularised and ordinary least squares. To fit regularised regression models, we will use the **`glmnet`** package.
 
 ```{r plot-ridge, fig.cap="A line plot of coefficient estimates against log lambda for a ridge regression model.", fig.alt="A line plot of coefficient estimates against log lambda for a ridge regression model. Lines are depicted in different colours, with coefficients generally having large values on the left of the plot (small log lambda) and moving smoothly and gradually towards zero to the right of the plot (large log lambda). Some coefficients appear to increase and then decrease in magnitude as lambda increases, or switch signs."}
 library("glmnet")
@@ -726,7 +726,7 @@ drawplot()
 
 > ## Challenge 5
 > 
-> 1. Use `glmnet` to fit a LASSO model (hint: set `alpha = 1`).
+> 1. Use `glmnet()` to fit a LASSO model (hint: set `alpha = 1`).
 > 2. Plot the model object. Remember that for ridge regression,
 >    we set `xvar = "lambda"`. What if you don't set this? What's the
 >    relationship between the two plots?
