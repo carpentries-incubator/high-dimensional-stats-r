@@ -9,7 +9,7 @@ to set up for the lessons. This should take about an hour to run, depending on
 the speed of your computer, your internet connection, and any packages you have
 installed already. You'll need to install R 4.0 or later.
 
-On Linux and Mac systems, R package installation often requires additional system dependencies. To ensure that you can download packages using the code below, first run the terminal commands for your Linux distribution [here](https://docs.posit.co/connect/admin/r/dependencies/). For Mac systems, you can use the Ubuntu code. Note that you will need to use root access (sudo) to install the system dependencies. Windows users can skip this step.
+On Linux and Mac systems, R package installation often requires additional system dependencies. If you are a Linux or Mac user, to ensure that you can download packages using the code below, first run the terminal commands for your distribution [here](https://docs.posit.co/connect/admin/r/dependencies/). For Mac systems, you can use the Ubuntu code. Note that you will need to use root access (sudo) to install the system dependencies. Windows users can skip this step.
 
 All learners should then run the following code to download the data and install the libraries
 used in this lesson:
