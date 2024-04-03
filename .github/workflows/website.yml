@@ -30,19 +30,19 @@ jobs:
   #             ghcr.io/${{ github.repository }}:${{ github.sha }}
   #             ghcr.io/${{ github.repository }}:latest
 
-  check:
-    # needs: container
-    runs-on: ubuntu-latest
-    container: ghcr.io/${{github.repository}}:latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Checkout github pages
-        uses: actions/checkout@v4
-      - name: Build site
-        run: |
-          make site
+  # check:
+  #   # needs: container
+  #   runs-on: ubuntu-latest
+  #   container: ghcr.io/${{github.repository}}:latest
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:
+  #     - name: Checkout github pages
+  #       uses: actions/checkout@v4
+  #     - name: Build site
+  #       run: |
+  #         make site
 
   build-website:
     # needs: container
@@ -67,14 +67,16 @@ jobs:
       - name: Debug
         run: |
           ls -lah
+
       - name: Set up git
         run: |
-          # setup git
+          ls -lah
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
       - name: Merge main
         run: |
+          ls -lah
           git fetch origin
           git merge origin/main
   
@@ -83,6 +85,7 @@ jobs:
 
       - name: Commit and Push
         run: |
+          ls -lah
           rm -r _site
           git add -A .
           git commit --allow-empty -m "[Github Actions] render website (via ${{ github.sha }})"
