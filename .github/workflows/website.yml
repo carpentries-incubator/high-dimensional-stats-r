@@ -71,6 +71,7 @@ jobs:
       - name: Set up git
         run: |
           ls -lah
+          git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
