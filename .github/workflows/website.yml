@@ -80,7 +80,6 @@ jobs:
 
       - name: Commit and Push
         run: |
-          ls -lah
           rm -r _site
           git add -A .
           git commit --allow-empty -m "[Github Actions] render website (via ${{ github.sha }})"
