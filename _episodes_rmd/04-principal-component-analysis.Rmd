@@ -643,37 +643,38 @@ amount of the variation. The proportion of variance explained should sum to one.
 > ## Challenge 4
 > 
 > This time using the `screeplot()` function in **`PCAtools`**, create a scree plot to show 
-> proportion of variance explained by each principal component. Explain the
-> output of the scree plot in terms of proportion of the variance in the data explained
+> proportion of variance explained by the first 20 principal component (hint: `components = 1:20`).
+> Explain the output of the scree plot in terms of proportion of the variance in the data explained
 > by each principal component.
 > 
 > > ## Solution
 > > 
-> > ```{r scree-ex, fig.cap="A scree plot of the gene expression data.", fig.alt="A bar and line plot showing the variance explained by principal components (PCs) of gene expression data. Blue bars depict the variance explained by each PC, while a red line depicts the cumulative variance explained by these PCs. The first principal component explains roughly 30\\% of the variance, while succeeding PCs explain less than 10\\%."}
+> > ```{r scree-ex, fig.cap="A scree plot of the gene expression data.", fig.alt="A bar and line plot showing the variance explained by principal components (PCs) of gene expression data. Blue bars depict the variance explained by each PC, while a red line depicts the cumulative variance explained by the PCs. The first principal component explains roughly 30% of the variance, while succeeding PCs explain less than 10%."}
 > > pc <- pca(mat, metadata = metadata)
-> > # Add line to scree plot to visualise the elbow
-> > screeplot(pc, axisLabSize = 5, titleLabSize = 8, drawCumulativeSumLine = FALSE, 
-> > drawCumulativeSumPoints = FALSE) +  geom_line(aes(x = 1:length(pc$components), y = 
-> > as.numeric(pc$variance))) +  ylim(0, pc$variance[1]*1.1)
-> > ``` 
+> > screeplot(pc, components = 1:20) +
+> >     ylim(0, 80)
+> > ```
 > > 
 > > The first principal component explains around 33% of the 
 > > variance in the microarray data, the first 4 principal components explain
 > > around 50%, and 20 principal components explain around 75%. Many principal 
-> > components explain very little variation. The
+> > components explain very little variation. A first
 > > 'elbow' appears to be around 4-5 principal components, indicating that this
 > > may be a suitable number of principal components. However, these principal components 
 > > cumulatively explain only 51-55% of the variance in the dataset. Although the fact we 
 > > are able to summarise most of the information in the complex dataset in 4-5 principal components
 > > may be a useful result, we may opt to retain more principal 
 > > components (for example, 20) to capture more of the variability 
-> > in the dataset depending on research question.> > ```
+> > in the dataset depending on research question.
+> > A second 'elbow' around 12 principal components may provide a good middleground.
 > > Note that first principal component (PC1) explains more variation than
 > > other principal components (which is always the case in PCA). The scree plot
 > > shows that the first principal component only explains ~33% of the total
 > > variation in the microarray data and many principal components explain very 
 > > little variation. The red line shows the cumulative percentage of explained
-> > variation with increasing principal components. Note that in this case 18
+> > variation with increasing principal components.
+> > 
+> > Note that in this case 18
 > > principal components are needed to explain over 75% of variation in the
 > > data. This is not an unusual result for complex biological datasets
 > > including genetic information as clear relationships between groups are
