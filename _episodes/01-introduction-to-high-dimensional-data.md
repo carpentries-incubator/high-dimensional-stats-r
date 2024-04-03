@@ -113,7 +113,8 @@ high-dimensional datasets it can also be difficult to identify a single response
 variable, making standard data exploration and analysis techniques less useful.
 
 Let's have a look at a simple dataset with lots of features to understand some
-of the challenges we are facing when working with high-dimensional data. 
+of the challenges we are facing when working with high-dimensional data. For reference, all data used throughout 
+the lesson are described in the [data page](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html).
 
 
 > ## Challenge 2 
@@ -123,7 +124,7 @@ of the challenges we are facing when working with high-dimensional data.
 > encountered when working with many features in a high-dimensional data set.
 >
 > First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
-> Next, let's Load the `prostate` dataset as follows:
+> Next, let's load the [`prostate`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) dataset as follows:
 >
 > 
 > ~~~
@@ -144,20 +145,20 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > dim(prostate)   #print the number of rows and columns
+> > dim(prostate)    # print the number of rows and columns
 > > ~~~
 > > {: .language-r}
 > >
 > > 
 > > ~~~
-> > names(prostate) # examine the variable names
-> > head(prostate)   #print the first 6 rows
+> > names(prostate)  # examine the variable names
+> > head(prostate)   # print the first 6 rows
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > ~~~
-> > names(prostate)  #examine column names
+> > names(prostate)  # examine column names
 > > ~~~
 > > {: .language-r}
 > > 
@@ -172,13 +173,13 @@ of the challenges we are facing when working with high-dimensional data.
 > > 
 > > 
 > > ~~~
-> > pairs(prostate)  #plot each pair of variables against each other
+> > pairs(prostate)  # plot each pair of variables against each other
 > > ~~~
 > > {: .language-r}
 > > 
 > > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-01-pairs-prostate-1.png" alt="plot of chunk pairs-prostate" width="432" />
-> > <p class="caption">plot of chunk pairs-prostate</p>
+> > <img src="../fig/rmd-01-pairs-prostate-1.png" alt="A set of pairwise scatterplots of variables in the 'prostate' dataset, namely lcavol, lweight, age, lbph, svi, lcp, gleason, pgg45, lpsa. The plots are shown in a grid." width="432" />
+> > <p class="caption">Pairwise plots of the 'prostate' dataset.</p>
 > > </div>
 > > The `pairs()` function plots relationships between each of the variables in
 > > the `prostate` dataset. This is possible for datasets with smaller numbers
@@ -193,7 +194,7 @@ of the challenges we are facing when working with high-dimensional data.
 
 Note that function documentation and information on function arguments will be useful throughout
 this lesson. We can access these easily in R by running `?` followed by the package name.
-For example, the documentation for the `dim` package can be accessed by running `?dim`.
+For example, the documentation for the `dim` function can be accessed by running `?dim`.
 
 > ## Locating data with R - the **`here`** package
 > 
@@ -525,9 +526,11 @@ episode will explore a specific method to perform clustering analysis.
 > examine datasets in `R` that have been made available in Bioconductor, usually
 > along with an associated paper or package.
 > 
-> Next, we load the `methylation` dataset which represents data collected using
+> Next, we load the [`methylation`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html)
+> dataset which represents data collected using
 > Illumina Infinium methylation arrays which are used to examine methylation
-> across the human genome. These data include information collected from the
+> across the human genome.
+> These data include information collected from the
 > assay as well as associated metadata from individuals from whom samples were
 > taken.
 > 

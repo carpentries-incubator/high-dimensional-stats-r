@@ -36,7 +36,7 @@ editor_options:
 # DNA methylation data
 
 For the following few episodes, we will be working with human DNA
-methylation data from flow-sorted blood samples. DNA methylation assays
+methylation data from flow-sorted blood samples, described in [data](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html). DNA methylation assays
 measure, for each of many sites in the genome, the proportion of DNA
 that carries a methyl mark (a chemical modification that does not alter the 
 DNA sequence). In this case, the methylation data come in
@@ -68,13 +68,13 @@ Here, we show how to extract the information for analysis.
 
 We can extract
 
-- the dimensions of the dataset using `dim`. Importantly, in these objects and
+- the dimensions of the dataset using `dim()`. Importantly, in these objects and
 data structures for computational biology in R generally, observations are stored as
 columns and features (in this case, sites in the genome) are stored as rows. 
 This is in contrast to usual tabular data, where features or variables
 are stored as columns and observations are stored as rows;
-- assays, (normalised methylation levels here), using `assay`;
-- sample-level information using `colData`.
+- assays, (normalised methylation levels here), using `assay()`;
+- sample-level information using `colData()`.
 
 
 ~~~
@@ -106,7 +106,7 @@ The distribution of these M-values looks like this:
 
 
 ~~~
-hist(methyl_mat, breaks = "FD", xlab = "M-value")
+hist(methyl_mat, xlab = "M-value")
 ~~~
 {: .language-r}
 
@@ -125,10 +125,9 @@ the first 6 samples:
 
 
 ~~~
-knitr::kable(head(colData(methylation)), row.names = FALSE)
+head(colData(methylation))
 ~~~
 {: .language-r}
-
 
 
 |Sample_Well |Sample_Name | purity|Sex | Age| weight_kg| height_m|      bmi|bmi_clas   |Ethnicity_wide |Ethnic_self    |smoker |Array  |        Slide|
@@ -146,20 +145,23 @@ available in the methylation dataset:
 
 
 ~~~
+library("ComplexHeatmap")
+
 age <- methylation$Age
 
-library("ComplexHeatmap")
+# sort methylation values by age 
 order <- order(age)
 age_ord <- age[order]
 methyl_mat_ord <- methyl_mat[, order]
 
+# plot heatmap
 Heatmap(methyl_mat_ord,
-        name = "M-value",
         cluster_columns = FALSE,
         show_row_names = FALSE,
         show_column_names = FALSE,
-        row_title = "Feature",
-        column_title =  "Sample",
+        name = "M-value",
+        row_title = "Feature", 
+        column_title =  "Sample", 
         top_annotation = columnAnnotation(age = age_ord))
 ~~~
 {: .language-r}
@@ -268,7 +270,7 @@ these. However, high-dimensional data like the ones we're working with
 require some special considerations. A first consideration, as we saw
 above, is that there are far too many features to fit each one-by-one as
 we might do when analysing low-dimensional datasets (for example using
-`lm` on each feature and checking the linear model assumptions). A
+`lm()` on each feature and checking the linear model assumptions). A
 second consideration is that statistical approaches may behave
 slightly differently when applied to very high-dimensional data, compared to
 low-dimensional data. A third consideration is the speed at which we can
@@ -413,10 +415,116 @@ tidy(lm_age_methyl1)
 ~~~
 {: .output}
 
+
+
+
+
+
 The standard errors (`std.error`) represent the statistical uncertainty in our
 regression coefficient estimates (often referred to as *effect size*). The test 
-statistics and p-values represent measures of how (un)likely it would be to observe 
-results like this under the "null hypothesis".
+statistics and p-values (`statistic` and `p.value`) represent measures of how (un)likely it would be to observe 
+results like this under the "null hypothesis". For coefficient $k$ in a
+linear model (in our case, it would be the slope), the test statistic calculated in `statistic` above is
+a t-statistic given by:
+
+$$
+    t_{k} = \frac{\hat{\beta}_{k}}{SE\left(\hat{\beta}_{k}\right)}
+$$
+
+$SE\left(\hat{\beta}_{k}\right)$ measures the uncertainty we have in our
+effect size estimate. Knowing what distribution these t-statistics
+follow under the null hypothesis allows us to determine how unlikely it
+would be for us to observe what we have under those circumstances, if we
+repeated the experiment and analysis over and over again. To
+demonstrate how the t-statistics are calculated, we can compute them "by hand":
+
+
+~~~
+table_age_methyl1 <- tidy(lm_age_methyl1)
+tvals <- table_age_methyl1$estimate / table_age_methyl1$std.error
+all.equal(tvals, table_age_methyl1$statistic)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] TRUE
+~~~
+{: .output}
+
+We can see that the t-statistic is just the ratio between the coefficient estimate
+and the standard error.
+
+Calculating the p-values is a bit more tricky. Specifically, it is the
+proportion of the distribution of the test statistic under the null
+hypothesis that is *as extreme or more extreme* than the observed value
+of the test statistic. This is easy to observe visually, by plotting the
+theoretical distribution of the test statistic under the null hypothesis 
+(see next call-out box for more details about it):
+
+<div class="figure" style="text-align: center">
+<img src="../fig/rmd-02-tdist-1.png" alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" />
+<p class="caption">The p-value for a regression coefficient represents how often it'd be observed under the null.</p>
+</div>
+
+The red-ish shaded region represents the portion of the distribution of
+the test statistic under the null hypothesis that is equal or greater to
+the value we observe for the intercept term. As our null hypothesis 
+relates to a 2-tailed test (as the null hypothesis states that the regression
+coefficient is equal to zero, we would reject it if the regression
+coefficient is substantially larger **or** smaller than zero), the p-value for
+the test is twice the value of the shaded region. In this case, the shaded region 
+is small relative to the total area of the null distribution; therefore, the
+p-value is small ($p=0.013$). The blue-ish shaded region represents the same measure for the slope term; 
+this is larger, relative to the total area of the distribution, therefore the 
+p-value is larger than the one for the intercept term 
+($p=0.381$). The
+p-value is a function of the test statistic: the ratio between the effect size 
+we're estimating and the uncertainty we have in that effect. A large effect with large
+uncertainty may not lead to a small p-value, and a small effect with
+small uncertainty may lead to a small p-value.
+
+> ## Calculating p-values from a linear model
+>
+> Manually calculating the p-value for a linear model is a little bit
+> more complex than calculating the t-statistic. The intuition posted
+> above is definitely sufficient for most cases, but for completeness,
+> here is how we do it:
+>
+> Since the statistic in a linear model is a t-statistic, it follows a
+> student t distribution under the null hypothesis, with degrees of
+> freedom (a parameter of the student t-distribution) given by the
+> number of observations minus the number of coefficients fitted, in
+> this case
+> $37 - 2 = 35$.
+> We want to know what portion of the distribution function of the test
+> statistic is as extreme as, or more  extreme than, the value we observed.
+> The function `pt()`(similar to`pnorm()`, etc) can give us this information.
+>
+> Since we're not sure if the coefficient will be larger or smaller than
+> zero, we want to do a 2-tailed test. Therefore we take the absolute
+> value of the t-statistic, and look at the upper rather than lower
+> tail. In the figure above the shaded areas are only looking at "half" of the
+> t-distribution (which is symmetric around zero), therefore we multiply the 
+> shaded area by 2 in order to calculate the p-value. 
+>
+> Combining all of this gives us:
+>
+> 
+> ~~~
+> pvals <- 2 * pt(abs(tvals), df = lm_age_methyl1$df, lower.tail = FALSE)
+> all.equal(table_age_methyl1$p.value, pvals)
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> [1] TRUE
+> ~~~
+> {: .output}
+{: .callout}
 
 > ## Challenge 2
 >
@@ -478,124 +586,9 @@ efficient, and it would also be laborious to do programmatically. There are ways
 to get around this, but first let us talk about what exactly we are doing when 
 we look at significance tests in this context.
 
-
-
-
-# How does hypothesis testing for a linear model work?
-
-In order to decide whether a result would be unlikely under the null
-hypothesis, we must calculate a test statistic. For coefficient $k$ in a
-linear model (in our case, it would be the slope), the test statistic is
-a t-statistic given by:
-
-$$
-    t_{k} = \frac{\hat{\beta}_{k}}{SE\left(\hat{\beta}_{k}\right)}
-$$
-
-$SE\left(\hat{\beta}_{k}\right)$ measures the uncertainty we have in our
-effect size estimate. Knowing what distribution these t-statistics
-follow under the null hypothesis allows us to determine how unlikely it
-would be for us to observe what we have under those circumstances, if we
-repeated the experiment and analysis over and over again. To
-demonstrate, we can compute the t-statistics "by hand" (advanced content).
-
-
-~~~
-table_age_methyl1 <- tidy(lm_age_methyl1)
-~~~
-{: .language-r}
-
-We can see that the t-statistic is just the ratio between the coefficient estimate
-and the standard error:
-
-
-~~~
-tvals <- table_age_methyl1$estimate / table_age_methyl1$std.error
-all.equal(tvals, table_age_methyl1$statistic)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] TRUE
-~~~
-{: .output}
-
-Calculating the p-values is a bit more tricky. Specifically, it is the
-proportion of the distribution of the test statistic under the null
-hypothesis that is *as extreme or more extreme* than the observed value
-of the test statistic. This is easy to observe visually, by plotting the
-theoretical distribution of the test statistic under the null hypothesis 
-(see next call-out box for more details about it):
-
-<div class="figure" style="text-align: center">
-<img src="../fig/rmd-02-tdist-1.png" alt="Density plot of a t-distribution showing the observed test statistics (here, t-statistics). The p-values, visualised here with shaded regions, represent the portion of the null distribution that is as extreme or more extreme as the observed test statistics, which are shown as dashed lines." width="432" />
-<p class="caption">The p-value for a regression coefficient represents how often it'd be observed under the null.</p>
-</div>
-
-The red-ish shaded region represents the portion of the distribution of
-the test statistic under the null hypothesis that is equal or greater to
-the value we observe for the intercept term. As our null hypothesis 
-relates to a 2-tailed test (as the null hypothesis states that the regression
-coefficient is equal to zero, we would reject it if the regression
-coefficient is substantially larger **or** smaller than zero), the p-value for
-the test is twice the value of the shaded region. In this case, the shaded region 
-is small relative to the total area of the null distribution; therefore, the
-p-value is small ($p=0.013$). The blue-ish shaded region represents the same measure for the slope term; 
-this is larger, relative to the total area of the distribution, therefore the 
-p-value is larger than the one for the intercept term 
-($p=0.381$). The
-p-value is a function of the test statistic: the ratio between the effect size 
-we're estimating and the uncertainty we have in that effect. A large effect with large
-uncertainty may not lead to a small p-value, and a small effect with
-small uncertainty may lead to a small p-value.
-
-> ## Calculating p-values from a linear model
->
-> Manually calculating the p-value for a linear model is a little bit
-> more complex than calculating the t-statistic. The intuition posted
-> above is definitely sufficient for most cases, but for completeness,
-> here is how we do it:
->
-> Since the statistic in a linear model is a t-statistic, it follows a
-> student t distribution under the null hypothesis, with degrees of
-> freedom (a parameter of the student t-distribution) given by the
-> number of observations minus the number of coefficients fitted, in
-> this case
-> $37 - 2 = 35$.
-> We want to know what portion of the distribution function of the test
-> statistic is as extreme as, or more  extreme than, the value we observed.
-> The function`pt()`(similar to`pnorm()`, etc) can give us this information.
->
-> Since we're not sure if the coefficient will be larger or smaller than
-> zero, we want to do a 2-tailed test. Therefore we take the absolute
-> value of the t-statistic, and look at the upper rather than lower
-> tail. In the figure above the shaded areas are only looking at "half" of the
-> t-distribution (which is symmetric around zero), therefore we multiply the 
-> shaded area by 2 in order to calculate the p-value. 
->
-> Combining all of this gives us:
->
-> 
-> ~~~
-> pvals <- 2 * pt(abs(tvals), df = lm_age_methyl1$df, lower.tail = FALSE)
-> all.equal(table_age_methyl1$p.value, pvals)
-> ~~~
-> {: .language-r}
-> 
-> 
-> 
-> ~~~
-> [1] TRUE
-> ~~~
-> {: .output}
-{: .callout}
-
 # Sharing information across outcome variables
 
-Now that we understand how hypothesis tests work in the 
-linear model framework, we are going to introduce an idea that allows us to
+We are going to introduce an idea that allows us to
 take advantage of the fact that we carry out many tests at once on
 structured data. We can leverage this fact to *share information*
 between model parameters. The insight that we use to perform
@@ -645,113 +638,75 @@ may have seen when running linear models. Here, we define a *model matrix* or
 coefficients that should be fit in each linear model. These are used in
 similar ways in many different modelling libraries.
 
-
-~~~
-library("limma")
-design_age <- model.matrix(~age)
-dim(design_age)
-~~~
-{: .language-r}
-
-
-
-~~~
-[1] 37  2
-~~~
-{: .output}
-
-
-
-~~~
-head(design_age)
-~~~
-{: .language-r}
-
-
-
-~~~
-  (Intercept) age
-1           1  39
-2           1  49
-3           1  20
-4           1  49
-5           1  33
-6           1  21
-~~~
-{: .output}
-
 > ## What is a model matrix?
-> When R fits a regression model, it chooses a vector of regression coefficients 
-> that minimises the differences between outcome values and those values 
-> predicted by using the covariates (or predictor variables). But how do we get 
-> from a set of predictors and regression coefficients to predicted values? This 
-> is done via matrix multiplication. The matrix of predictors is (matrix) 
-> multiplied by the vector of coefficients. That matrix is called the 
+> R fits a regression model by choosing the vector of regression coefficients 
+> that minimises the differences between outcome values and predicted values 
+> using the covariates (or predictor variables). To get predicted values,
+> we multiply the matrix of predictors by the coefficients. The latter 
+> matrix is called the 
 > **model matrix** (or design matrix). It has one row for each observation and 
-> one column for each predictor plus (by default) one aditional column of ones 
-> (the intercept column). Many R libraries (but not **`limma`** ) contruct the 
-> model matrix behind the scenes. Usually, it can be extracted from a model fit 
-> using the function `model.matrix()`. Here is an example:
+> one column for each predictor, plus one additional column of ones 
+> (the intercept column). Many R libraries contruct the 
+> model matrix behind the scenes, but **`limma`** does not. Usually, the model 
+> matrix can be extracted from a model fit 
+> using the function `model.matrix()`. Here is an example of a model matrix 
+> for the methylation model:
 > 
 > 
 > ~~~
-> data(cars)
-> head(cars)
-> ~~~
-> {: .language-r}
-> 
-> 
-> 
-> ~~~
->   speed dist
-> 1     4    2
-> 2     4   10
-> 3     7    4
-> 4     7   22
-> 5     8   16
-> 6     9   10
-> ~~~
-> {: .output}
-> 
-> 
-> 
-> ~~~
-> mod1 <- lm(dist ~ speed, data=cars) # fit regression model using speed as a predictor
-> head(model.matrix(mod1)) # the model matrix contains two columns: intercept and speed
+> design_age <- model.matrix(lm_age_methyl1) # model matrix
+> head(design_age)
 > ~~~
 > {: .language-r}
 > 
 > 
 > 
 > ~~~
->   (Intercept) speed
-> 1           1     4
-> 2           1     4
-> 3           1     7
-> 4           1     7
-> 5           1     8
-> 6           1     9
+>                     (Intercept) age
+> 201868500150_R01C01           1  39
+> 201868500150_R03C01           1  49
+> 201868500150_R05C01           1  20
+> 201868500150_R07C01           1  49
+> 201868500150_R08C01           1  33
+> 201868590193_R02C01           1  21
 > ~~~
 > {: .output}
+> 
+> 
+> 
+> ~~~
+> dim(design_age)
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> [1] 37  2
+> ~~~
+> {: .output}
+> 
+> As you can see, the model matrix has the same number of rows as our
+> methylation data has samples. It also has two columns - one for the
+> intercept (similar to the linear model we fit above) and one for age.
+> This happens "under the hood" when fitting a linear model with `lm()`, but
+> here we have to specify it directly. The [limma user
+> manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
+> has more detail on how to make model matrices for different types of
+> experimental design, but here we are going to stick with this simple two-variable case.
+> 
 {: .callout}
 
-As you can see, the design matrix has the same number of rows as our
-methylation data has samples. It also has two columns - one for the
-intercept (similar to the linear model we fit above) and one for age.
-This happens "under the hood" when fitting a linear model with `lm()`, but
-here we have to specify it directly. The [limma user
-manual](https://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
-has more detail on how to make design matrices for different types of
-experimental design, but here we are going to stick with this simple two-variable case.
-
-We then pass our matrix of methylation values into `lmFit()`, specifying
-the design matrix. Internally, this function runs `lm()` on each row of
+We pass our methylation data to `lmFit()`, specifying
+the model matrix. Internally, this function runs `lm()` on each row of
 the data in an efficient way. The function `eBayes()`, when applied to the
 output of `lmFit()`, performs the pooled estimation of standard errors
 that results in the moderated t-statistics and resulting p-values.
 
 
 ~~~
+library("limma")
+design_age <- model.matrix(lm_age_methyl1) # model matrix
 fit_age <- lmFit(methyl_mat, design = design_age)
 fit_age <- eBayes(fit_age)
 ~~~
@@ -1123,15 +1078,10 @@ conservative, especially with a lot of features!
 ~~~
 p_raw <- toptab_age$P.Value
 p_fwer <- p.adjust(p_raw, method = "bonferroni")
-library("ggplot2")
-ggplot() +
-    aes(p_raw, p_fwer) +
-    geom_point() +
-    scale_x_log10() + scale_y_log10() +
-    geom_abline(slope = 1, linetype = "dashed") +
-    geom_hline(yintercept = 0.05, linetype = "dashed", col = "red") +
-    geom_vline(xintercept = 0.05, linetype = "dashed", col = "red") +
-    labs(x = "Raw p-value", y = "Bonferroni p-value")
+plot(p_raw, p_fwer, pch = 16, log="xy")
+abline(0:1, lty = "dashed")
+abline(v = 0.05, lty = "dashed", col = "red")
+abline(h = 0.05, lty = "dashed", col = "red")
 ~~~
 {: .language-r}
 
@@ -1190,7 +1140,7 @@ experiment over and over.
 > >          \frac{0.05}{100} = 0.0005
 > >     $$
 > >
-> > 2.  Trick question! We can't say what proportion of these genes are
+> > 2.  We can't say what proportion of these genes are
 > >     truly different. However, if we repeated this experiment and
 > >     statistical test over and over, on average 5% of the results
 > >     from each run would be false discoveries.
@@ -1201,14 +1151,10 @@ experiment over and over.
 > >     
 > >     ~~~
 > >     p_fdr <- p.adjust(p_raw, method = "BH")
-> >     ggplot() +
-> >         aes(p_raw, p_fdr) +
-> >         geom_point() +
-> >         scale_x_log10() + scale_y_log10() +
-> >         geom_abline(slope = 1, linetype = "dashed") +
-> >         geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
-> >         geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
-> >         labs(x = "Raw p-value", y = "Benjamini-Hochberg p-value")
+> >     plot(p_raw, p_fdr, pch = 16, log="xy")
+> >     abline(0:1, lty = "dashed")
+> >     abline(v = 0.05, lty = "dashed", col = "red")
+> >     abline(h = 0.05, lty = "dashed", col = "red")
 > >     ~~~
 > >     {: .language-r}
 > >     
@@ -1219,14 +1165,10 @@ experiment over and over.
 > >
 > >     
 > >     ~~~
-> >     ggplot() +
-> >         aes(p_fdr, p_fwer) +
-> >         geom_point() +
-> >         scale_x_log10() + scale_y_log10() +
-> >         geom_abline(slope = 1, linetype = "dashed") +
-> >         geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
-> >         geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
-> >         labs(x = "Benjamini-Hochberg p-value", y = "Bonferroni p-value")
+> >     plot(p_fwer, p_fdr, pch = 16, log="xy")
+> >     abline(0:1, lty = "dashed")
+> >     abline(v = 0.05, lty = "dashed", col = "red")
+> >     abline(h = 0.05, lty = "dashed", col = "red")
 > >     ~~~
 > >     {: .language-r}
 > >     

@@ -78,7 +78,8 @@ components are ordered by the amount of variance they account for.
 
 # Prostate cancer patient data
 
-We revisit the prostate dataset of 97 men who have prostate cancer.
+We revisit the [`prostate`]((https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html)
+dataset of 97 men who have prostate cancer.
 Although not strictly a high-dimensional dataset, as with other episodes,
 we use this dataset to explore the method.
 
@@ -399,7 +400,7 @@ text(
 > 
 > > ## Solution
 > > 
-> > This plot suggests that the variables lweight and lbph are associated with
+> > This plot suggests that the variables `lweight` and `lbph` are associated with
 > > high values on factor 2 (but lower values on factor 1) and the variables
 > > lcavol, lcp and lpsa are associated with high values on factor 1
 > > (but lower values on factor 2). There appear to be two 'clusters' of

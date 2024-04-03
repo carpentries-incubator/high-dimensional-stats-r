@@ -11,7 +11,7 @@ questions:
   - How can we perform K-means in `R`?
   - How can we appraise a clustering and test cluster robustness?
 objectives:
-  - Understand the importance of clustering in high-dimensional data
+  - Understand what clusters look like in in high-dimensional data.
   - Understand and perform K-means clustering in `R`.
   - Assess clustering performance using silhouette scores.
   - Assess cluster robustness using bootstrapping.
@@ -127,8 +127,8 @@ yourself to read too much into faint signals.
 Let's explore this further using an example. We create two columns of data
 ('x' and 'y') and partition these data into three groups ('a', 'b', 'c')
 according to data values. We then plot these data and their allocated clusters
-and put ellipses around the clusters using the `stat_ellipse` function
-in `ggplot`.
+and put ellipses around the clusters using the `stat_ellipse()` function
+in **`ggplot`**.
 
 <div class="figure" style="text-align: center">
 <img src="../fig/rmd-08-fake-cluster-1.png" alt="A scatter plot of random data y versus x. The points are horizontally partitioned at 2 random groups, forming three colour coded clusters. Circles are drawn around each cluster. The data shown appears to have no clusters but the colours and circles give the appearance of clusters artificially." width="432" />
@@ -162,7 +162,8 @@ visually are 'real'?
 # K-means clustering applied to the single-cell RNA sequencing data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
-We're going to work with single-cell RNA sequencing data, "scRNAseq", in these clustering challenges,
+We're going to work with single-cell RNA sequencing data, 
+[_scRNAseq_](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html), in these clustering challenges,
 which is often *very* high-dimensional. Commonly, experiments profile the
 expression level of 10,000+ genes in thousands of cells. Even after filtering
 the data to remove low quality observations, the dataset we're using in this
@@ -176,9 +177,9 @@ compress the data by identifying the major axes of variation in the data,
 before running our clustering algorithms on this lower-dimensional data to explore
 the similarity of features.
 
-The `scater` package has some easy-to-use tools to calculate a PCA for
+The **`scater`** package has some easy-to-use tools to calculate a PCA for
 `SummarizedExperiment` objects.
-Let's load the scRNAseq data and calculate some principal components.
+Let's load the _scRNAseq_ data and calculate some principal components.
 
 
 ~~~
@@ -196,7 +197,7 @@ we can visualise those easily, and they're a quantitative representation of
 the underlying data, representing the two largest axes of variation. 
 
 We can now run K-means clustering on the first and second principal components
-of the scRNAseq data using the `kmeans` function.
+of the _scRNAseq_ data using the `kmeans()` function.
 
 
 ~~~
@@ -208,7 +209,7 @@ plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans")
 {: .language-r}
 
 <div class="figure" style="text-align: center">
-<img src="../fig/rmd-08-kmeans-1.png" alt="A scatter plot of principal component 2 versus principal component 1 of the scrnaseq data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data." width="432" />
+<img src="../fig/rmd-08-kmeans-1.png" alt="A scatter plot of principal component 2 versus principal component 1 of the `scrnaseq` data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data." width="432" />
 <p class="caption">Scatter plot of principal component 2 versus principal component 1 with points colour coded according to the cluster to which they belong.</p>
 </div>
 
@@ -218,7 +219,7 @@ here?
 
 > ## Challenge 1
 > 
-> Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim`.
+> Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim()`.
 > Save this with a variable name that's different to what we just used,
 > because we'll use this again later.
 > 
@@ -234,8 +235,8 @@ here?
 > > {: .language-r}
 > > 
 > > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-08-kmeans-ex-1.png" alt="plot of chunk kmeans-ex" width="432" />
-> > <p class="caption">plot of chunk kmeans-ex</p>
+> > <img src="../fig/rmd-08-kmeans-ex-1.png" alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data." width="432" />
+> > <p class="caption">Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.</p>
 > > </div>
 > > 
 > {: .solution}
@@ -269,7 +270,7 @@ here?
 > <img src="../fig/rmd-08-unnamed-chunk-1-1.png" alt="Scatter plot of random data y versus x. There are many black points on the plot representing the data. Two additional points are shown: the (mean(x), mean(y)) co-ordinate point in red and the (median(x), median(y)) co-ordinate point in blue. The median co-ordinate point in blue has a lower x value and is shown to the left of the red mean co-ordinate point." width="432" />
 > <p class="caption">Scatter plot of random data y versus x with the (mean(x), mean(y)) co-ordinate point shown in red and the (median(x), median(y)) co-ordinate point shown in blue.</p>
 > </div>
-> PAM can be carried out using `pam()` form the **`cluster`** package.
+> PAM can be carried out using `pam()` from the **`cluster`** package.
 > 
 {: .callout}
 
@@ -301,7 +302,7 @@ clusters are very fuzzy, and even if we are relatively sure about the existence
 of discrete groupings in the data, observations on the boundaries can be difficult
 to confidently place in either cluster.
 
-Here we use the `silhouette` function from the `cluster` package to calculate the
+Here we use the `silhouette()` function from the **`cluster`** package to calculate the
 silhouette width of our K-means clustering using a distance matrix of distances
 between points in the clusters.
 
@@ -385,8 +386,8 @@ belong to.
 > > {: .language-r}
 > > 
 > > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-08-silhouette-ex-1.png" alt="plot of chunk silhouette-ex" width="432" />
-> > <p class="caption">plot of chunk silhouette-ex</p>
+> > <img src="../fig/rmd-08-silhouette-ex-1.png" alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data." width="432" />
+> > <p class="caption">Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.</p>
 > > </div>
 > > 
 > > ~~~
@@ -409,8 +410,8 @@ belong to.
 > > {: .language-r}
 > > 
 > > <div class="figure" style="text-align: center">
-> > <img src="../fig/silhouette5.png" alt="plot of chunk unnamed-chunk-4"  />
-> > <p class="caption">plot of chunk unnamed-chunk-4</p>
+> > <img src="../fig/rmd-08-unnamed-chunk-2-1.png" alt="Plot with horizontal axis silhoutte width. The plot shows the silhouette width for each point in the data set according to cluster. Cluster 4 contains almost half of the points in the data set and largely consists of points with a large silhouette list, leading to a bar that extends to the right side of the graph. The other clusters contain many fewer points and have similar silhouette widths. The bars for cluster 5 are much smaller, with a small number extending to the left of the origin, indicating negative silhouette widths." width="432" />
+> > <p class="caption">Silhouette plot for each point according to cluster.</p>
 > > </div>
 > > This seems to be because some observations in clusters 3 and 5 seem to be
 > > more similar to other clusters than the one they have been assigned to.
@@ -598,7 +599,7 @@ These are “good” (despite missing in the colour bar).
 > ## Challenge 3
 >
 > Repeat the bootstrapping process with k=5. Do the results appear better or worse?
-> Can you identify where the differences occur on the `plotReducedDim`?
+> Can you identify where the differences occur on the `plotReducedDim()`?
 > 
 > > ## Solution
 > > 
@@ -618,8 +619,8 @@ These are “good” (despite missing in the colour bar).
 > > {: .language-r}
 > > 
 > > <div class="figure" style="text-align: center">
-> > <img src="../fig/rmd-08-bs-ex-1.png" alt="plot of chunk bs-ex" width="432" />
-> > <p class="caption">plot of chunk bs-ex</p>
+> > <img src="../fig/rmd-08-bs-ex-1.png" alt="Grid of 25 squares labelled 1-5 on each of the x and y axes. The diagonal and off-diagonal squares of the grid are coloured in green, indicating the highest scoring value of 1 according to the legend, with the exception of the square corresponding to (4, 5), which is slightly darker green indicating a lower value. The lower triangular squares are coloured in grey, indicating NA values since these would be the same as the upper triangular squares." width="432" />
+> > <p class="caption">Grid of empirical cluster swapping behaviour estimated by the bootstrap samples.</p>
 > > </div>
 > > When k=5, we can see that the values on the diagonal of the matrix are 
 > > smaller, indicating that the clusters aren't exactly reproducible in the
