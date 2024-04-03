@@ -7,33 +7,33 @@ on:
   pull_request: []
 
 jobs:
-  container:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
-    steps:
+  # container:
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
+  #   steps:
     
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.repository_owner }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v3
-        with:
-          push: true # Will only build if this is not here
-          tags: |
-              ghcr.io/${{ github.repository }}:${{ github.sha }}
-              ghcr.io/${{ github.repository }}:latest
+  #     - name: Build and Push Docker Image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         push: true # Will only build if this is not here
+  #         tags: |
+  #             ghcr.io/${{ github.repository }}:${{ github.sha }}
+  #             ghcr.io/${{ github.repository }}:latest
 
   check:
-    needs: container
+    # needs: container
     runs-on: ubuntu-latest
-    container:
+    container: ghcr.io/${{github.repository}}:latest
     defaults:
       run:
         shell: bash
@@ -45,7 +45,7 @@ jobs:
           make site
 
   build-website:
-    needs: container
+    # needs: container
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
     container: ghcr.io/${{github.repository}}:latest
@@ -64,6 +64,9 @@ jobs:
         with:
           ref: gh-pages
 
+      - name: Debug
+        run: |
+          ls -lah
       - name: Set up git
         run: |
           # setup git
