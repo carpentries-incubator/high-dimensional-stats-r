@@ -2,7 +2,6 @@ name: Website
 on:
   push:
     branches:
-      # - gh-pages
       - main
   pull_request: []
 
@@ -13,7 +12,7 @@ jobs:
     steps:
     
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -30,9 +29,24 @@ jobs:
               ghcr.io/${{ github.repository }}:${{ github.sha }}
               ghcr.io/${{ github.repository }}:latest
 
+  check:
+    needs: container
+    runs-on: ubuntu-latest
+    container: ghcr.io/${{github.repository}}:latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout github pages
+        uses: actions/checkout@v4
+      - name: Build site
+        run: |
+          make site
+
   build-website:
     needs: container
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
     container: ghcr.io/${{github.repository}}:latest
     env:
       RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
@@ -44,42 +58,32 @@ jobs:
 
     steps:
 
-      - name: Checkout the lesson
-        uses: actions/checkout@v3
+      - name: Checkout github pages
+        uses: actions/checkout@v4
         with:
+          ref: gh-pages
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Set up git
+        run: |
+          git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+
+      - name: Merge
+        run: |
+          git fetch origin
+          git merge origin/main
+  
       - name: Render the markdown and confirm that the site can be built
         run: make site
 
-      - name: Checkout github pages
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
-        uses: actions/checkout@master
-        with:
-          ref: gh-pages
-          path: gh-pages
-
       - name: Commit and Push
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main'}}
         run: |
-          # clean up gh-pages (source: https://github.com/zkamvar/styles/blob/ed29df30623a68ae87e05811a01283f0452fae4e/.github/workflows/website.yml)
-          cd gh-pages
-          git rm -rf .           # remove all previous files
-          git restore --staged . # remove things from the stage
-          cd ..
-          # copy everything into gh-pages site
-          cp -r `ls -A | grep -v 'gh-pages' | grep -v '.git' | grep -v '.bundle/' | grep -v '_site'` gh-pages
-          # move into gh-pages, add, commit, and push
-          cd gh-pages
-          # setup git
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
+          rm -r _site
           git add -A .
           git commit --allow-empty -m "[Github Actions] render website (via ${{ github.sha }})"
           git push origin gh-pages
-          # return
-          cd ..
 
       - run: make lesson-check-all
         if: always()
