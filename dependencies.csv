@@ -2,15 +2,14 @@ rmarkdown
 here
 knitr
 minfi
-circlize
 ComplexHeatmap
-RColorBrewer
-viridis
 ggplot2
 broom
 limma
+viridis
 SummarizedExperiment
 glmnet
+cowplot
 PCAtools
 MASS
 scater
@@ -18,8 +17,8 @@ SingleCellExperiment
 cluster
 bluster
 pheatmap
-dplyr
 dendextend
+dplyr
 clValid
 BiocManager
 methylclock
