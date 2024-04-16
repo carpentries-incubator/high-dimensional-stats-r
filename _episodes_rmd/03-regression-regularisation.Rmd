@@ -528,7 +528,7 @@ When $\lambda$ is small, we don't really care a lot about shrinking our coeffici
 just using ordinary least squares. We see how a penalty term, $\lambda$, might be chosen later in this episode.
 
 For now, to see how regularisation might improve a model, let's fit a model using the same set
-of 20 features (stored as `features`) selected earlier in this episode (these
+of 20 features (stored as `cpg_markers`) selected earlier in this episode (these
 are a subset of the features identified by Horvarth et al), using both 
 regularised and ordinary least squares. To fit regularised regression models, we will use the **`glmnet`** package.
 
@@ -536,7 +536,7 @@ regularised and ordinary least squares. To fit regularised regression models, we
 library("glmnet")
 
 ## glmnet() performs scaling by default, supply un-scaled data:
-horvath_mat <- methyl_mat[, features] # select the first 20 sites as before
+horvath_mat <- methyl_mat[, cpg_markers] # select the same 20 sites as before
 train_mat <- horvath_mat[train_ind, ] # use the same individuals as selected before
 test_mat <- horvath_mat[-train_ind, ]
 
