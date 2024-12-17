@@ -36,7 +36,7 @@ knitr_fig_path("01-")
 ```
 
 
-# What are high-dimensional data? 
+## What are high-dimensional data?
 
 *High-dimensional data* are defined as data with many features (variables observed).
 In recent years, advances in information technology have allowed large amounts of data to
@@ -65,7 +65,7 @@ for practical high-dimensional data analysis in the biological sciences.
 
 
 
-> ## Challenge 1 
+> ### Challenge 1
 > 
 > Descriptions of four research questions and their datasets are given below.
 > Which of these scenarios use high-dimensional data?
@@ -84,7 +84,7 @@ for practical high-dimensional data analysis in the biological sciences.
 >    (age, weight, BMI, blood pressure) and cancer growth (tumour size,
 >    localised spread, blood test results).
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > 1. No. The number of features is relatively small (4 including the response variable since this is an observed variable).
 > > 2. Yes, this is an example of high-dimensional data. There are 200,004 features.
@@ -98,7 +98,7 @@ Now that we have an idea of what high-dimensional data look like we can think
 about the challenges we face in analysing them.
 
 
-# Why is dealing with high-dimensional data challenging? 
+## Why is dealing with high-dimensional data challenging?
 
 Most classical statistical methods are set up for use on low-dimensional data
 (i.e. with a small number of features, $p$). 
@@ -118,7 +118,7 @@ of the challenges we are facing when working with high-dimensional data. For ref
 the lesson are described in the [data page](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html).
 
 
-> ## Challenge 2 
+> ### Challenge 2
 > 
 > For illustrative purposes, we start with a simple dataset that is not technically
 > high-dimensional but contains many features. This will illustrate the general problems 
@@ -139,7 +139,7 @@ the lesson are described in the [data page](https://carpentries-incubator.github
 > 3. Plot the relationship between the variables (hint: see the `pairs()` function). What problem(s) with
 > high-dimensional data analysis does this illustrate?
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > 
 > > ```{r dim-prostate, eval = FALSE}
@@ -171,7 +171,7 @@ Note that function documentation and information on function arguments will be u
 this lesson. We can access these easily in R by running `?` followed by the package name.
 For example, the documentation for the `dim` function can be accessed by running `?dim`.
 
-> ## Locating data with R - the **`here`** package
+> ### Locating data with R - the **`here`** package
 > 
 > It is often desirable to access external datasets from inside R and to write 
 > code that does this reliably on different computers. While R has an inbulit 
@@ -213,7 +213,7 @@ in these datasets makes high correlations between variables more likely. Let's
 explore why high correlations might be an issue in a Challenge.
 
 
-> ## Challenge 3
+> ### Challenge 3
 > 
 > Use the `cor()` function to examine correlations between all variables in the 
 > `prostate` dataset. Are some pairs of variables highly correlated using a threshold of 
@@ -227,7 +227,7 @@ explore why high correlations might be an issue in a Challenge.
 > Fit a multiple linear regression model predicting patient age using both
 > variables. What happened?
 > 
-> > ## Solution
+> > ### Solution
 > >
 > > Create a correlation matrix of all variables in the `prostate` dataset
 > >
@@ -289,7 +289,7 @@ regularisation, which we will discuss in the lesson on high-dimensional
 regression.
 
 
-# What statistical methods are used to analyse high-dimensional data? 
+## What statistical methods are used to analyse high-dimensional data? 
 
 We have discussed so far that high-dimensional data analysis can be challenging since variables are difficult to visualise, 
 leading to challenges identifying relationships between variables and suitable response variables; we may have
@@ -336,7 +336,7 @@ through clustering cells with similar gene expression patterns. The *K-means*
 episode will explore a specific method to perform clustering analysis. 
 
 
-> ## Using Bioconductor to access high-dimensional data in the biosciences
+> ### Using Bioconductor to access high-dimensional data in the biosciences
 > 
 > In this workshop, we will look at statistical methods that can be used to
 > visualise and analyse high-dimensional biological data using packages available
@@ -392,7 +392,7 @@ episode will explore a specific method to perform clustering analysis.
 > common challenge in analysing high-dimensional genomics data.   
 {: .callout}
 
-# Further reading
+## Further reading
 
 - Buhlman, P. & van de Geer, S. (2011) Statistics for High-Dimensional Data. Springer, London.
 - [Buhlman, P., Kalisch, M. & Meier, L. (2014) High-dimensional statistics with a view toward applications in biology. Annual Review of Statistics and Its Application](https://doi.org/10.1146/annurev-statistics-022513-115545).
@@ -406,7 +406,7 @@ methods that could be used to analyse high-dimensional data. See
 Some related (an important!) content is also available in 
 [Responsible machine learning](https://carpentries-incubator.github.io/machine-learning-responsible-python/). 
 
-# Other resources suggested by former students
+## Other resources suggested by former students
 
 - [Josh Starmer's](https://www.youtube.com/c/joshstarmer) youtube channel. 
 

@@ -35,7 +35,7 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("02-")
 ```
 
-# DNA methylation data
+## DNA methylation data
 
 For the following few episodes, we will be working with human DNA
 methylation data from flow-sorted blood samples, described in [data](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html). DNA methylation assays
@@ -138,12 +138,12 @@ Heatmap(methyl_mat_ord,
         top_annotation = columnAnnotation(age = age_ord))
 ```
 
-> ## Challenge 1
+> ### Challenge 1
 >
 > Why can we not just fit many linear regression models relating every combination of feature 
 > (`colData` and assays) and draw conclusions by associating all variables with significant model p-values?
 >
-> > ## Solution
+> > ### Solution
 > >
 > > There are a number of problems that this kind of approach presents.
 > > For example:
@@ -178,7 +178,7 @@ have a single outcome (age) which will be predicted using 5000 covariates
 The examples in this episode will focus on the first type of problem, whilst 
 the next episode will focus on the second.
 
-> ## Measuring DNA Methylation
+> ### Measuring DNA Methylation
 >
 > DNA methylation is an epigenetic modification of DNA. Generally, we
 > are interested in the proportion of methylation at many sites or
@@ -214,7 +214,7 @@ the next episode will focus on the second.
 > therefore can be easier to work with in statistical models.
 {: .callout}
 
-# Regression with many outcomes
+## Regression with many outcomes
 
 In high-throughput studies, it is common to have one or more phenotypes
 or groupings that we want to relate to features of interest (eg, gene
@@ -299,7 +299,7 @@ And, of course, we often have an awful lot of features and need to
 prioritise a subset of them! We need a rigorous way to prioritise genes
 for further analysis.
 
-# Fitting a linear model
+## Fitting a linear model
 
 So, in the data we have read in, we have a matrix of methylation values
 $X$ and a vector of ages, $y$. One way to model this is to see if we can
@@ -342,7 +342,7 @@ outlined previously. Before we introduce this approach, let's go into
 detail about how we generally check whether the results of a linear
 model are statistically significant.
 
-# Hypothesis testing in linear regression
+## Hypothesis testing in linear regression
 
 Using the linear model we defined above, we can ask questions based on the 
 estimated value for the regression coefficients. For example, do individuals
@@ -477,7 +477,7 @@ we're estimating and the uncertainty we have in that effect. A large effect with
 uncertainty may not lead to a small p-value, and a small effect with
 small uncertainty may lead to a small p-value.
 
-> ## Calculating p-values from a linear model
+> ### Calculating p-values from a linear model
 >
 > Manually calculating the p-value for a linear model is a little bit
 > more complex than calculating the t-statistic. The intuition posted
@@ -509,12 +509,12 @@ small uncertainty may lead to a small p-value.
 > ```
 {: .callout}
 
-> ## Challenge 2
+> ### Challenge 2
 >
 > In the model we fitted, the estimate for the intercept is 0.902 and its associated 
 > p-value is 0.0129. What does this mean?
 >
-> > ## Solution
+> > ### Solution
 > >
 > > The first coefficient in a linear model like this is the intercept, which measures 
 > > the mean of the outcome (in this case, the methylation value for the first CpG)
@@ -535,7 +535,7 @@ small uncertainty may lead to a small p-value.
 > {: .solution}
 {: .challenge}
 
-# Fitting a lot of linear models
+## Fitting a lot of linear models
 
 In the linear model above, we are generally interested in the second regression
 coefficient (often referred to as *slope*) which measures the linear relationship
@@ -557,7 +557,7 @@ efficient, and it would also be laborious to do programmatically. There are ways
 to get around this, but first let us talk about what exactly we are doing when 
 we look at significance tests in this context.
 
-# Sharing information across outcome variables
+## Sharing information across outcome variables
 
 We are going to introduce an idea that allows us to
 take advantage of the fact that we carry out many tests at once on
@@ -609,7 +609,7 @@ may have seen when running linear models. Here, we define a *model matrix* or
 coefficients that should be fit in each linear model. These are used in
 similar ways in many different modelling libraries.
 
-> ## What is a model matrix?
+> ### What is a model matrix?
 > R fits a regression model by choosing the vector of regression coefficients 
 > that minimises the differences between outcome values and predicted values 
 > using the covariates (or predictor variables). To get predicted values,
@@ -715,12 +715,12 @@ continuous measures like these, it is often convenient to obtain a list
 of features which we are confident have non-zero effect sizes. This is
 made more difficult by the number of tests we perform.
 
-> ## Challenge 3
+> ### Challenge 3
 >
 > The effect size estimates are very small, and yet many of the p-values
 > are well below a usual significance level of p \< 0.05. Why is this?
 >
-> > ## Solution
+> > ### Solution
 > >
 > > Because age has a much larger range than methylation levels, the
 > > unit change in methylation level even for a strong relationship is
@@ -799,7 +799,7 @@ understand, but it is useful to develop an intuition about why these approaches 
 precise and sensitive than the naive approach of fitting a model to each
 feature separately.
 
-> ## Challenge 4
+> ### Challenge 4
 >
 > 1.  Try to run the same kind of linear model with smoking status as
 >     covariate instead of age, and making a volcano plot. *Note:
@@ -807,7 +807,7 @@ feature separately.
 > 2.  We saw in the example in the lesson that this information sharing
 >     can lead to larger p-values. Why might this be preferable?
 >
-> > ## Solution
+> > ### Solution
 > >
 > > 1.  The following code runs the same type of model with smoking
 > >     status:
@@ -859,7 +859,7 @@ feature separately.
 {: .challenge}
 ```
 
-> ## Shrinkage
+> ### Shrinkage
 >
 > Shrinkage is an intuitive term for an effect of information sharing,
 > and is something observed in a broad range of statistical models.
@@ -902,7 +902,7 @@ feature separately.
 # todo: callout box explaining DESeq2
 ```
 
-# The problem of multiple tests
+## The problem of multiple tests
 
 With such a large number of features, it would be useful to decide which
 features are "interesting" or "significant" for further study. However,
@@ -943,7 +943,7 @@ threshold in a real experiment, it is likely that we would identify many
 features as associated with age, when the results we are observing are
 simply due to chance.
 
-> ## Challenge 5
+> ### Challenge 5
 >
 > 1. If we run `r nrow(methylation)` tests, even if there are no true differences,
 >     how many of them (on average) will be statistically significant at
@@ -955,7 +955,7 @@ simply due to chance.
 > 3.  How could we account for a varying number of tests to ensure
 >     "significant" changes are truly different?
 >
-> > ## Solution
+> > ### Solution
 > >
 > > 1.  By default we expect
 > >     $`r nrow(methylation)` \times 0.05 = `r nrow(methylation) * 0.05`$
@@ -974,7 +974,7 @@ simply due to chance.
 > {: .solution}
 {: .challenge}
 
-# Adjusting for multiple tests
+## Adjusting for multiple tests
 
 When performing many statistical tests to categorise features, we are
 effectively classifying features as "non-significant" or "significant", that latter meaning those for
@@ -1062,7 +1062,7 @@ experiment over and over.
 | \- Very conservative                                    | \- Does not control probability of making errors |
 | \- Requires larger statistical power                    | \- May result in false discoveries               |
 
-> ## Challenge 6
+> ### Challenge 6
 >
 > 1.  At a significance level of 0.05, with 100 tests performed, what is
 >     the Bonferroni significance threshold?
@@ -1075,7 +1075,7 @@ experiment over and over.
 >     Compare these values to the raw p-values and the Bonferroni
 >     p-values.
 >
-> > ## Solution
+> > ### Solution
 > >
 > > 1.  The Bonferroni threshold for this significance threshold is $$
 > >          \frac{0.05}{100} = 0.0005
@@ -1109,7 +1109,7 @@ experiment over and over.
 
 
 
-> ## Feature selection
+> ### Feature selection
 > 
 > In this episode, we have focussed on regression in a setting where there are more
 > features than observations. This approach is relevant if we are interested in the

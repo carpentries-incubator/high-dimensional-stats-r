@@ -36,7 +36,7 @@ knitr_fig_path("09-")
 ```
 
 
-# Why use hierarchical clustering on high-dimensional data?
+## Why use hierarchical clustering on high-dimensional data?
 
 When analysing high-dimensional data in the life sciences, it is often useful
 to identify groups of similar data points to understand more about the relationships
@@ -64,7 +64,7 @@ In this episode we will explore hierarchical clustering for identifying
 clusters in high-dimensional data. We will use *agglomerative* hierarchical
 clustering (see box) in this episode.
 
-> ## Agglomerative and Divisive hierarchical clustering
+> ### Agglomerative and Divisive hierarchical clustering
 > 
 > There are two main methods of carrying out hierarchical clustering:
 > agglomerative clustering and divisive clustering. 
@@ -78,7 +78,7 @@ clustering (see box) in this episode.
 {: .callout}
 
 
-# The agglomerative hierarchical clustering algorithm 
+## The agglomerative hierarchical clustering algorithm
 
 To start with, we measure distance
 (or dissimilarity) between pairs of observations. Initially, and at the bottom
@@ -99,7 +99,7 @@ knitr::include_graphics("../fig/hierarchical_clustering_1.png")
 knitr::include_graphics("../fig/hierarchical_clustering_2.png")
 ```
 
-# A motivating example
+## A motivating example
 
 To motivate this lesson, let's first look at an example where hierarchical
 clustering is really useful, and then we can understand how to apply it in more
@@ -164,7 +164,7 @@ cause of this is -- it could be a batch effect, or a known grouping (e.g., old
 vs young samples). However, clustering like this can be a useful part of
 exploratory analysis of data to build hypotheses.
 
-# Hierarchical clustering 
+## Hierarchical clustering
 
 Now, let's cover the inner workings of hierarchical clustering in more detail.
 Hierarchical clustering is a type of clustering that also allows us to estimate the number
@@ -172,7 +172,7 @@ of clusters. There are two things to consider before carrying out clustering:
 * how to define dissimilarity between observations using a distance matrix, and
 * how to define dissimilarity between clusters and when to fuse separate clusters.
 
-# Defining the dissimilarity between observations: creating the distance matrix
+## Defining the dissimilarity between observations: creating the distance matrix
 Agglomerative hierarchical clustering is performed in two steps: calculating
 the distance matrix (containing distances between pairs of observations) and
 iteratively grouping observations into clusters using this matrix.
@@ -195,7 +195,7 @@ clustering can have a big effect on the resulting tree. The decision of which
 distance matrix to use before carrying out hierarchical clustering depends on the
 type of data and question to be addressed. 
 
-# Defining the dissimilarity between clusters: Linkage methods
+## Defining the dissimilarity between clusters: Linkage methods
 
 The second step in performing hierarchical clustering after defining the
 distance matrix (or another function defining similarity between data points)
@@ -221,7 +221,7 @@ it sets their dissimilarity to the maximum dissimilarity value observed
 between any of these clusters' constituent points. The two clusters
 with smallest dissimilarity value are then fused.
 
-# Computing a dendrogram
+## Computing a dendrogram
 
 Dendrograms are useful tools that plot the grouping of points and clusters into bigger clusters.
 We can create and plot dendrograms in R using `hclust()` which takes
@@ -258,14 +258,14 @@ dist_m <- dist(example_data, method = "euclidean")
 Hierarchical clustering carried out on the data can be used to produce a
 dendrogram showing how the data is partitioned into clusters. But how do we interpret this dendrogram? Let's explore this using our example data in a Challenge.
 
-> ## Challenge 1
+> ### Challenge 1
 >
 > Use `hclust()` to implement hierarchical clustering using the
 > distance matrix `dist_m` and 
 > the `complete` linkage method and plot the results as a dendrogram using
 > `plot()`. Why is hierarchical clustering and the resulting dendrogram useful for performing clustering this case?
 >
-> > ## Solution:
+> > ### Solution:
 > >
 > > ```{r plotclustex, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other)."}
 > > clust <- hclust(dist_m, method = "complete")
@@ -289,7 +289,7 @@ points that fuse at the bottom of the tree, which are quite similar. You can
 see this by comparing the position of similar/dissimilar points according to
 the scatterplot with their position on the tree.
 
-# Identifying the number of clusters
+## Identifying the number of clusters
 
 To identify the number of clusters, we can make a horizontal cut through the dendrogram at a user-defined height. 
 The sets of observations beneath this cut and single points representing clusters above can be thought of as distinct clusters. Equivalently,
@@ -297,7 +297,7 @@ we can count the vertical lines we encounter crossing the horizontal cut and the
 example, a cut at height 10 produces `r length(unique(cutree(clust, h=10)))` clusters for the dendrogram in Challenge 1,
 while a cut at height 4 produces `r length(unique(cutree(clust, h=4)))` clusters.
 
-# Dendrogram visualisation
+## Dendrogram visualisation
 
 We can first visualise cluster membership by highlight branches in dendrograms. 
 In this example, we calculate a distance matrix between
@@ -363,12 +363,12 @@ ggplot(example_cl, aes(x = cg01644850, y = cg01656216, color = factor(cluster)))
 Note that this cut produces `r length(unique(four_cut))` clusters (zero before the cut and another four
 downstream of the cut).
 
-> ## Challenge 2:
+> ### Challenge 2:
 >
 > Identify the value of `k` in `cutree()` that gives the same
 > output as `h = 36`
 >
-> > ## Solution:
+> > ### Solution:
 > >
 > > ```{r h-k-ex-plot, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other). A dashed horizontal line at a height of 5 indicates the cut point used to divide the data into clusters."}
 > > plot(clust)
@@ -397,7 +397,7 @@ downstream of the cut).
 {: .challenge}
 
 
-# The effect of different linkage methods
+## The effect of different linkage methods
 
 Now let us look into changing the default behaviour of `hclust()`. First, we'll load a synthetic dataset, comprised of two variables representing two crescent-shaped point clouds:
 
@@ -415,7 +415,7 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 ```
 
 
-> ## Challenge 3
+> ### Challenge 3
 >
 > Carry out hierarchical clustering on the `cres` data that we generated above.
 > Try out different linkage methods and use `cutree()` to split each resulting
@@ -426,7 +426,7 @@ plot(cres, col=cresClass) # colour scatterplot by partition
 > 
 > Hint: Check `?hclust` to see the possible values of the argument `method` (the linkage method used).
 >
-> > ## Solution:
+> > ### Solution:
 > >
 > > ```{r plot-clust-comp, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with single linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
 > > #?hclust
@@ -474,7 +474,7 @@ points into the same cluster (thus resolving one cluster per crescent). Complete
 other hand recognises that some points a the tip of a crescent are much closer to points in the
 other crescent and so it splits both crescents.
 
-# Using different distance methods
+## Using different distance methods
 
 So far, we've been using Euclidean distance to define the dissimilarity
 or distance between observations. However, this isn't always the best
@@ -583,7 +583,7 @@ heatmap(
 ```
 
 
-# Validating clusters
+## Validating clusters
 
 Now that we know how to carry out hierarchical clustering, how do we know how
 many clusters are optimal for the dataset?
@@ -627,12 +627,12 @@ dunn(distance = distmat, cut)
 The value of the Dunn index has no meaning in itself, but is used to compare
 between sets of clusters with larger values being preferred.
 
-> ## Challenge 4
+> ### Challenge 4
 > 
 > Examine how changing the `h` or `k` arguments in `cutree()`
 > affects the value of the Dunn index.
 >
-> > ## Solution:
+> > ### Solution:
 > >
 > > ```{r dunn-ex}
 > > library("clValid")
@@ -699,7 +699,7 @@ As we said before (see previous episode), clustering is a non-trivial task.
 It is important to think about the nature of your data and your expectations
 rather than blindly using a some algorithm for clustering or cluster validation.
 
-# Further reading 
+## Further reading
 
 - Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104.
 - Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145.
