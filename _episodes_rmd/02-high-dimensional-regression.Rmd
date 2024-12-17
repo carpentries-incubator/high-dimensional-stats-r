@@ -996,7 +996,7 @@ make falls into four categories:
     little data, we can't detect large differences. However, both can be
     argued to be "true".
 
-|                     | Label as different | Label as not different |
+|         True outcome| Label as different | Label as not different |
 |--------------------:|-------------------:|-----------------------:|
 |     Truly different |      True positive |         False negative |
 | Truly not different |     False positive |          True negative |
