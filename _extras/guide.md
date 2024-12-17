@@ -4,7 +4,7 @@ title: "Instructor Notes"
 
 Thank you for teaching high dimensional statistics with R! We hope you enjoy teaching the lesson. This page contains additional information for instructors.
 
-The materials for each episode are self-contained and can be found through the episode links on the home page. The slides in the Extras section can be used to supplement these materials.
+The materials for each episode are self-contained and can be found through the episode links on the home page.
 
 In previous rounds of teaching, the lesson was taught in four sessions, each lasting 2 hours and 50 minutes. We also advise allowing around 40 minutes of additional time for breaks. The recommended timings for each session are as follows:
 
