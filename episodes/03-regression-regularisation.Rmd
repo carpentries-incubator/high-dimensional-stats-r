@@ -32,7 +32,7 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("03-")
 ```
 
-# Introduction
+## Introduction
 
 
 This episode is about **regularisation**, also called **regularised regression** 
@@ -85,7 +85,7 @@ when naively fitting linear regression models with a large number of features (i
 often since the model cannot distinguish between the effects of many, correlated features or
 when we have more features than observations. 
 
-> ## Singularities
+> ### Singularities
 > 
 > The message that `lm()` produced is not necessarily the most intuitive. What
 > are "singularities" and why are they an issue? A singular matrix 
@@ -113,7 +113,7 @@ when we have more features than observations.
 > ```
 {: .callout}
 
-> ## Correlated features -- common in high-dimensional data
+> ### Correlated features -- common in high-dimensional data
 > 
 > In high-dimensional datasets, there
 > are often multiple features that contain redundant information (correlated features).
@@ -142,7 +142,7 @@ when we have more features than observations.
 
 
 
-> ## Challenge 1
+> ### Challenge 1
 > 
 > Consider or discuss in groups:
 > 
@@ -151,7 +151,7 @@ when we have more features than observations.
 > 1. Why might correlated features be a problem when fitting linear models?
 > 1. What issue might correlated features present when selecting features to include in a model one at a time?
 > 
-> > ## Solution
+> > ### Solution
 > >
 > > 1. Many of the features in biological data represent very similar 
 > >    information biologically. For example, sets of genes that form complexes
@@ -174,7 +174,7 @@ going on when we fit a linear model.
 
 
 
-# Coefficient estimates of a linear model
+## Coefficient estimates of a linear model
 
 When we fit a linear model, we're finding the line through our data that 
 minimises the sum of the squared residuals. We can think of that as finding
@@ -281,7 +281,7 @@ caution when estimating effect sizes (coefficients). That is, we might want to
 avoid estimating very large effect sizes. 
 
 
-> ## Challenge 2
+> ### Challenge 2
 > 
 > Discuss in groups:
 > 
@@ -289,7 +289,7 @@ avoid estimating very large effect sizes.
 > 2. Why are we minimising this objective? What assumptions are we making
 >    about our data when we do so?
 > 
-> > ## Solution
+> > ### Solution
 > >
 > > 1. When we fit a linear model we are minimising the squared error.
 > >    In fact, the standard linear model estimator is often known as
@@ -311,7 +311,7 @@ avoid estimating very large effect sizes.
 {: .challenge}
 
 
-# Model selection using training and test sets
+## Model selection using training and test sets
 
 Sets of models are often compared using statistics such as adjusted $R^2$, AIC or BIC.
 These show us how well the model is learning the data used in fitting that same model [^1].
@@ -404,12 +404,12 @@ err_lm_train
 The training error appears very low here -- on average we're only off by 
 about a year! 
 
-> ## Challenge 3
+> ### Challenge 3
 > 
 > For the fitted model above, calculate the mean squared error for the test set. 
 >
 > 
-> > ## Solution
+> > ### Solution
 > >
 > > First, let's find the predicted values for the 'unseen' test data:
 > > ```{r modelpreds}
@@ -444,7 +444,7 @@ good, the dots should follow a line. Regularisation can help us to make the
 model more generalisable, improving predictions for the test dataset (or any 
 other dataset that is not used when fitting our model). 
 
-# Regularisation
+## Regularisation
 
 Regularisation can be used to reduce correlation between predictors, the number of features, 
 and improve generalisability by restricting model parameter estimates. Essentially, we 
@@ -497,7 +497,7 @@ points(
 par(mfrow = c(1, 1))
 ```
 
-# Ridge regression
+## Ridge regression
 
 There are multiple ways to define the distance that our solution must fall in.
 The one we've plotted above controls the squared sum of the 
@@ -600,14 +600,14 @@ abline(v = log(chosen_lambda), lty = "dashed")
 
 
 
-> ## Challenge 4
+> ### Challenge 4
 > 
 > 1. Which performs better, ridge or OLS?
 > 2. Plot predicted ages for each method against the true ages.
 >    How do the predictions look for both methods? Why might ridge be 
 >    performing better?
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > 1. Ridge regression performs significantly better on unseen data, despite
 > >    being "worse" on the training data.
@@ -635,7 +635,7 @@ abline(v = log(chosen_lambda), lty = "dashed")
 {: .challenge}
 
 
-# LASSO regression
+## LASSO regression
 
 *LASSO* is another type of regularisation. In this case we use the $L^1$ norm,
 or the sum of the absolute values of the coefficients.
@@ -725,7 +725,7 @@ drawplot()
 ```
 
 
-> ## Challenge 5
+> ### Challenge 5
 > 
 > 1. Use `glmnet()` to fit a LASSO model (hint: set `alpha = 1`).
 > 2. Plot the model object. Remember that for ridge regression,
@@ -733,7 +733,7 @@ drawplot()
 >    relationship between the two plots?
 > 3. How do the coefficient paths differ to the ridge case?
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > 1. Fitting a LASSO model is very similar to a ridge model, we just need
 > >    to change the `alpha` setting.
@@ -759,7 +759,7 @@ drawplot()
 {: .challenge}
 
 
-# Cross-validation to find the best value of $\lambda$
+## Cross-validation to find the best value of $\lambda$
 
 Ideally, we want $\lambda$ to be large enough to reduce the complexity of
 our model, thus reducing the number of and correlations between the features, and improving generalisability. However, 
@@ -798,7 +798,7 @@ selected_coefs
 We can see that cross-validation has selected a value of $\lambda$ resulting in `r length(selected_coefs)-1` features and the intercept. 
 
 
-# Elastic nets: blending ridge regression and the LASSO 
+## Elastic nets: blending ridge regression and the LASSO
 
 So far, we've used ridge regression (where `alpha = 0`) and LASSO regression,
 (where `alpha = 1`). What if `alpha` is set to a value between zero and one?
@@ -895,7 +895,7 @@ plot_elastic(0.5)
 plot_elastic(0.75)
 ```
 
-> ## Challenge 6
+> ### Challenge 6
 > 
 > 1. Fit an elastic net model (hint: alpha = 0.5) without cross-validation and plot the model
 >    object.
@@ -907,7 +907,7 @@ plot_elastic(0.75)
 > 4. Discuss: how could we pick an `alpha` in the range (0, 1)? Could we justify
 >    choosing one *a priori*?
 > 
-> > ## Solution
+> > ### Solution
 > > 1. Fitting an elastic net model is just like fitting a LASSO model.
 > >    You can see that coefficients tend to go exactly to zero,
 > >    but the paths are a bit less
@@ -948,7 +948,7 @@ plot_elastic(0.75)
 {: .challenge}
 
 
-> ## The bias-variance tradeoff
+> ### The bias-variance tradeoff
 > 
 > When we make predictions in statistics, there are two sources of error
 > that primarily influence the (in)accuracy of our predictions. these are *bias*
@@ -992,7 +992,7 @@ plot_elastic(0.75)
 
 
 
-> ## Other types of outcomes
+> ### Other types of outcomes
 > 
 > You may have noticed that `glmnet` is written as `glm`, not `lm`.
 > This means we can actually model a variety of different outcomes
@@ -1030,7 +1030,7 @@ plot_elastic(0.75)
 {: .callout}
 
 
-> ## tidymodels
+> ### tidymodels
 > 
 > A lot of the packages for fitting predictive models like regularised
 > regression have different user interfaces. To do predictive modelling, it's
@@ -1107,14 +1107,14 @@ plot_elastic(0.75)
 > ```
 {: .callout}
 
-# Further reading
+## Further reading
 
 - [An introduction to statistical learning](https://www.statlearning.com/).
 - [Elements of statistical learning](https://web.stanford.edu/~hastie/ElemStatLearn/).
 - [glmnet vignette](https://glmnet.stanford.edu/articles/glmnet.html).
 - [tidymodels](https://www.tidymodels.org/).
 
-# Footnotes
+## Footnotes
 
 [^1]: Model selection including $R^2$, AIC and BIC are covered in the additional feature selection for regression episode of this course.
 [^2]: [Epigenetic Predictor of Age, Bocklandt et al. (2011)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0014821)
