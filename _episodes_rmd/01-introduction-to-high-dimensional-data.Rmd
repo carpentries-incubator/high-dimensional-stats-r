@@ -48,8 +48,7 @@ blood test results, behaviours, and general health. An example of what high-dime
 in a biomedical study is shown in the figure below. 
 
 
-
-```{r table-intro, echo = FALSE, fig.cap = "Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.", fig.alt = "Table displaying a high-dimensional data set with many features in individual columns relating to health data such as blood pressure, heart rate and respiratory rate. Each row contains the data for individual patients."}
+```{r table-intro, echo = FALSE, fig.cap = "Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.", fig.alt = "Table displaying a high-dimensional data set with many columns representing features related to health, such as blood pressure, heart rate and respiratory rate. Each row contains the data for an individual patient. This type of high-dimensional data could contain hundreds or thousands of columns (features/variables) and thousands or even millions of rows (observations/samples/patients)."}
 knitr::include_graphics("../fig/intro-table.png")
 ```
 

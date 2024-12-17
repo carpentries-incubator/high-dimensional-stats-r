@@ -751,7 +751,7 @@ So far, we have only looked at a biplot of PC1 versus PC2 which only gives part
 of the picture. The `pairplots()` function in **`PCAtools`** can be used to create
 multiple biplots including different principal components.
 
-```{r pairsplot, fig.cap="Multiple biplots produced by pairsplot().", fig.alt="An upper triangular grid of scatter plots of each principal component versus the others."}
+```{r pairsplot, fig.cap="Multiple biplots produced by pairsplot().", fig.alt="A triangular grid of scatter plots. The grid is the upper right triangle of a square, where each entry of the grid corresponds to a plot of one principal component against another. For example, the plot in the upper left corner of the plot corresponds to principal component one plotted against principal component 2, and the plot to the right of this plots principal component 1 against principal component 3. Points correspond to samples, and are coloured arbitrarily from light blue to dark blue."}
 pairsplot(pc)
 ```
 
