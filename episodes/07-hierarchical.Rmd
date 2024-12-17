@@ -513,8 +513,8 @@ being quite different in their pattern across the different features.
 In contrast, `sample_a` and `sample_c` are very distant, despite having
 *exactly* the same pattern across the different features.
 
-```{r heatmap-cor-example, fig.cap="Heatmap of simulated data.", fig.alt="Heatmap of simulated data: feature versus sample. The grid cells of the heatmap are coloured from red (high) to blue (low) according to value of the simulated data."}
-Heatmap(as.matrix(cor_example))
+```{r heatmap-cor-example, fig.cap="Heatmap of simulated data.", fig.alt="Heatmap of simulated data: feature versus sample. The grid cells of the heatmap are coloured from red (high) to blue (low) according to value of the simulated data. Samples A and B are both primarily composed of blue (low) values and form a cluster distinct from sample C on the column dendrogram."}
+pheatmap(as.matrix(cor_example))
 ```
 
 We can see that more clearly if we do a line plot:
@@ -572,7 +572,7 @@ or unusual data. It's often possible to use correlation and other custom
 dissimilarity measures in functions that perform hierarchical clustering, such as
 `pheatmap()` and `stats::heatmap()`:
 
-```{r heatmap-cor-cor-example, fig.cap="Heatmaps of features versus samples clustered in the samples according to correlation.", fig.alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot."}
+```{r heatmap-cor-cor-example, fig.cap="Heatmaps of features versus samples clustered in the samples according to correlation.", fig.alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot. Samples A and C form a cluster separate from sample B in the column dendrogram."}
 ## pheatmap allows you to select correlation directly
 pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 ## Using the built-in stats::heatmap 
