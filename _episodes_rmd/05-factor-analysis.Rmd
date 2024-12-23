@@ -27,7 +27,7 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("06-")
 ```
 
-# Introduction
+## Introduction
 
 Biologists often encounter high-dimensional datasets from which they wish
 to extract underlying features – they need to carry out dimensionality
@@ -57,7 +57,7 @@ exploratory data analysis methods (including PCA) to provide an initial estimate
 of how many factors adequately explain the variation observed in a dataset.
 In practice, a range of different values is usually tested.
 
-## Motivating example: student scores 
+### Motivating example: student scores
 
 One scenario for using FA would be whether student scores in different subjects
 can be summarised by certain subject categories. Take a look at the hypothetical
@@ -78,7 +78,7 @@ component representing a different linear combination of features. The principal
 components are ordered by the amount of variance they account for.
 
 
-# Prostate cancer patient data
+## Prostate cancer patient data
 
 We revisit the [`prostate`]((https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html)
 dataset of 97 men who have prostate cancer.
@@ -109,7 +109,7 @@ pros2 <- prostate[, c("lcavol", "lweight", "lbph", "lcp", "lpsa")]
 head(pros2)
 ```
 
-# Performing exploratory factor analysis
+## Performing exploratory factor analysis
 
 EFA may be implemented in R using the `factanal()` function
 from the **`stats`** package (which is a built-in package in base R). This
@@ -118,12 +118,12 @@ data matrix as input. The number of factors to be fitted in the analysis
 is specified by the user using the `factors` argument.
 
 
-> ## Challenge 1 (3 mins)
+> ### Challenge 1 (3 mins)
 > 
 > Use the `factanal()` function to identify the minimum number of factors
 > necessary to explain most of the variation in the data
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > ```{r ex1}
 > > # Include one factor only
@@ -157,7 +157,7 @@ factors, while negative values show a negative relationship between variables
 and factors. Loading values are missing for some variables because R does not
 print loadings less than 0.1. 
 
-# How many factors do we need?
+## How many factors do we need?
 
 There are numerous ways to select the “best” number of factors. One is to use
 the minimum number of features that does not leave a significant amount of
@@ -179,7 +179,7 @@ Like PCA, the fewer factors that can explain most of the variation in the
 dataset, the better. It is easier to explore and interpret results using a
 smaller number of factors which represent underlying features in the data. 
 
-# Variance accounted for by factors - communality and uniqueness
+## Variance accounted for by factors - communality and uniqueness
 
 The *communality* of a variable is the sum of its squared loadings. It
 represents the proportion of the variance in a variable that is accounted
@@ -196,7 +196,7 @@ apply(pros_fa$loadings^2, 1, sum)  #communality
 1 - apply(pros_fa$loadings^2, 1, sum)  #uniqueness
 ```
 
-# Visualising the contribution of each variable to the factors
+## Visualising the contribution of each variable to the factors
 Similar to a biplot as we produced in the PCA episode, we can “plot the
 loadings”. This shows how each original variable contributes to each of
 the factors we chose to visualise.
@@ -227,7 +227,7 @@ text(
 ```
 
 
-> ## Challenge 2 (3 mins)
+> ### Challenge 2 (3 mins)
 > 
 > Use the output from your factor analysis and the plots above to interpret
 > the results of your analysis.
@@ -235,7 +235,7 @@ text(
 > What variables are most important in explaining each factor? Do you think
 > this makes sense biologically? Consider or discuss in groups.
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > This plot suggests that the variables `lweight` and `lbph` are associated with
 > > high values on factor 2 (but lower values on factor 1) and the variables
@@ -251,7 +251,7 @@ text(
 > {: .solution}
 {: .challenge}
 
-# Advantages and disadvantages of Factor Analysis
+## Advantages and disadvantages of Factor Analysis
 
 There are several advantages and disadvantages of using FA as a
 dimensionality reduction method.
@@ -279,7 +279,7 @@ Disadvantages:
 
 
 
-# Further reading 
+## Further reading
 
 - Gundogdu et al. (2019) Comparison of performances of Principal Component Analysis (PCA) and Factor Analysis (FA) methods on the identification of cancerous and healthy colon tissues. International Journal of Mass Spectrometry 445:116204.
 - Kustra et al. (2006) A factor analysis model for functional genomics. BMC Bioinformatics 7: doi:10.1186/1471-2105-7-21.
