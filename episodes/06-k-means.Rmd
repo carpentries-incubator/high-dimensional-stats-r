@@ -30,7 +30,7 @@ source(here("bin/chunk-options.R"))
 knitr_fig_path("08-")
 ```
 
-# Introduction
+## Introduction
 
 As we saw in previous episodes, visualising high-dimensional 
 data with a large amount of features is difficult and can 
@@ -63,7 +63,7 @@ proposed clusters. Using this process, we can also iteratively update clusters
 so that we become more confident about the shape and size of the clusters.
 
 
-# What is K-means clustering?
+## What is K-means clustering?
 
 **K-means clustering** groups data points into a 
 user-defined number of distinct, non-overlapping clusters. 
@@ -93,7 +93,7 @@ to understand), it does have some disadvantages, particularly difficulties in id
 initial clusters which observations belong to and the need for the user to specify the
 number of clusters that the data should be partitioned into.
 
-> ## Initialisation
+> ### Initialisation
 >
 > The algorithm used in K-means clustering finds a *local* rather than a
 > *global* optimum, so that results of clustering are dependent on the initial
@@ -113,7 +113,7 @@ number of clusters that the data should be partitioned into.
 {: .callout}
 
 
-# Believing in clusters
+## Believing in clusters
 
 When using clustering, it's important to realise that data may seem to
 group together even when these groups are created randomly. It's especially 
@@ -158,7 +158,7 @@ that the clusters are 'real'. But how do we tell if clusters identified
 visually are 'real'?
 
 
-> ## Initialisation
+> ### Initialisation
 >
 > The algorithm used in K-means clustering finds a *local* rather than a
 > *global* optimum, so that results of clustering are dependent on the initial
@@ -177,7 +177,7 @@ visually are 'real'?
 >
 {: .callout}
 
-# K-means clustering applied to the single-cell RNA sequencing data
+## K-means clustering applied to the single-cell RNA sequencing data
 
 Let's carry out K-means clustering in `R` using some real high-dimensional data.
 We're going to work with single-cell RNA sequencing data, 
@@ -226,13 +226,13 @@ We can see that this produces a sensible-looking partition of the data.
 However, is it totally clear whether there might be more or fewer clusters
 here?
 
-> ## Challenge 1
+> ### Challenge 1
 > 
 > Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim()`.
 > Save this with a variable name that's different to what we just used,
 > because we'll use this again later.
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > ```{r kmeans-ex, fig.cap="Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.", fig.alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data."}
 > > set.seed(42)
@@ -244,7 +244,7 @@ here?
 > {: .solution}
 {: .challenge}
 
-> ## K-medoids (PAM)
+> ### K-medoids (PAM)
 > 
 > One problem with K-means is that using the mean to define cluster centroids
 > means that clusters can be very sensitive to outlying observations.
@@ -270,7 +270,7 @@ here?
 {: .callout}
 
 
-# Cluster separation
+## Cluster separation
 When performing clustering, it is important for us to be able to measure
 how well our clusters are separated. One measure to test this is silhouette width,
 which measures how similar a data point is to points in the same cluster compared
@@ -280,7 +280,7 @@ within the same cluster. For each cluster, the silhouette widths can then be
 averaged or an overall average can be taken.
 
 
-> ## More detail on silhouette widths
+> ### More detail on silhouette widths
 > In more detail, each observation’s silhouette width is computed as follows:  
 > 1. Compute the average distance between the focal observation and all other
 > observations in the same cluster.
@@ -337,14 +337,14 @@ This makes sense, as points that are "between" two clusters may be more similar
 to points in another cluster than they are to the points in the cluster one they
 belong to.
 
-> ## Challenge 2
+> ### Challenge 2
 > 
 > Calculate the silhouette width for the k of 5 clustering we did earlier.
 > Are 5 clusters appropriate? Why/why not?
 >
 > Can you identify where the differences lie?
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > ```{r silhouette-ex, fig.cap="Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.", fig.alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data."}
 > > sil5 <- silhouette(cluster5$cluster, dist = dist_mat)
@@ -365,7 +365,7 @@ belong to.
 
 
 
-> ## Gap statistic
+> ### Gap statistic
 > 
 > Another measure of how good our clustering is is the "gap statistic".
 > This compares the observed squared distance between observations in a cluster
@@ -386,7 +386,7 @@ belong to.
 {: .callout}
 
 
-# Cluster robustness: bootstrapping
+## Cluster robustness: bootstrapping
 
 When we cluster data, we want to be sure that the clusters we identify are
 not a result of the exact properties of the input data. That is, we want 
@@ -485,12 +485,12 @@ pheatmap(ratios,
 Yellow boxes indicate values slightly greater than 1, which may be observed.
 These are “good” (despite missing in the colour bar).
 
-> ## Challenge 3
+> ### Challenge 3
 >
 > Repeat the bootstrapping process with k=5. Do the results appear better or worse?
 > Can you identify where the differences occur on the `plotReducedDim()`?
 > 
-> > ## Solution
+> > ### Solution
 > > 
 > > ```{r bs-ex, fig.cap="Grid of empirical cluster swapping behaviour estimated by the bootstrap samples.", fig.alt="Grid of 25 squares labelled 1-5 on each of the x and y axes. The diagonal and off-diagonal squares of the grid are coloured in green, indicating the highest scoring value of 1 according to the legend, with the exception of the square corresponding to (4, 5), which is slightly darker green indicating a lower value. The lower triangular squares are coloured in grey, indicating NA values since these would be the same as the upper triangular squares."}
 > > km_fun5 <- function(x) {
@@ -516,7 +516,7 @@ These are “good” (despite missing in the colour bar).
 {: .challenge}
 
 
-> ## Consensus clustering
+> ### Consensus clustering
 > 
 > One useful and generic method of clustering is *consensus clustering*.
 > This method can use k-means or other clustering methods.
@@ -533,7 +533,7 @@ These are “good” (despite missing in the colour bar).
 {: .callout}
 
 
-> ## Speed
+> ### Speed
 > 
 > It's worth noting that a lot of the methods we've discussed here are very
 > computationally demanding. 
