@@ -15,4 +15,4 @@ cres2[,2] <- -cres2[,2] -0.1 # flip 2nd crescent upside-down and shift down
 cres2[,1] <- cres2[,1] + 0.5 # shift second crescent to the right
 
 cres <- rbind(cres1, cres2) # concatente x/y values
-saveRDS(cres, here::here("data/cres.rds"))
+saveRDS(cres, here::here("episodes/data/cres.rds"))

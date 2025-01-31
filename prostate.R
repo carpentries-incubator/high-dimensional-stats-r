@@ -1,4 +1,4 @@
 library("here")
-x <- read.csv(here("data/prostate.csv"))
+x <- read.csv(here("episodes/data/prostate.csv"))
 x <- x[, -1]
-saveRDS(x, here("data/prostate.rds"))
+saveRDS(x, here("episodes/data/prostate.rds"))

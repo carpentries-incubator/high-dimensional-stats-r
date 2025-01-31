@@ -92,4 +92,4 @@ se <- SummarizedExperiment::SummarizedExperiment(
     assays = list(expression = mat),
     colData = metadata
 )
-saveRDS(se, file = here::here("data/cancer_expression.rds"))
+saveRDS(se, file = here::here("episodes/data/cancer_expression.rds"))
