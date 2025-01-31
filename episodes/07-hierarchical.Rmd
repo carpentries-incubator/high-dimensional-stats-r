@@ -1,40 +1,33 @@
 ---
-title: "Hierarchical clustering"
+title: Hierarchical clustering
 source: Rmd
 teaching: 70
 exercises: 20
-questions:
+math: yes
+---
+
+::::::::::::::::::::::::::::::::::::::: objectives
+
+- Understand when to use hierarchical clustering on high-dimensional data.
+- Perform hierarchical clustering on high-dimensional data and evaluate dendrograms.
+- Understand and explore different distance matrix and linkage methods.
+- Use the Dunn index to validate clustering methods.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::: questions
+
 - What is hierarchical clustering and how does it differ from other clustering methods?
 - How do we carry out hierarchical clustering in R?
 - What distance matrix and linkage methods should we use?
 - How can we validate identified clusters?
-objectives:
-- Understand when to use hierarchical clustering on high-dimensional data.
-- Perform hierarchical clustering on high-dimensional data and evaluate
-  dendrograms.
-- Understand and explore different distance matrix and linkage methods.
-- Use the Dunn index to validate clustering methods.
-keypoints:
-- Hierarchical clustering uses an algorithm to group similar data points into
-  clusters. A dendrogram is used to plot relationships between clusters (using
-  the `hclust()` function in R).
-- Hierarchical clustering differs from k-means clustering as it does not require
-  the user to specify expected number of clusters
-- The distance (dissimilarity) matrix can be calculated in various ways, and
-  different clustering algorithms (linkage methods) can affect the resulting
-  dendrogram.
-- The Dunn index can be used to validate clusters using the original dataset.
-math: yes
----
 
-
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ```{r settings, include=FALSE}
 library("here")
 source(here("bin/chunk-options.R"))
-knitr_fig_path("09-")
 ```
-
 
 ## Why use hierarchical clustering on high-dimensional data?
 
@@ -47,13 +40,13 @@ cluster have similar characteristics. The clustering algorithm works by iterativ
 grouping data points so that different clusters may exist at different stages
 of the algorithm's progression.
 
-Here, we describe *hierarchical clustering*. Unlike K-means clustering, 
+Here, we describe *hierarchical clustering*. Unlike K-means clustering,
 hierarchical clustering does not require the
 number of clusters $k$ to be specified by the user before the analysis is carried
-out. 
+out.
 
 Hierarchical clustering also provides an attractive *dendrogram*, a
-tree-like diagram showing the degree of similarity between clusters. 
+tree-like diagram showing the degree of similarity between clusters.
 The dendrogram is a key feature of hierarchical clustering. This tree-shaped graph allows
 the similarity between data points in a dataset to be visualised and the
 arrangement of clusters produced by the analysis to be illustrated. Dendrograms are created
@@ -64,19 +57,22 @@ In this episode we will explore hierarchical clustering for identifying
 clusters in high-dimensional data. We will use *agglomerative* hierarchical
 clustering (see box) in this episode.
 
-> ### Agglomerative and Divisive hierarchical clustering
-> 
-> There are two main methods of carrying out hierarchical clustering:
-> agglomerative clustering and divisive clustering. 
-> The former is a 'bottom-up' approach to clustering whereby the clustering
-> approach begins with each data point (or observation) 
-> being regarded as being in its own separate cluster. Pairs of data points are
-> merged as we move up the tree. 
-> Divisive clustering is a 'top-down' approach in which all data points start
-> in a single cluster and an algorithm is used to split groups of data points
-> from this main group.
-{: .callout}
+:::::::::::::::::::::::::::::::::::::::::  callout
 
+### Agglomerative and Divisive hierarchical clustering
+
+There are two main methods of carrying out hierarchical clustering:
+agglomerative clustering and divisive clustering.
+The former is a 'bottom-up' approach to clustering whereby the clustering
+approach begins with each data point (or observation)
+being regarded as being in its own separate cluster. Pairs of data points are
+merged as we move up the tree.
+Divisive clustering is a 'top-down' approach in which all data points start
+in a single cluster and an algorithm is used to split groups of data points
+from this main group.
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## The agglomerative hierarchical clustering algorithm
 
@@ -91,12 +87,11 @@ panel below). Groups of observations may then be merged into a larger cluster
 in a single cluster.
 
 ```{r hclustfig1, echo=FALSE, out.width="500px", fig.cap="Example data showing two clusters of observation pairs.", fig.alt="Scatter plot of observations x2 versus x1. Two clusters of pairs of observations are shown by blue and red boxes, each grouping two observations that are close in their x and y distance."}
-knitr::include_graphics("../fig/hierarchical_clustering_1.png")
+knitr::include_graphics("fig/hierarchical_clustering_1.png")
 ```
 
-
 ```{r hclustfig2, echo=FALSE, out.width="500px", fig.cap="Example data showing fusing of one observation into larger cluster.", fig.alt="Scatter plot of observations x2 versus x1. Three boxes are shown this time. Blue and red boxes contain two observations each. The two boxes contain points that are relatively far apart. A third green box is shown encompassing the blue box and an additional data point."}
-knitr::include_graphics("../fig/hierarchical_clustering_2.png")
+knitr::include_graphics("fig/hierarchical_clustering_2.png")
 ```
 
 ## A motivating example
@@ -134,11 +129,11 @@ Looking at a heatmap of these data, we may spot some patterns -- looking at the
 vertical stripes, many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
-In addition, it is challenging to tell how many groups containing similar methylation 
+In addition, it is challenging to tell how many groups containing similar methylation
 levels we may have or what the similarities and differences are between groups.
 
 We can order these data to make the patterns more clear using hierarchical
-clustering. To do this, we can change the arguments we pass to 
+clustering. To do this, we can change the arguments we pass to
 `Heatmap()` from the **`ComplexHeatmap`** package. `Heatmap()`
 groups features based on dissimilarity (here, Euclidean distance) and orders
 rows and columns to show clustering of features and observations.
@@ -169,10 +164,12 @@ exploratory analysis of data to build hypotheses.
 Now, let's cover the inner workings of hierarchical clustering in more detail.
 Hierarchical clustering is a type of clustering that also allows us to estimate the number
 of clusters. There are two things to consider before carrying out clustering:
-* how to define dissimilarity between observations using a distance matrix, and
-* how to define dissimilarity between clusters and when to fuse separate clusters.
+
+- how to define dissimilarity between observations using a distance matrix, and
+- how to define dissimilarity between clusters and when to fuse separate clusters.
 
 ## Defining the dissimilarity between observations: creating the distance matrix
+
 Agglomerative hierarchical clustering is performed in two steps: calculating
 the distance matrix (containing distances between pairs of observations) and
 iteratively grouping observations into clusters using this matrix.
@@ -180,9 +177,9 @@ iteratively grouping observations into clusters using this matrix.
 There are different ways to
 specify a distance matrix for clustering:
 
-* Specify distance as a pre-defined option using the `method` argument in
+- Specify distance as a pre-defined option using the `method` argument in
   `dist()`. Methods include `euclidean` (default), `maximum` and `manhattan`.
-* Create a self-defined function which calculates distance from a matrix or
+- Create a self-defined function which calculates distance from a matrix or
   from two vectors. The function should only contain one argument.
 
 Of pre-defined methods of calculating the distance matrix, Euclidean is one of
@@ -193,7 +190,7 @@ Another option is to use a correlation matrix as the input matrix to the
 clustering algorithm. The type of distance matrix used in hierarchical
 clustering can have a big effect on the resulting tree. The decision of which
 distance matrix to use before carrying out hierarchical clustering depends on the
-type of data and question to be addressed. 
+type of data and question to be addressed.
 
 ## Defining the dissimilarity between clusters: Linkage methods
 
@@ -227,12 +224,11 @@ Dendrograms are useful tools that plot the grouping of points and clusters into 
 We can create and plot dendrograms in R using `hclust()` which takes
 a distance matrix as input and creates a tree using hierarchical
 clustering. Here we create some example data to carry out hierarchical
-clustering. 
+clustering.
 
 Let's generate 20 data points in 2D space. Each
 point is generated to belong to one of three classes/groups. Suppose we did not know which class
 data points belonged to and we want to identify these via cluster analysis. Let's first generate and plot our data:
-
 
 ```{r plotexample, fig.cap="Scatter plot of randomly-generated data x2 versus x1.", fig.alt="A scatter plot of randomly-generated data x2 versus x1. The points appear fairly randomly scattered, arguably centered towards the bottom of the plot."}
 #First, create some example data with two variables x1 and x2
@@ -258,28 +254,37 @@ dist_m <- dist(example_data, method = "euclidean")
 Hierarchical clustering carried out on the data can be used to produce a
 dendrogram showing how the data is partitioned into clusters. But how do we interpret this dendrogram? Let's explore this using our example data in a Challenge.
 
-> ### Challenge 1
->
-> Use `hclust()` to implement hierarchical clustering using the
-> distance matrix `dist_m` and 
-> the `complete` linkage method and plot the results as a dendrogram using
-> `plot()`. Why is hierarchical clustering and the resulting dendrogram useful for performing clustering this case?
->
-> > ### Solution:
-> >
-> > ```{r plotclustex, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other)."}
-> > clust <- hclust(dist_m, method = "complete")
-> > plot(clust)
-> > ```
-> > Hierarchical clustering is particularly useful (compared to K-means) when we do not know the number of clusters 
-> > before we perform clustering. It is useful in this case since we have assumed we do not already know what a suitable 
-> > number of clusters may be.
-> {: .solution}
-{: .challenge}
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+### Challenge 1
+
+Use `hclust()` to implement hierarchical clustering using the
+distance matrix `dist_m` and
+the `complete` linkage method and plot the results as a dendrogram using
+`plot()`. Why is hierarchical clustering and the resulting dendrogram useful for performing clustering this case?
+
+:::::::::::::::  solution
+
+### Solution:
+
+```{r plotclustex, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other)."}
+clust <- hclust(dist_m, method = "complete")
+plot(clust)
+```
+
+Hierarchical clustering is particularly useful (compared to K-means) when we do not know the number of clusters
+before we perform clustering. It is useful in this case since we have assumed we do not already know what a suitable
+number of clusters may be.
+
+
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 A dendrogram, such as the one generated in Challenge 1,
 shows similarities/differences in distances between data points.
-Each vertical line at the bottom of the dendrogram ('leaf') represents 
+Each vertical line at the bottom of the dendrogram ('leaf') represents
 one of the 20 data points. These leaves
 fuse into fewer vertical lines ('branches') as the height increases. Observations that are similar fuse into
 the same branches. The height at which any two
@@ -291,7 +296,7 @@ the scatterplot with their position on the tree.
 
 ## Identifying the number of clusters
 
-To identify the number of clusters, we can make a horizontal cut through the dendrogram at a user-defined height. 
+To identify the number of clusters, we can make a horizontal cut through the dendrogram at a user-defined height.
 The sets of observations beneath this cut and single points representing clusters above can be thought of as distinct clusters. Equivalently,
 we can count the vertical lines we encounter crossing the horizontal cut and the number of single points above the cut. For
 example, a cut at height 10 produces `r length(unique(cutree(clust, h=10)))` clusters for the dendrogram in Challenge 1,
@@ -299,7 +304,7 @@ while a cut at height 4 produces `r length(unique(cutree(clust, h=4)))` clusters
 
 ## Dendrogram visualisation
 
-We can first visualise cluster membership by highlight branches in dendrograms. 
+We can first visualise cluster membership by highlight branches in dendrograms.
 In this example, we calculate a distance matrix between
 samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained with `cutree()`.
 
@@ -316,6 +321,7 @@ rect.hclust(clust, k = 3, border = 2:6) #border argument specifies the colours
 ## draw border around two clusters
 rect.hclust(clust, k = 2, border = 2:6)
 ```
+
 We can also colour clusters downstream of a specified cut using `color_branches()`
 from the **`dendextend`** package.
 
@@ -363,39 +369,46 @@ ggplot(example_cl, aes(x = cg01644850, y = cg01656216, color = factor(cluster)))
 Note that this cut produces `r length(unique(four_cut))` clusters (zero before the cut and another four
 downstream of the cut).
 
-> ### Challenge 2:
->
-> Identify the value of `k` in `cutree()` that gives the same
-> output as `h = 36`
->
-> > ### Solution:
-> >
-> > ```{r h-k-ex-plot, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other). A dashed horizontal line at a height of 5 indicates the cut point used to divide the data into clusters."}
-> > plot(clust)
-> > ## create horizontal line at height = 45
-> > abline(h = 45, lty = 2)
-> >
-> > cutree(clust, h = 45)
-> > cutree(clust, k = 5)
-> >
-> > five_cut <- cutree(clust, h = 45)
-> >
-> > library(dplyr)
-> > example_cl <- mutate(data.frame(methyl_mat), cluster = five_cut)
-> > count(example_cl, cluster)
-> > ```
-> > 
-> > ```{r plot-clusters, fig.cap="A scatter plot of the x and y variables of the example data, with points coloured by cluster.", fig.alt="Plot of x1 against x2 in the example data. Points are coloured by cluster, with 8 different clusters being organised into groups around the plot. There is no clear pattern in the data, although nearby points generally share the same colour."}
-> > library(ggplot2)
-> > ggplot(example_cl, aes(x=cg01644850, y = cg01656216, color = factor(cluster))) + geom_point()
-> > ```
-> > 
-> > Five clusters (`k = 5`) gives similar results to `h = 45`. You can plot a
-> > horizontal line on the dendrogram at `h = 45` to help identify
-> > corresponding value of `k`.
-> {: .solution}
-{: .challenge}
+:::::::::::::::::::::::::::::::::::::::  challenge
 
+### Challenge 2:
+
+Identify the value of `k` in `cutree()` that gives the same
+output as `h = 36`
+
+:::::::::::::::  solution
+
+### Solution:
+
+```{r h-k-ex-plot, fig.cap="A dendrogram of the randomly-generated data.", fig.alt="A line plot depicting a dendrogram --- a tree structure representing the hierarchical structure of the data. The data broadly fit into three clusters, with one sample (14) being quite dissimilar to all others, and the rest of the data comprising two other clusters (one larger than the other). A dashed horizontal line at a height of 5 indicates the cut point used to divide the data into clusters."}
+plot(clust)
+## create horizontal line at height = 45
+abline(h = 45, lty = 2)
+
+cutree(clust, h = 45)
+cutree(clust, k = 5)
+
+five_cut <- cutree(clust, h = 45)
+
+library(dplyr)
+example_cl <- mutate(data.frame(methyl_mat), cluster = five_cut)
+count(example_cl, cluster)
+```
+
+```{r plot-clusters, fig.cap="A scatter plot of the x and y variables of the example data, with points coloured by cluster.", fig.alt="Plot of x1 against x2 in the example data. Points are coloured by cluster, with 8 different clusters being organised into groups around the plot. There is no clear pattern in the data, although nearby points generally share the same colour."}
+library(ggplot2)
+ggplot(example_cl, aes(x=cg01644850, y = cg01656216, color = factor(cluster))) + geom_point()
+```
+
+Five clusters (`k = 5`) gives similar results to `h = 45`. You can plot a
+horizontal line on the dendrogram at `h = 45` to help identify
+corresponding value of `k`.
+
+
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## The effect of different linkage methods
 
@@ -414,55 +427,65 @@ cresClass <- cutree(hclust(dist(cres)), k=2) # save partition for colouring
 plot(cres, col=cresClass) # colour scatterplot by partition
 ```
 
+:::::::::::::::::::::::::::::::::::::::  challenge
 
-> ### Challenge 3
->
-> Carry out hierarchical clustering on the `cres` data that we generated above.
-> Try out different linkage methods and use `cutree()` to split each resulting
-> dendrogram into two clusters. Plot the results colouring the dots according to
-> their inferred cluster identity.
-> 
-> Which method(s) give you the expected clustering outcome?
-> 
-> Hint: Check `?hclust` to see the possible values of the argument `method` (the linkage method used).
->
-> > ### Solution:
-> >
-> > ```{r plot-clust-comp, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with single linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
-> > #?hclust
-> > # "complete", "single", "ward.D", "ward.D2", "average", "mcquitty", "median" or "centroid"
-> > cresClassSingle <- cutree(hclust(dist(cres),method = "single"), k=2)
-> > plot(cres, col=cresClassSingle, main="single")
-> > ```
-> > ```{r plot-clust-wardD, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with ward.D linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
-> > cresClassWard.D <- cutree(hclust(dist(cres), method="ward.D"), k=2)
-> > plot(cres, col=cresClassWard.D, main="ward.D")
-> > ```
-> > ```{r plot-clust-wardD2, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with ward.D2 linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
-> > cresClassWard.D2 <- cutree(hclust(dist(cres), method="ward.D2"), k=2)
-> > plot(cres, col=cresClassWard.D2, main="ward.D2")
-> > ```
-> > ```{r plot-clust-average, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with average linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
-> > cresClassAverage <- cutree(hclust(dist(cres), method="average"), k=2)
-> > plot(cres, col=cresClassAverage, main="average")
-> > ```
-> > ```{r plot-clust-mcq, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with mcquitty linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
-> > cresClassMcquitty <- cutree(hclust(dist(cres), method="mcquitty"), k=2)
-> > plot(cres, col=cresClassMcquitty, main="mcquitty")
-> > ```
-> > ```{r plot-clust-median, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with median linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
-> > cresClassMedian<- cutree(hclust(dist(cres), method="median"), k=2) 
-> > plot(cres, col=cresClassMedian, main="median")
-> > ```
-> > ```{r plot-clust-centroid, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with centroid linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
-> > cresClassCentroid<- cutree(hclust(dist(cres), method="centroid"), k=2)
-> > plot(cres, col=cresClassCentroid, main="centroid")
-> > ```
-> > 
-> > The linkage methods `single`, `ward.D`, and `average` resolve each crescent as a separate cluster.
-> > 
-> {: .solution}
-{: .challenge}
+### Challenge 3
+
+Carry out hierarchical clustering on the `cres` data that we generated above.
+Try out different linkage methods and use `cutree()` to split each resulting
+dendrogram into two clusters. Plot the results colouring the dots according to
+their inferred cluster identity.
+
+Which method(s) give you the expected clustering outcome?
+
+Hint: Check `?hclust` to see the possible values of the argument `method` (the linkage method used).
+
+:::::::::::::::  solution
+
+### Solution:
+
+```{r plot-clust-comp, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with single linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
+#?hclust
+# "complete", "single", "ward.D", "ward.D2", "average", "mcquitty", "median" or "centroid"
+cresClassSingle <- cutree(hclust(dist(cres),method = "single"), k=2)
+plot(cres, col=cresClassSingle, main="single")
+```
+
+```{r plot-clust-wardD, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with ward.D linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
+cresClassWard.D <- cutree(hclust(dist(cres), method="ward.D"), k=2)
+plot(cres, col=cresClassWard.D, main="ward.D")
+```
+
+```{r plot-clust-wardD2, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with ward.D2 linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
+cresClassWard.D2 <- cutree(hclust(dist(cres), method="ward.D2"), k=2)
+plot(cres, col=cresClassWard.D2, main="ward.D2")
+```
+
+```{r plot-clust-average, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with average linkage, with two clusters, corresponding to the two crescent-shaped clouds."}
+cresClassAverage <- cutree(hclust(dist(cres), method="average"), k=2)
+plot(cres, col=cresClassAverage, main="average")
+```
+
+```{r plot-clust-mcq, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with mcquitty linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
+cresClassMcquitty <- cutree(hclust(dist(cres), method="mcquitty"), k=2)
+plot(cres, col=cresClassMcquitty, main="mcquitty")
+```
+
+```{r plot-clust-median, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with median linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
+cresClassMedian<- cutree(hclust(dist(cres), method="median"), k=2) 
+plot(cres, col=cresClassMedian, main="median")
+```
+
+```{r plot-clust-centroid, fig.cap="A scatter plot of synthetic data coloured by cluster.", fig.alt="A scatter plot of synthetic data, comprising two variables, with points forming two crescent-shaped clusters. Points are coloured based on hierarchical clustering with centroid linkage, with two clusters, though these do not correspond to the two crescent-shaped clouds."}
+cresClassCentroid<- cutree(hclust(dist(cres), method="centroid"), k=2)
+plot(cres, col=cresClassCentroid, main="centroid")
+```
+
+The linkage methods `single`, `ward.D`, and `average` resolve each crescent as a separate cluster.
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 The help page of `hclust()` gives some intuition on linkage methods. It describes `complete`
 (the default) and `single` as opposite ends of a spectrum with all other methods in between.
@@ -518,6 +541,7 @@ pheatmap(as.matrix(cor_example))
 ```
 
 We can see that more clearly if we do a line plot:
+
 ```{r lineplot-cor-example, fig.cap="Line plot of simulated value versus observation number, coloured by sample.", fig.alt="A line plot of simulated value versus observation number, coloured by sample. Samples a and b are concentrated at the bottom of the plot, while sample c is concentrated at the top of the plot. Samples a and c have exactly the same vertical pattern."}
 ## create a blank plot (type = "n" means don't draw anything)
 ## with an x range to hold the number of features we have.
@@ -582,7 +606,6 @@ heatmap(
 )
 ```
 
-
 ## Validating clusters
 
 Now that we know how to carry out hierarchical clustering, how do we know how
@@ -595,11 +618,11 @@ whether clusters have been identified just due to chance. In the last episode,
 we have introduced silhouette scores as a measure of cluster compactness and
 bootstrapping to assess cluster robustness. Such tests can be used to compare
 different clustering algorithms, for example, those fitted using different linkage
-methods. 
+methods.
 
 Here, we introduce the Dunn index, which is a measure of cluster compactness. The
 Dunn index is the ratio of the smallest distance between any two clusters
-and to the largest intra-cluster distance found within any cluster. This can be 
+and to the largest intra-cluster distance found within any cluster. This can be
 seen as a family of indices which differ depending on the method used to compute
 distances. The Dunn index is a metric that penalises clusters that have
 larger intra-cluster variance and smaller inter-cluster variance. The higher the
@@ -627,46 +650,51 @@ dunn(distance = distmat, cut)
 The value of the Dunn index has no meaning in itself, but is used to compare
 between sets of clusters with larger values being preferred.
 
-> ### Challenge 4
-> 
-> Examine how changing the `h` or `k` arguments in `cutree()`
-> affects the value of the Dunn index.
->
-> > ### Solution:
-> >
-> > ```{r dunn-ex}
-> > library("clValid")
-> >
-> > distmat <- dist(methyl_mat)
-> > clust <- hclust(distmat, method = "complete")
-> >
-> > #Varying h
-> > ## Obtaining the clusters
-> > cut_h_20 <- cutree(clust, h = 20)
-> > cut_h_30 <- cutree(clust, h = 30)
-> > 
-> > ## How many clusters?
-> > length(table(cut_h_20))
-> > length(table(cut_h_30))
-> > 
-> > dunn(distance = distmat, cut_h_20)
-> > dunn(distance = distmat, cut_h_30)
-> > 
-> > #Varying k
-> > ## Obtaining the clusters
-> > cut_k_10 <- cutree(clust, k = 10)
-> > cut_k_5 <- cutree(clust, k = 5)
-> > 
-> > ## How many clusters?
-> > length(table(cut_k_5))
-> > length(table(cut_k_10))
-> > 
-> > dunn(distance = distmat, cut_k_5)
-> > dunn(distance = distmat, cut_k_10)
-> > ```
-> {: .solution}
-{: .challenge}
+:::::::::::::::::::::::::::::::::::::::  challenge
 
+### Challenge 4
+
+Examine how changing the `h` or `k` arguments in `cutree()`
+affects the value of the Dunn index.
+
+:::::::::::::::  solution
+
+### Solution:
+
+```{r dunn-ex}
+library("clValid")
+
+distmat <- dist(methyl_mat)
+clust <- hclust(distmat, method = "complete")
+
+#Varying h
+## Obtaining the clusters
+cut_h_20 <- cutree(clust, h = 20)
+cut_h_30 <- cutree(clust, h = 30)
+
+## How many clusters?
+length(table(cut_h_20))
+length(table(cut_h_30))
+
+dunn(distance = distmat, cut_h_20)
+dunn(distance = distmat, cut_h_30)
+
+#Varying k
+## Obtaining the clusters
+cut_k_10 <- cutree(clust, k = 10)
+cut_k_5 <- cutree(clust, k = 5)
+
+## How many clusters?
+length(table(cut_k_5))
+length(table(cut_k_10))
+
+dunn(distance = distmat, cut_k_5)
+dunn(distance = distmat, cut_k_10)
+```
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 The figures below show in a more systematic way how changing the values of `k` and
 `h` using `cutree()` affect the Dunn index.
@@ -679,6 +707,7 @@ k_dunn <- sapply(k_seq, function(x) dunn(distance = distmat, cutree(clust, k = x
 plot(h_seq, h_dunn, xlab = "Height (h)", ylab = "Dunn index")
 grid()
 ```
+
 You can see that at low values of `h`, the Dunn index can be high. But this
 is not very useful - cutting the given tree at a low `h` value like 15 leads to allmost all observations
 ending up each in its own cluster. More relevant is the second maximum in the plot, around `h=55`.
@@ -688,6 +717,7 @@ Looking at the dendrogram, this corresponds to `k=4`.
 plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
 grid()
 ```
+
 For the given range of `k` values explored, we obtain the highest Dunn index with `k=4`.
 This is in agreement with the previous plot.
 
@@ -702,9 +732,20 @@ rather than blindly using a some algorithm for clustering or cluster validation.
 ## Further reading
 
 - Dunn, J. C. (1974) Well-separated clusters and optimal fuzzy partitions. Journal of Cybernetics 4(1):95–104.
-- Halkidi, M., Batistakis, Y. & Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145.
-- James, G., Witten, D., Hastie, T. & Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R. 
+- Halkidi, M., Batistakis, Y. \& Vazirgiannis, M. (2001) On clustering validation techniques. Journal of Intelligent Information Systems 17(2/3):107-145.
+- James, G., Witten, D., Hastie, T. \& Tibshirani, R. (2013) An Introduction to Statistical Learning with Applications in R.
   Section 10.3.2 (Hierarchical Clustering).
 - [Understanding the concept of Hierarchical clustering Technique. towards data science blog](https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec).
-  
-{% include links.md %}
+
+
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- Hierarchical clustering uses an algorithm to group similar data points into clusters. A dendrogram is used to plot relationships between clusters (using the `hclust()` function in R).
+- Hierarchical clustering differs from k-means clustering as it does not require the user to specify expected number of clusters
+- The distance (dissimilarity) matrix can be calculated in various ways, and different clustering algorithms (linkage methods) can affect the resulting dendrogram.
+- The Dunn index can be used to validate clusters using the original dataset.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+

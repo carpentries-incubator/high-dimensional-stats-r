@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Setup
 ---
 
@@ -11,7 +10,7 @@ installed already. You'll need to install R 4.0 or later.
 
 R usually enables package downloads using pre-built binaries. Some times, this is not possible,
 particularly on Linux and Mac systems. In this case, R package installation often requires additional
-system dependencies. If you are a Linux user, to ensure that you can download packages using the code 
+system dependencies. If you are a Linux user, to ensure that you can download packages using the code
 below, first run the terminal commands for your distribution
 [here](https://docs.posit.co/connect/admin/r/dependencies/).
 Note that you will need to use root access (sudo) to install the system dependencies.
@@ -20,7 +19,7 @@ and Windows users may need to install [RTools](https://cran.r-project.org/bin/wi
 Ideally, installing packages will proceed without error and you can ignore these steps,
 but this isn't always the case.
 
-Previous learners have reported issues with **`igraph`**. Installation instructions for this package can be found on [https://r.igraph.org/](https://r.igraph.org/),
+Previous learners have reported issues with **`igraph`**. Installation instructions for this package can be found on <https://r.igraph.org/>,
 
 All learners should then run the following code to download the data and install the libraries
 used in this lesson:
@@ -54,4 +53,6 @@ for (file in data_files) {
 }
 ```
 
-{% include links.md %}
+
+
+
