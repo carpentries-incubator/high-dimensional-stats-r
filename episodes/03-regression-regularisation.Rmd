@@ -22,11 +22,7 @@ math: yes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-```{r settings, include=FALSE}
-library("here")
-library("ComplexHeatmap")
-source(here("bin/chunk-options.R"))
-```
+
 
 ## Introduction
 
@@ -51,7 +47,7 @@ data from the last lesson:
 ```{r loadmethy}
 library("here")
 library("minfi")
-methylation <- readRDS(here("data/methylation.rds"))
+methylation <- readRDS(here("episodes/data/methylation.rds"))
 
 ## here, we transpose the matrix to have features as rows and samples as columns
 methyl_mat <- t(assay(methylation))
@@ -340,7 +336,7 @@ data into training and test sets, fit a linear model and calculate the errors. F
 calculate the training error. Let's start by splitting the data into training and test sets:
 
 ```{r data}
-methylation <- readRDS(here::here("data/methylation.rds"))
+methylation <- readRDS(here::here("episodes/data/methylation.rds"))
 
 library("SummarizedExperiment")
 age <- methylation$Age
@@ -1061,7 +1057,7 @@ To this end, the **`tidymodels`** R framework exists. We're not doing a course o
 advanced topics in predictive modelling so we are not covering this framework
 in detail. However, the code below would be useful to perform repeated
 cross-validation. More information about **`tidymodels`**, including installation
-instructions, can be found [here](https://www.rdocumentation.org/packages/tidymodels/versions/1.1.1).
+instructions, can be found [on the tidymodels website](https://www.tidymodels.org/).
 
 ```{r tidymodels, eval=FALSE}
 library("tidymodels")

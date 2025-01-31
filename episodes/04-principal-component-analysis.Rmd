@@ -25,11 +25,6 @@ math: yes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-```{r settings, include=FALSE}
-library("here")
-source(here("bin/chunk-options.R"))
-```
-
 ## Introduction
 
 If a dataset contains many variables ($p$), it is likely that some of these
@@ -107,7 +102,7 @@ capturing the overall effect in the data that has the second-highest variability
 library(ggplot2)
 library(PCAtools)
 library(cowplot)
-prostate <- readRDS(here("data/prostate.rds"))
+prostate <- readRDS(here("episodes/data/prostate.rds"))
 
 # pca, set 2 variables so directions look orthogonal
 pros_only2 <- prostate[, c("lcavol", "lpsa")]
@@ -220,7 +215,7 @@ First, we will examine the `prostate` dataset (originally part of the
 
 ```{r prostate-load}
 library("here")
-prostate <- readRDS(here("data/prostate.rds"))
+prostate <- readRDS(here("episodes/data/prostate.rds"))
 ```
 
 ```{r prostate-head}

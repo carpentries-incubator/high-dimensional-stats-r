@@ -55,3 +55,5 @@ vendor/
 Gemfile.lock
 .*history
 DESCRIPTION
+renv/profiles/lesson-requirements/renv/library/
+renv/profiles/lesson-requirements/renv/library/

@@ -25,10 +25,6 @@ editor_options:
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-```{r settings, include=FALSE}
-library("here")
-source(here("bin/chunk-options.R"))
-```
 
 ## DNA methylation data
 
@@ -47,11 +43,10 @@ Let's read in the data for this episode:
 ```{r loadmethy}
 library("here")
 library("minfi")
-methylation <- readRDS(here("data/methylation.rds"))
+methylation <- readRDS(here("episodes/data/methylation.rds"))
 ```
 
-Note: the code that we used to download these data from its source is available
-[here](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/data/methylation.R)
+Note: if you want to view the code used to download these data, the code is available in this repository in the [`methylation.R` script](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/episodes/data/methylation.R)
 
 `methylation` is actually a special Bioconductor `SummarizedExperiment`
 object that summarises lots of different information about the data.

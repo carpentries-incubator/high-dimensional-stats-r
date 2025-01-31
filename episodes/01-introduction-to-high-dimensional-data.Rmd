@@ -25,10 +25,6 @@ math: yes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-```{r setup, include=FALSE}
-library("here")
-source(here("bin/chunk-options.R"))
-```
 
 ## What are high-dimensional data?
 
@@ -120,12 +116,12 @@ For illustrative purposes, we start with a simple dataset that is not technicall
 high-dimensional but contains many features. This will illustrate the general problems
 encountered when working with many features in a high-dimensional data set.
 
-First, make sure you have completed the setup instructions [here](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
+First, make sure you have completed [the setup instructions](https://carpentries-incubator.github.io/high-dimensional-stats-r/setup.html).
 Next, let's load the [`prostate`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) dataset as follows:
 
 ```{r prostate}
 library("here")
-prostate <- readRDS(here("data/prostate.rds"))
+prostate <- readRDS(here("episodes/data/prostate.rds"))
 ```
 
 Examine the dataset (in which each row represents a single patient) to:
@@ -382,7 +378,7 @@ taken.
 library("here")
 library("ComplexHeatmap")
 
-methylation <- readRDS(here("data/methylation.rds"))
+methylation <- readRDS(here("episodes/data/methylation.rds"))
 head(colData(methylation))
 
 methyl_mat <- t(assay(methylation))

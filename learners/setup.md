@@ -12,7 +12,7 @@ R usually enables package downloads using pre-built binaries. Some times, this i
 particularly on Linux and Mac systems. In this case, R package installation often requires additional
 system dependencies. If you are a Linux user, to ensure that you can download packages using the code
 below, first run the terminal commands for your distribution
-[here](https://docs.posit.co/connect/admin/r/dependencies/).
+[from the posit documentation](https://docs.posit.co/connect/admin/r/dependencies/).
 Note that you will need to use root access (sudo) to install the system dependencies.
 Mac users may need to use [homebrew](https://brew.sh/) to install system dependencies,
 and Windows users may need to install [RTools](https://cran.r-project.org/bin/windows/Rtools/).

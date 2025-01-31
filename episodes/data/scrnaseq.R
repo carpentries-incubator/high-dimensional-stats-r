@@ -24,4 +24,4 @@ zd <- computeSumFactors(zd, cluster = quickCluster(zd))
 
 zd <- logNormCounts(zd)
 
-saveRDS(zd, here("data/scrnaseq.rds"))
+saveRDS(zd, here("episodes/data/scrnaseq.rds"))

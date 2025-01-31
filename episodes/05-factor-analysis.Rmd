@@ -24,10 +24,7 @@ math: yes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-```{r setup, include=FALSE}
-library("here")
-source(here("bin/chunk-options.R"))
-```
+
 
 ## Introduction
 
@@ -97,7 +94,7 @@ for the purposes of this episode:
 
 ```{r prostate}
 library("here")
-prostate <- readRDS(here("data/prostate.rds"))
+prostate <- readRDS(here("episodes/data/prostate.rds"))
 ```
 
 ```{r dims}
