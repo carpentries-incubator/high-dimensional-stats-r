@@ -355,7 +355,7 @@ plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans")
 ```
 
 <div class="figure" style="text-align: center">
-<img src="fig/06-k-means-rendered-kmeans-1.png" alt="A scatter plot of principal component 2 versus principal component 1 of the `scrnaseq` data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data."  />
+<img src="fig/06-k-means-rendered-kmeans-1.png" alt="A scatter plot of principal component 2 versus principal component 1 of the scrnaseq data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data."  />
 <p class="caption">Scatter plot of principal component 2 versus principal component 1 with points colour coded according to the cluster to which they belong.</p>
 </div>
 
@@ -363,6 +363,72 @@ We can see that this produces a sensible-looking partition of the data.
 However, is it totally clear whether there might be more or fewer clusters
 here?
 
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+### Challenge 1
+
+Perform clustering to group the data into $k=5$ clusters, and plot it using `plotReducedDim()`.
+Save this with a variable name that's different to what we just used,
+because we'll use this again later.
+
+:::::::::::::::  solution
+
+### Solution
+
+
+``` r
+set.seed(42)
+cluster5 <- kmeans(pcs, centers = 5)
+scrnaseq$kmeans5 <- as.character(cluster5$cluster)
+plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans5")
+```
+
+<div class="figure" style="text-align: center">
+<img src="fig/06-k-means-rendered-kmeans-ex-1.png" alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data."  />
+<p class="caption">Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.</p>
+</div>
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+### K-medoids (PAM)
+
+One problem with K-means is that using the mean to define cluster centroids
+means that clusters can be very sensitive to outlying observations.
+
+K-medoids, also known as "partitioning around medoids (PAM)" is similar to
+K-means, but uses the median rather than the mean as the method for defining
+cluster centroids. Using the median rather than the mean reduces sensitivity of
+clusters to outliers in the data.
+
+K-medioids has had popular application in
+genomics, for example the well-known PAM50 gene set in breast cancer, which has seen some
+prognostic applications.
+
+The following example shows how cluster centroids differ when created using
+medians rather than means.
+
+
+``` r
+x <- rnorm(20)
+y <- rnorm(20)
+x[10] <- x[10] + 10
+plot(x, y, pch = 16)
+points(mean(x), mean(y), pch = 16, col = "firebrick")
+points(median(x), median(y), pch = 16, col = "dodgerblue")
+```
+
+<div class="figure" style="text-align: center">
+<img src="fig/06-k-means-rendered-unnamed-chunk-1-1.png" alt="Scatter plot of random data y versus x. There are many black points on the plot representing the data. Two additional points are shown: the (mean(x), mean(y)) co-ordinate point in red and the (median(x), median(y)) co-ordinate point in blue. The median co-ordinate point in blue has a lower x value and is shown to the left of the red mean co-ordinate point."  />
+<p class="caption">Scatter plot of random data y versus x with the (mean(x), mean(y)) co-ordinate point shown in red and the (median(x), median(y)) co-ordinate point shown in blue.</p>
+</div>
+
+PAM can be carried out using `pam()` from the **`cluster`** package.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 ## Cluster separation
@@ -474,34 +540,21 @@ Can you identify where the differences lie?
 
 ``` r
 sil5 <- silhouette(cluster5$cluster, dist = dist_mat)
-```
-
-``` error
-Error: object 'cluster5' not found
-```
-
-``` r
 scrnaseq$kmeans5 <- as.character(cluster5$cluster)
-```
-
-``` error
-Error: object 'cluster5' not found
-```
-
-``` r
 plotReducedDim(scrnaseq, "PCA", colour_by = "kmeans5")
 ```
 
-``` error
-Error in retrieveCellInfo(se, colour_by, assay.type = by.assay.type, swap_rownames = swap_rownames): cannot find 'kmeans5'
-```
+<div class="figure" style="text-align: center">
+<img src="fig/06-k-means-rendered-silhouette-ex-1.png" alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data."  />
+<p class="caption">Scatter plot of principal component 2 against principal component 1 in the scRNAseq data, coloured by clusters produced by k-means clustering.</p>
+</div>
 
 ``` r
 mean(sil5[, "sil_width"])
 ```
 
-``` error
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mean': object 'sil5' not found
+``` output
+[1] 0.5849979
 ```
 
 The average silhouette width is lower when k=5.
@@ -511,9 +564,10 @@ The average silhouette width is lower when k=5.
 plot(sil5, border = NA)
 ```
 
-``` error
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'sil5' not found
-```
+<div class="figure" style="text-align: center">
+<img src="fig/06-k-means-rendered-unnamed-chunk-2-1.png" alt="Plot with horizontal axis silhoutte width. The plot shows the silhouette width for each point in the data set according to cluster. Cluster 4 contains almost half of the points in the data set and largely consists of points with a large silhouette list, leading to a bar that extends to the right side of the graph. The other clusters contain many fewer points and have similar silhouette widths. The bars for cluster 5 are much smaller, with a small number extending to the left of the origin, indicating negative silhouette widths."  />
+<p class="caption">Silhouette plot for each point according to cluster.</p>
+</div>
 
 This seems to be because some observations in clusters 3 and 5 seem to be
 more similar to other clusters than the one they have been assigned to.
@@ -577,7 +631,7 @@ sample(data, 5)
 ```
 
 ``` output
-[1] 4 2 5 1 3
+[1] 4 1 3 5 2
 ```
 
 This sample is a subset of the original data, and points are only present once.
@@ -591,11 +645,11 @@ replicate(10, sample(data, 5))
 
 ``` output
      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-[1,]    4    2    1    5    3    3    4    4    3     2
-[2,]    1    5    3    4    2    5    5    1    4     5
-[3,]    5    3    5    2    1    2    2    2    5     4
-[4,]    2    1    4    3    4    4    3    3    1     3
-[5,]    3    4    2    1    5    1    1    5    2     1
+[1,]    5    2    5    2    3    1    3    5    5     3
+[2,]    4    5    4    5    4    4    1    3    1     2
+[3,]    2    1    1    3    2    5    2    2    3     4
+[4,]    1    4    2    1    5    3    5    1    2     5
+[5,]    3    3    3    4    1    2    4    4    4     1
 ```
 
 However, if we sample *with replacement*, then sometimes individual data points
@@ -608,11 +662,11 @@ replicate(10, sample(data, 5, replace = TRUE))
 
 ``` output
      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-[1,]    4    2    5    4    5    2    4    3    5     5
-[2,]    3    5    2    1    4    1    1    5    1     3
-[3,]    5    1    1    3    5    2    4    5    4     1
-[4,]    2    1    5    3    4    5    2    3    1     2
-[5,]    2    4    4    5    2    5    2    4    1     5
+[1,]    3    1    2    2    1    3    3    2    4     2
+[2,]    1    3    2    4    2    5    2    1    2     5
+[3,]    5    5    4    4    2    2    1    1    1     3
+[4,]    1    1    4    2    1    4    4    5    5     4
+[5,]    3    1    2    1    4    2    5    3    3     2
 ```
 
 ## Bootstrapping
@@ -709,13 +763,6 @@ km_fun5 <- function(x) {
 }
 set.seed(42)
 ratios5 <- bootstrapStability(pcs, FUN = km_fun5, clusters = cluster5$cluster)
-```
-
-``` error
-Error: object 'cluster5' not found
-```
-
-``` r
 pheatmap(ratios5,
     cluster_rows = FALSE, cluster_cols = FALSE,
     col = viridis(10),
@@ -723,9 +770,10 @@ pheatmap(ratios5,
 )
 ```
 
-``` error
-Error: object 'ratios5' not found
-```
+<div class="figure" style="text-align: center">
+<img src="fig/06-k-means-rendered-bs-ex-1.png" alt="Grid of 25 squares labelled 1-5 on each of the x and y axes. The diagonal and off-diagonal squares of the grid are coloured in green, indicating the highest scoring value of 1 according to the legend, with the exception of the square corresponding to (4, 5), which is slightly darker green indicating a lower value. The lower triangular squares are coloured in grey, indicating NA values since these would be the same as the upper triangular squares."  />
+<p class="caption">Grid of empirical cluster swapping behaviour estimated by the bootstrap samples.</p>
+</div>
 
 When k=5, we can see that the values on the diagonal of the matrix are
 smaller, indicating that the clusters aren't exactly reproducible in the
