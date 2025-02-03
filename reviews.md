@@ -1,4 +1,7 @@
-# Reviews
+---
+title: Peer reviews
+---
+
 
 The purpose of this document is to summarise and track how the lesson has developed in response to peer reviews, feedback from instructors and Carpentries advice. We also detail the main changes that still need to be made and thus define a roadmap to publication.
 

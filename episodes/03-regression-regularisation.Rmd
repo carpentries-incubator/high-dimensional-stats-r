@@ -45,6 +45,7 @@ data! We start by reading in the [`methylation`](https://carpentries-incubator.g
 data from the last lesson:
 
 ```{r loadmethy}
+library("SummarizedExperiment")
 methylation <- readRDS("data/methylation.rds")
 
 ## here, we transpose the matrix to have features as rows and samples as columns

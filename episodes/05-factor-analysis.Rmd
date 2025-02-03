@@ -226,6 +226,48 @@ text(
 )
 ```
 
+
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+
+### K-medoids (PAM)
+
+One problem with K-means is that using the mean to define cluster centroids
+means that clusters can be very sensitive to outlying observations.
+
+K-medoids, also known as "partitioning around medoids (PAM)" is similar to 
+K-means, but uses the median rather than the mean as the method for defining
+cluster centroids. Using the median rather than the mean reduces sensitivity of
+clusters to outliers in the data.
+
+K-medioids has had popular application in
+genomics, for example the well-known PAM50 gene set in breast cancer, which has seen some 
+prognostic applications.
+
+The following example shows how cluster centroids differ when created using 
+medians rather than means.
+
+
+
+```{r, fig.cap="Scatter plot of random data y versus x with the (mean(x), mean(y)) co-ordinate point shown in red and the (median(x), median(y)) co-ordinate point shown in blue.", fig.alt="Scatter plot of random data y versus x. There are many black points on the plot representing the data. Two additional points are shown: the (mean(x), mean(y)) co-ordinate point in red and the (median(x), median(y)) co-ordinate point in blue. The median co-ordinate point in blue has a lower x value and is shown to the left of the red mean co-ordinate point."}
+x <- rnorm(20)
+y <- rnorm(20)
+x[10] <- x[10] + 10
+plot(x, y, pch = 16)
+points(mean(x), mean(y), pch = 16, col = "firebrick")
+points(median(x), median(y), pch = 16, col = "dodgerblue")
+```
+
+
+
+PAM can be carried out using `pam()` from the **`cluster`** package.
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ### Challenge 2 (3 mins)
