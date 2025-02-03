@@ -41,7 +41,6 @@ methylated DNA. Along with this, we have a number of sample phenotypes
 Let's read in the data for this episode:
 
 ```{r loadmethy}
-library("minfi")
 methylation <- readRDS("data/methylation.rds")
 ```
 
@@ -106,7 +105,7 @@ methylation. The following heatmap summarises age and methylation levels
 available in the methylation dataset:
 
 ```{r heatmap, fig.cap="Heatmap of methylation values across all features.", fig.alt="Heatmap of methylation values across all features showing that there are many features. Samples are ordered according to age."}
-library("ComplexHeatmap")
+library("pheatmap")
 
 age <- methylation$Age
 
@@ -116,14 +115,13 @@ age_ord <- age[order]
 methyl_mat_ord <- methyl_mat[, order]
 
 # plot heatmap
-Heatmap(methyl_mat_ord,
-        cluster_columns = FALSE,
-        show_row_names = FALSE,
-        show_column_names = FALSE,
-        name = "M-value",
-        row_title = "Feature", 
-        column_title =  "Sample", 
-        top_annotation = columnAnnotation(age = age_ord))
+pheatmap(methyl_mat_ord, 
+         cluster_cols = FALSE, 
+         show_rownames = FALSE, 
+         show_colnames = FALSE, 
+         legend_title = "M-value", 
+         main = "Feature vs Sample", 
+         annotation_col = data.frame(age = age_ord))
 ```
 
 :::::::::::::::::::::::::::::::::::::::  challenge
@@ -848,32 +846,7 @@ feature separately.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-```{r limma-app-ex, echo=FALSE, eval=FALSE}
-> ## Exercise
-> 
-> Launch `shinystats::limmaApp` and adjust the parameters. 
-> 
-> Discuss the output in groups. Consider the following questions:
-> 
-> 1. How does the number of features affect the relationship between these two 
->    similar methods?
-> 2. What about the number of samples?
-> 3. When ranking genes, why would we want to downrank the most significant and
->    uprank some with more moderate changes?
-> 
-> > ## Solution
-> > 
-> > 1. With more features, the amount of shrinkage increases.
-> > 2. With more samples, the shrinkage is weaker and the difference between the
-> >    methods is smaller.
-> > 3. Because the p-value relies on the effect size estimate *and* its standard
-> >    error, a very small standard error by chance (with few replicates) can
-> >    lead to a very small p-value. "Moderating" or shrinking the standard errors
-> >    brings these more in line with features that have a similar effect size 
-> >    but larger standard error.
-> {: .solution}
-{: .challenge}
-```
+
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -918,9 +891,6 @@ including:
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-```{r, eval=FALSE, echo=FALSE}
-# todo: callout box explaining DESeq2
-```
 
 ## The problem of multiple tests
 

@@ -45,7 +45,6 @@ data! We start by reading in the [`methylation`](https://carpentries-incubator.g
 data from the last lesson:
 
 ```{r loadmethy}
-library("minfi")
 methylation <- readRDS("data/methylation.rds")
 
 ## here, we transpose the matrix to have features as rows and samples as columns
@@ -120,15 +119,17 @@ heatmap visualises the correlations for the first 500 features in the
 visualise patterns when there are too many features!).
 
 ```{r corr-mat-meth, fig.cap="Heatmap of pairwise feature-feature correlations between CpG sites in DNA methylation data", fig.alt="A symmetrical heatmap where rows and columns are features in a DNA methylation dataset. Colour corresponds to correlation, with red being large positive correlations and blue being large negative correlations. There are large blocks of deep red and blue throughout the plot."}
-library("ComplexHeatmap")
+library("pheatmap")
 small <- methyl_mat[, 1:500]
 cor_mat <- cor(small)
-Heatmap(cor_mat,
-    column_title = "Feature-feature correlation in methylation data",
-    name = "Pearson correlation",
-    show_row_dend = FALSE, show_column_dend = FALSE,
-    show_row_names = FALSE, show_column_names = FALSE
-)
+pheatmap(cor_mat,
+         main = "Feature-feature correlation in methylation data",
+         legend_title = "Pearson correlation",
+         cluster_rows = FALSE, 
+         cluster_cols = FALSE,
+         show_rownames = FALSE, 
+         show_colnames = FALSE)
+
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::

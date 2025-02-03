@@ -99,11 +99,7 @@ detail. To do this, we'll return to the large [`methylation`](https://carpentrie
 with in the regression lessons. Let's load and visually inspect the data:
 
 ```{r}
-library("minfi")
-library("here")
-library("ComplexHeatmap")
-
-methyl <- readRDS(here("episodes/data/methylation.rds"))
+methyl <- readRDS("data/methylation.rds")
 
 # transpose this Bioconductor dataset to show features in columns
 methyl_mat <- t(assay(methyl))
@@ -114,12 +110,13 @@ appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
 ```{r heatmap-noclust, echo=FALSE, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. There are many vertical blue and red stripes."}
-Heatmap(methyl_mat,
-  name = "Methylation level",
-  cluster_rows = FALSE, cluster_columns = FALSE,
-  show_row_names = FALSE, show_column_names = FALSE,
-  row_title="Individuals", column_title = "Methylation sites"
-)
+pheatmap(methyl_mat,
+         legend_title = "Methylation level",
+         cluster_rows = FALSE, 
+         cluster_cols = FALSE,
+         show_rownames = FALSE, 
+         show_colnames = FALSE,
+         main = "Methylation Sites vs Individuals")
 ```
 
 Looking at a heatmap of these data, we may spot some patterns -- looking at the
@@ -131,19 +128,19 @@ levels we may have or what the similarities and differences are between groups.
 
 We can order these data to make the patterns more clear using hierarchical
 clustering. To do this, we can change the arguments we pass to
-`Heatmap()` from the **`ComplexHeatmap`** package. `Heatmap()`
+`pheatmap()` from the **`pheatmap`** package. `pheatmap()`
 groups features based on dissimilarity (here, Euclidean distance) and orders
 rows and columns to show clustering of features and observations.
 
 ```{r heatmap-clust, fig.cap="Heatmap of methylation data clustered by methylation sites and individuals.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis, clustered by methylation sites and individuals. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."}
-Heatmap(methyl_mat,
-  name = "Methylation level",
-  cluster_rows = TRUE, cluster_columns = TRUE,
-  row_dend_width = unit(0.2, "npc"),
-  column_dend_height = unit(0.2, "npc"),
-  show_row_names = FALSE, show_column_names = FALSE,
-  row_title="Individuals", column_title = "Methylation sites"
-)
+pheatmap(methyl_mat,
+         legend_title = "Methylation level",
+         cluster_rows = TRUE, 
+         cluster_cols = TRUE,
+         show_rownames = FALSE, 
+         show_colnames = FALSE,
+         main = "Methylation Sites vs Individuals",
+         annotation_legend = TRUE)
 ```
 
 We can see that clustering the features (CpG sites) results in an overall
@@ -202,9 +199,9 @@ below.
 
 `hclust()` supports various linkage methods (e.g `complete`,
 `single`, `ward D`, `ward D2`, `average`, `median`) and these are also supported
-within the `Heatmap()` function. The method used to perform hierarchical
-clustering in `Heatmap()` can be specified by the arguments
-`clustering_method_rows` and `clustering_method_columns`. Each linkage method
+within the `pheatmap()` function. The method used to perform hierarchical
+clustering in `pheatmap()` can be specified by the argument
+`clustering_method`. Each linkage method
 uses a slightly different algorithm to calculate how clusters are fused together
 and therefore different clustering decisions are made depending on the linkage
 method used.
@@ -412,7 +409,7 @@ corresponding value of `k`.
 Now let us look into changing the default behaviour of `hclust()`. First, we'll load a synthetic dataset, comprised of two variables representing two crescent-shaped point clouds:
 
 ```{r crescents, fig.cap="Scatter plot of data simulated according to two crescent-shaped point clouds.", fig.alt="A scatter plot of data simulated to form two crescent shapes. The crescents are horizontally orientated with a a rough line of vertical symmetry."}
-cres <- readRDS(here::here("episodes/data/cres.rds"))
+cres <- readRDS("data/cres.rds")
 plot(cres)
 ```
 

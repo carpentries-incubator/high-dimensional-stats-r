@@ -2,7 +2,7 @@
 title: Data
 ---
 
-# Prostate cancer data
+## Prostate cancer data
 
 [Source](https://search.r-project.org/CRAN/refmans/bayesQR/html/Prostate.html)
 
@@ -18,7 +18,7 @@ Prostate specific antigen values and clinical measures for 97 patients hospitali
 - pgg45: percentage Gleason scores 4 or 5
 - lpsa: log(prostate specific antigen)
 
-# Methylation data
+## Methylation data
 
 [Source](https://bioconductor.org/packages/release/data/experiment/html/FlowSorted.Blood.EPIC.html)
 
@@ -41,13 +41,13 @@ Illumina Human Methylation data from EPIC on sorted peripheral adult blood cell 
   - Array: type of array from the EPIC array library
   - Slide: slide identifier
 
-# Horvath data
+## Horvath data
 
 [Source](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0014821#s5)
 
 Methylation markers across different age groups. The CpGmarker variable used in this lesson are CpG site encodings.
 
-# Breast cancer gene expression data
+## Breast cancer gene expression data
 
 [Source](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2990)
 
@@ -64,7 +64,7 @@ Gene expression data showing microarray results for different probes used to exa
   - Size: tumour size in cm
   - Time.RFS: time between the date of surgery and diagnosis of relapse (time in relapse free survival, RFS)
 
-# Single-cell RNA sequencing data
+## Single-cell RNA sequencing data
 
 [Source](https://pubmed.ncbi.nlm.nih.gov/25700174/)
 

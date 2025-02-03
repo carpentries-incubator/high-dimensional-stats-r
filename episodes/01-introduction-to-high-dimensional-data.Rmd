@@ -349,15 +349,15 @@ data. Bioconductor contains useful packages and example datasets as shown on the
 website <https://www.bioconductor.org/>.
 
 Bioconductor packages can be installed and used in `R` using the **`BiocManager`**
-package. Let's load the **`minfi`** package from Bioconductor (a package for
-analysing Illumina Infinium DNA methylation arrays).
+package. Let's load the **`limma`** package from Bioconductor (a package for
+running linear models).
 
-```{r libminfi}
-library("minfi")
+```{r liblimma}
+library("limma")
 ```
 
-```{r vigminfi, eval=FALSE}
-browseVignettes("minfi")
+```{r viglimma, eval=FALSE}
+browseVignettes("limma")
 ```
 
 We can explore these packages by browsing the vignettes provided in
@@ -374,8 +374,6 @@ assay as well as associated metadata from individuals from whom samples were
 taken.
 
 ```{r libsload}
-library("ComplexHeatmap")
-
 methylation <- readRDS("data/methylation.rds")
 head(colData(methylation))
 
@@ -397,7 +395,7 @@ common challenge in analysing high-dimensional genomics data.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Further reading
+## Further reading and resources
 
 - Buhlman, P. \& van de Geer, S. (2011) Statistics for High-Dimensional Data. Springer, London.
 - [Buhlman, P., Kalisch, M. \& Meier, L. (2014) High-dimensional statistics with a view toward applications in biology. Annual Review of Statistics and Its Application](https://doi.org/10.1146/annurev-statistics-022513-115545).
@@ -408,11 +406,8 @@ common challenge in analysing high-dimensional genomics data.
   [Introduction to machine learning](https://carpentries-incubator.github.io/machine-learning-novice-python/),
   [Tree models](https://carpentries-incubator.github.io/machine-learning-trees-python/) and
   [Neural networks](https://carpentries-incubator.github.io/machine-learning-neural-python/).
-  Some related (an important!) content is also available in
+  Some related (and important!) content is also available in
   [Responsible machine learning](https://carpentries-incubator.github.io/machine-learning-responsible-python/).
-
-## Other resources suggested by former students
-
 - [Josh Starmer's](https://www.youtube.com/c/joshstarmer) youtube channel.
 
 
