@@ -102,7 +102,7 @@ capturing the overall effect in the data that has the second-highest variability
 library(ggplot2)
 library(PCAtools)
 library(cowplot)
-prostate <- readRDS(here("episodes/data/prostate.rds"))
+prostate <- readRDS("data/prostate.rds")
 
 # pca, set 2 variables so directions look orthogonal
 pros_only2 <- prostate[, c("lcavol", "lpsa")]
@@ -214,8 +214,7 @@ First, we will examine the `prostate` dataset (originally part of the
 **`lasso2`** package):
 
 ```{r prostate-load}
-library("here")
-prostate <- readRDS(here("episodes/data/prostate.rds"))
+prostate <- readRDS("data/prostate.rds")
 ```
 
 ```{r prostate-head}
@@ -502,7 +501,7 @@ associated metadata, downloaded from the
 
 ```{r se}
 library("SummarizedExperiment")
-cancer <- readRDS(here("data/cancer_expression.rds"))
+cancer <- readRDS("data/cancer_expression.rds")
 mat <- assay(cancer)
 metadata <- colData(cancer)
 ```

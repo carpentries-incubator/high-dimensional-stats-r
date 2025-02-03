@@ -45,9 +45,8 @@ data! We start by reading in the [`methylation`](https://carpentries-incubator.g
 data from the last lesson:
 
 ```{r loadmethy}
-library("here")
 library("minfi")
-methylation <- readRDS(here("episodes/data/methylation.rds"))
+methylation <- readRDS("data/methylation.rds")
 
 ## here, we transpose the matrix to have features as rows and samples as columns
 methyl_mat <- t(assay(methylation))
@@ -336,7 +335,7 @@ data into training and test sets, fit a linear model and calculate the errors. F
 calculate the training error. Let's start by splitting the data into training and test sets:
 
 ```{r data}
-methylation <- readRDS(here::here("episodes/data/methylation.rds"))
+methylation <- readRDS("/data/methylation.rds")
 
 library("SummarizedExperiment")
 age <- methylation$Age

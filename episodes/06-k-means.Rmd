@@ -205,7 +205,7 @@ Let's load the *scRNAseq* data and calculate some principal components.
 library("SingleCellExperiment")
 library("scater")
 
-scrnaseq <- readRDS(here::here("episodes/data/scrnaseq.rds"))
+scrnaseq <- readRDS("data/scrnaseq.rds")
 scrnaseq <- runPCA(scrnaseq, ncomponents = 15)
 pcs <- reducedDim(scrnaseq)[, 1:2]
 ```
@@ -336,7 +336,7 @@ library("cluster")
 dist_mat <- dist(pcs)
 sil <- silhouette(cluster$cluster, dist = dist_mat)
 plot(sil, border = NA)
-````
+```
 
 Let's plot the silhouette score on the original dimensions used to cluster
 the data. Here, we're mapping cluster membership to point shape, and silhouette

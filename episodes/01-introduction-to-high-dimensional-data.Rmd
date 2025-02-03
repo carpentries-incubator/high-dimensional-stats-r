@@ -120,8 +120,7 @@ First, make sure you have completed [the setup instructions](https://carpentries
 Next, let's load the [`prostate`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) dataset as follows:
 
 ```{r prostate}
-library("here")
-prostate <- readRDS(here("episodes/data/prostate.rds"))
+prostate <- readRDS("data/prostate.rds")
 ```
 
 Examine the dataset (in which each row represents a single patient) to:
@@ -375,10 +374,9 @@ assay as well as associated metadata from individuals from whom samples were
 taken.
 
 ```{r libsload}
-library("here")
 library("ComplexHeatmap")
 
-methylation <- readRDS(here("episodes/data/methylation.rds"))
+methylation <- readRDS("data/methylation.rds")
 head(colData(methylation))
 
 methyl_mat <- t(assay(methylation))

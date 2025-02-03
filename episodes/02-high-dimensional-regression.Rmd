@@ -41,9 +41,8 @@ methylated DNA. Along with this, we have a number of sample phenotypes
 Let's read in the data for this episode:
 
 ```{r loadmethy}
-library("here")
 library("minfi")
-methylation <- readRDS(here("episodes/data/methylation.rds"))
+methylation <- readRDS("data/methylation.rds")
 ```
 
 Note: if you want to view the code used to download these data, the code is available in this repository in the [`methylation.R` script](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/episodes/data/methylation.R)
