@@ -83,7 +83,3 @@ Gene expression measurements for over 9000 genes in over 3000 mouse cortex and h
   - level1class: a cluster label identified using a mix of computational techniques and manual annotation
   - level2class: a cluster label identified using a mix of computational techniques and manual annotation
   - sizeFactor:   estimate size factor calculated for scaling normalisation using (e.g., **`scran`**).
-
-
-
-

@@ -28,7 +28,3 @@ Session 4:
 - Hierarchical clustering (episode 7): 70 minutes of teaching time, 20 minutes for exercises (total: 90 minutes).
 
 This lesson was designed for learners with good familiarity with R programming and foundational knowledge of statistics. To manage cognitive load, it may be necessary to omit later chapters, especially if some learners have difficulties with the programming techniques shown here or foundational statistical concepts. In this case, we recommend omitting Chapter 5: Factor analysis and one or both of the clustering chapters (Chapter 6: K-means and Chapter 7: Hierarchical clustering).
-
-
-
-
