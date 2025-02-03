@@ -731,12 +731,87 @@ function.</p>
 <span><span class="va">scrnaseq</span><span class="op">$</span><span class="va">kmeans</span> <span class="op">&lt;-</span> <span class="fu">as.character</span><span class="op">(</span><span class="va">cluster</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span>
 <span><span class="fu">plotReducedDim</span><span class="op">(</span><span class="va">scrnaseq</span>, <span class="st">"PCA"</span>, colour_by <span class="op">=</span> <span class="st">"kmeans"</span><span class="op">)</span></span></code></pre>
 </div>
-<figure style="text-align: center"><img src="fig/06-k-means-rendered-kmeans-1.png" alt="A scatter plot of principal component 2 versus principal component 1 of the `scrnaseq` data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data." class="figure mx-auto d-block"><figcaption>
+<figure style="text-align: center"><img src="fig/06-k-means-rendered-kmeans-1.png" alt="A scatter plot of principal component 2 versus principal component 1 of the scrnaseq data. Each point is one of four colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing four distinct clusters in the data." class="figure mx-auto d-block"><figcaption>
 Scatter plot of principal component 2 versus principal component 1 with
 points colour coded according to the cluster to which they belong.
 </figcaption></figure><p>We can see that this produces a sensible-looking partition of the
 data. However, is it totally clear whether there might be more or fewer
 clusters here?</p>
+<div id="challenge-1" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-1" class="callout-inner">
+<h3 class="callout-title">Challenge 1</h3>
+<div class="callout-content">
+<p>Perform clustering to group the data into <span class="math inline">\(k=5\)</span> clusters, and plot it using
+<code>plotReducedDim()</code>. Save this with a variable name that’s
+different to what we just used, because we’ll use this again later.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb29">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">set.seed</span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span><span class="va">cluster5</span> <span class="op">&lt;-</span> <span class="fu">kmeans</span><span class="op">(</span><span class="va">pcs</span>, centers <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">scrnaseq</span><span class="op">$</span><span class="va">kmeans5</span> <span class="op">&lt;-</span> <span class="fu">as.character</span><span class="op">(</span><span class="va">cluster5</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span>
+<span><span class="fu">plotReducedDim</span><span class="op">(</span><span class="va">scrnaseq</span>, <span class="st">"PCA"</span>, colour_by <span class="op">=</span> <span class="st">"kmeans5"</span><span class="op">)</span></span></code></pre>
+</div>
+<figure style="text-align: center"><img src="fig/06-k-means-rendered-kmeans-ex-1.png" alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data." class="figure mx-auto d-block"><figcaption>
+Scatter plot of principal component 2 against principal component 1 in
+the scRNAseq data, coloured by clusters produced by k-means clustering.
+</figcaption></figure></div>
+</div>
+</div>
+</div>
+<div id="k-medoids-pam" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="k-medoids-pam" class="callout-inner">
+<h3 class="callout-title">K-medoids (PAM)</h3>
+<div class="callout-content">
+<p>One problem with K-means is that using the mean to define cluster
+centroids means that clusters can be very sensitive to outlying
+observations.</p>
+<p>K-medoids, also known as “partitioning around medoids (PAM)” is
+similar to K-means, but uses the median rather than the mean as the
+method for defining cluster centroids. Using the median rather than the
+mean reduces sensitivity of clusters to outliers in the data.</p>
+<p>K-medioids has had popular application in genomics, for example the
+well-known PAM50 gene set in breast cancer, which has seen some
+prognostic applications.</p>
+<p>The following example shows how cluster centroids differ when created
+using medians rather than means.</p>
+<div class="codewrapper sourceCode" id="cb30">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">rnorm</span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">rnorm</span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span> <span class="op">+</span> <span class="fl">10</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="fu">points</span><span class="op">(</span><span class="fu">mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">mean</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"firebrick"</span><span class="op">)</span></span>
+<span><span class="fu">points</span><span class="op">(</span><span class="fu">median</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">median</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"dodgerblue"</span><span class="op">)</span></span></code></pre>
+</div>
+<figure style="text-align: center"><img src="fig/06-k-means-rendered-unnamed-chunk-1-1.png" alt="Scatter plot of random data y versus x. There are many black points on the plot representing the data. Two additional points are shown: the (mean(x), mean(y)) co-ordinate point in red and the (median(x), median(y)) co-ordinate point in blue. The median co-ordinate point in blue has a lower x value and is shown to the left of the red mean co-ordinate point." class="figure mx-auto d-block"><figcaption>
+Scatter plot of random data y versus x with the (mean(x), mean(y))
+co-ordinate point shown in red and the (median(x), median(y))
+co-ordinate point shown in blue.
+</figcaption></figure><p>PAM can be carried out using <code>pam()</code> from the
+<strong><code>cluster</code></strong> package.</p>
+</div>
+</div>
+</div>
 </section><section><h2 class="section-heading" id="cluster-separation">Cluster separation<a class="anchor" aria-label="anchor" href="#cluster-separation"></a></h2>
 <hr class="half-width"><p>When performing clustering, it is important for us to be able to
 measure how well our clusters are separated. One measure to test this is
@@ -777,7 +852,7 @@ either cluster.</p>
 <strong><code>cluster</code></strong> package to calculate the
 silhouette width of our K-means clustering using a distance matrix of
 distances between points in the clusters.</p>
-<div class="codewrapper sourceCode" id="cb29">
+<div class="codewrapper sourceCode" id="cb31">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -791,7 +866,7 @@ Silhouette plot for each point according to cluster.
 </figcaption></figure><p>Let’s plot the silhouette score on the original dimensions used to
 cluster the data. Here, we’re mapping cluster membership to point shape,
 and silhouette width to colour.</p>
-<div class="codewrapper sourceCode" id="cb30">
+<div class="codewrapper sourceCode" id="cb32">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -806,7 +881,7 @@ and silhouette width to colour.</p>
 </h3>
 <pre class="output" tabindex="0"><code>[1] 0.7065662</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb32">
+<div class="codewrapper sourceCode" id="cb34">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -841,70 +916,45 @@ earlier. Are 5 clusters appropriate? Why/why not?</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb33">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sil5</span> <span class="op">&lt;-</span> <span class="fu">silhouette</span><span class="op">(</span><span class="va">cluster5</span><span class="op">$</span><span class="va">cluster</span>, dist <span class="op">=</span> <span class="va">dist_mat</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error: object 'cluster5' not found</code></pre>
-</div>
 <div class="codewrapper sourceCode" id="cb35">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">scrnaseq</span><span class="op">$</span><span class="va">kmeans5</span> <span class="op">&lt;-</span> <span class="fu">as.character</span><span class="op">(</span><span class="va">cluster5</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">sil5</span> <span class="op">&lt;-</span> <span class="fu">silhouette</span><span class="op">(</span><span class="va">cluster5</span><span class="op">$</span><span class="va">cluster</span>, dist <span class="op">=</span> <span class="va">dist_mat</span><span class="op">)</span></span>
+<span><span class="va">scrnaseq</span><span class="op">$</span><span class="va">kmeans5</span> <span class="op">&lt;-</span> <span class="fu">as.character</span><span class="op">(</span><span class="va">cluster5</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span>
+<span><span class="fu">plotReducedDim</span><span class="op">(</span><span class="va">scrnaseq</span>, <span class="st">"PCA"</span>, colour_by <span class="op">=</span> <span class="st">"kmeans5"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error: object 'cluster5' not found</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb37">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotReducedDim</span><span class="op">(</span><span class="va">scrnaseq</span>, <span class="st">"PCA"</span>, colour_by <span class="op">=</span> <span class="st">"kmeans5"</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in retrieveCellInfo(se, colour_by, assay.type = by.assay.type, swap_rownames = swap_rownames): cannot find 'kmeans5'</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb39">
+<figure style="text-align: center"><img src="fig/06-k-means-rendered-silhouette-ex-1.png" alt="A scatter plot of principal component 1 versus principal component 2 of the scrnaseq data. Each point is one of five colours, representing cluster membership. Points of the same colour appear in the same areas of the plot, showing five distinct clusters in the data." class="figure mx-auto d-block"><figcaption>
+Scatter plot of principal component 2 against principal component 1 in
+the scRNAseq data, coloured by clusters produced by k-means clustering.
+</figcaption></figure><div class="codewrapper sourceCode" id="cb36">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">mean</span><span class="op">(</span><span class="va">sil5</span><span class="op">[</span>, <span class="st">"sil_width"</span><span class="op">]</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="error" tabindex="0"><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mean': object 'sil5' not found</code></pre>
+<pre class="output" tabindex="0"><code>[1] 0.5849979</code></pre>
 </div>
 <p>The average silhouette width is lower when k=5.</p>
-<div class="codewrapper sourceCode" id="cb41">
+<div class="codewrapper sourceCode" id="cb38">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">plot</span><span class="op">(</span><span class="va">sil5</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'sil5' not found</code></pre>
-</div>
-<p>This seems to be because some observations in clusters 3 and 5 seem
+<figure style="text-align: center"><img src="fig/06-k-means-rendered-unnamed-chunk-2-1.png" alt="Plot with horizontal axis silhoutte width. The plot shows the silhouette width for each point in the data set according to cluster. Cluster 4 contains almost half of the points in the data set and largely consists of points with a large silhouette list, leading to a bar that extends to the right side of the graph. The other clusters contain many fewer points and have similar silhouette widths. The bars for cluster 5 are much smaller, with a small number extending to the left of the origin, indicating negative silhouette widths." class="figure mx-auto d-block"><figcaption>
+Silhouette plot for each point according to cluster.
+</figcaption></figure><p>This seems to be because some observations in clusters 3 and 5 seem
 to be more similar to other clusters than the one they have been
 assigned to. This may indicate that k is too high.</p>
 </div>
@@ -926,7 +976,7 @@ distributing cells within the range of the original data. Larger values
 represent lower squared distances within clusters, and thus better
 clustering. We can see how this is calculated in the following
 example.</p>
-<div class="codewrapper sourceCode" id="cb43">
+<div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -952,14 +1002,14 @@ new clusters for this data set and compare these to those on the
 original data set, thus helping us to see how the clusters may change
 for small changes in the data. This is maybe easier to see with an
 example. First, we define some data:</p>
-<div class="codewrapper sourceCode" id="cb44">
+<div class="codewrapper sourceCode" id="cb40">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span></span></code></pre>
 </div>
 <p>Then, we can take a sample from this data without replacement:</p>
-<div class="codewrapper sourceCode" id="cb45">
+<div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -968,12 +1018,12 @@ example. First, we define some data:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>[1] 4 2 5 1 3</code></pre>
+<pre class="output" tabindex="0"><code>[1] 4 1 3 5 2</code></pre>
 </div>
 <p>This sample is a subset of the original data, and points are only
 present once. This is the case every time even if we do it many
 times:</p>
-<div class="codewrapper sourceCode" id="cb47">
+<div class="codewrapper sourceCode" id="cb43">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -984,15 +1034,15 @@ times:</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-[1,]    4    2    1    5    3    3    4    4    3     2
-[2,]    1    5    3    4    2    5    5    1    4     5
-[3,]    5    3    5    2    1    2    2    2    5     4
-[4,]    2    1    4    3    4    4    3    3    1     3
-[5,]    3    4    2    1    5    1    1    5    2     1</code></pre>
+[1,]    5    2    5    2    3    1    3    5    5     3
+[2,]    4    5    4    5    4    4    1    3    1     2
+[3,]    2    1    1    3    2    5    2    2    3     4
+[4,]    1    4    2    1    5    3    5    1    2     5
+[5,]    3    3    3    4    1    2    4    4    4     1</code></pre>
 </div>
 <p>However, if we sample <em>with replacement</em>, then sometimes
 individual data points are present more than once.</p>
-<div class="codewrapper sourceCode" id="cb49">
+<div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1002,11 +1052,11 @@ individual data points are present more than once.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-[1,]    4    2    5    4    5    2    4    3    5     5
-[2,]    3    5    2    1    4    1    1    5    1     3
-[3,]    5    1    1    3    5    2    4    5    4     1
-[4,]    2    1    5    3    4    5    2    3    1     2
-[5,]    2    4    4    5    2    5    2    4    1     5</code></pre>
+[1,]    3    1    2    2    1    3    3    2    4     2
+[2,]    1    3    2    4    2    5    2    1    2     5
+[3,]    5    5    4    4    2    2    1    1    1     3
+[4,]    1    1    4    2    1    4    4    5    5     4
+[5,]    3    1    2    1    4    2    5    3    3     2</code></pre>
 </div>
 </section><section><h2 class="section-heading" id="bootstrapping">Bootstrapping<a class="anchor" aria-label="anchor" href="#bootstrapping"></a></h2>
 <hr class="half-width"><p>Bootstrapping is a powerful and common statistical technique.</p>
@@ -1016,7 +1066,7 @@ hypothesis.</p>
 <p>For example, we might want to understand the uncertainty around an
 estimate of the mean of our data. To do this, we could resample the data
 with replacement and calculate the mean of each average.</p>
-<div class="codewrapper sourceCode" id="cb51">
+<div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1044,7 +1094,7 @@ diagonal mean that the clusters are consistently reproduced in each
 boostrap replicate. Similarly, the off-diagonal elements represent how
 often observations swap between clusters in bootstrap replicates. High
 scores indicate that observations rarely swap between clusters.</p>
-<div class="codewrapper sourceCode" id="cb52">
+<div class="codewrapper sourceCode" id="cb48">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1057,7 +1107,7 @@ scores indicate that observations rarely swap between clusters.</p>
 </h3>
 <pre class="output" tabindex="0"><code>Loading required package: viridisLite</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb54">
+<div class="codewrapper sourceCode" id="cb50">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1089,14 +1139,14 @@ better or worse? Can you identify where the differences occur on the
 </div>
 </div>
 </div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
+  <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb55">
+<div class="codewrapper sourceCode" id="cb51">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1104,29 +1154,17 @@ better or worse? Can you identify where the differences occur on the
 <span>    <span class="fu">kmeans</span><span class="op">(</span><span class="va">x</span>, centers <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">cluster</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">set.seed</span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
-<span><span class="va">ratios5</span> <span class="op">&lt;-</span> <span class="fu">bootstrapStability</span><span class="op">(</span><span class="va">pcs</span>, FUN <span class="op">=</span> <span class="va">km_fun5</span>, clusters <span class="op">=</span> <span class="va">cluster5</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error: object 'cluster5' not found</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb57">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pheatmap</span><span class="op">(</span><span class="va">ratios5</span>,</span>
+<span><span class="va">ratios5</span> <span class="op">&lt;-</span> <span class="fu">bootstrapStability</span><span class="op">(</span><span class="va">pcs</span>, FUN <span class="op">=</span> <span class="va">km_fun5</span>, clusters <span class="op">=</span> <span class="va">cluster5</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span>
+<span><span class="fu">pheatmap</span><span class="op">(</span><span class="va">ratios5</span>,</span>
 <span>    cluster_rows <span class="op">=</span> <span class="cn">FALSE</span>, cluster_cols <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    col <span class="op">=</span> <span class="fu">viridis</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,</span>
 <span>    breaks <span class="op">=</span> <span class="fu">seq</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error: object 'ratios5' not found</code></pre>
-</div>
-<p>When k=5, we can see that the values on the diagonal of the matrix
+<figure style="text-align: center"><img src="fig/06-k-means-rendered-bs-ex-1.png" alt="Grid of 25 squares labelled 1-5 on each of the x and y axes. The diagonal and off-diagonal squares of the grid are coloured in green, indicating the highest scoring value of 1 according to the legend, with the exception of the square corresponding to (4, 5), which is slightly darker green indicating a lower value. The lower triangular squares are coloured in grey, indicating NA values since these would be the same as the upper triangular squares." class="figure mx-auto d-block"><figcaption>
+Grid of empirical cluster swapping behaviour estimated by the bootstrap
+samples.
+</figcaption></figure><p>When k=5, we can see that the values on the diagonal of the matrix
 are smaller, indicating that the clusters aren’t exactly reproducible in
 the bootstrap samples.</p>
 <p>Similarly, the off-diagonal elements are considerably lower for some
