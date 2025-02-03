@@ -25,15 +25,14 @@ All learners should then run the following code to download the data and install
 used in this lesson:
 
 ```r
-install.packages("BiocManager")
+install.packages("renv")
 download.file(
-    "https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/gh-pages/dependencies.csv",
-    destfile = 'dependencies.csv'
+    "https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/refs/heads/transition-workbench/renv.lock",
+    destfile = 'renv.lock'
 )
-table <- read.table('dependencies.csv')
-BiocManager::install(table[[1]])
+renv::restore()
 
-dir.create("data", showWarnings = FALSE)
+dir.create("episodes/data", recursive=TRUE, showWarnings = FALSE)
 data_files <- c(
     "cancer_expression.rds",
     "coefHorvath.rds",
@@ -45,14 +44,10 @@ data_files <- c(
 for (file in data_files) {
     download.file(
         url = file.path(
-            "https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/gh-pages/data",
+            "https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/main/episodes/data",
             file
         ),
-        destfile = file.path("data", file)
+        destfile = file.path("episodes/data", file)
     )
 }
 ```
-
-
-
-
