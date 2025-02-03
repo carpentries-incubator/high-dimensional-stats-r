@@ -32,7 +32,7 @@ download.file(
 )
 renv::restore()
 
-dir.create("episodes/data", recursive=TRUE, showWarnings = FALSE)
+dir.create("data", recursive=TRUE, showWarnings = FALSE)
 data_files <- c(
     "cancer_expression.rds",
     "coefHorvath.rds",
@@ -47,7 +47,7 @@ for (file in data_files) {
             "https://raw.githubusercontent.com/carpentries-incubator/high-dimensional-stats-r/main/episodes/data",
             file
         ),
-        destfile = file.path("episodes/data", file)
+        destfile = file.path("data", file)
     )
 }
 ```
