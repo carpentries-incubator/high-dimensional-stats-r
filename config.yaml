@@ -74,10 +74,13 @@ episodes:
 - 07-hierarchical.Rmd
 
 # Information for Learners
-learners: learners/setup.md
+learners:
+- setup.md
 
 # Information for Instructors
-instructors: instructors/instructor-notes.md
+instructors: 
+- instructor-notes.md
+- data.md
 
 # Learner Profiles
 profiles: 
