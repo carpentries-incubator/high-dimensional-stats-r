@@ -13,6 +13,6 @@
 "episodes/07-hierarchical.Rmd" "18ad27bfde105ac4cbbc918175c3b84c" "site/built/07-hierarchical.md" "2025-02-03"
 "instructors/instructor-notes.md" "8a2eb04f22ab9e0595056f8422d6b65d" "site/built/instructor-notes.md" "2025-02-03"
 "instructors/data.md" "0eb729a978e9e027f80d08eba35d7259" "site/built/data.md" "2025-02-03"
-"learners/setup.md" "52317326ac03899c56e800ef639ad534" "site/built/setup.md" "2025-02-03"
+"learners/setup.md" "aa9c2d40d3183a2d915df2c6b1fb46af" "site/built/setup.md" "2025-02-03"
 "profiles/learner-profiles.md" "60b93493cf1da06dfd63255d73854461" "site/built/learner-profiles.md" "2025-02-03"
 "renv/profiles/lesson-requirements/renv.lock" "a1c2f225aed78863687da97c2cf728f0" "site/built/renv.lock" "2025-02-03"

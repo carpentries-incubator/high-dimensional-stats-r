@@ -61,7 +61,13 @@
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/_slides/10-mixture-models.html</loc>
   </url>
   <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/aio.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/data.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/images.html</loc>
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/index.html</loc>
@@ -97,16 +103,34 @@
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/aio.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/data.html</loc>
   </url>
   <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/images.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/index.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/key-points.html</loc>
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/profiles.html</loc>
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/reviews.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/key-points.html</loc>
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/profiles.html</loc>
