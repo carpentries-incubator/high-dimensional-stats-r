@@ -28,6 +28,18 @@ Look for the tag
 This indicates that the maintainers will welcome a pull request fixing this
 issue.
 
+### Building locally
+
+When developing the lesson content, it is helpful to preview the contents locally before contributing.
+To build the lesson from source, follow the instructions on the [Carpentries Workbench docs](https://carpentries.github.io/sandpaper-docs/).
+Briefly, you should install git >= 2.28, R >= 4, pandoc >= 3, then install the Carpentries workbench R packages and run `sandpaper::serve()`
+
+```r
+install.packages(c("sandpaper", "varnish", "pegboard"),
+  repos = c("https://carpentries.r-universe.dev/", getOption("repos")))
+sandpaper::serve()
+```
+
 ## Reviews
 
 The lesson has been iteratively developed and improved. For information on the development process, reviews and feedback from instructors following teaching see [REVIEWS](reviews.md).
