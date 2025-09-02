@@ -41,6 +41,7 @@ methylated DNA. Along with this, we have a number of sample phenotypes
 Let's read in the data for this episode:
 
 ```{r loadmethy}
+library("SummarizedExperiment")
 methylation <- readRDS("data/methylation.rds")
 ```
 
