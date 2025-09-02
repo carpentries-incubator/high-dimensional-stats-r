@@ -214,7 +214,7 @@ methyl_matcg00075967      -108.216        NaN     NaN      NaN
 methyl_matcg00374717      -139.637        NaN     NaN      NaN
 methyl_matcg00864867        33.102        NaN     NaN      NaN
 methyl_matcg00945507        72.250        NaN     NaN      NaN
- [ reached getOption("max.print") -- omitted 4996 rows ]
+ [ reached 'max' / getOption("max.print") -- omitted 4996 rows ]
 
 Residual standard error: NaN on 0 degrees of freedom
 Multiple R-squared:      1,	Adjusted R-squared:    NaN 
@@ -655,7 +655,7 @@ The following object is masked from 'package:S4Vectors':
 ```
 
 ``` output
-Loaded glmnet 4.1-8
+Loaded glmnet 4.1-10
 ```
 
 ``` r
@@ -1152,17 +1152,17 @@ fit <- cv.glmnet(x = methyl_mat, nfolds = 5, y = smoking, family = "binomial")
 ```
 
 ``` warning
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
 ```
 

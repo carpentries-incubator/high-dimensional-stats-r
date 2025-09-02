@@ -42,36 +42,7 @@ Let's read in the data for this episode:
 
 
 ``` r
-methylation <- readRDS("data/methylation.rds")
-```
-
-Note: if you want to view the code used to download these data, the code is available in this repository in the [`methylation.R` script](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/episodes/data/methylation.R)
-
-`methylation` is actually a special Bioconductor `SummarizedExperiment`
-object that summarises lots of different information about the data.
-These objects are very useful for storing all of the information
-about a dataset in a high-throughput context. The structure of `SummarizedExperiment`
-objects is described in the [vignettes on
-Bioconductor](https://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
-Here, we show how to extract the information for analysis.
-
-We can extract
-
-- the dimensions of the dataset using `dim()`. Importantly, in these objects and
-  data structures for computational biology in R generally, observations are stored as
-  columns and features (in this case, sites in the genome) are stored as rows.
-  This is in contrast to usual tabular data, where features or variables
-  are stored as columns and observations are stored as rows;
-- assays, (normalised methylation levels here), using `assay()`;
-- sample-level information using `colData()`.
-
-
-``` r
-dim(methylation)
-```
-
-``` output
-Loading required package: SummarizedExperiment
+library("SummarizedExperiment")
 ```
 
 ``` output
@@ -204,8 +175,37 @@ Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
+``` r
+methylation <- readRDS("data/methylation.rds")
+```
+
+Note: if you want to view the code used to download these data, the code is available in this repository in the [`methylation.R` script](https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/episodes/data/methylation.R)
+
+`methylation` is actually a special Bioconductor `SummarizedExperiment`
+object that summarises lots of different information about the data.
+These objects are very useful for storing all of the information
+about a dataset in a high-throughput context. The structure of `SummarizedExperiment`
+objects is described in the [vignettes on
+Bioconductor](https://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
+Here, we show how to extract the information for analysis.
+
+We can extract
+
+- the dimensions of the dataset using `dim()`. Importantly, in these objects and
+  data structures for computational biology in R generally, observations are stored as
+  columns and features (in this case, sites in the genome) are stored as rows.
+  This is in contrast to usual tabular data, where features or variables
+  are stored as columns and observations are stored as rows;
+- assays, (normalised methylation levels here), using `assay()`;
+- sample-level information using `colData()`.
+
+
+``` r
+dim(methylation)
+```
+
 ``` output
-NULL
+[1] 5000   37
 ```
 
 You can see in this output that this object has a `dim()` of

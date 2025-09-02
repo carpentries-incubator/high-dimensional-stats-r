@@ -371,7 +371,7 @@ library("dendextend")
 ``` output
 
 ---------------------
-Welcome to dendextend version 1.19.0
+Welcome to dendextend version 1.19.1
 Type citation('dendextend') for how to cite the package.
 
 Type browseVignettes(package = 'dendextend') for the package vignette.
@@ -400,6 +400,10 @@ The following object is masked from 'package:stats':
 avg_dend_obj <- as.dendrogram(clust)      
 ## colour branches of dendrogram depending on clusters
 plot(color_branches(avg_dend_obj, h = 50))
+```
+
+``` output
+Loading required namespace: colorspace
 ```
 
 <div class="figure" style="text-align: center">
