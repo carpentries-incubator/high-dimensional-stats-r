@@ -20,7 +20,7 @@
       <div class="large-logo">
         <img id="incubator-logo" alt="Lesson Description" src="assets/images/incubator-logo.svg"><span class="badge text-bg-info">
           <abbr title="This lesson is in the beta phase, which means that it is ready for teaching by instructors outside of the original author team.">
-            <a href="https://cdh.carpentries.org/the-lesson-life-cycle.html#polishing-beta-stage" class="external-link alert-link">
+            <a href="https://docs.carpentries.org/resources/curriculum/lesson-life-cycle.html" class="external-link alert-link">
               <i aria-hidden="true" class="icon" data-feather="alert-circle" style="border-radius: 5px"></i>
               Beta
             </a>
@@ -343,7 +343,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Regression with many outcomes</h1>
-        <p>Last updated on 2025-04-15 |
+        <p>Last updated on 2025-09-02 |
 
         <a href="https://github.com/carpentries-incubator/high-dimensional-stats-r/edit/main/episodes/02-high-dimensional-regression.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -397,39 +397,7 @@ have a number of sample phenotypes (eg, age in years, BMI).</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">methylation</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="st">"data/methylation.rds"</span><span class="op">)</span></span></code></pre>
-</div>
-<p>Note: if you want to view the code used to download these data, the
-code is available in this repository in the <a href="https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/episodes/data/methylation.R" class="external-link"><code>methylation.R</code>
-script</a></p>
-<p><code>methylation</code> is actually a special Bioconductor
-<code>SummarizedExperiment</code> object that summarises lots of
-different information about the data. These objects are very useful for
-storing all of the information about a dataset in a high-throughput
-context. The structure of <code>SummarizedExperiment</code> objects is
-described in the <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html" class="external-link">vignettes
-on Bioconductor</a>. Here, we show how to extract the information for
-analysis.</p>
-<p>We can extract</p>
-<ul><li>the dimensions of the dataset using <code>dim()</code>. Importantly,
-in these objects and data structures for computational biology in R
-generally, observations are stored as columns and features (in this
-case, sites in the genome) are stored as rows. This is in contrast to
-usual tabular data, where features or variables are stored as columns
-and observations are stored as rows;</li>
-<li>assays, (normalised methylation levels here), using
-<code>assay()</code>;</li>
-<li>sample-level information using <code>colData()</code>.</li>
-</ul><div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">dim</span><span class="op">(</span><span class="va">methylation</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>Loading required package: SummarizedExperiment</code></pre>
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="st">"SummarizedExperiment"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -583,10 +551,43 @@ Attaching package: 'Biobase'</code></pre>
 <pre class="warning" tabindex="0"><code>Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</code></pre>
 </div>
+<div class="codewrapper sourceCode" id="cb24">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">methylation</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="st">"data/methylation.rds"</span><span class="op">)</span></span></code></pre>
+</div>
+<p>Note: if you want to view the code used to download these data, the
+code is available in this repository in the <a href="https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/main/episodes/data/methylation.R" class="external-link"><code>methylation.R</code>
+script</a></p>
+<p><code>methylation</code> is actually a special Bioconductor
+<code>SummarizedExperiment</code> object that summarises lots of
+different information about the data. These objects are very useful for
+storing all of the information about a dataset in a high-throughput
+context. The structure of <code>SummarizedExperiment</code> objects is
+described in the <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html" class="external-link">vignettes
+on Bioconductor</a>. Here, we show how to extract the information for
+analysis.</p>
+<p>We can extract</p>
+<ul><li>the dimensions of the dataset using <code>dim()</code>. Importantly,
+in these objects and data structures for computational biology in R
+generally, observations are stored as columns and features (in this
+case, sites in the genome) are stored as rows. This is in contrast to
+usual tabular data, where features or variables are stored as columns
+and observations are stored as rows;</li>
+<li>assays, (normalised methylation levels here), using
+<code>assay()</code>;</li>
+<li>sample-level information using <code>colData()</code>.</li>
+</ul><div class="codewrapper sourceCode" id="cb25">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">dim</span><span class="op">(</span><span class="va">methylation</span><span class="op">)</span></span></code></pre>
+</div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code><span><span class="cn">NULL</span></span></code></pre>
+<pre class="output" tabindex="0"><code>[1] 5000   37</code></pre>
 </div>
 <p>You can see in this output that this object has a <code>dim()</code>
 of <span class="math inline">\(5000 \\times 37\)</span>, meaning it has
@@ -763,6 +764,7 @@ available in the methylation dataset:</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-1" class="callout-inner">
 <h3 class="callout-title">Challenge 1</h3>
 <div class="callout-content">
@@ -811,6 +813,7 @@ whilst the next episode will focus on the second.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="measuring-dna-methylation" class="callout-inner">
 <h3 class="callout-title">Measuring DNA Methylation</h3>
 <div class="callout-content">
@@ -1053,6 +1056,7 @@ small uncertainty may lead to a small p-value.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="calculating-p-values-from-a-linear-model" class="callout-inner">
 <h3 class="callout-title">Calculating p-values from a linear model</h3>
 <div class="callout-content">
@@ -1095,6 +1099,7 @@ the shaded area by 2 in order to calculate the p-value.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-2" class="callout-inner">
 <h3 class="callout-title">Challenge 2</h3>
 <div class="callout-content">
@@ -1213,6 +1218,7 @@ different modelling libraries.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="what-is-a-model-matrix" class="callout-inner">
 <h3 class="callout-title">What is a model matrix?</h3>
 <div class="callout-content">
@@ -1383,6 +1389,7 @@ made more difficult by the number of tests we perform.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-3" class="callout-inner">
 <h3 class="callout-title">Challenge 3</h3>
 <div class="callout-content">
@@ -1458,6 +1465,7 @@ fitting a model to each feature separately.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-4" class="callout-inner">
 <h3 class="callout-title">Challenge 4</h3>
 <div class="callout-content">
@@ -1507,6 +1515,7 @@ more conservative in our expectations.</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="shrinkage" class="callout-inner">
 <h3 class="callout-title">Shrinkage</h3>
 <div class="callout-content">
@@ -1591,6 +1600,7 @@ simply due to chance.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-5" class="callout-inner">
 <h3 class="callout-title">Challenge 5</h3>
 <div class="callout-content">
@@ -1714,6 +1724,7 @@ positive</td>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-6" class="callout-inner">
 <h3 class="callout-title">Challenge 6</h3>
 <div class="callout-content">
@@ -1775,6 +1786,7 @@ Benjamini-Hochberg correction is less conservative than Bonferroni
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="feature-selection" class="callout-inner">
 <h3 class="callout-title">Feature selection</h3>
 <div class="callout-content">
@@ -1808,8 +1820,8 @@ inclusion of random effects.</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul><li>Performing linear regression in a high-dimensional setting requires
 us to perform hypothesis testing in a way that low-dimensional
@@ -1875,7 +1887,7 @@ never smaller than the original p-value.<a href="#fnref4" class="footnote-back">
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.11" class="external-link">sandpaper (0.16.11)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.5" class="external-link">varnish (1.0.5)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.17.1" class="external-link">sandpaper (0.17.1)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.7" class="external-link">varnish (1.0.7)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1886,19 +1898,19 @@ never smaller than the original p-value.<a href="#fnref4" class="footnote-back">
   <script type="application/ld+json">
     {
   "@context": "https://schema.org",
-  "@type": "TrainingMaterial",
+  "@type": "LearningResource",
   "@id": "https://carpentries-incubator.github.io/high-dimensional-stats-r/02-high-dimensional-regression.html",
   "inLanguage": "en",
-  "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
+  "dct:conformsTo": "https://bioschemas.org/profiles/LearningResource/1.0-RELEASE",
   "description": "A Carpentries Lesson teaching foundational data and coding skills to researchers worldwide",
   "keywords": "software, data, lesson, The Carpentries",
   "name": "Regression with many outcomes",
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/high-dimensional-stats-r/02-high-dimensional-regression.html",
   "identifier": "https://carpentries-incubator.github.io/high-dimensional-stats-r/02-high-dimensional-regression.html",
-  "dateCreated": "2025-04-07",
-  "dateModified": "2025-04-15",
-  "datePublished": "2025-04-15"
+  "dateCreated": "2025-09-02",
+  "dateModified": "2025-09-02",
+  "datePublished": "2025-09-02"
 }
 
   </script><script>

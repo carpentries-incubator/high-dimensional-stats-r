@@ -20,7 +20,7 @@
       <div class="large-logo">
         <img id="incubator-logo" alt="Lesson Description" src="../assets/images/incubator-logo.svg"><span class="badge text-bg-info">
           <abbr title="This lesson is in the beta phase, which means that it is ready for teaching by instructors outside of the original author team.">
-            <a href="https://cdh.carpentries.org/the-lesson-life-cycle.html#polishing-beta-stage" class="external-link alert-link">
+            <a href="https://docs.carpentries.org/resources/curriculum/lesson-life-cycle.html" class="external-link alert-link">
               <i aria-hidden="true" class="icon" data-feather="alert-circle" style="border-radius: 5px"></i>
               Beta
             </a>
@@ -342,7 +342,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Regularised regression</h1>
-        <p>Last updated on 2025-04-15 |
+        <p>Last updated on 2025-09-02 |
 
         <a href="https://github.com/carpentries-incubator/high-dimensional-stats-r/edit/main/episodes/03-regression-regularisation.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -598,7 +598,7 @@ methyl_matcg00075967      -108.216        NaN     NaN      NaN
 methyl_matcg00374717      -139.637        NaN     NaN      NaN
 methyl_matcg00864867        33.102        NaN     NaN      NaN
 methyl_matcg00945507        72.250        NaN     NaN      NaN
- [ reached getOption("max.print") -- omitted 4996 rows ]
+ [ reached 'max' / getOption("max.print") -- omitted 4996 rows ]
 
 Residual standard error: NaN on 0 degrees of freedom
 Multiple R-squared:      1,	Adjusted R-squared:    NaN
@@ -618,6 +618,7 @@ features than observations.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="singularities" class="callout-inner">
 <h3 class="callout-title">Singularities</h3>
 <div class="callout-content">
@@ -658,8 +659,10 @@ often when the features are highly correlated.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="correlated-features-common-in-high-dimensional-data" class="callout-inner">
-<h3 class="callout-title">Correlated features – common in high-dimensional data</h3>
+<h3 class="callout-title">Correlated features – common in
+high-dimensional data</h3>
 <div class="callout-content">
 <p>In high-dimensional datasets, there are often multiple features that
 contain redundant information (correlated features). If we visualise the
@@ -695,6 +698,7 @@ DNA methylation data
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-1" class="callout-inner">
 <h3 class="callout-title">Challenge 1</h3>
 <div class="callout-content">
@@ -713,7 +717,7 @@ to include in a model one at a time?</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Many of the features in biological data represent very similar
 information biologically. For example, sets of genes that form complexes
@@ -783,6 +787,7 @@ effect sizes.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-2" class="callout-inner">
 <h3 class="callout-title">Challenge 2</h3>
 <div class="callout-content">
@@ -798,7 +803,7 @@ about our data when we do so?</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>When we fit a linear model we are minimising the squared error. In
 fact, the standard linear model estimator is often known as “ordinary
@@ -934,6 +939,7 @@ by about a year!</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-3" class="callout-inner">
 <h3 class="callout-title">Challenge 3</h3>
 <div class="callout-content">
@@ -947,7 +953,7 @@ test set.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>First, let’s find the predicted values for the ‘unseen’ test
 data:</p>
@@ -1081,7 +1087,7 @@ Attaching package: 'Matrix'</code></pre>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>Loaded glmnet 4.1-8</code></pre>
+<pre class="output" tabindex="0"><code>Loaded glmnet 4.1-10</code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1174,6 +1180,7 @@ error.
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-4" class="callout-inner">
 <h3 class="callout-title">Challenge 4</h3>
 <div class="callout-content">
@@ -1189,7 +1196,7 @@ better?</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Ridge regression performs significantly better on unseen data,
 despite being “worse” on the training data.</li>
@@ -1264,6 +1271,7 @@ inferred under a linear model framework, with (blue line) and without
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-5" class="callout-inner">
 <h3 class="callout-title">Challenge 5</h3>
 <div class="callout-content">
@@ -1281,7 +1289,7 @@ relationship between the two plots?</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Fitting a LASSO model is very similar to a ridge model, we just need
 to change the <code>alpha</code> setting.</li>
@@ -1416,6 +1424,7 @@ across different values of alpha
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-6" class="callout-inner">
 <h3 class="callout-title">Challenge 6</h3>
 <div class="callout-content">
@@ -1436,7 +1445,7 @@ coefficients with the LASSO model.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Fitting an elastic net model is just like fitting a LASSO model. You
 can see that coefficients tend to go exactly to zero, but the paths are
@@ -1531,6 +1540,7 @@ computationally demanding.</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="the-bias-variance-tradeoff" class="callout-inner">
 <h3 class="callout-title">The bias-variance tradeoff</h3>
 <div class="callout-content">
@@ -1573,6 +1583,7 @@ net regression over pure LASSO regression.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="other-types-of-outcomes" class="callout-inner">
 <h3 class="callout-title">Other types of outcomes</h3>
 <div class="callout-content">
@@ -1615,17 +1626,17 @@ documentation</a> explains this in more detail.</p>
 <div class="codewrapper">
 <h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="warning" tabindex="0"><code>Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+<pre class="warning" tabindex="0"><code>Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground
-Warning in lognet(xd, is.sparse, ix, jx, y, weights, offset, alpha, nobs, : one
+Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground</code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb77">
@@ -1663,6 +1674,7 @@ outcomes (i.e. penalised logistic regression).</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="tidymodels" class="callout-inner">
 <h3 class="callout-title">tidymodels</h3>
 <div class="callout-content">
@@ -1761,8 +1773,8 @@ vignette</a>.</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul><li>Regularisation is a way to fit a model, get better estimates of
 effect sizes, and perform variable selection simultaneously.</li>
@@ -1822,7 +1834,7 @@ Predictor of Age, Bocklandt et al. (2011)</a><a href="#fnref2" class="footnote-
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.11" class="external-link">sandpaper (0.16.11)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.5" class="external-link">varnish (1.0.5)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.17.1" class="external-link">sandpaper (0.17.1)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.7" class="external-link">varnish (1.0.7)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1833,19 +1845,19 @@ Predictor of Age, Bocklandt et al. (2011)</a><a href="#fnref2" class="footnote-
   <script type="application/ld+json">
     {
   "@context": "https://schema.org",
-  "@type": "TrainingMaterial",
+  "@type": "LearningResource",
   "@id": "https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/03-regression-regularisation.html",
   "inLanguage": "en",
-  "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
+  "dct:conformsTo": "https://bioschemas.org/profiles/LearningResource/1.0-RELEASE",
   "description": "A Carpentries Lesson teaching foundational data and coding skills to researchers worldwide",
   "keywords": "software, data, lesson, The Carpentries",
   "name": "Regularised regression",
   "creativeWorkStatus": "active",
   "url": "https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/03-regression-regularisation.html",
   "identifier": "https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/03-regression-regularisation.html",
-  "dateCreated": "2025-04-07",
-  "dateModified": "2025-04-15",
-  "datePublished": "2025-04-15"
+  "dateCreated": "2025-09-02",
+  "dateModified": "2025-09-02",
+  "datePublished": "2025-09-02"
 }
 
   </script><script>
