@@ -54,7 +54,7 @@ Current maintainers of this lesson are
 
 ## Authors
 
-A list of contributors to the lesson can be found in <AUTHORS>
+A list of contributors to the lesson can be found in AUTHORS
 
 ## Citation
 
