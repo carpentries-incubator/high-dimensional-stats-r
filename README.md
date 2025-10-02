@@ -58,7 +58,7 @@ A list of contributors to the lesson can be found in AUTHORS
 
 ## Citation
 
-To cite this lesson, please consult with <CITATION>
+To cite this lesson, please consult with CITATION
 
 [lesson-example]: https://carpentries.github.io/lesson-example
 
