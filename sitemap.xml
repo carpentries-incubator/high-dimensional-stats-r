@@ -73,6 +73,9 @@
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/index.html</loc>
   </url>
   <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/info.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/01-introduction-to-high-dimensional-data.html</loc>
   </url>
   <url>
@@ -115,10 +118,16 @@
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/index.html</loc>
   </url>
   <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/info.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/instructor-notes.html</loc>
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/paper.html</loc>
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/profiles.html</loc>
@@ -131,6 +140,9 @@
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/paper.html</loc>
   </url>
   <url>
     <loc>https://carpentries-incubator.github.io/high-dimensional-stats-r/profiles.html</loc>
