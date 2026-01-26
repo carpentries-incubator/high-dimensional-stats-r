@@ -84,12 +84,28 @@ episode. Each episode is self-contained to allow for individual learners and lea
 the episodes for review or practice outside of the sessions.
 
 # Teaching experience
-The lesson has been taught [four?] times by [?PhD students, postdocs, lecturers and professors] to [who?]. 
-The lesson has been taught by the core team that created the lesson [X?] times and instructors independent of the
-lesson development [X] times. We are pleased that the lesson has received very positive feedback from learners on
+
+<!-- Remove this list later...
+1. Ailith, Alan https://edcarp.github.io/2021-10-26_ed-dash_high-dimensional-stats/
+2. Cata, Ailith https://edcarp.github.io/15-02-22_ed-dash_high-dim-stats/
+3. Ailith, Nathan https://edcarp.github.io/2022-05-17_ed-dash_high-dim-stats/
+4. Hugh https://edcarp.github.io/2022-07-26_ed-dash_high-dim-stats/
+5. EdWall https://edcarp.github.io/2022-09-27_ed-dash_high-dim-stats/
+6. Hannes https://edcarp.github.io/2023-01-17_ed-dash_high-dim-stats/
+7. Hywel https://edcarp.github.io/2024-02-27_ed-dash_high-dim-stats/
+8. Ben https://edcarp.github.io/2024-03-19_ed-dash_high-dim-stats/
+9. Rosie/Ben https://edcarp.github.io/2024-06-11_ed-dash_high-dim-stats/
+-->
+
+The lesson has been taught 9 times by a range of instructors consisting of PhD students, bioinformaticians,
+post-doctoral researchers, statisticians and group leaders. Learners have included postgraduate students,
+post-doctoral researchers, bioinformaticians and other computational researchers.
+The lesson has been taught by the core team that created the lesson 3 times and instructors independent of the
+lesson development 6 times. We are pleased that the lesson has received very positive feedback from learners on
 its practical utility. To improve the lesson, we constantly adapt the materials following instructor insights after
 each round of teaching. We also gather feedback from learners to improve the lesson based on learning experience. 
-Full information on the changes made following feedback from round of teaching can be found in [cite reviews once live]. 
+Full information on the changes made following feedback from round of teaching can be found in a file on the
+github repository: https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/4325823/reviews.md
 
 
 # Development
