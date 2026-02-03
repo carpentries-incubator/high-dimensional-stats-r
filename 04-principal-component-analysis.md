@@ -737,18 +737,6 @@ Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
-``` warning
-Warning: multiple methods tables found for 'seqinfo'
-```
-
-``` warning
-Warning: multiple methods tables found for 'seqinfo<-'
-```
-
-``` warning
-Warning: multiple methods tables found for 'seqnames'
-```
-
 ``` r
 cancer <- readRDS("data/cancer_expression.rds")
 mat <- assay(cancer)
@@ -919,7 +907,7 @@ pc$loadings[which.max(pc$loadings[, 1]), ]
                    PC86        PC87          PC88         PC89         PC90
 215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
                    PC91
-215281_x_at -0.00383085
+215281_x_at 0.009785973
 ```
 
 ``` r
@@ -971,8 +959,8 @@ pc$loadings[which.max(pc$loadings[, 2]), ]
 211122_s_at 0.004995447 -0.008404118 0.00442875 -0.001027912 0.006104406
                    PC82        PC83         PC84       PC85       PC86
 211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
-                    PC87        PC88        PC89        PC90        PC91
-211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.004593411
+                    PC87        PC88        PC89        PC90       PC91
+211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.01124148
 ```
 
 The function `pca()` is used to perform PCA, and uses as input a matrix
@@ -1164,7 +1152,7 @@ not all labels will be shown.
 ```
 
 ``` warning
-Warning: ggrepel: 26 unlabeled data points (too many overlaps). Consider
+Warning: ggrepel: 23 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps
 ```
 
