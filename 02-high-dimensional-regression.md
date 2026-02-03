@@ -288,7 +288,8 @@ Warning in max(x): no non-missing arguments to max; returning -Inf
 ```
 
 ``` error
-Error in seq.int(rx[1L], rx[2L], length.out = nb): 'from' must be a finite number
+Error in `seq.int()`:
+! 'from' must be a finite number
 ```
 
 :::::::::::::::::::::::::::::::::::::::  challenge

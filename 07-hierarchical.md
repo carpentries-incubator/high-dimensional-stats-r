@@ -109,7 +109,8 @@ methyl_mat <- t(assay(methyl))
 ```
 
 ``` error
-Error in assay(methyl): could not find function "assay"
+Error in `assay()`:
+! could not find function "assay"
 ```
 
 Looking at a heatmap of these data, we may spot some patterns -- many columns
@@ -118,7 +119,8 @@ all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
 
 ``` error
-Error in pheatmap(methyl_mat, legend_title = "Methylation level", cluster_rows = FALSE, : could not find function "pheatmap"
+Error in `pheatmap()`:
+! could not find function "pheatmap"
 ```
 
 Looking at a heatmap of these data, we may spot some patterns -- looking at the
@@ -147,7 +149,8 @@ pheatmap(methyl_mat,
 ```
 
 ``` error
-Error in pheatmap(methyl_mat, legend_title = "Methylation level", cluster_rows = TRUE, : could not find function "pheatmap"
+Error in `pheatmap()`:
+! could not find function "pheatmap"
 ```
 
 We can see that clustering the features (CpG sites) results in an overall
@@ -330,7 +333,8 @@ distmat <- dist(methyl_mat)
 ```
 
 ``` error
-Error: object 'methyl_mat' not found
+Error:
+! object 'methyl_mat' not found
 ```
 
 ``` r
@@ -339,7 +343,8 @@ clust <- hclust(distmat)
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -473,7 +478,8 @@ example_cl <- mutate(data.frame(methyl_mat), cluster = four_cut)
 ```
 
 ``` error
-Error: object 'methyl_mat' not found
+Error:
+! object 'methyl_mat' not found
 ```
 
 ``` r
@@ -481,7 +487,8 @@ count(example_cl, cluster)
 ```
 
 ``` error
-Error: object 'example_cl' not found
+Error:
+! object 'example_cl' not found
 ```
 
 ``` r
@@ -491,7 +498,8 @@ ggplot(example_cl, aes(x = cg01644850, y = cg01656216, color = factor(cluster)))
 ```
 
 ``` error
-Error: object 'example_cl' not found
+Error:
+! object 'example_cl' not found
 ```
 
 Note that this cut produces 1 clusters (zero before the cut and another four
@@ -544,7 +552,8 @@ example_cl <- mutate(data.frame(methyl_mat), cluster = five_cut)
 ```
 
 ``` error
-Error: object 'methyl_mat' not found
+Error:
+! object 'methyl_mat' not found
 ```
 
 ``` r
@@ -552,7 +561,8 @@ count(example_cl, cluster)
 ```
 
 ``` error
-Error: object 'example_cl' not found
+Error:
+! object 'example_cl' not found
 ```
 
 
@@ -562,7 +572,8 @@ ggplot(example_cl, aes(x=cg01644850, y = cg01656216, color = factor(cluster))) +
 ```
 
 ``` error
-Error: object 'example_cl' not found
+Error:
+! object 'example_cl' not found
 ```
 
 Five clusters (`k = 5`) gives similar results to `h = 45`. You can plot a
@@ -774,7 +785,8 @@ pheatmap(as.matrix(cor_example))
 ```
 
 ``` error
-Error in pheatmap(as.matrix(cor_example)): could not find function "pheatmap"
+Error in `pheatmap()`:
+! could not find function "pheatmap"
 ```
 
 We can see that more clearly if we do a line plot:
@@ -858,7 +870,8 @@ pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 ```
 
 ``` error
-Error in pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation"): could not find function "pheatmap"
+Error in `pheatmap()`:
+! could not find function "pheatmap"
 ```
 
 ``` r
@@ -917,7 +930,8 @@ distmat <- dist(methyl_mat)
 ```
 
 ``` error
-Error: object 'methyl_mat' not found
+Error:
+! object 'methyl_mat' not found
 ```
 
 ``` r
@@ -925,7 +939,8 @@ clust <- hclust(distmat, method = "complete")
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -945,7 +960,8 @@ dunn(distance = distmat, cut)
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 The value of the Dunn index has no meaning in itself, but is used to compare
@@ -970,7 +986,8 @@ distmat <- dist(methyl_mat)
 ```
 
 ``` error
-Error: object 'methyl_mat' not found
+Error:
+! object 'methyl_mat' not found
 ```
 
 ``` r
@@ -978,7 +995,8 @@ clust <- hclust(distmat, method = "complete")
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -1008,7 +1026,8 @@ dunn(distance = distmat, cut_h_20)
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -1016,7 +1035,8 @@ dunn(distance = distmat, cut_h_30)
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -1046,7 +1066,8 @@ dunn(distance = distmat, cut_k_5)
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -1054,7 +1075,8 @@ dunn(distance = distmat, cut_k_10)
 ```
 
 ``` error
-Error: object 'distmat' not found
+Error:
+! object 'distmat' not found
 ```
 
 :::::::::::::::::::::::::
@@ -1071,7 +1093,8 @@ h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x
 ```
 
 ``` error
-Error in FUN(X[[i]], ...): object 'distmat' not found
+Error in `FUN()`:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -1080,7 +1103,8 @@ k_dunn <- sapply(k_seq, function(x) dunn(distance = distmat, cutree(clust, k = x
 ```
 
 ``` error
-Error in FUN(X[[i]], ...): object 'distmat' not found
+Error in `FUN()`:
+! object 'distmat' not found
 ```
 
 ``` r
@@ -1088,7 +1112,8 @@ plot(h_seq, h_dunn, xlab = "Height (h)", ylab = "Dunn index")
 ```
 
 ``` error
-Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'h_dunn' not found
+Error in `h()`:
+! error in evaluating the argument 'y' in selecting a method for function 'plot': object 'h_dunn' not found
 ```
 
 ``` r
@@ -1096,7 +1121,8 @@ grid()
 ```
 
 ``` error
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+Error in `int_abline()`:
+! plot.new has not been called yet
 ```
 
 You can see that at low values of `h`, the Dunn index can be high. But this
@@ -1110,7 +1136,8 @@ plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
 ```
 
 ``` error
-Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'k_dunn' not found
+Error in `h()`:
+! error in evaluating the argument 'y' in selecting a method for function 'plot': object 'k_dunn' not found
 ```
 
 ``` r
@@ -1118,7 +1145,8 @@ grid()
 ```
 
 ``` error
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+Error in `int_abline()`:
+! plot.new has not been called yet
 ```
 
 For the given range of `k` values explored, we obtain the highest Dunn index with `k=4`.

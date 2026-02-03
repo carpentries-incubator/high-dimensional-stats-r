@@ -510,7 +510,8 @@ head(colData(methylation))
 ```
 
 ``` error
-Error in colData(methylation): could not find function "colData"
+Error in `colData()`:
+! could not find function "colData"
 ```
 
 ``` r
@@ -518,7 +519,8 @@ methyl_mat <- t(assay(methylation))
 ```
 
 ``` error
-Error in assay(methylation): could not find function "assay"
+Error in `assay()`:
+! could not find function "assay"
 ```
 
 ``` r
@@ -527,7 +529,8 @@ cor_mat <- cor(methyl_mat)
 ```
 
 ``` error
-Error: object 'methyl_mat' not found
+Error:
+! object 'methyl_mat' not found
 ```
 
 

@@ -405,6 +405,16 @@ screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8,
     geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
 ```
 
+``` warning
+Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+ℹ Please use the `linewidth` argument instead.
+ℹ The deprecated feature was likely used in the PCAtools package.
+  Please report the issue to the authors.
+This warning is displayed once per session.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+generated.
+```
+
 <div class="figure" style="text-align: center">
 <img src="fig/04-principal-component-analysis-rendered-varexp-1.png" alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."  />
 <p class="caption">Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.</p>
@@ -542,6 +552,11 @@ components can be generated as follows:
 
 ``` r
 PCAtools::biplot(pca.pros)
+```
+
+``` output
+Ignoring unknown labels:
+• fill : ""
 ```
 
 <div class="figure" style="text-align: center">
@@ -1106,6 +1121,11 @@ Examine whether the data appear to form clusters. Explain your results.
 PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 ```
 
+``` output
+Ignoring unknown labels:
+• fill : ""
+```
+
 <div class="figure" style="text-align: center">
 <img src="fig/04-principal-component-analysis-rendered-biplot-ex-1.png" alt="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on Grade across these two groups."  />
 <p class="caption">A biplot of PC2 against PC1 in the gene expression data, coloured by Grade.</p>
@@ -1151,6 +1171,11 @@ not all labels will be shown.
     legendPosition = 'right')
 ```
 
+``` output
+Ignoring unknown labels:
+• fill : ""
+```
+
 ``` warning
 Warning: ggrepel: 23 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps
@@ -1179,56 +1204,76 @@ pairsplot(pc)
 ```
 
 ``` output
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
-Coordinate system already present. Adding new coordinate system, which will
-replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Coordinate system already present.
+ℹ Adding new coordinate system, which will replace the existing one.
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
+Ignoring unknown labels:
+• fill : ""
 ```
 
 <div class="figure" style="text-align: center">

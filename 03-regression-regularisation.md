@@ -456,7 +456,8 @@ Warning in gzfile(file, "rb"): cannot open compressed file
 ```
 
 ``` error
-Error in gzfile(file, "rb"): cannot open the connection
+Error in `gzfile()`:
+! cannot open the connection
 ```
 
 ``` r
@@ -1047,7 +1048,8 @@ like for different values of `alpha`.
   ```
   
   ``` error
-  Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
+  Error in `xy.coords()`:
+  ! 'x' and 'y' lengths differ
   ```
   
   ``` r
@@ -1055,7 +1057,8 @@ like for different values of `alpha`.
   ```
   
   ``` error
-  Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+  Error in `int_abline()`:
+  ! plot.new has not been called yet
   ```
 4. You could pick an arbitrary value of `alpha`, because arguably pure ridge
   regression or pure LASSO regression are also arbitrary model choices.
