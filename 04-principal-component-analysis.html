@@ -346,7 +346,7 @@ in the data</a></li>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Principal component analysis</h1>
-        <p>Last updated on 2026-02-03 |
+        <p>Last updated on 2026-02-10 |
 
         <a href="https://github.com/carpentries-incubator/high-dimensional-stats-r/edit/main/episodes/04-principal-component-analysis.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -439,7 +439,7 @@ varies with disease severity.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>In the first case, a regression model would be more suitable; perhaps
 a survival model. In the second example, PCA can help to identify
@@ -690,7 +690,7 @@ standardise variables?</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Scaling the data isn’t guaranteed to make the results more
 interesting. It also won’t affect how quickly the output will be
@@ -725,16 +725,16 @@ on PCA implementation using this package, there are several other
 options for performing PCA, including a base R function,
 <code>prcomp()</code>. Equivalent functions and output labels for the
 common implementations are summarised below.</p>
-<table class="table"><thead><tr class="header"><th>library::command()</th>
+<table class="table"><thead><tr><th>library::command()</th>
 <th>Principal component scores</th>
 <th>Loadings</th>
-</tr></thead><tbody><tr class="odd"><td>stats::prcomp()</td>
+</tr></thead><tbody><tr><td>stats::prcomp()</td>
 <td>$x</td>
 <td>$rotation</td>
-</tr><tr class="even"><td>stats::princomp()</td>
+</tr><tr><td>stats::princomp()</td>
 <td>$scores</td>
 <td>$loadings</td>
-</tr><tr class="odd"><td>PCAtools::pca()</td>
+</tr><tr><td>PCAtools::pca()</td>
 <td>$rotated</td>
 <td>$loadings</td>
 </tr></tbody></table><p>Let’s use the <strong><code>PCAtools</code></strong> package to
@@ -1203,7 +1203,22 @@ Attaching package: 'Biobase'</code></pre>
 <pre class="warning" tabindex="0"><code>Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb54">
+<div class="codewrapper">
+<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="warning" tabindex="0"><code>Warning: multiple methods tables found for 'seqinfo'</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="warning" tabindex="0"><code>Warning: multiple methods tables found for 'seqinfo&lt;-'</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="warning" tabindex="0"><code>Warning: multiple methods tables found for 'seqnames'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb57">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1211,19 +1226,19 @@ Attaching package: 'Biobase'</code></pre>
 <span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu">assay</span><span class="op">(</span><span class="va">cancer</span><span class="op">)</span></span>
 <span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">colData</span><span class="op">(</span><span class="va">cancer</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb55">
+<div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">head</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb56">
+<div class="codewrapper sourceCode" id="cb59">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">head</span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb57">
+<div class="codewrapper sourceCode" id="cb60">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1290,9 +1305,9 @@ first 5 rows and columns of rotated data and loadings from your PCA.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb59">
+<div class="codewrapper sourceCode" id="cb62">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1308,7 +1323,7 @@ first 5 rows and columns of rotated data and loadings from your PCA.</p>
 </h3>
 <pre class="output" tabindex="0"><code>-- removing the lower 20% of variables based on variance</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb61">
+<div class="codewrapper sourceCode" id="cb64">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1325,7 +1340,7 @@ GSM65755 -29.41462   7.846858 -22.880525 -16.149669 22.3821009
 GSM65757 -33.35286   1.343573 -22.579568   2.200329 15.0082786
 GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb63">
+<div class="codewrapper sourceCode" id="cb66">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1341,7 +1356,7 @@ GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772</code></pre>
 205242_at  0.0130742288  0.028876408  0.007655420 0.04449641 -0.001061205
 206509_at  0.0019031245 -0.054698479 -0.004667356 0.01566468  0.001306807</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb65">
+<div class="codewrapper sourceCode" id="cb68">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1352,7 +1367,7 @@ GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772</code></pre>
 </h3>
 <pre class="output" tabindex="0"><code>[1] 49</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb67">
+<div class="codewrapper sourceCode" id="cb70">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1400,9 +1415,9 @@ GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772</code></pre>
                    PC86        PC87          PC88         PC89         PC90
 215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
                    PC91
-215281_x_at 0.009785973</code></pre>
+215281_x_at -0.00383085</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb69">
+<div class="codewrapper sourceCode" id="cb72">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1413,7 +1428,7 @@ GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772</code></pre>
 </h3>
 <pre class="output" tabindex="0"><code>[1] 27</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb71">
+<div class="codewrapper sourceCode" id="cb74">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1458,8 +1473,8 @@ GSM65758 -40.51897  -8.491125   5.288498  14.007364  0.8739772</code></pre>
 211122_s_at 0.004995447 -0.008404118 0.00442875 -0.001027912 0.006104406
                    PC82        PC83         PC84       PC85       PC86
 211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
-                    PC87        PC88        PC89        PC90       PC91
-211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.01124148</code></pre>
+                    PC87        PC88        PC89        PC90        PC91
+211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.004593411</code></pre>
 </div>
 <p>The function <code>pca()</code> is used to perform PCA, and uses as
 input a matrix (<code>mat</code>) containing continuous numerical data
@@ -1533,9 +1548,9 @@ each principal component.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb73">
+<div class="codewrapper sourceCode" id="cb76">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1617,9 +1632,9 @@ results.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb75">
+<div class="codewrapper sourceCode" id="cb78">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1667,9 +1682,9 @@ problem - not all labels will be shown.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb76">
+<div class="codewrapper sourceCode" id="cb79">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1681,7 +1696,7 @@ problem - not all labels will be shown.</p>
 <div class="codewrapper">
 <h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="warning" tabindex="0"><code>Warning: ggrepel: 23 unlabeled data points (too many overlaps). Consider
+<pre class="warning" tabindex="0"><code>Warning: ggrepel: 26 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps</code></pre>
 </div>
 <figure style="text-align: center"><img src="fig/04-principal-component-analysis-rendered-pca-biplot-ex2-1.png" alt="A biplot of PC2 against PC1 in the gene expression data, coloured by ER status. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on ER across these two groups, although there are more ER- samples in the rightmost cluster. Patient ages are overlaid as text near the points, but there is again no clear pattern." class="figure mx-auto d-block"><figcaption>
@@ -1697,7 +1712,7 @@ group.</p>
 gives part of the picture. The <code>pairplots()</code> function in
 <strong><code>PCAtools</code></strong> can be used to create multiple
 biplots including different principal components.</p>
-<div class="codewrapper sourceCode" id="cb78">
+<div class="codewrapper sourceCode" id="cb81">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1901,7 +1916,7 @@ variables are associated with these scores.</li>
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.18.5" class="external-link">sandpaper (0.18.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.18.1)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1923,8 +1938,8 @@ variables are associated with these scores.</li>
   "url": "https://carpentries-incubator.github.io/high-dimensional-stats-r/04-principal-component-analysis.html",
   "identifier": "https://carpentries-incubator.github.io/high-dimensional-stats-r/04-principal-component-analysis.html",
   "dateCreated": "2026-02-03",
-  "dateModified": "2026-02-03",
-  "datePublished": "2026-02-03"
+  "dateModified": "2026-02-10",
+  "datePublished": "2026-02-10"
 }
 
   </script><script>
