@@ -5,51 +5,67 @@ tags:
   - R
   - The Carpentries
 authors:
-  - name: first author
-    email: first author email
-    orcid: first author orcid
-    affiliation: number(s) from index below
-  - name: second author
-    email: second author email
-    orcid: second author orcid 
-    affiliation: numbers(s) from index below
+  - name: Alan O'Callaghan
+    email: alan.ocallaghan@outlook.com
+    orcid: 0000-0003-4817-6171
+    affiliation: 1
+  - name: Gail Robertson
+    affiliation: 2
+  - name: Hannes Becher
+    orcid: 0000-0003-3700-2942
+    affiliation: 1
+  - name: Mary Llewellyn
+    orcid: 0009-0008-3759-4902
+    affiliation: 2
+  - name: Ailith Ewing
+    orcid: 0000-0002-2272-1277
+    affiliation: 1
+  - name: Catalina Vallejos
+    orcid: 0000-0003-3638-1960
+    affiliation: 1
 affiliations:
- - name: first affil, in order
+ - name: Institute of Genetics and Cancer, The University of Edinburgh, Edinburgh, UK
    index: 1
- - name: second affil, in order 
+ - name: School of Mathematics, University of Edinburgh, Edinburgh, UK
    index: 2
    
 date: 15 March 2024
 bibliography: paper.bib
 ---
 
-# Summary
-High-dimensional data have become more prevalent in the biological sciences, and with that an increased
-need for resources on specialised analytical techniques that are accessible to biological sciences researchers. 
+## Summary
+
+High-dimensional data are increasingly prevalent in the biological sciences, resulting in an increased
+need for resources, accessible to biological sciences researchers, on specialised analytical techniques. 
 We present a learning module, _High dimensional statistics with R_ [@HD_stats_repo:2024], covering core and 
 practically valuable concepts for high-dimensional data analysis in the biological sciences over four 3.5 hour 
 sessions. The lesson has been developed in [The Carpentries Incubator](https://carpentries-incubator.org/) as 
-part of the [Ed-DaSH training programme](https://edcarp.github.io/Ed-DaSH/index.html), teaching robust 
-understanding, implementation and evaluation of high-dimensional regression, principal component and factor 
-analysis and clustering when applied to high-dimensional biological sciences data sets. The lesson has been 
-through multiple rounds of internal, external and instructional review and we hope to continue developing 
+part of the [Ed-DaSH training programme](https://edcarp.github.io/Ed-DaSH/index.html).
+_High dimensional statistics with R_ teaches robust understanding, application and evaluation of
+high-dimensional regression, principal component analysis, factor 
+analysis and clustering as applied to high-dimensional biological sciences data sets. The lesson has been 
+subject to multiple rounds of internal, external and instructional review, and we plan to continue developing 
 the lesson in collaboration with the high-dimensional statistics and biological sciences communities.
 
 
-# Statement of need 
-With advances in computing facilities, high-dimensional data are becoming increasingly common in the biological
-sciences. Research studies now commonly use, for example, large amounts of DNA methylation data to analyse gene
-expression or large amounts of medical data to analyse patient outcomes. Using high-dimensional data requires
-specialised techniques since identifying and differentiating between effects is challenging when there are many 
+## Statement of need 
+
+With advances in biological techniques and computing facilities, high-dimensional data are becoming increasingly
+common in the biological
+sciences. Research studies now commonly use, for example, large amounts of DNA methylation data and RNA sequencing data
+to analyse the regulation of gene expression, or large amounts of medical records and associated data
+to analyse patient outcomes. High-dimensional data require
+specialised analysis techniques, since identifying and differentiating between effects is challenging when there are many 
 variables. However, practical resources explaining the core techniques for dealing with high-dimensional data 
 are often not accessible to biological sciences researchers. This learning module (_lesson_; [@HD_stats_repo:2024])
 has been developed as part of the Ed-DaSH training programme within The Carpentries Incubator to provide practical
 training on high-dimensional techniques specifically for researchers in the biological sciences.
 
 
-# Content, learning objectives and design principles
-The lesson is targeted at biological sciences researchers at [any particular level?] with  assumed pre-requisite 
-knowledge of [?]-level biological sciences concepts and []-level knowledge of R programming and statistics. 
+## Content, learning objectives and design principles
+
+The lesson is targeted at biological sciences researchers at post-graduate level with  assumed pre-requisite 
+knowledge of undergraduate-level biological sciences concepts and undergraduate-level knowledge of R programming and statistics.
 The lesson contains 7 episodes, each focusing on a core concept in high-dimensional data analysis: 
 
 1. Introduction to high-dimensional data
@@ -72,7 +88,8 @@ re-used data examples to minimise cognitive load, and testing that learners have
 with the lesson objectives (defined clearly at the start of each episode) using mixed format exercises. 
 
 
-# Instructional design
+## Instructional design
+
 The lesson is designed to be delivered in four 3.5 hour sessions over four days, including breaks and additional
 question time of around 40 minutes per session. Most sessions cover two episodes, with an entire session for 
 episode 3. Each episode is comprised of 60-75% instruction and live coding, and the remainder of the time is
@@ -83,19 +100,8 @@ on the session splits and optional lecture slides for instructors to use to supp
 episode. Each episode is self-contained to allow for individual learners and learners taking the course can use
 the episodes for review or practice outside of the sessions.
 
-# Teaching experience
+## Teaching experience
 
-<!-- Remove this list later...
-1. Ailith, Alan https://edcarp.github.io/2021-10-26_ed-dash_high-dimensional-stats/
-2. Cata, Ailith https://edcarp.github.io/15-02-22_ed-dash_high-dim-stats/
-3. Ailith, Nathan https://edcarp.github.io/2022-05-17_ed-dash_high-dim-stats/
-4. Hugh https://edcarp.github.io/2022-07-26_ed-dash_high-dim-stats/
-5. EdWall https://edcarp.github.io/2022-09-27_ed-dash_high-dim-stats/
-6. Hannes https://edcarp.github.io/2023-01-17_ed-dash_high-dim-stats/
-7. Hywel https://edcarp.github.io/2024-02-27_ed-dash_high-dim-stats/
-8. Ben https://edcarp.github.io/2024-03-19_ed-dash_high-dim-stats/
-9. Rosie/Ben https://edcarp.github.io/2024-06-11_ed-dash_high-dim-stats/
--->
 
 The lesson has been taught 9 times by a range of instructors consisting of PhD students, bioinformaticians,
 post-doctoral researchers, statisticians and group leaders. Learners have included postgraduate students,
@@ -108,23 +114,26 @@ Full information on the changes made following feedback from round of teaching c
 github repository: https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/4325823/reviews.md
 
 
-# Development
+## Development
+
 Story of how the project came to be: How did the initial idea come about? Was it inspired by anything in particular?
 How was the course initially designed/what was discussed at the curriculum advisory committee?
 What gap in students' knowledge did you identify and how, and how did you approach filling it?
 Any other references to help clarify the story?
 
-With UKRI funding for the wider Ed-DaSH project, the material was developed within the Carpentries framework, 
-[what changed]. Over the past three years, the lesson has been further developed and improved, with X rounds of 
-internal, instructor and peer review ([cite reviews once live]), culminating in an informative key set of learning
-materials for researchers in the biological sciences that has been taught [four?] times.
+With UKRI funding for the wider Ed-DaSH project, the material was developed within the Carpentries framework.
+Initially, profiles of potential learners were identified, to target the learning outcomes of the lessons to meet
+the unmet needs. Subsequently, the lessons were iteratively developed, reviewed and tested by the core development team. Over the past three years, the lesson has been further developed and improved, with multiple rounds of 
+internal, instructor and peer review (https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/4325823/reviews.md), culminating in an informative key set of learning
+materials for researchers in the biological sciences that has been taught nine times.
 
 
-# Acknowledgements
-[From website but check below]
+## Acknowledgements
 
-We thank the instructors [list everyone?] for their time and insight in teaching and reviewing the course, [specific people not intended to be cited I think] for..., Emma Rand and Christie Barron for reviewing the lesson and providing fresh and incredibly valuable perspectives, the wider Ed-DaSH team and The Carpentries community, [?Toby Hodges].
+We thank the instructors who have taught the course for their time and insight in teaching and reviewing the materials. These include
+Aleksandra Chybowska, Ben King, Bradley Harris, Diego Chillón, Edward Walles, Hugh Warden, Nathan Constantine-Cooke, Hywel Dunn-Davies, Jan Verburg, Joshua Dibble, Kelsey Tetley-Campbell, Lucie Wöllenstein, Mario Antonioletti, Rosie Eccleston, and Sam Haynes.
+
+We also thank our curriculum advisory committee (Kelly Blacklock, Vanda Calhau Fernandes Inacio De Carvalho, Greame Grimes, Daniel Barker and Nick Schurch) for their helpful guidance in defining the scope of the lesson, Emma Rand and Christie Barron for reviewing the lesson in detail and providing fresh and incredibly valuable perspectives, the wider Ed-DaSH team and The Carpentries community for their help in developing and delivering the lesson.
 
 This work was supported by UK Research and Innovation [grant number MR/V039075/1].
-Any other funding?
 
