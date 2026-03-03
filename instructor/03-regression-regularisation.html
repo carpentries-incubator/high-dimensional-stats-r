@@ -343,7 +343,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Regularised regression</h1>
-        <p>Last updated on 2026-02-10 |
+        <p>Last updated on 2026-03-03 |
 
         <a href="https://github.com/carpentries-incubator/high-dimensional-stats-r/edit/main/episodes/03-regression-regularisation.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -871,31 +871,16 @@ sets:</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">methylation</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="st">"/data/methylation.rds"</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="warning" tabindex="0"><code>Warning in gzfile(file, "rb"): cannot open compressed file
-'/data/methylation.rds', probable reason 'No such file or directory'</code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in gzfile(file, "rb"): cannot open the connection</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb37">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="st">"SummarizedExperiment"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">methylation</span> <span class="op">&lt;-</span> <span class="fu">readRDS</span><span class="op">(</span><span class="st">"data/methylation.rds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="st">"SummarizedExperiment"</span><span class="op">)</span></span>
 <span><span class="va">age</span> <span class="op">&lt;-</span> <span class="va">methylation</span><span class="op">$</span><span class="va">Age</span></span>
 <span><span class="va">methyl_mat</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">methylation</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 <p>We will then subset the data to a set of CpG markers that are known
 to be associated with age from a previous study by Horvath et al.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, described
 in <a href="https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html" class="external-link">data</a>.</p>
-<div class="codewrapper sourceCode" id="cb38">
+<div class="codewrapper sourceCode" id="cb35">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -921,7 +906,7 @@ in <a href="https://carpentries-incubator.github.io/high-dimensional-stats-r/dat
 training error. Here we use the mean of the squared difference between
 our predictions and the observed data, or “mean squared error”
 (MSE).</p>
-<div class="codewrapper sourceCode" id="cb39">
+<div class="codewrapper sourceCode" id="cb36">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -973,7 +958,7 @@ test set.</p>
 <div class="accordion-body">
 <p>First, let’s find the predicted values for the ‘unseen’ test
 data:</p>
-<div class="codewrapper sourceCode" id="cb41">
+<div class="codewrapper sourceCode" id="cb38">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -981,7 +966,7 @@ data:</p>
 </div>
 <p>The mean squared error for the test set is the mean of the squared
 error between the predicted values and true test data.</p>
-<div class="codewrapper sourceCode" id="cb42">
+<div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1002,7 +987,7 @@ error. If we plot true age against predicted age for the samples in the
 test set, we can gain more insight into the performance of the model on
 the test set. Ideally, the predicted values should be close to the test
 data.</p>
-<div class="codewrapper sourceCode" id="cb44">
+<div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1076,7 +1061,7 @@ subset of the features identified by Horvarth et al), using both
 regularised and ordinary least squares. To fit regularised regression
 models, we will use the <strong><code>glmnet</code></strong>
 package.</p>
-<div class="codewrapper sourceCode" id="cb45">
+<div class="codewrapper sourceCode" id="cb42">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1105,7 +1090,7 @@ Attaching package: 'Matrix'</code></pre>
 </h3>
 <pre class="output" tabindex="0"><code>Loaded glmnet 4.1-10</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb50">
+<div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1140,7 +1125,7 @@ that ridge regression predicts the test data better than the model with
 no regularisation. Let’s generate our predictions under the ridge
 regression model and calculate the mean squared error in the test
 set:</p>
-<div class="codewrapper sourceCode" id="cb51">
+<div class="codewrapper sourceCode" id="cb48">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1166,7 +1151,7 @@ set:</p>
 </div>
 <p>This is much lower than the test error for the model without
 regularisation:</p>
-<div class="codewrapper sourceCode" id="cb53">
+<div class="codewrapper sourceCode" id="cb50">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1180,7 +1165,7 @@ regularisation:</p>
 <p>We can see where on the continuum of lambdas we’ve picked a model by
 plotting the coefficient paths again. In this case, we’ve picked a model
 with fairly modest coefficient shrinking.</p>
-<div class="codewrapper sourceCode" id="cb55">
+<div class="codewrapper sourceCode" id="cb52">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1216,7 +1201,7 @@ better?</li>
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Ridge regression performs significantly better on unseen data,
 despite being “worse” on the training data.</li>
-</ol><div class="codewrapper sourceCode" id="cb56">
+</ol><div class="codewrapper sourceCode" id="cb53">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1227,7 +1212,7 @@ despite being “worse” on the training data.</li>
 </h3>
 <pre class="output" tabindex="0"><code>[1] 46.76802</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb58">
+<div class="codewrapper sourceCode" id="cb55">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1240,7 +1225,7 @@ despite being “worse” on the training data.</li>
 </div>
 <ol start="2" style="list-style-type: decimal"><li>The ridge ones are much less spread out with far fewer extreme
 predictions.</li>
-</ol><div class="codewrapper sourceCode" id="cb60">
+</ol><div class="codewrapper sourceCode" id="cb57">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1309,7 +1294,7 @@ relationship between the two plots?</li>
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Fitting a LASSO model is very similar to a ridge model, we just need
 to change the <code>alpha</code> setting.</li>
-</ol><div class="codewrapper sourceCode" id="cb61">
+</ol><div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1320,7 +1305,7 @@ model sparsity from left to right, because increasing lambda increases
 the penalty added to the coefficients. When we instead plot the L1 norm
 on the x-axis, increasing L1 norm means that we are allowing our
 coefficients to take on increasingly large values.</li>
-</ol><div class="codewrapper sourceCode" id="cb62">
+</ol><div class="codewrapper sourceCode" id="cb59">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1359,7 +1344,7 @@ Schematic representiation of a <span class="math inline">\(K\)</span>-fold cross
 </figcaption></figure><p>We can use this new idea to choose a lambda value by finding the
 lambda that minimises the error across each of the test and training
 splits. In R:</p>
-<div class="codewrapper sourceCode" id="cb63">
+<div class="codewrapper sourceCode" id="cb60">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1370,7 +1355,7 @@ splits. In R:</p>
 <figure style="text-align: center"><img src="../fig/03-regression-regularisation-rendered-lasso-cv-1.png" alt="Alt" class="figure mx-auto d-block"><figcaption>
 Cross-validated mean squared error for different values of lambda under
 a LASSO penalty.
-</figcaption></figure><div class="codewrapper sourceCode" id="cb64">
+</figcaption></figure><div class="codewrapper sourceCode" id="cb61">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1466,11 +1451,11 @@ coefficients with the LASSO model.</li>
 <ol style="list-style-type: decimal"><li>Fitting an elastic net model is just like fitting a LASSO model. You
 can see that coefficients tend to go exactly to zero, but the paths are
 a bit less extreme than with pure LASSO; similar to ridge.</li>
-</ol><div class="codewrapper sourceCode" id="cb66">
+</ol><div class="codewrapper sourceCode" id="cb63">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">elastic</span> <span class="op">&lt;-</span> <span class="fu">glmnet</span><span class="op">(</span><span class="va">methyl_mat</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="va">age</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">elastic</span> <span class="op">&lt;-</span> <span class="fu">glmnet</span><span class="op">(</span><span class="va">methyl_mat</span>, <span class="va">age</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="fu">plot</span><span class="op">(</span><span class="va">elastic</span><span class="op">)</span></span></code></pre>
 </div>
 <figure style="text-align: center"><img src="../fig/03-regression-regularisation-rendered-elastic-1.png" alt="A line plot showing coefficient values from an elastic net model against L1 norm. The coefficients, generally, suddenly become zero as L1 norm decreases. However, some coefficients increase in size before decreasing as L1 norm decreases." class="figure mx-auto d-block"><figcaption>
@@ -1478,11 +1463,11 @@ Line plot showing coefficient values from an elastic net model against
 L1 norm.
 </figcaption></figure><ol start="2" style="list-style-type: decimal"><li>The process of model selection is similar for elastic net models as
 for LASSO models.</li>
-</ol><div class="codewrapper sourceCode" id="cb67">
+</ol><div class="codewrapper sourceCode" id="cb64">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">elastic_cv</span> <span class="op">&lt;-</span> <span class="fu">cv.glmnet</span><span class="op">(</span><span class="va">methyl_mat</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="va">age</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">elastic_cv</span> <span class="op">&lt;-</span> <span class="fu">cv.glmnet</span><span class="op">(</span><span class="va">methyl_mat</span>, <span class="va">age</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="fu">plot</span><span class="op">(</span><span class="va">elastic_cv</span><span class="op">)</span></span></code></pre>
 </div>
 <figure style="text-align: center"><img src="../fig/03-regression-regularisation-rendered-elastic-cv-1.png" alt="A plot of the cross-validation mean squared error of an elastic net model against log lambda." class="figure mx-auto d-block"><figcaption>
@@ -1491,7 +1476,7 @@ model against log lambda.
 </figcaption></figure><ol start="3" style="list-style-type: decimal"><li>You can see that the coefficients from these two methods are broadly
 similar, but the elastic net coefficients are a bit more conservative.
 Further, more coefficients are exactly zero in the LASSO model.</li>
-</ol><div class="codewrapper sourceCode" id="cb68">
+</ol><div class="codewrapper sourceCode" id="cb65">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1501,9 +1486,9 @@ Further, more coefficients are exactly zero in the LASSO model.</li>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>[1] 4973</code></pre>
+<pre class="output" tabindex="0"><code>[1] 4974</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb70">
+<div class="codewrapper sourceCode" id="cb67">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1514,7 +1499,7 @@ Further, more coefficients are exactly zero in the LASSO model.</li>
 </h3>
 <pre class="output" tabindex="0"><code>[1] 4956</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb72">
+<div class="codewrapper sourceCode" id="cb69">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1523,25 +1508,13 @@ Further, more coefficients are exactly zero in the LASSO model.</li>
 <span>    pch <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>    xlab <span class="op">=</span> <span class="st">"LASSO coefficients"</span>,</span>
 <span>    ylab <span class="op">=</span> <span class="st">"Elastic net coefficients"</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span><span class="fu">abline</span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, lty <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb74">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">abline</span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, lty <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet</code></pre>
-</div>
-<ol start="4" style="list-style-type: decimal"><li>You could pick an arbitrary value of <code>alpha</code>, because
+<figure style="text-align: center"><img src="../fig/03-regression-regularisation-rendered-elastic-plot-1.png" alt="A scatter plot depicting coefficient estimates from elastic net and LASSO models. Generally, the elastic net model coefficients are more conservative, with one notable outlier, whereas the LASSO model coefficients are more frequently exactly equal to zero." class="figure mx-auto d-block"><figcaption>
+Scatter plot of coefficient estimates from an elastic net model (y)
+against coefficient estimates from a LASSO model (x).
+</figcaption></figure><ol start="4" style="list-style-type: decimal"><li>You could pick an arbitrary value of <code>alpha</code>, because
 arguably pure ridge regression or pure LASSO regression are also
 arbitrary model choices. To be rigorous and to get the best-performing
 model and the best inference about predictors, it’s usually best to find
@@ -1618,7 +1591,7 @@ binary variable in logistic regression by setting
 <code>family = "binomial"</code>.</p>
 <p>The <a href="https://glmnet.stanford.edu/articles/glmnet.html" class="external-link">package
 documentation</a> explains this in more detail.</p>
-<div class="codewrapper sourceCode" id="cb76">
+<div class="codewrapper sourceCode" id="cb70">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1633,7 +1606,7 @@ documentation</a> explains this in more detail.</p>
  0  1
 30  7 </code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb78">
+<div class="codewrapper sourceCode" id="cb72">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1655,7 +1628,7 @@ multinomial or binomial class has fewer than 8 observations; dangerous ground
 Warning in lognet(x, is.sparse, y, weights, offset, alpha, nobs, nvars, : one
 multinomial or binomial class has fewer than 8 observations; dangerous ground</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb80">
+<div class="codewrapper sourceCode" id="cb74">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1668,7 +1641,7 @@ multinomial or binomial class has fewer than 8 observations; dangerous ground</c
 </h3>
 <pre class="output" tabindex="0"><code>[1] -1.455287</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb82">
+<div class="codewrapper sourceCode" id="cb76">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1705,7 +1678,7 @@ modelling so we are not covering this framework in detail. However, the
 code below would be useful to perform repeated cross-validation. More
 information about <strong><code>tidymodels</code></strong>, including
 installation instructions, can be found <a href="https://www.tidymodels.org/" class="external-link">on the tidymodels website</a>.</p>
-<div class="codewrapper sourceCode" id="cb83">
+<div class="codewrapper sourceCode" id="cb77">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1874,7 +1847,7 @@ Predictor of Age, Bocklandt et al. (2011)</a><a href="#fnref2" class="footnote-
   "url": "https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/03-regression-regularisation.html",
   "identifier": "https://carpentries-incubator.github.io/high-dimensional-stats-r/instructor/03-regression-regularisation.html",
   "dateCreated": "2026-03-03",
-  "dateModified": "2026-02-10",
+  "dateModified": "2026-03-03",
   "datePublished": "2026-03-03"
 }
 

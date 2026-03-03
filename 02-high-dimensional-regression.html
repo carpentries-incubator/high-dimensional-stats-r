@@ -344,7 +344,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Regression with many outcomes</h1>
-        <p>Last updated on 2026-02-10 |
+        <p>Last updated on 2026-03-03 |
 
         <a href="https://github.com/carpentries-incubator/high-dimensional-stats-r/edit/main/episodes/02-high-dimensional-regression.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -752,6 +752,9 @@ available in the methylation dataset:</p>
 <span><span class="va">age_ord</span> <span class="op">&lt;-</span> <span class="va">age</span><span class="op">[</span><span class="va">order</span><span class="op">]</span></span>
 <span><span class="va">methyl_mat_ord</span> <span class="op">&lt;-</span> <span class="va">methyl_mat</span><span class="op">[</span>, <span class="va">order</span><span class="op">]</span></span>
 <span></span>
+<span><span class="co">## create annotation df with rownames matching columns of methylation matrix</span></span>
+<span><span class="va">ann_df</span> <span class="op">&lt;-</span> <span class="fu">data.frame</span><span class="op">(</span>age <span class="op">=</span> <span class="va">age_ord</span>, row.names<span class="op">=</span><span class="fu">colnames</span><span class="op">(</span><span class="va">methyl_mat_ord</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># plot heatmap</span></span>
 <span><span class="fu">pheatmap</span><span class="op">(</span><span class="va">methyl_mat_ord</span>, </span>
 <span>         cluster_cols <span class="op">=</span> <span class="cn">FALSE</span>, </span>
@@ -759,24 +762,11 @@ available in the methylation dataset:</p>
 <span>         show_colnames <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>         legend_title <span class="op">=</span> <span class="st">"M-value"</span>, </span>
 <span>         main <span class="op">=</span> <span class="st">"Feature vs Sample"</span>, </span>
-<span>         annotation_col <span class="op">=</span> <span class="fu">data.frame</span><span class="op">(</span>age <span class="op">=</span> <span class="va">age_ord</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<span>         annotation_col <span class="op">=</span> <span class="va">ann_df</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="warning" tabindex="0"><code>Warning in min(x): no non-missing arguments to min; returning Inf</code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="warning" tabindex="0"><code>Warning in max(x): no non-missing arguments to max; returning -Inf</code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in seq.int(rx[1L], rx[2L], length.out = nb): 'from' must be a finite number</code></pre>
-</div>
-<div id="challenge-1" class="callout challenge">
+<figure style="text-align: center"><img src="fig/02-high-dimensional-regression-rendered-heatmap-1.png" alt="Heatmap of methylation values across all features showing that there are many features. Samples are ordered according to age." class="figure mx-auto d-block"><figcaption>
+Heatmap of methylation values across all features.
+</figcaption></figure><div id="challenge-1" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -796,7 +786,7 @@ p-values?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>There are a number of problems that this kind of approach presents.
 For example:</p>
@@ -922,7 +912,7 @@ specific CpG, we can fit this model and get more information from the
 model object. For illustration purposes, here we arbitrarily select the
 first CpG in the <code>methyl_mat</code> matrix (the one on its first
 row).</p>
-<div class="codewrapper sourceCode" id="cb37">
+<div class="codewrapper sourceCode" id="cb34">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -945,7 +935,7 @@ Coefficients:
 <p>We now have estimates for the expected methylation level when age
 equals 0 (the intercept) and the change in methylation level for a unit
 change in age (the slope). We could plot this linear model:</p>
-<div class="codewrapper sourceCode" id="cb39">
+<div class="codewrapper sourceCode" id="cb36">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -992,7 +982,7 @@ again under the null hypothesis.</p>
 <strong><code>broom</code></strong> package to extract detailed
 information about the coefficients and the associated hypothesis tests
 in this model:</p>
-<div class="codewrapper sourceCode" id="cb40">
+<div class="codewrapper sourceCode" id="cb37">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1027,7 +1017,7 @@ allows us to determine how unlikely it would be for us to observe what
 we have under those circumstances, if we repeated the experiment and
 analysis over and over again. To demonstrate how the t-statistics are
 calculated, we can compute them “by hand”:</p>
-<div class="codewrapper sourceCode" id="cb42">
+<div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1096,7 +1086,7 @@ In the figure above the shaded areas are only looking at “half” of the
 t-distribution (which is symmetric around zero), therefore we multiply
 the shaded area by 2 in order to calculate the p-value.</p>
 <p>Combining all of this gives us:</p>
-<div class="codewrapper sourceCode" id="cb44">
+<div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1129,7 +1119,7 @@ its associated p-value is 0.0129. What does this mean?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>The first coefficient in a linear model like this is the intercept,
 which measures the mean of the outcome (in this case, the methylation
@@ -1156,7 +1146,7 @@ methylation for the CpG.</p>
 regression coefficient (often referred to as <em>slope</em>) which
 measures the linear relationship between age and methylation levels. For
 the first CpG, here is its estimate:</p>
-<div class="codewrapper sourceCode" id="cb46">
+<div class="codewrapper sourceCode" id="cb43">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1250,7 +1240,7 @@ behind the scenes, but <strong><code>limma</code></strong> does not.
 Usually, the model matrix can be extracted from a model fit using the
 function <code>model.matrix()</code>. Here is an example of a model
 matrix for the methylation model:</p>
-<div class="codewrapper sourceCode" id="cb48">
+<div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1268,7 +1258,7 @@ matrix for the methylation model:</p>
 201868500150_R08C01           1  33
 201868590193_R02C01           1  21</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb50">
+<div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1296,7 +1286,7 @@ row of the data in an efficient way. The function <code>eBayes()</code>,
 when applied to the output of <code>lmFit()</code>, performs the pooled
 estimation of standard errors that results in the moderated t-statistics
 and resulting p-values.</p>
-<div class="codewrapper sourceCode" id="cb52">
+<div class="codewrapper sourceCode" id="cb49">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1315,7 +1305,7 @@ Attaching package: 'limma'</code></pre>
 
     plotMA</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb55">
+<div class="codewrapper sourceCode" id="cb52">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1333,7 +1323,7 @@ particularly interested in here; therefore we specify
 returns the top 10 results. To see all of the results in the data, we
 specify <code>number = nrow(fit_age)</code> to ensure that it returns a
 row for every row of the input matrix.</p>
-<div class="codewrapper sourceCode" id="cb56">
+<div class="codewrapper sourceCode" id="cb53">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1371,7 +1361,7 @@ coefficients) against p-values for each of these linear models, to
 visualise the magnitude of effects and the statistical significance of
 each. These plots are often called “volcano plots”, because they
 resemble an eruption.</p>
-<div class="codewrapper sourceCode" id="cb58">
+<div class="codewrapper sourceCode" id="cb55">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1420,7 +1410,7 @@ is this?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>Because age has a much larger range than methylation levels, the unit
 change in methylation level even for a strong relationship is very
@@ -1498,11 +1488,11 @@ can lead to larger p-values. Why might this be preferable?</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>The following code runs the same type of model with smoking
 status:</li>
-</ol><div class="codewrapper sourceCode" id="cb59">
+</ol><div class="codewrapper sourceCode" id="cb56">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1582,7 +1572,7 @@ despite the null hypothesis being true, we observe observe signifiant
 p-values due to random chance. To demonstrate this, it is useful to see
 what happens if we permute (scramble) the age values and run the same
 test again:</p>
-<div class="codewrapper sourceCode" id="cb60">
+<div class="codewrapper sourceCode" id="cb57">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1637,7 +1627,7 @@ versa.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>By default we expect <span class="math inline">\(5000 \\times 0.05 =
 250\)</span> features to be statistically significant under the null
@@ -1694,7 +1684,7 @@ divides the significance level by the number of tests performed, <span class="ma
 non-transformed p-value threshold but multiply our p-values by the
 number of tests. This is often very conservative, especially with a lot
 of features!</p>
-<div class="codewrapper sourceCode" id="cb61">
+<div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1762,7 +1752,7 @@ p-values.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li><p>The Bonferroni threshold for this significance threshold is <span class="math display">\[
   \frac{0.05}{100} = 0.0005
@@ -1773,7 +1763,7 @@ over, on average 5% of the results from each run would be false
 discoveries.</p></li>
 <li><p>The following code runs FDR correction and compares it to
 non-corrected values and to Bonferroni:</p></li>
-</ol><div class="codewrapper sourceCode" id="cb62">
+</ol><div class="codewrapper sourceCode" id="cb59">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1785,7 +1775,7 @@ non-corrected values and to Bonferroni:</p></li>
 </div>
 <figure style="text-align: center"><img src="fig/02-high-dimensional-regression-rendered-p-fdr-1.png" alt="Plot of Benjamini-Hochberg-adjusted p-values (y) against unadjusted p-values (x). A dashed black line represents the identity (where x=y), while dashed red lines represent 0.05 significance thresholds." class="figure mx-auto d-block"><figcaption>
 Benjamini-Hochberg correction is less conservative than Bonferroni
-</figcaption></figure><div class="codewrapper sourceCode" id="cb63">
+</figcaption></figure><div class="codewrapper sourceCode" id="cb60">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1927,7 +1917,7 @@ never smaller than the original p-value.<a href="#fnref4" class="footnote-back">
   "url": "https://carpentries-incubator.github.io/high-dimensional-stats-r/02-high-dimensional-regression.html",
   "identifier": "https://carpentries-incubator.github.io/high-dimensional-stats-r/02-high-dimensional-regression.html",
   "dateCreated": "2026-03-03",
-  "dateModified": "2026-02-10",
+  "dateModified": "2026-03-03",
   "datePublished": "2026-03-03"
 }
 
