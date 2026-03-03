@@ -373,7 +373,8 @@ These data include information collected from the
 assay as well as associated metadata from individuals from whom samples were
 taken.
 
-```{r libsload}
+```{r libsload, message=FALSE}
+library("SummarizedExperiment")
 methylation <- readRDS("data/methylation.rds")
 head(colData(methylation))
 

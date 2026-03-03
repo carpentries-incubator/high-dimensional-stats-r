@@ -337,7 +337,7 @@ data into training and test sets, fit a linear model and calculate the errors. F
 calculate the training error. Let's start by splitting the data into training and test sets:
 
 ```{r data}
-methylation <- readRDS("/data/methylation.rds")
+methylation <- readRDS("data/methylation.rds")
 
 library("SummarizedExperiment")
 age <- methylation$Age
@@ -921,13 +921,13 @@ plot_elastic(0.75)
   but the paths are a bit less
   extreme than with pure LASSO; similar to ridge.
   ```{r elastic, fig.cap="Line plot showing coefficient values from an elastic net model against L1 norm.", fig.alt="A line plot showing coefficient values from an elastic net model against L1 norm. The coefficients, generally, suddenly become zero as L1 norm decreases. However, some coefficients increase in size before decreasing as L1 norm decreases."}
-  elastic <- glmnet(methyl_mat[, -1], age, alpha = 0.5)
+  elastic <- glmnet(methyl_mat, age, alpha = 0.5)
   plot(elastic)
   ```
 2. The process of model selection is similar for elastic net models as for
   LASSO models.
   ```{r elastic-cv, fig.cap="A plot of the cross-validation mean squared error of an elastic net model against log lambda."}
-  elastic_cv <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
+  elastic_cv <- cv.glmnet(methyl_mat, age, alpha = 0.5)
   plot(elastic_cv)
   ```
 3. You can see that the coefficients from these two methods are broadly

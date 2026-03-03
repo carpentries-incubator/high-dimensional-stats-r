@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.5.1",
+    "Version": "4.5.0",
     "Repositories": [
       {
         "Name": "BioCsoft",
@@ -178,7 +178,7 @@
       "NeedsCompilation": "no",
       "Author": "Martin Morgan [aut] (ORCID: <https://orcid.org/0000-0002-5874-8148>), Marcel Ramos [aut, cre] (ORCID: <https://orcid.org/0000-0002-3242-0582>)",
       "Maintainer": "Marcel Ramos <marcel.ramos@sph.cuny.edu>",
-      "Repository": "RSPM"
+      "Repository": "P3M"
     },
     "BiocNeighbors": {
       "Package": "BiocNeighbors",
@@ -926,7 +926,7 @@
       "Description": "Provides color schemes for maps (and other graphics) designed by Cynthia Brewer as described at http://colorbrewer2.org.",
       "License": "Apache License 2.0",
       "NeedsCompilation": "no",
-      "Repository": "RSPM",
+      "Repository": "P3M",
       "Encoding": "UTF-8"
     },
     "RSpectra": {
@@ -2176,8 +2176,7 @@
       "URL": "https://gitlab.com/luke-tierney/codetools",
       "License": "GPL",
       "NeedsCompilation": "no",
-      "Repository": "RSPM",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "cowplot": {
       "Package": "cowplot",
@@ -2591,7 +2590,7 @@
       "NeedsCompilation": "yes",
       "Author": "Thomas Lin Pedersen [cre, aut] (<https://orcid.org/0000-0002-5147-4711>), Berendea Nicolae [aut] (Author of the ColorSpace C++ library), Romain François [aut] (<https://orcid.org/0000-0002-2444-4226>), Posit, PBC [cph, fnd]",
       "Maintainer": "Thomas Lin Pedersen <thomas.pedersen@posit.co>",
-      "Repository": "RSPM"
+      "Repository": "P3M"
     },
     "fastmap": {
       "Package": "fastmap",
@@ -3179,7 +3178,7 @@
       "NeedsCompilation": "no",
       "Author": "Hadley Wickham [aut], Thomas Lin Pedersen [aut, cre], Posit Software, PBC [cph, fnd]",
       "Maintainer": "Thomas Lin Pedersen <thomas.pedersen@posit.co>",
-      "Repository": "RSPM"
+      "Repository": "P3M"
     },
     "highr": {
       "Package": "highr",
@@ -3421,7 +3420,7 @@
       "NeedsCompilation": "yes",
       "Author": "Hadley Wickham [aut, cre] (<https://orcid.org/0000-0003-4757-117X>), Claus O. Wilke [aut] (Original author, <https://orcid.org/0000-0002-7470-9261>), Thomas Lin Pedersen [aut] (<https://orcid.org/0000-0002-5147-4711>)",
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
-      "Repository": "RSPM"
+      "Repository": "P3M"
     },
     "iterators": {
       "Package": "iterators",
@@ -3497,7 +3496,7 @@
       "Encoding": "UTF-8",
       "NeedsCompilation": "yes",
       "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>), Duncan Temple Lang [ctb], Lloyd Hilaiel [cph] (author of bundled libyajl)",
-      "Repository": "RSPM"
+      "Repository": "P3M"
     },
     "knitr": {
       "Package": "knitr",
@@ -3580,7 +3579,7 @@
         "stats",
         "graphics"
       ],
-      "Repository": "RSPM",
+      "Repository": "P3M",
       "Encoding": "UTF-8"
     },
     "lambda.r": {
@@ -4469,7 +4468,7 @@
       "NeedsCompilation": "no",
       "Author": "Hadley Wickham [aut], Thomas Lin Pedersen [cre, aut] (<https://orcid.org/0000-0002-5147-4711>), Dana Seidel [aut], Posit Software, PBC [cph, fnd] (03wc8by49)",
       "Maintainer": "Thomas Lin Pedersen <thomas.pedersen@posit.co>",
-      "Repository": "RSPM"
+      "Repository": "P3M"
     },
     "scater": {
       "Package": "scater",
@@ -5375,7 +5374,7 @@
       "RoxygenNote": "7.2.3",
       "NeedsCompilation": "no",
       "Author": "Simon Garnier [aut, cre], Noam Ross [ctb, cph], Bob Rudis [ctb, cph], Marco Sciaini [ctb, cph], Antônio Pedro Camargo [ctb, cph], Cédric Scherer [ctb, cph]",
-      "Repository": "RSPM"
+      "Repository": "P3M"
     },
     "withr": {
       "Package": "withr",
