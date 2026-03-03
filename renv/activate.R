@@ -2,8 +2,8 @@
 local({
 
   # the requested version of renv
-  version <- "1.1.5"
-  attr(version, "md5") <- "770fcbc2c4616e8fbcb187cccd46a6b1"
+  version <- "1.1.7"
+  attr(version, "md5") <- "dd5d60f155dadff4c88c2fc6680504b4"
   attr(version, "sha") <- NULL
 
   # the project directory
@@ -167,6 +167,16 @@ local({
   
     quiet <- getOption("renv.bootstrap.quiet", default = FALSE)
     if (quiet)
+      return(invisible())
+  
+    # also check for config environment variables that should suppress messages
+    # https://github.com/rstudio/renv/issues/2214
+    enabled <- Sys.getenv("RENV_CONFIG_STARTUP_QUIET", unset = NA)
+    if (!is.na(enabled) && tolower(enabled) %in% c("true", "1"))
+      return(invisible())
+  
+    enabled <- Sys.getenv("RENV_CONFIG_SYNCHRONIZED_CHECK", unset = NA)
+    if (!is.na(enabled) && tolower(enabled) %in% c("false", "0"))
       return(invisible())
   
     msg <- sprintf(fmt, ...)
@@ -547,6 +557,12 @@ local({
   
     # infer path to renv cache
     cache <- Sys.getenv("RENV_PATHS_CACHE", unset = "")
+    if (!nzchar(cache)) {
+      root <- Sys.getenv("RENV_PATHS_ROOT", unset = NA)
+      if (!is.na(root))
+        cache <- file.path(root, "cache")
+    }
+  
     if (!nzchar(cache)) {
       tools <- asNamespace("tools")
       if (is.function(tools$R_user_dir)) {
@@ -1036,7 +1052,7 @@ local({
   
   renv_bootstrap_validate_version_release <- function(version, description) {
     expected <- description[["Version"]]
-    is.character(expected) && identical(expected, version)
+    is.character(expected) && identical(c(expected), c(version))
   }
   
   renv_bootstrap_hash_text <- function(text) {
