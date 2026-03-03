@@ -281,6 +281,9 @@ order <- order(age)
 age_ord <- age[order]
 methyl_mat_ord <- methyl_mat[, order]
 
+## create annotation df with rownames matching columns of methylation matrix
+ann_df <- data.frame(age = age_ord, row.names=colnames(methyl_mat_ord))
+
 # plot heatmap
 pheatmap(methyl_mat_ord, 
          cluster_cols = FALSE, 
@@ -288,20 +291,13 @@ pheatmap(methyl_mat_ord,
          show_colnames = FALSE, 
          legend_title = "M-value", 
          main = "Feature vs Sample", 
-         annotation_col = data.frame(age = age_ord))
+         annotation_col = ann_df)
 ```
 
-``` warning
-Warning in min(x): no non-missing arguments to min; returning Inf
-```
-
-``` warning
-Warning in max(x): no non-missing arguments to max; returning -Inf
-```
-
-``` error
-Error in seq.int(rx[1L], rx[2L], length.out = nb): 'from' must be a finite number
-```
+<div class="figure" style="text-align: center">
+<img src="fig/02-high-dimensional-regression-rendered-heatmap-1.png" alt="Heatmap of methylation values across all features showing that there are many features. Samples are ordered according to age."  />
+<p class="caption">Heatmap of methylation values across all features.</p>
+</div>
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 

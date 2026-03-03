@@ -505,29 +505,63 @@ taken.
 
 
 ``` r
+library("SummarizedExperiment")
+```
+
+``` warning
+Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+```
+
+``` warning
+Warning: multiple methods tables found for 'seqinfo'
+```
+
+``` warning
+Warning: multiple methods tables found for 'seqinfo<-'
+```
+
+``` warning
+Warning: multiple methods tables found for 'seqnames'
+```
+
+``` r
 methylation <- readRDS("data/methylation.rds")
 head(colData(methylation))
 ```
 
-``` error
-Error in colData(methylation): could not find function "colData"
+``` output
+DataFrame with 6 rows and 14 columns
+                    Sample_Well Sample_Name    purity         Sex       Age
+                    <character> <character> <integer> <character> <integer>
+201868500150_R01C01         A07     PCA0612        94           M        39
+201868500150_R03C01         C07   NKpan2510        95           M        49
+201868500150_R05C01         E07      WB1148        95           M        20
+201868500150_R07C01         G07       B0044        97           M        49
+201868500150_R08C01         H07   NKpan1869        95           F        33
+201868590193_R02C01         B03   NKpan1850        93           F        21
+                    weight_kg  height_m       bmi    bmi_clas Ethnicity_wide
+                    <numeric> <numeric> <numeric> <character>    <character>
+201868500150_R01C01   88.4505    1.8542   25.7269  Overweight          Mixed
+201868500150_R03C01   81.1930    1.6764   28.8911  Overweight  Indo-European
+201868500150_R05C01   80.2858    1.7526   26.1381  Overweight  Indo-European
+201868500150_R07C01   82.5538    1.7272   27.6727  Overweight  Indo-European
+201868500150_R08C01   87.5433    1.7272   29.3452  Overweight  Indo-European
+201868590193_R02C01   87.5433    1.6764   31.1507       Obese          Mixed
+                       Ethnic_self      smoker       Array       Slide
+                       <character> <character> <character>   <numeric>
+201868500150_R01C01       Hispanic          No      R01C01 2.01869e+11
+201868500150_R03C01      Caucasian          No      R03C01 2.01869e+11
+201868500150_R05C01        Persian          No      R05C01 2.01869e+11
+201868500150_R07C01      Caucasian          No      R07C01 2.01869e+11
+201868500150_R08C01      Caucasian          No      R08C01 2.01869e+11
+201868590193_R02C01 Finnish/Creole          No      R02C01 2.01869e+11
 ```
 
 ``` r
 methyl_mat <- t(assay(methylation))
-```
-
-``` error
-Error in assay(methylation): could not find function "assay"
-```
-
-``` r
 ## calculate correlations between cells in matrix
 cor_mat <- cor(methyl_mat)
-```
-
-``` error
-Error: object 'methyl_mat' not found
 ```
 
 

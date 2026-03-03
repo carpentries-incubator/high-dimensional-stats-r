@@ -459,19 +459,8 @@ calculate the training error. Let's start by splitting the data into training an
 
 
 ``` r
-methylation <- readRDS("/data/methylation.rds")
-```
+methylation <- readRDS("data/methylation.rds")
 
-``` warning
-Warning in gzfile(file, "rb"): cannot open compressed file
-'/data/methylation.rds', probable reason 'No such file or directory'
-```
-
-``` error
-Error in gzfile(file, "rb"): cannot open the connection
-```
-
-``` r
 library("SummarizedExperiment")
 age <- methylation$Age
 methyl_mat <- t(assay(methylation))
@@ -1008,7 +997,7 @@ like for different values of `alpha`.
   extreme than with pure LASSO; similar to ridge.
   
   ``` r
-  elastic <- glmnet(methyl_mat[, -1], age, alpha = 0.5)
+  elastic <- glmnet(methyl_mat, age, alpha = 0.5)
   plot(elastic)
   ```
   
@@ -1020,7 +1009,7 @@ like for different values of `alpha`.
   LASSO models.
   
   ``` r
-  elastic_cv <- cv.glmnet(methyl_mat[, -1], age, alpha = 0.5)
+  elastic_cv <- cv.glmnet(methyl_mat, age, alpha = 0.5)
   plot(elastic_cv)
   ```
   
@@ -1038,7 +1027,7 @@ like for different values of `alpha`.
   ```
   
   ``` output
-  [1] 4973
+  [1] 4974
   ```
   
   ``` r
@@ -1056,19 +1045,13 @@ like for different values of `alpha`.
       xlab = "LASSO coefficients",
       ylab = "Elastic net coefficients"
   )
-  ```
-  
-  ``` error
-  Error in xy.coords(x, y, xlabel, ylabel, log): 'x' and 'y' lengths differ
-  ```
-  
-  ``` r
   abline(0:1, lty = "dashed")
   ```
   
-  ``` error
-  Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-  ```
+  <div class="figure" style="text-align: center">
+  <img src="fig/03-regression-regularisation-rendered-elastic-plot-1.png" alt="A scatter plot depicting coefficient estimates from elastic net and LASSO models. Generally, the elastic net model coefficients are more conservative, with one notable outlier, whereas the LASSO model coefficients are more frequently exactly equal to zero."  />
+  <p class="caption">Scatter plot of coefficient estimates from an elastic net model (y) against coefficient estimates from a LASSO model (x).</p>
+  </div>
 4. You could pick an arbitrary value of `alpha`, because arguably pure ridge
   regression or pure LASSO regression are also arbitrary model choices.
   To be rigorous and to get the best-performing model and the best

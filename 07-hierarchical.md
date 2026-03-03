@@ -102,24 +102,41 @@ with in the regression lessons. Let's load and visually inspect the data:
 
 
 ``` r
+library("SummarizedExperiment")
+```
+
+``` warning
+Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+```
+
+``` warning
+Warning: multiple methods tables found for 'seqinfo'
+```
+
+``` warning
+Warning: multiple methods tables found for 'seqinfo<-'
+```
+
+``` warning
+Warning: multiple methods tables found for 'seqnames'
+```
+
+``` r
 methyl <- readRDS("data/methylation.rds")
 
 # transpose this Bioconductor dataset to show features in columns
 methyl_mat <- t(assay(methyl))
 ```
 
-``` error
-Error in assay(methyl): could not find function "assay"
-```
-
 Looking at a heatmap of these data, we may spot some patterns -- many columns
 appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
-
-``` error
-Error in pheatmap(methyl_mat, legend_title = "Methylation level", cluster_rows = FALSE, : could not find function "pheatmap"
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-heatmap-noclust-1.png" alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. There are many vertical blue and red stripes."  />
+<p class="caption">Heatmap of methylation data.</p>
+</div>
 
 Looking at a heatmap of these data, we may spot some patterns -- looking at the
 vertical stripes, many columns
@@ -136,6 +153,7 @@ rows and columns to show clustering of features and observations.
 
 
 ``` r
+library("pheatmap")
 pheatmap(methyl_mat,
          legend_title = "Methylation level",
          cluster_rows = TRUE, 
@@ -146,9 +164,10 @@ pheatmap(methyl_mat,
          annotation_legend = TRUE)
 ```
 
-``` error
-Error in pheatmap(methyl_mat, legend_title = "Methylation level", cluster_rows = TRUE, : could not find function "pheatmap"
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-heatmap-clust-1.png" alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis, clustered by methylation sites and individuals. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."  />
+<p class="caption">Heatmap of methylation data clustered by methylation sites and individuals.</p>
+</div>
 
 We can see that clustering the features (CpG sites) results in an overall
 gradient of high to low methylation levels from left to right. Maybe more
@@ -327,22 +346,8 @@ samples in the `methyl_mat` dataset. We then draw boxes round clusters obtained 
 ``` r
 ## create a distance matrix using euclidean distance
 distmat <- dist(methyl_mat)
-```
-
-``` error
-Error: object 'methyl_mat' not found
-```
-
-``` r
 ## hierarchical clustering using complete method
 clust <- hclust(distmat)
-```
-
-``` error
-Error: object 'distmat' not found
-```
-
-``` r
 ## plot resulting dendrogram
 plot(clust)
 
@@ -428,7 +433,7 @@ as.numeric(cutree(clust, k = 9))
 ```
 
 ``` output
- [1] 1 2 2 3 4 5 6 5 1 7 8 6 5 9 4 4 7 8 5 8
+ [1] 1 2 1 3 2 2 4 3 1 4 4 5 4 4 6 7 1 5 4 5 4 3 5 7 4 8 4 1 8 9 5 2 8 4 1 4 2
 ```
 
 ``` r
@@ -438,7 +443,7 @@ as.numeric(cutree(clust, h = 36))
 ```
 
 ``` output
- [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [1] 1 2 1 3 2 2 4 3 1 4 4 5 4 4 6 7 1 5 4 5 4 3 5 7 4 8 4 1 8 9 5 2 8 4 1 4 2
 ```
 
 ``` r
@@ -457,6 +462,48 @@ Attaching package: 'dplyr'
 ```
 
 ``` output
+The following object is masked from 'package:Biobase':
+
+    combine
+```
+
+``` output
+The following objects are masked from 'package:GenomicRanges':
+
+    intersect, setdiff, union
+```
+
+``` output
+The following object is masked from 'package:GenomeInfoDb':
+
+    intersect
+```
+
+``` output
+The following objects are masked from 'package:IRanges':
+
+    collapse, desc, intersect, setdiff, slice, union
+```
+
+``` output
+The following objects are masked from 'package:S4Vectors':
+
+    first, intersect, rename, setdiff, setequal, union
+```
+
+``` output
+The following objects are masked from 'package:BiocGenerics':
+
+    combine, intersect, setdiff, union
+```
+
+``` output
+The following object is masked from 'package:matrixStats':
+
+    count
+```
+
+``` output
 The following objects are masked from 'package:stats':
 
     filter, lag
@@ -470,18 +517,15 @@ The following objects are masked from 'package:base':
 
 ``` r
 example_cl <- mutate(data.frame(methyl_mat), cluster = four_cut)
-```
-
-``` error
-Error: object 'methyl_mat' not found
-```
-
-``` r
 count(example_cl, cluster)
 ```
 
-``` error
-Error: object 'example_cl' not found
+``` output
+  cluster  n
+1       1 12
+2       2  6
+3       3  6
+4       4 13
 ```
 
 ``` r
@@ -490,11 +534,12 @@ library(ggplot2)
 ggplot(example_cl, aes(x = cg01644850, y = cg01656216, color = factor(cluster))) + geom_point()
 ```
 
-``` error
-Error: object 'example_cl' not found
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-cutree-1.png" alt="A scatter plot of the example data x2 versus x1, coloured by 8 different clusters. There are two clusters in the bottom right of the plot, 4 clusters in the top left of the plot, and a final cluster consisting of one point in the top right of the plot."  />
+<p class="caption">Scatter plot of data x2 versus x1, coloured by cluster.</p>
+</div>
 
-Note that this cut produces 1 clusters (zero before the cut and another four
+Note that this cut produces 4 clusters (zero before the cut and another four
 downstream of the cut).
 
 :::::::::::::::::::::::::::::::::::::::  challenge
@@ -525,7 +570,26 @@ cutree(clust, h = 45)
 ```
 
 ``` output
- [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+201868500150_R01C01 201868500150_R03C01 201868500150_R05C01 201868500150_R07C01 
+                  1                   2                   1                   3 
+201868500150_R08C01 201868590193_R02C01 201868590193_R03C01 201868590193_R06C01 
+                  2                   2                   4                   3 
+201868590206_R02C01 201868590206_R04C01 201868590206_R05C01 201868590206_R06C01 
+                  1                   4                   4                   5 
+201868590206_R08C01 201868590243_R03C01 201868590243_R04C01 201868590243_R06C01 
+                  4                   4                   5                   4 
+201868590243_R07C01 201868590243_R08C01 201868590267_R06C01 201868590267_R07C01 
+                  1                   5                   4                   5 
+201868590267_R08C01 201869680009_R06C01 201869680009_R07C01 201869680009_R08C01 
+                  4                   3                   5                   4 
+201869680030_R01C01 201869680030_R02C01 201869680030_R06C01 201870610056_R02C01 
+                  4                   3                   4                   1 
+201870610056_R04C01 201870610056_R07C01 201870610056_R08C01 201870610111_R01C01 
+                  3                   2                   5                   2 
+201870610111_R02C01 201870610111_R04C01 201870610111_R05C01 201870610111_R06C01 
+                  3                   4                   1                   4 
+201870610111_R07C01 
+                  2 
 ```
 
 ``` r
@@ -533,7 +597,26 @@ cutree(clust, k = 5)
 ```
 
 ``` output
- [1] 1 2 2 3 2 1 2 1 1 4 4 2 1 5 2 2 4 4 1 4
+201868500150_R01C01 201868500150_R03C01 201868500150_R05C01 201868500150_R07C01 
+                  1                   2                   1                   3 
+201868500150_R08C01 201868590193_R02C01 201868590193_R03C01 201868590193_R06C01 
+                  2                   2                   4                   3 
+201868590206_R02C01 201868590206_R04C01 201868590206_R05C01 201868590206_R06C01 
+                  1                   4                   4                   5 
+201868590206_R08C01 201868590243_R03C01 201868590243_R04C01 201868590243_R06C01 
+                  4                   4                   5                   4 
+201868590243_R07C01 201868590243_R08C01 201868590267_R06C01 201868590267_R07C01 
+                  1                   5                   4                   5 
+201868590267_R08C01 201869680009_R06C01 201869680009_R07C01 201869680009_R08C01 
+                  4                   3                   5                   4 
+201869680030_R01C01 201869680030_R02C01 201869680030_R06C01 201870610056_R02C01 
+                  4                   3                   4                   1 
+201870610056_R04C01 201870610056_R07C01 201870610056_R08C01 201870610111_R01C01 
+                  3                   2                   5                   2 
+201870610111_R02C01 201870610111_R04C01 201870610111_R05C01 201870610111_R06C01 
+                  3                   4                   1                   4 
+201870610111_R07C01 
+                  2 
 ```
 
 ``` r
@@ -541,18 +624,16 @@ five_cut <- cutree(clust, h = 45)
 
 library(dplyr)
 example_cl <- mutate(data.frame(methyl_mat), cluster = five_cut)
-```
-
-``` error
-Error: object 'methyl_mat' not found
-```
-
-``` r
 count(example_cl, cluster)
 ```
 
-``` error
-Error: object 'example_cl' not found
+``` output
+  cluster  n
+1       1  6
+2       2  6
+3       3  6
+4       4 13
+5       5  6
 ```
 
 
@@ -561,9 +642,10 @@ library(ggplot2)
 ggplot(example_cl, aes(x=cg01644850, y = cg01656216, color = factor(cluster))) + geom_point()
 ```
 
-``` error
-Error: object 'example_cl' not found
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-plot-clusters-1.png" alt="Plot of x1 against x2 in the example data. Points are coloured by cluster, with 8 different clusters being organised into groups around the plot. There is no clear pattern in the data, although nearby points generally share the same colour."  />
+<p class="caption">A scatter plot of the x and y variables of the example data, with points coloured by cluster.</p>
+</div>
 
 Five clusters (`k = 5`) gives similar results to `h = 45`. You can plot a
 horizontal line on the dendrogram at `h = 45` to help identify
@@ -773,9 +855,10 @@ In contrast, `sample_a` and `sample_c` are very distant, despite having
 pheatmap(as.matrix(cor_example))
 ```
 
-``` error
-Error in pheatmap(as.matrix(cor_example)): could not find function "pheatmap"
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-heatmap-cor-example-1.png" alt="Heatmap of simulated data: feature versus sample. The grid cells of the heatmap are coloured from red (high) to blue (low) according to value of the simulated data. Samples A and B are both primarily composed of blue (low) values and form a cluster distinct from sample C on the column dendrogram."  />
+<p class="caption">Heatmap of simulated data.</p>
+</div>
 
 We can see that more clearly if we do a line plot:
 
@@ -857,9 +940,10 @@ dissimilarity measures in functions that perform hierarchical clustering, such a
 pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation")
 ```
 
-``` error
-Error in pheatmap(as.matrix(cor_example), clustering_distance_cols = "correlation"): could not find function "pheatmap"
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-heatmap-cor-cor-example-1.png" alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot. Samples A and C form a cluster separate from sample B in the column dendrogram."  />
+<p class="caption">Heatmaps of features versus samples clustered in the samples according to correlation.</p>
+</div>
 
 ``` r
 ## Using the built-in stats::heatmap 
@@ -870,7 +954,7 @@ heatmap(
 ```
 
 <div class="figure" style="text-align: center">
-<img src="fig/07-hierarchical-rendered-heatmap-cor-cor-example-1.png" alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot. Samples A and C form a cluster separate from sample B in the column dendrogram."  />
+<img src="fig/07-hierarchical-rendered-heatmap-cor-cor-example-2.png" alt="Heatmaps of features versus samples, coloured by simulated value. The columns (samples) are clustered according to the correlation. Samples a and b have mostly low values, delineated by blue in the first plot and yellow in the second plot. Sample c has mostly high values, delineated by red in the first plot and brown in the second plot. Samples A and C form a cluster separate from sample B in the column dendrogram."  />
 <p class="caption">Heatmaps of features versus samples clustered in the samples according to correlation.</p>
 </div>
 
@@ -914,21 +998,7 @@ Loading required package: cluster
 ``` r
 ## calculate euclidean distance between points 
 distmat <- dist(methyl_mat)  
-```
-
-``` error
-Error: object 'methyl_mat' not found
-```
-
-``` r
 clust <- hclust(distmat, method = "complete")
-```
-
-``` error
-Error: object 'distmat' not found
-```
-
-``` r
 plot(clust)
 ```
 
@@ -944,8 +1014,8 @@ cut <- cutree(clust, h = 50)
 dunn(distance = distmat, cut)
 ```
 
-``` error
-Error: object 'distmat' not found
+``` output
+[1] 0.8823501
 ```
 
 The value of the Dunn index has no meaning in itself, but is used to compare
@@ -967,21 +1037,8 @@ affects the value of the Dunn index.
 library("clValid")
 
 distmat <- dist(methyl_mat)
-```
-
-``` error
-Error: object 'methyl_mat' not found
-```
-
-``` r
 clust <- hclust(distmat, method = "complete")
-```
 
-``` error
-Error: object 'distmat' not found
-```
-
-``` r
 #Varying h
 ## Obtaining the clusters
 cut_h_20 <- cutree(clust, h = 20)
@@ -992,7 +1049,7 @@ length(table(cut_h_20))
 ```
 
 ``` output
-[1] 1
+[1] 36
 ```
 
 ``` r
@@ -1000,23 +1057,23 @@ length(table(cut_h_30))
 ```
 
 ``` output
-[1] 1
+[1] 14
 ```
 
 ``` r
 dunn(distance = distmat, cut_h_20)
 ```
 
-``` error
-Error: object 'distmat' not found
+``` output
+[1] 1.61789
 ```
 
 ``` r
 dunn(distance = distmat, cut_h_30)
 ```
 
-``` error
-Error: object 'distmat' not found
+``` output
+[1] 0.8181846
 ```
 
 ``` r
@@ -1045,16 +1102,16 @@ length(table(cut_k_10))
 dunn(distance = distmat, cut_k_5)
 ```
 
-``` error
-Error: object 'distmat' not found
+``` output
+[1] 0.8441528
 ```
 
 ``` r
 dunn(distance = distmat, cut_k_10)
 ```
 
-``` error
-Error: object 'distmat' not found
+``` output
+[1] 0.7967132
 ```
 
 :::::::::::::::::::::::::
@@ -1068,36 +1125,16 @@ The figures below show in a more systematic way how changing the values of `k` a
 ``` r
 h_seq <- 70:10
 h_dunn <- sapply(h_seq, function(x) dunn(distance = distmat, cutree(clust, h = x)))
-```
-
-``` error
-Error in FUN(X[[i]], ...): object 'distmat' not found
-```
-
-``` r
 k_seq <- seq(2, 10)
 k_dunn <- sapply(k_seq, function(x) dunn(distance = distmat, cutree(clust, k = x)))
-```
-
-``` error
-Error in FUN(X[[i]], ...): object 'distmat' not found
-```
-
-``` r
 plot(h_seq, h_dunn, xlab = "Height (h)", ylab = "Dunn index")
-```
-
-``` error
-Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'h_dunn' not found
-```
-
-``` r
 grid()
 ```
 
-``` error
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-hclust-fig3-1.png" alt="Scatter plot of Dunn index versus cut height for methylation data. The Dunn index is high (around 1.6) for height values up to 20. The Dunn index drops around height 20 and the points fluctuate around 0.8 and 1 as height increases."  />
+<p class="caption">Dunn index versus cut height for methylation data.</p>
+</div>
 
 You can see that at low values of `h`, the Dunn index can be high. But this
 is not very useful - cutting the given tree at a low `h` value like 15 leads to allmost all observations
@@ -1107,19 +1144,13 @@ Looking at the dendrogram, this corresponds to `k=4`.
 
 ``` r
 plot(k_seq, k_dunn, xlab = "Number of clusters (k)", ylab = "Dunn index")
-```
-
-``` error
-Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'k_dunn' not found
-```
-
-``` r
 grid()
 ```
 
-``` error
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-```
+<div class="figure" style="text-align: center">
+<img src="fig/07-hierarchical-rendered-hclust-fig4-1.png" alt="A scatter plot of the Dunn index versus the number of clusters for the methylation data. The points appear randomly scattered around the plot area between Dunn indices of 0.77 to 0.85, apart from for 4 clusters where the Dunn index reaches just over 0.88."  />
+<p class="caption">Scatter plot of Dunn index versus the number of clusters for the methylation data.</p>
+</div>
 
 For the given range of `k` values explored, we obtain the highest Dunn index with `k=4`.
 This is in agreement with the previous plot.
