@@ -131,7 +131,10 @@ materials for researchers in the biological sciences that has been taught nine t
 
 ## Acknowledgements
 
-We thank the instructors who have taught the course for their time and insight in teaching and reviewing, the curriculum advisory committee for their helpful guidance in defining the scope of the lesson, Emma Rand and Christie Barron for reviewing the lesson and providing fresh and incredibly valuable perspectives, the wider Ed-DaSH team and The Carpentries community for their help in developing and delivering the lesson.
+We thank the instructors who have taught the course for their time and insight in teaching and reviewing the materials. These include
+Aleksandra Chybowska, Ben King, Bradley Harris, Diego Chillón, Edward Walles, Hugh Warden, Nathan Constantine-Cooke, Hywel Dunn-Davies, Jan Verburg, Joshua Dibble, Kelsey Tetley-Campbell, Lucie Wöllenstein, Mario Antonioletti, Rosie Eccleston, and Sam Haynes.
+
+We also thank our curriculum advisory committee for their helpful guidance in defining the scope of the lesson, Emma Rand and Christie Barron for reviewing the lesson in detail and providing fresh and incredibly valuable perspectives, the wider Ed-DaSH team and The Carpentries community for their help in developing and delivering the lesson.
 
 This work was supported by UK Research and Innovation [grant number MR/V039075/1].
 
