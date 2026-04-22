@@ -235,7 +235,8 @@ pros_fa <- factanal(pros2, factors = 3)
 ```
 
 ``` error
-Error in factanal(pros2, factors = 3): 3 factors are too many for 5 variables
+Error in `factanal()`:
+! 3 factors are too many for 5 variables
 ```
 
 ``` r

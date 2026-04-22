@@ -110,18 +110,6 @@ Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
-``` warning
-Warning: multiple methods tables found for 'seqinfo'
-```
-
-``` warning
-Warning: multiple methods tables found for 'seqinfo<-'
-```
-
-``` warning
-Warning: multiple methods tables found for 'seqnames'
-```
-
 ``` r
 methyl <- readRDS("data/methylation.rds")
 
