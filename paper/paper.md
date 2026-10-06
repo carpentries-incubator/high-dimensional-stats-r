@@ -5,18 +5,28 @@ tags:
   - R
   - The Carpentries
 authors:
-  - name: first author
-    email: first author email
-    orcid: first author orcid
-    affiliation: number(s) from index below
-  - name: second author
-    email: second author email
-    orcid: second author orcid 
-    affiliation: numbers(s) from index below
+  - name: Alan O'Callaghan
+    email: alan.ocallaghan@outlook.com
+    orcid: 0000-0003-4817-6171
+    affiliation: 1
+  - name: Gail Robertson
+    affiliation: 2
+  - name: Hannes Becher
+    orcid: 0000-0003-3700-2942
+    affiliation: 1
+  - name: Mary Llewellyn
+    orcid: 0009-0008-3759-4902
+    affiliation: 2
+  - name: Ailith Ewing
+    orcid: 0000-0002-2272-1277
+    affiliation: 1
+  - name: Catalina Vallejos
+    orcid: 0000-0003-3638-1960
+    affiliation: 1
 affiliations:
- - name: first affil, in order
+ - name: Institute of Genetics and Cancer, The University of Edinburgh, Edinburgh, UK
    index: 1
- - name: second affil, in order 
+ - name: School of Mathematics, University of Edinburgh, Edinburgh, UK
    index: 2
    
 date: 15 March 2024
@@ -92,17 +102,6 @@ the episodes for review or practice outside of the sessions.
 
 ## Teaching experience
 
-<!-- Remove this list later...
-1. Ailith, Alan https://edcarp.github.io/2021-10-26_ed-dash_high-dimensional-stats/
-2. Cata, Ailith https://edcarp.github.io/15-02-22_ed-dash_high-dim-stats/
-3. Ailith, Nathan https://edcarp.github.io/2022-05-17_ed-dash_high-dim-stats/
-4. Hugh https://edcarp.github.io/2022-07-26_ed-dash_high-dim-stats/
-5. EdWall https://edcarp.github.io/2022-09-27_ed-dash_high-dim-stats/
-6. Hannes https://edcarp.github.io/2023-01-17_ed-dash_high-dim-stats/
-7. Hywel https://edcarp.github.io/2024-02-27_ed-dash_high-dim-stats/
-8. Ben https://edcarp.github.io/2024-03-19_ed-dash_high-dim-stats/
-9. Rosie/Ben https://edcarp.github.io/2024-06-11_ed-dash_high-dim-stats/
--->
 
 The lesson has been taught 9 times by a range of instructors consisting of PhD students, bioinformaticians,
 post-doctoral researchers, statisticians and group leaders. Learners have included postgraduate students,
@@ -134,7 +133,7 @@ materials for researchers in the biological sciences that has been taught nine t
 We thank the instructors who have taught the course for their time and insight in teaching and reviewing the materials. These include
 Aleksandra Chybowska, Ben King, Bradley Harris, Diego Chillón, Edward Walles, Hugh Warden, Nathan Constantine-Cooke, Hywel Dunn-Davies, Jan Verburg, Joshua Dibble, Kelsey Tetley-Campbell, Lucie Wöllenstein, Mario Antonioletti, Rosie Eccleston, and Sam Haynes.
 
-We also thank our curriculum advisory committee for their helpful guidance in defining the scope of the lesson, Emma Rand and Christie Barron for reviewing the lesson in detail and providing fresh and incredibly valuable perspectives, the wider Ed-DaSH team and The Carpentries community for their help in developing and delivering the lesson.
+We also thank our curriculum advisory committee (Kelly Blacklock, Vanda Calhau Fernandes Inacio De Carvalho, Greame Grimes, Daniel Barker and Nick Schurch) for their helpful guidance in defining the scope of the lesson, Emma Rand and Christie Barron for reviewing the lesson in detail and providing fresh and incredibly valuable perspectives, the wider Ed-DaSH team and The Carpentries community for their help in developing and delivering the lesson.
 
 This work was supported by UK Research and Innovation [grant number MR/V039075/1].
 
