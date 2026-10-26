@@ -98,7 +98,8 @@ clustering is really useful, and then we can understand how to apply it in more
 detail. To do this, we'll return to the large [`methylation`](https://carpentries-incubator.github.io/high-dimensional-stats-r/data/index.html) dataset we worked
 with in the regression lessons. Let's load and visually inspect the data:
 
-```{r}
+```{r, message=FALSE}
+library("SummarizedExperiment")
 methyl <- readRDS("data/methylation.rds")
 
 # transpose this Bioconductor dataset to show features in columns
@@ -110,6 +111,7 @@ appear to have a similar methylation levels across all rows. However, they are
 all quite jumbled at the moment, so it's hard to tell how many line up exactly.
 
 ```{r heatmap-noclust, echo=FALSE, fig.cap="Heatmap of methylation data.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. There are many vertical blue and red stripes."}
+library("pheatmap")
 pheatmap(methyl_mat,
          legend_title = "Methylation level",
          cluster_rows = FALSE, 
@@ -133,6 +135,7 @@ groups features based on dissimilarity (here, Euclidean distance) and orders
 rows and columns to show clustering of features and observations.
 
 ```{r heatmap-clust, fig.cap="Heatmap of methylation data clustered by methylation sites and individuals.", fig.alt="Heatmap of methylation level with individuals along the y axis and methylation sites along the x axis, clustered by methylation sites and individuals. Red colours indicate high methylation levels (up to around 4), blue colours indicate low methylation levels (to around -4) and white indicates methylation levels close to zero. This time, the individuals and methylation sites are clustered and the plot fades from vertical red lines on the left side to vertical blue lines on the right side. There are two, arguably three, white stripes towards the middle of the plot."}
+library("pheatmap")
 pheatmap(methyl_mat,
          legend_title = "Methylation level",
          cluster_rows = TRUE, 
