@@ -384,6 +384,18 @@ Attaching package: 'dendextend'
 ```
 
 ``` output
+The following object is masked from 'package:BiocGenerics':
+
+    rotate
+```
+
+``` output
+The following object is masked from 'package:generics':
+
+    prune
+```
+
+``` output
 The following object is masked from 'package:stats':
 
     cutree
@@ -462,7 +474,7 @@ The following objects are masked from 'package:GenomicRanges':
 ```
 
 ``` output
-The following object is masked from 'package:GenomeInfoDb':
+The following object is masked from 'package:Seqinfo':
 
     intersect
 ```
@@ -482,7 +494,13 @@ The following objects are masked from 'package:S4Vectors':
 ``` output
 The following objects are masked from 'package:BiocGenerics':
 
-    combine, intersect, setdiff, union
+    combine, intersect, setdiff, setequal, union
+```
+
+``` output
+The following object is masked from 'package:generics':
+
+    explain
 ```
 
 ``` output

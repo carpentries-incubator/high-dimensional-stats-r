@@ -65,7 +65,7 @@ can be summarised well by two factors, which we can then interpret. We have
 labelled these hypothetical factors "mathematical ability" and "writing ability".
 
 <div class="figure" style="text-align: center">
-<img src="fig/table_for_fa.png" alt="A table displaying data of student scores across several subjects. Each row displays the scores across different subjects for a given individual. The plot is annotated at the top with a curly bracket labelled Factor 1: mathematical ability and encompasses the data for the student scores is Arithmetic, Algebra, Geometry, and Statistics. Similarly, the subjects Creative Writing, Literature, Spelling/Grammar are encompassed by a different curly bracket with label Factor 2: writing ability." width="5448" />
+<img src="fig/table_for_fa.png" alt="A table displaying data of student scores across several subjects. Each row displays the scores across different subjects for a given individual. The plot is annotated at the top with a curly bracket labelled Factor 1: mathematical ability and encompasses the data for the student scores is Arithmetic, Algebra, Geometry, and Statistics. Similarly, the subjects Creative Writing, Literature, Spelling/Grammar are encompassed by a different curly bracket with label Factor 2: writing ability."  />
 <p class="caption">Student scores data across several subjects with hypothesised factors.</p>
 </div>
 

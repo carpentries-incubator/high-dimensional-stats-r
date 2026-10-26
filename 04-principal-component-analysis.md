@@ -405,16 +405,6 @@ screeplot(pca.pros, axisLabSize = 5, titleLabSize = 8,
     geom_line(aes(x = 1:length(pca.pros$components), y = as.numeric(pca.pros$variance))) 
 ```
 
-``` warning
-Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
-ℹ Please use the `linewidth` argument instead.
-ℹ The deprecated feature was likely used in the PCAtools package.
-  Please report the issue to the authors.
-This warning is displayed once per session.
-Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-generated.
-```
-
 <div class="figure" style="text-align: center">
 <img src="fig/04-principal-component-analysis-rendered-varexp-1.png" alt="A scree plot showing the percentage of variance explained by each principal component versus the principal component number. The points are joined by lines to indicate where the elbow of the scree plot occurs."  />
 <p class="caption">Scree plot showing the percentage of the variance explained by the principal components calculated from the prostate data.</p>
@@ -506,12 +496,12 @@ $values
 [1] 2.4488355 1.3653171 0.5554705 0.4048702 0.2255067
 
 $vectors
-           [,1]        [,2]        [,3]        [,4]        [,5]
-[1,] -0.5616465  0.23664270  0.01486043  0.22708502  0.75945046
-[2,] -0.2985223 -0.60174151 -0.66320198 -0.32126853  0.07577123
-[3,] -0.1681278 -0.69638466  0.69313753  0.04517286  0.06558369
-[4,] -0.4962203  0.31092357  0.26309227 -0.72394666 -0.25253840
-[5,] -0.5665123  0.01680231 -0.10141557  0.56487128 -0.59111493
+          [,1]        [,2]        [,3]        [,4]        [,5]
+[1,] 0.5616465  0.23664270  0.01486043  0.22708502  0.75945046
+[2,] 0.2985223 -0.60174151 -0.66320198 -0.32126853  0.07577123
+[3,] 0.1681278 -0.69638466  0.69313753  0.04517286  0.06558369
+[4,] 0.4962203  0.31092357  0.26309227 -0.72394666 -0.25253840
+[5,] 0.5665123  0.01680231 -0.10141557  0.56487128 -0.59111493
 ```
 
 ``` r
@@ -552,11 +542,6 @@ components can be generated as follows:
 
 ``` r
 PCAtools::biplot(pca.pros)
-```
-
-``` output
-Ignoring unknown labels:
-• fill : ""
 ```
 
 <div class="figure" style="text-align: center">
@@ -668,6 +653,22 @@ Loading required package: BiocGenerics
 ```
 
 ``` output
+Loading required package: generics
+```
+
+``` output
+
+Attaching package: 'generics'
+```
+
+``` output
+The following objects are masked from 'package:base':
+
+    as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+    setequal, union
+```
+
+``` output
 
 Attaching package: 'BiocGenerics'
 ```
@@ -679,14 +680,20 @@ The following objects are masked from 'package:stats':
 ```
 
 ``` output
+The following object is masked from 'package:utils':
+
+    data
+```
+
+``` output
 The following objects are masked from 'package:base':
 
     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
-    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    Position, rank, rbind, Reduce, rownames, sapply, saveRDS, setdiff,
-    table, tapply, union, unique, unsplit, which.max, which.min
+    get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, saveRDS, scale, sequence, table,
+    tapply, transform, unique, unsplit, which.max, which.min
 ```
 
 ``` output
@@ -715,7 +722,7 @@ Loading required package: IRanges
 ```
 
 ``` output
-Loading required package: GenomeInfoDb
+Loading required package: Seqinfo
 ```
 
 ``` output
@@ -922,7 +929,7 @@ pc$loadings[which.max(pc$loadings[, 1]), ]
                    PC86        PC87          PC88         PC89         PC90
 215281_x_at -0.00112973 0.006489667 -0.0005039785 -0.004296355 -0.002751513
                    PC91
-215281_x_at -0.00383085
+215281_x_at 0.008470715
 ```
 
 ``` r
@@ -975,7 +982,7 @@ pc$loadings[which.max(pc$loadings[, 2]), ]
                    PC82        PC83         PC84       PC85       PC86
 211122_s_at -0.01988441 0.009667348 -0.008248781 0.01198369 0.01221713
                     PC87        PC88        PC89        PC90        PC91
-211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 0.004593411
+211122_s_at -0.003864842 -0.02876816 -0.01771452 -0.02164973 -0.01899215
 ```
 
 The function `pca()` is used to perform PCA, and uses as input a matrix
@@ -1121,11 +1128,6 @@ Examine whether the data appear to form clusters. Explain your results.
 PCAtools::biplot(pc, lab = NULL, colby = 'Grade', legendPosition = 'top')
 ```
 
-``` output
-Ignoring unknown labels:
-• fill : ""
-```
-
 <div class="figure" style="text-align: center">
 <img src="fig/04-principal-component-analysis-rendered-biplot-ex-1.png" alt="A biplot of PC2 against PC1 in the gene expression data, coloured by Grade. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on Grade across these two groups."  />
 <p class="caption">A biplot of PC2 against PC1 in the gene expression data, coloured by Grade.</p>
@@ -1171,11 +1173,6 @@ not all labels will be shown.
     legendPosition = 'right')
 ```
 
-``` output
-Ignoring unknown labels:
-• fill : ""
-```
-
 <div class="figure" style="text-align: center">
 <img src="fig/04-principal-component-analysis-rendered-pca-biplot-ex2-1.png" alt="A biplot of PC2 against PC1 in the gene expression data, coloured by ER status. The points on the scatter plot separate clearly on PC1, but there is no clear grouping of samples based on ER across these two groups, although there are more ER- samples in the rightmost cluster. Patient ages are overlaid as text near the points, but there is again no clear pattern."  />
 <p class="caption">A biplot of PC2 against PC1 in the gene expression data, coloured by ER status with patient ages overlaid.</p>
@@ -1196,79 +1193,6 @@ multiple biplots including different principal components.
 
 ``` r
 pairsplot(pc)
-```
-
-``` output
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Coordinate system already present.
-ℹ Adding new coordinate system, which will replace the existing one.
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
-Ignoring unknown labels:
-• fill : ""
 ```
 
 <div class="figure" style="text-align: center">
