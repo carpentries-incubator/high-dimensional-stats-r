@@ -1,0 +1,15 @@
+Some helpful info: 
+- The paper should be 1000 words max 
+- From JOSE: The goal is that someone reading the JOSE paper has enough information to decide if they’d be interested in adopting the learning module or software. Readers will want to know how the content/software has been used, and how they would adopt it. They may also want to be persuaded that the authors have put careful work on creating the material, and have experience teaching with it.
+- Some useful example papers:
+  - https://openjournals.readthedocs.io/en/jose/submitting.html
+  - https://github.com/carpentries-lab/good-enough-practices/blob/main/paper.md
+  - https://jose.theoj.org/papers/10.21105/jose.00209
+- Section outlines: 
+   - Summary: summarises all the sections of the paper.
+   - Statement of need: (from JOSE) explains how the submitted artifacts contribute to computationally enabled teaching and learning, and describes how they might be adopted by others. Make the case for their submission’s contribution in the paper. The criterion is less one of novelty, than need: submissions targeting subjects or applications already addressed by other resources are eligible, if the authors make a case for why they might be adopted by learners or other instructors. For example, authors could say that they approach a topic differently, that they update material to modern contexts, that the need is born of a new educational program, or a conference tutorial or other informal-learning scenario.
+   - Content, learning objectives and design principles: summarises lesson content and how they were designed to address need.
+   - Instructional design: how the lesson is designed to be taught.
+   - Teaching experience: experience of use in teaching and learning situations.
+   - Development: Story of how the project came to be: How did the initial idea come about? Was it inspired by anything in particular? How was the course initially designed/what was discussed at the curriculum advisory committee? What gap in students' knowledge did you identify and how, and how did you approach filling it?
+- Should high-dimensional statistics be hyphenated (versus high dimensional statistics), here and throughout the course (including the name - I'm not sure!)
