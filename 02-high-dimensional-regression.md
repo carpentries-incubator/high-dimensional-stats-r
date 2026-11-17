@@ -91,6 +91,22 @@ Loading required package: BiocGenerics
 ```
 
 ``` output
+Loading required package: generics
+```
+
+``` output
+
+Attaching package: 'generics'
+```
+
+``` output
+The following objects are masked from 'package:base':
+
+    as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+    setequal, union
+```
+
+``` output
 
 Attaching package: 'BiocGenerics'
 ```
@@ -102,14 +118,20 @@ The following objects are masked from 'package:stats':
 ```
 
 ``` output
+The following object is masked from 'package:utils':
+
+    data
+```
+
+``` output
 The following objects are masked from 'package:base':
 
     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
-    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    Position, rank, rbind, Reduce, rownames, sapply, saveRDS, setdiff,
-    table, tapply, union, unique, unsplit, which.max, which.min
+    get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, saveRDS, scale, sequence, table,
+    tapply, transform, unique, unsplit, which.max, which.min
 ```
 
 ``` output
@@ -138,7 +160,7 @@ Loading required package: IRanges
 ```
 
 ``` output
-Loading required package: GenomeInfoDb
+Loading required package: Seqinfo
 ```
 
 ``` output

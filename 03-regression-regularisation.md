@@ -95,6 +95,22 @@ Loading required package: BiocGenerics
 ```
 
 ``` output
+Loading required package: generics
+```
+
+``` output
+
+Attaching package: 'generics'
+```
+
+``` output
+The following objects are masked from 'package:base':
+
+    as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+    setequal, union
+```
+
+``` output
 
 Attaching package: 'BiocGenerics'
 ```
@@ -106,14 +122,20 @@ The following objects are masked from 'package:stats':
 ```
 
 ``` output
+The following object is masked from 'package:utils':
+
+    data
+```
+
+``` output
 The following objects are masked from 'package:base':
 
     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
-    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    Position, rank, rbind, Reduce, rownames, sapply, saveRDS, setdiff,
-    table, tapply, union, unique, unsplit, which.max, which.min
+    get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, saveRDS, scale, sequence, table,
+    tapply, transform, unique, unsplit, which.max, which.min
 ```
 
 ``` output
@@ -142,7 +164,7 @@ Loading required package: IRanges
 ```
 
 ``` output
-Loading required package: GenomeInfoDb
+Loading required package: Seqinfo
 ```
 
 ``` output
@@ -644,7 +666,7 @@ The following object is masked from 'package:S4Vectors':
 ```
 
 ``` output
-Loaded glmnet 4.1-10
+Loaded glmnet 5.1
 ```
 
 ``` r
@@ -874,7 +896,7 @@ data. This is called cross-validation, and doing this repeated test/train split
 gives us a better estimate of how generalisable our model is.
 
 <div class="figure" style="text-align: center">
-<img src="fig/cross_validation.png" alt="The data is divided into $K$ chunks. For each cross-validation iteration, one data chunk is used as the test set. The remaining $K-1$ chunks are combined into a training set." width="695" />
+<img src="fig/cross_validation.png" alt="The data is divided into $K$ chunks. For each cross-validation iteration, one data chunk is used as the test set. The remaining $K-1$ chunks are combined into a training set."  />
 <p class="caption">Schematic representiation of a $K$-fold cross-validation procedure.</p>
 </div>
 

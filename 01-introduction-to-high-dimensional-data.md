@@ -38,7 +38,7 @@ blood test results, behaviours, and general health. An example of what high-dime
 in a biomedical study is shown in the figure below.
 
 <div class="figure" style="text-align: center">
-<img src="fig/intro-table.png" alt="Table displaying a high-dimensional data set with many columns representing features related to health, such as blood pressure, heart rate and respiratory rate. Each row contains the data for an individual patient. This type of high-dimensional data could contain hundreds or thousands of columns (features/variables) and thousands or even millions of rows (observations/samples/patients)." width="5572" />
+<img src="fig/intro-table.png" alt="Table displaying a high-dimensional data set with many columns representing features related to health, such as blood pressure, heart rate and respiratory rate. Each row contains the data for an individual patient. This type of high-dimensional data could contain hundreds or thousands of columns (features/variables) and thousands or even millions of rows (observations/samples/patients)."  />
 <p class="caption">Example of a high-dimensional data table with features in the columns and individual observations (patients) in rows.</p>
 </div>
 
@@ -211,7 +211,7 @@ per feature is low. The result of fitting a best fit line through
 few observations can be seen in the right-hand panel below.
 
 <div class="figure" style="text-align: center">
-<img src="fig/intro-scatterplot.png" alt="Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points." width="5307" />
+<img src="fig/intro-scatterplot.png" alt="Two scatter plots side-by-side, each plotting the relationship between two variables. The scatter plot on the left hand side shows 25 observations and a regression line with the points evenly scattered around. The scatter plot on the right hand side shows 2 observations and a regression line that goes through both points."  />
 <p class="caption">Scatter plot of two variables (x and y) from a data set with 25 observations (left) and 2 observations (right) with a fitted regression line (red).</p>
 </div>
 
