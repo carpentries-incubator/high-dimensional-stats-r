@@ -124,7 +124,7 @@ Any other references to help clarify the story?
 With UKRI funding for the wider Ed-DaSH project, the material was developed within the Carpentries framework.
 Initially, profiles of potential learners were identified, to target the learning outcomes of the lessons to meet
 the unmet needs. Subsequently, the lessons were iteratively developed, reviewed and tested by the core development team. Over the past three years, the lesson has been further developed and improved, with multiple rounds of 
-internal, instructor and peer review (https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/4325823/reviews.md), culminating in an informative key set of learning
+internal, instructor and peer review (see for example https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/4325823/reviews.md), culminating in an informative key set of learning
 materials for researchers in the biological sciences that has been taught nine times.
 
 
