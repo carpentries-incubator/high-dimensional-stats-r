@@ -83,7 +83,7 @@ The lesson is designed to be delivered in four 3.5-hour sessions over four days,
 question time of around 40 minutes per session.
 Most sessions cover two episodes, with an entire session for 
 episode three.
-Each episode comprises 60-75% instruction and live coding, and the remainder of the time is allocated to exercises to emphasize practical application. 
+Each episode comprises 60-75% instruction and live coding, and the remainder of the time is allocated to exercises that encourage practical practical application. 
 
 The course web page is comprehensive, including setup instructions, licence information, instructor information on the session splits and optional lecture slides for instructors to use to supplement the material in each episode.
 Each episode is self-contained to allow for individual learners and learners taking the course can use the episodes for review or practice in isolation.
@@ -94,8 +94,8 @@ Each episode is self-contained to allow for individual learners and learners tak
 The lesson has been taught nine times by a range of instructors consisting of PhD students, bioinformaticians, post-doctoral researchers, statisticians and group leaders. Learners have included postgraduate students, post-doctoral researchers, bioinformaticians and other computational researchers.
 The lesson has been taught by the core team that created the lesson three times and instructors independent of the lesson development six times.
 We are pleased that the lesson has received very positive feedback from learners on its practical utility.
-To improve the lesson, we constantly adapt the materials following instructor insights after each round of teaching.
-We also gather feedback from learners to improve the lesson based on learning experience. 
+To improve the lesson, we adapted the materials following instructor insights after each round of teaching.
+We also gathered feedback from learners to improve the lesson based on learning experience. 
 Full information on the changes made following feedback from round of teaching can be found in a file in the lesson GitHub repository: https://github.com/carpentries-incubator/high-dimensional-stats-r/blob/4325823/reviews.md
 
 
