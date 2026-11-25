@@ -68,7 +68,7 @@ The lesson contains seven episodes, each focusing on a core concept in high-dime
 7. Hierarchical clustering
 
 In keeping with the target learners for these lessons, each episode is principally designed around practical biological sciences value: each episode focuses on:
-1. understanding core conceptual information to the extent that it is useful in understanding the method,
+1. core conceptual information to the extent that it is useful in understanding the method,
 2. when and how each method can be applied,
 3. robust implementation and evaluation of each method, and
 4. practical examples in R using real biological science data sets. 
